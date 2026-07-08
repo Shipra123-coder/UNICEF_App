@@ -1,0 +1,145 @@
+﻿@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+<style nonce="@nonce">
+    .custom-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    .activity-title {
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .subactivity-box {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .subactivity-header {
+        background: #f8fafc;
+        padding: 18px 20px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .subactivity-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .task-list {
+        padding: 20px;
+    }
+
+    .task-item {
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px 18px;
+        margin-bottom: 15px;
+        background: #fff;
+        transition: 0.3s;
+    }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+        }
+
+    .task-name {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .geo-badge {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border-radius: 30px;
+        padding: 5px 12px;
+        font-size: 12px;
+    }
+
+    .btn-geo {
+        border-radius: 10px;
+        font-size: 14px;
+        padding: 7px 14px;
+    }
+</style>
+<style nonce="@nonce">
+    .geo-box {
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: #f8fafc;
+    }
+
+    .geo-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #0f172a;
+    }
+
+    .geo-add-btn {
+        border-radius: 10px;
+    }
+
+    .geo-badge-item {
+        background: #dbeafe;
+        color: #1d4ed8;
+        padding: 7px 14px;
+        border-radius: 30px;
+        display: inline-flex;
+        align-items: center;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        font-size: 13px;
+    }
+
+    .remove-badge {
+        cursor: pointer;
+        margin-left: 8px;
+        color: red;
+        font-weight: bold;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-selection--multiple {
+        min-height: 38px !important;
+        border: 1px solid #ced4da !important;
+    }
+</style>
+<div class="custom-card">
+
+    <!-- Activity Header -->
+    <div class="activity-header mb-4">
+
+        <div>
+            <h4 class="activity-title mb-1">
+                
+            </h4>
+
+            <p class="text-muted mb-0">
+              
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Dynamic Content -->
+    <div id="activityContainer"></div>
+
+</div>
+
+<script nonce="@nonce" src="~/lib/select2/js/select2.min.js"></script>
+<script nonce="@nonce" src="~/custom/ActivityGeo.js" asp-append-version="true"></script>
+

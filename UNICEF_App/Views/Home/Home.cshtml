@@ -1,0 +1,4076 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<link href="~/public/css/instyle.css" rel="stylesheet" />
+<style nonce="@nonce">
+    .li-text {
+        margin-top: 45px;
+        text-align: justify;
+    }
+</style>
+<style nonce="@nonce">
+    /* --- General Reset --- */
+    /* * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        } */
+
+    /* --- Main Containers --- */
+    .main-container {
+        width: 100%;
+        /* max-width: 1200px; */
+        text-align: center;
+    }
+
+    .main-title {
+        color: #f15a24; /* Orange color from image */
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .infographic-border {
+        border: 2px solid #ffcccc; /* Light pink/red border */
+        border-radius: 6px;
+        padding: 60px 20px;
+        /* background-color: #ffffff; */
+        position: relative;
+        background: linear-gradient(10deg, rgba(240, 241, 171, 1) 0%, rgba(203, 255, 255, 1) 100%);
+    }
+
+    /* --- Flexbox Rows --- */
+    .sector-row {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        gap: 15px; /* Space between items */
+    }
+
+    .mt-50 {
+        margin-top: 50px;
+    }
+
+    /* --- Individual Sector Item Setup --- */
+    .sector-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(16.66% - 15px); /* 6 items per row on desktop */
+        min-width: 150px; /* Prevents items from getting too small */
+        position: relative;
+    }
+
+    /* Row 2 needs specific width for 7 items */
+    .sector-row.mt-50 .sector-item {
+        width: calc(14.28% - 15px);
+    }
+
+    /* --- Icon Diamond (The Rhombus) --- */
+    .icon-diamond {
+        width: 70px;
+        height: 70px;
+        background-color: #ffffff;
+        border: 3px solid; /* Color assigned via specific classes */
+        transform: rotate(45deg); /* Creates the diamond shape */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 2;
+    }
+
+        .icon-diamond i {
+            transform: rotate(-45deg); /* Un-rotates the icon inside */
+            font-size: 30px;
+            color: #333; /* Default icon color */
+        }
+
+    /* --- Connector Line (Pointer) --- */
+    .connector-line {
+        width: 3px;
+        height: 30px;
+        background-color: #333; /* Default color */
+        margin-top: -15px; /* Overlaps with diamond */
+        position: relative;
+        z-index: 1;
+    }
+
+        /* Creating the V-shape pointer at the bottom */
+        .connector-line::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid; /* Color assigned via classes */
+        }
+
+    /* --- Text Block (Rounded Rectangle) --- */
+    .text-block {
+        width: 100%;
+        background-color: #333; /* Default background */
+        color: #ffffff;
+        border-radius: 15px;
+        padding: 15px 10px;
+        text-align: center;
+        margin-top: 5px;
+        min-height: 100px; /* Ensures uniform height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .sector-number {
+        font-size: 20px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .text-block p {
+        font-size: 13px;
+        line-height: 1.3;
+        font-weight: 600;
+    }
+
+    /* =========================================
+           --- COLOR DEFINITIONS (Matching Image) ---
+           ========================================= */
+
+    /* 1. Agri-Food (Green) */
+    .color-green .icon-diamond {
+        border-color: #2e7d32;
+    }
+
+    .color-green .connector-line {
+        background-color: #2e7d32;
+    }
+
+        .color-green .connector-line::after {
+            border-top-color: #2e7d32;
+        }
+
+    .color-green .text-block {
+        background-color: #2e7d32;
+    }
+
+    /* 2. Health (Pink) */
+    .color-pink .icon-diamond {
+        border-color: #ec407a;
+    }
+
+    .color-pink .connector-line {
+        background-color: #ec407a;
+    }
+
+        .color-pink .connector-line::after {
+            border-top-color: #ec407a;
+        }
+
+    .color-pink .text-block {
+        background-color: #ec407a;
+    }
+
+    /* 3. Education (Dark Blue) */
+    .color-dark-blue .icon-diamond {
+        border-color: #1a237e;
+    }
+
+    .color-dark-blue .connector-line {
+        background-color: #1a237e;
+    }
+
+        .color-dark-blue .connector-line::after {
+            border-top-color: #1a237e;
+        }
+
+    .color-dark-blue .text-block {
+        background-color: #1a237e;
+    }
+
+    /* 4. Social Empowerment (Dark Green) */
+    .color-dark-green .icon-diamond {
+        border-color: #1b5e20;
+    }
+
+    .color-dark-green .connector-line {
+        background-color: #1b5e20;
+    }
+
+        .color-dark-green .connector-line::after {
+            border-top-color: #1b5e20;
+        }
+
+    .color-dark-green .text-block {
+        background-color: #1b5e20;
+    }
+
+    /* 5. Industrial (Mustard/Orange) */
+    .color-mustard .icon-diamond {
+        border-color: #f57c00;
+    }
+
+    .color-mustard .connector-line {
+        background-color: #f57c00;
+    }
+
+        .color-mustard .connector-line::after {
+            border-top-color: #f57c00;
+        }
+
+    .color-mustard .text-block {
+        background-color: #f57c00;
+    }
+
+    /* 6. Tourism (Purple) */
+    .color-purple .icon-diamond {
+        border-color: #4a148c;
+    }
+
+    .color-purple .connector-line {
+        background-color: #4a148c;
+    }
+
+        .color-purple .connector-line::after {
+            border-top-color: #4a148c;
+        }
+
+    .color-purple .text-block {
+        background-color: #4a148c;
+    }
+
+    /* 7. Infrastructure (Orange) */
+    .color-orange .icon-diamond {
+        border-color: #ff6d00;
+    }
+
+    .color-orange .connector-line {
+        background-color: #ff6d00;
+    }
+
+        .color-orange .connector-line::after {
+            border-top-color: #ff6d00;
+        }
+
+    .color-orange .text-block {
+        background-color: #ff6d00;
+    }
+
+    /* 8. Water Security (Red) */
+    .color-red .icon-diamond {
+        border-color: #d32f2f;
+    }
+
+    .color-red .connector-line {
+        background-color: #d32f2f;
+    }
+
+        .color-red .connector-line::after {
+            border-top-color: #d32f2f;
+        }
+
+    .color-red .text-block {
+        background-color: #d32f2f;
+    }
+
+    /* 9. Environmental (Blue) */
+    .color-blue .icon-diamond {
+        border-color: #1565c0;
+    }
+
+    .color-blue .connector-line {
+        background-color: #1565c0;
+    }
+
+        .color-blue .connector-line::after {
+            border-top-color: #1565c0;
+        }
+
+    .color-blue .text-block {
+        background-color: #1565c0;
+    }
+
+    /* 10. Rural (Light Blue) */
+    .color-light-blue .icon-diamond {
+        border-color: #03a9f4;
+    }
+
+    .color-light-blue .connector-line {
+        background-color: #03a9f4;
+    }
+
+        .color-light-blue .connector-line::after {
+            border-top-color: #03a9f4;
+        }
+
+    .color-light-blue .text-block {
+        background-color: #03a9f4;
+    }
+
+    /* 11. Urban (Deep Orange) */
+    .color-deep-orange .icon-diamond {
+        border-color: #bf360c;
+    }
+
+    .color-deep-orange .connector-line {
+        background-color: #bf360c;
+    }
+
+        .color-deep-orange .connector-line::after {
+            border-top-color: #bf360c;
+        }
+
+    .color-deep-orange .text-block {
+        background-color: #bf360c;
+    }
+
+    /* 12. Governance (Yellow/Gold) */
+    .color-yellow .icon-diamond {
+        border-color: #fbc02d;
+    }
+
+    .color-yellow .connector-line {
+        background-color: #fbc02d;
+    }
+
+        .color-yellow .connector-line::after {
+            border-top-color: #fbc02d;
+        }
+
+    .color-yellow .text-block {
+        background-color: #fbc02d;
+    }
+
+    .color-yellow .text-block {
+        color: #333;
+    }
+    /* Dark text for light bg */
+
+    /* 13. Fiscal (Maroon) */
+    .color-maroon .icon-diamond {
+        border-color: #880e4f;
+    }
+
+    .color-maroon .connector-line {
+        background-color: #880e4f;
+    }
+
+        .color-maroon .connector-line::after {
+            border-top-color: #880e4f;
+        }
+
+    .color-maroon .text-block {
+        background-color: #880e4f;
+    }
+
+
+    /* =========================================
+           --- RESPONSIVE MEDIA QUERIES ---
+           ========================================= */
+
+    /* Tablet & Mobile (Stacking items) */
+    @@media (max-width: 992px) {
+        .sector-item, .sector-row.mt-50 .sector-item {
+            width: calc(33.33% - 15px); /* 3 items per row */
+            margin-bottom: 30px;
+        }
+
+        .infographic-border {
+            padding: 40px 10px;
+        }
+
+        .mt-50 {
+            margin-top: 0;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .sector-item, .sector-row.mt-50 .sector-item {
+            width: calc(50% - 10px); /* 2 items per row */
+        }
+
+        .main-title {
+            font-size: 18px;
+        }
+
+        .icon-diamond {
+            width: 60px;
+            height: 60px;
+        }
+
+            .icon-diamond i {
+                font-size: 24px;
+            }
+    }
+    .color-white{
+        color:#fff;
+    }
+</style>
+<style nonce="@nonce">
+    .infographic-container {
+        width: 1000px;
+        max-width: 100%;
+        background-color: #fff;
+        border: 2px solid var(--primary-orange);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden; /* Contains slide-in animations */
+    }
+
+    /* Title Animation */
+    .title {
+        color: var(--primary-orange);
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: fadeInDown 0.8s ease-out forwards;
+    }
+
+    .content-layout {
+        display: grid;
+        grid-template-columns: 100px 1fr 200px; /* Cover, Hub, Text */
+        gap: 20px;
+        align-items: center;
+    }
+
+    /* Policy Covers Animation */
+    .policy-covers {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        justify-content: center;
+        height: 100%;
+        opacity: 0;
+        animation: fadeInLeft 1s ease-out 0.5s forwards; /* Start after title */
+    }
+
+    .cover-placeholder {
+        width: 90px;
+        height: 110px;
+        background-color: var(--cover-bg);
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        color: #777;
+        text-align: center;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .cover-placeholder:hover {
+            transform: scale(1.05);
+        }
+
+    /* Central Hub and Hexagons Animation */
+    .central-hub {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+        opacity: 0;
+        animation: fadeIn 1s ease-in 1s forwards; /* Start after title */
+    }
+
+    .hex-group {
+        position: absolute;
+        width: 110px;
+        height: 110px;
+        transition: all 0.4s ease;
+        opacity: 0; /* Hidden initially for staggered entry */
+    }
+
+    /* Positions for hexagons based on grid layout */
+    .hex-1 {
+        top: 0;
+        left: 145px;
+        animation: popIn 0.5s ease-out 1.2s forwards;
+    }
+    /* Top */
+    .hex-2 {
+        top: 75px;
+        left: 20px;
+        animation: popIn 0.5s ease-out 1.4s forwards;
+    }
+    /* Top-Left */
+    .hex-3 {
+        top: 75px;
+        left: 270px;
+        animation: popIn 0.5s ease-out 1.6s forwards;
+    }
+    /* Top-Right */
+    .hex-4 {
+        top: 220px;
+        left: 20px;
+        animation: popIn 0.5s ease-out 1.8s forwards;
+    }
+    /* Bottom-Left */
+    .hex-5 {
+        top: 220px;
+        left: 270px;
+        animation: popIn 0.5s ease-out 2.0s forwards;
+    }
+    /* Bottom-Right */
+    .hex-6 {
+        top: 290px;
+        left: 145px;
+        animation: popIn 0.5s ease-out 2.2s forwards;
+    }
+    /* Bottom */
+
+    /* Hexagon Drawing */
+    .hexagon {
+        fill: #fff;
+        stroke: var(--hex-border);
+        stroke-width: 3;
+        transition: stroke 0.3s ease;
+    }
+
+    .hex-group:hover .hexagon {
+        stroke: var(--hex-highlight);
+    }
+
+    .icon-placeholder {
+        font-size: 32px;
+        fill: #555;
+        transition: fill 0.3s ease;
+    }
+
+    .hex-group:hover .icon-placeholder {
+        fill: #222;
+    }
+
+    /* Center Gear Element */
+    .center-element {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 110px;
+        height: 110px;
+        opacity: 0;
+        animation: fadeInRotate 1.5s ease-out 1s forwards;
+    }
+
+    /* Policy Text Animation */
+    .policy-texts {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .policy-text-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        opacity: 0;
+    }
+
+    /* Matching delays for staggered text entry */
+    .text-1 {
+        animation: fadeInLeft 0.6s ease-out 1.2s forwards;
+    }
+
+    .text-2 {
+        animation: fadeInLeft 0.6s ease-out 1.4s forwards;
+    }
+
+    .text-3 {
+        animation: fadeInLeft 0.6s ease-out 1.6s forwards;
+    }
+
+    .text-4 {
+        animation: fadeInLeft 0.6s ease-out 1.8s forwards;
+    }
+
+    .text-5 {
+        animation: fadeInLeft 0.6s ease-out 2.0s forwards;
+    }
+
+    .text-6 {
+        animation: fadeInLeft 0.6s ease-out 2.2s forwards;
+    }
+
+    .policy-label {
+        color: var(--policy-text);
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .policy-year {
+        color: var(--policy-text);
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+
+    /* Custom Label for Non-Resident */
+    .alt-label {
+        color: #C08000; /* Gold */
+    }
+
+    /* Custom Label for Employment */
+    .employment-label {
+        color: #CC0066; /* Magenta */
+    }
+
+    /* --- Keyframe Animations --- */
+    @@keyframes fadeIn {
+        to
+
+    {
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes fadeInDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    @@keyframes fadeInLeft {
+        from
+
+    {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    }
+
+    @@keyframes popIn {
+        0%
+
+    {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.0);
+    }
+
+    }
+
+    @@keyframes fadeInRotate {
+        0%
+
+    {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(0deg) scale(1.0);
+    }
+
+    }
+
+    /* Placeholder icons using text/SVG */
+    .hub-icon {
+        fill: #9933CC;
+    }
+</style>
+<div class="slider">
+
+    @* <div class="slideimg default">
+        <img src="/public/img/images/default-slide.jpg" alt="Slide Image" class="default-img" loading="lazy">
+        <div class="container-fluid cmpad slider-con">
+            <div class="col-lg-12 px-4 center">
+                <h1>Make Every Day a Clean Day</h1>
+                <p>
+                    Technical Support Group (TSG) in Waste Management sector under the Local Self Government
+                    Department of Kerala.
+                </p>
+
+
+            </div>
+        </div>
+    </div> *@
+
+
+    <div class="swiper mainslider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="slideimg">                   
+                    <img src="/public/storage/banners/Banner1.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner2.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner3.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                            <h2>
+                                Un Monitoring Dashboard
+                            </h2>
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner4.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                            <h2>
+                                Un Monitoring Dashboard
+                            </h2>
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+
+        </div>
+
+        <div class="swiper-pagination mainpagination testislideright-pagi mainslider-pagi"></div>
+    </div>
+
+
+
+</div><!-- slider -->
+@* <div class="directors posrel pb-0">
+    <div class="container-fluid cmpad">
+        <div class="row">
+            <div class=" dircol flexVcenter">
+                <ul class="dirlist ">
+                    <li>
+                        <div class="dirsec">
+                            <div class="dirimg">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/img/cm-photo.jpeg" alt="directors" width="400"
+                                     height="400">
+                            </div>
+                            <div class="dircon">
+                                <p class="head">
+                                    Shri Bhajan Lal Sharma
+                                </p>
+                                <p class="con">
+                                    Hon'ble Chief Minister
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dirsec">
+                            <div class="dirimg">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/img/cm-photo.jpeg" alt="directors" width="400"
+                                     height="400">
+                            </div>
+                            <div class="dircon">
+                                <p class="head">
+                                    Shri Bhajan Lal Sharma
+                                </p>
+                                <p class="con">
+                                    Hon'ble Chief Minister
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="li-text">
+                            The United Nations system has been a longstanding and trusted partner to the
+                            Government of India and State Governments, supporting inclusive, equitable
+                            and sustainable development across sectors. In Rajasthan, the State government
+                            has maintained a mature and constructive engagement with multiple United
+                            Nations agencies across key sectors including health, nutrition, education, child
+                            protection, water and sanitation, skill, adolescent &amp; youth empowerment,
+                            climate resilience, social protection and public finance.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class=" newscol">
+                <div class="news-box">
+                    <div class="news-head">
+                        <h3>Latest <span>News</span></h3>
+                        <a href="#" class="morebtn">View All</a>
+                    </div>
+                    <div class="news-con">
+                        <div class="swiper swipernews">
+                            <div class="swiper-wrapper">
+
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>09 Mar 2026                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTMy"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>09 Mar 2026                                                                                                </h5>
+                                        <p class="">
+                                            Test1
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTM1"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>02 Mar 2026                                                                                                </h5>
+                                        <p class="">
+                                            test 3
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTMx"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>24 Jan 2026                                                                                                </h5>
+                                        <p class="">
+                                            test4
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTMw"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>22 Jan 2026                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTI5"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>29 Dec 2025                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTI4"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>16 Dec 2025                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTI3"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>28 Oct 2025                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTIy"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>13 Oct 2025                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTIx"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>17 Sep 2025                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTE3"></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-sec">
+                                        <h5>18 Aug 2025                                                                                                </h5>
+                                        <p class="">
+                                            test
+                                        </p>
+                                        <a href="#" class="stretched-link latestnews" data-lid="MTE0"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+<div class="about posrel pt-5 pb-3">
+    <div class="container-fluid cmpad">
+        <div class="row">
+
+            <div class="col-lg-5 pe-lg-4 mb-4 mb-lg-0">
+                <div class="lwm-list mb-3">
+                    <div class="lwm-sec">
+                        <a href="#">
+                            <img src="/public/img/icons/lwm.svg" alt="Liquid Waste Management">
+                            <p>UNICEF</p>
+                        </a>
+                    </div>
+                    <div class="lwm-sec">
+                        <a href="#">
+                            <img src="/public/img/icons/swm.svg" alt="Solid Waste Management">
+                            <p> UNDP</p>
+                        </a>
+                    </div>
+                    <div class="lwm-sec">
+                        <a href="#">
+                            <img src="/public/img/icons/iec.svg"
+                                 alt="Information Education and Communication">
+                            <p>UNFPA</p>
+                        </a>
+                    </div>
+                   
+                </div>
+
+                <div class="cap-list mb-5 d-block">
+                    <div class="swiper othrpageslide">
+                        <div class="swiper-wrapper">
+                            @* <div class="swiper-slide">
+                                <div class="cap-sec v-cap-sec">
+                                    <a href="https://lsgdgrading.in" target="_blank">
+                                        <img src="/public/img/logo/logo-dark.png"
+                                             alt="Kerala Green Leaf Rating" id="limg">
+                                        <p>ശുചിത്വ കേരളം റാങ്കിങ്ങ്</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="cap-sec v-cap-sec">
+                                    <a href="https://assessment.suchitwamission.org/" target="_blank">
+                                        <img src="/public/img/logo/kglr.svg"
+                                             alt="Kerala Green Leaf Rating" id="gimg">
+                                        <p>Kerala Green Leaf Rating</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="cap-sec v-cap-sec">
+                                    <a href="https://vruthi.in/" target="_blank">
+                                        <img src="/public/img/logo/logo1.svg" alt=" logo"
+                                             id="vimg">
+                                        <p>Vruthi 2025 The Clean Kerala Conclave</p>
+                                    </a>
+                                </div>
+                            </div> *@
+
+                            <!-- <div class="swiper-slide">
+                                <div class="cap-sec v-cap-sec">
+                                    <a href="https://play.google.com/store/apps/details?id=org.suchitwamission.kloo&pli=1" target="_blank">
+                                        <img src="/public/img/logo/kloo.webp" alt=" logo"
+                                             id="vimg">
+                                        <p> KLOO </p>
+                                    </a>
+                                </div>
+                            </div>  -->
+
+                        </div>
+                    </div>
+
+
+                    <!--<div class="cap-sec">-->
+                    <!--    <a href="https://suchitwamission.org/capacity-building">-->
+                    <!--        <img src="/public/img/icons/capacity.svg" alt="lwm">-->
+                    <!--        <p>Capacity Building</p>-->
+                    <!--    </a>-->
+                    <!--</div>-->
+                    <!--<div class="cap-sec">-->
+                    <!--    <a href="/public-sanitation">-->
+                    <!--        <img src="/public/img/icons/public.svg" alt="swm">-->
+                    <!--        <p>Public Sanitation</p>-->
+                    <!--    </a>-->
+                    <!--</div>-->
+                </div>
+
+
+
+                <div class="vismis">
+                    <div class="vis-sec mb-lg-3 mb-xl-4 mb-xxl-5 mb-4 mb-lg-0">
+
+                        <div class="vis-img d-flex align-items-end gap-3 mb-3">
+                            <img src="/public/img/icons/vision.svg" alt="swm">
+                            <h5 class="mb-0"> Vision </h5>
+                        </div>
+                        <p class="mb-2">
+                            This Vision of this integrated and strategic Platform/Dashboard is to strengthen collaboration
+                            between the Government of Rajasthan and the United Nations system by fostering
+                            convergence and coherence across different sectors. It enhances transparency, drive
+                            inclusive, equitable and resilient development and improve integrated monitoring &amp;
+                            reviewing activities progress made by different UN agencies in the State, which ultimately
+                            positioning Rajasthan as a leading model for effective partnerships.
+                        </p>
+                        <a href="#" class="morebtn">
+                            Learn more about our vision
+                        </a>
+
+                    </div>
+                    @* <div class="vis-sec">
+
+                        <div class="vis-img d-flex align-items-end gap-3 mb-3">
+                            <img src="/public/img/icons/mission.svg" alt="swm">
+                            <h5 class="mb-0">Mission</h5>
+                        </div>
+                        <p class="mb-2">
+                            To integrate technology, data, and governance for effective monitoring, evaluation, and implementation of development programs aligned with global SDG targets.
+
+                        </p>
+                        <a href="#"
+                           class="morebtn">Learn more about our mission</a>
+                    </div> *@
+                </div>
+
+
+
+            </div>
+            <div class="col-lg-7 position-relative">
+
+                <div class="mb-4">
+                    <h3 class="abt-head">
+                        About Us
+                    </h3>
+                    <p>
+                        The United Nations system has been a longstanding and trusted partner to the Government of India and State Governments, supporting inclusive, equitable and sustainable development across sectors. In Rajasthan, the State government has maintained a mature and constructive engagement with multiple United Nations agencies across key sectors including health, nutrition, education, child protection, water and sanitation, skill, adolescent &amp; youth empowerment, climate resilience, social protection and public finance.
+                    </p>
+                    <a href="/about-us" class="morebtn">
+                        Read more about us
+                    </a>
+                </div>
+                <div>
+                    <div class="headrow mb-2">
+                        <div class="col">
+                            <h3 class="head1">
+                                Latest Highlights
+                            </h3>
+                        </div><!-- col -->
+                        <div class="col navcol">
+                            <a href="#" class="morebtn">View All</a>
+                        </div><!-- col -->
+                    </div><!-- headrow -->
+                    <div class="swiper abtslide">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="abt-sec">
+                                    <img src="/Public/highlights/Event1.jpg"
+                                         alt="about">
+                                    <p>
+                                        SDG
+                                    </p>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="abt-sec">
+                                    <img src="/Public/highlights/Event2.jpg"
+                                         alt="about">
+                                    <p>
+                                        SDG2
+                                    </p>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="abt-sec">
+                                    <img src="/Public/highlights/Event3.jpg"
+                                         alt="about">
+                                    <p>
+                                        SDG3
+                                    </p>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="abt-sec">
+                                    <img src="/Public/highlights/Event4.jpg"
+                                         alt="about">
+                                    <p>
+                                        SDG4
+                                    </p>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="abt-sec">
+                                    <img src="/Public/highlights/Event5.jpg"
+                                         alt="about">
+                                    <p>
+                                        SDG6
+                                    </p>
+                                </div>
+                            </div><!-- slide -->
+
+
+                        </div><!-- wrapper -->
+                        <div class="swiper-pagination mainpagination testislideright-pagi abt-pagi"></div>
+                    </div><!-- swiper -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <style nonce="@nonce">
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI',sans-serif;
+            background: #eef3ff;
+            overflow-x: hidden;
+        }
+
+        /* MAIN SECTION */
+
+        .dashboard-section {
+            padding: 50px 60px;
+            position: relative;
+        }
+
+            .dashboard-section::before {
+                content: '';
+                position: absolute;
+                width: 700px;
+                height: 700px;
+                background: linear-gradient(135deg,#dbeafe,#eff6ff);
+                border-radius: 50%;
+                top: -300px;
+                right: -250px;
+                z-index: 0;
+            }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .heading {
+            font-size: 48px;
+            font-weight: 800;
+            color: #082f75;
+            line-height: 1.2;
+        }
+
+            .heading span {
+                color: #0ea5e9;
+            }
+
+        .subheading {
+            font-size: 18px;
+            color: #5b6475;
+            margin-top: 12px;
+            margin-bottom: 35px;
+        }
+
+        /* FILTERS */
+
+        .filter-wrapper {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .filter-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 14px 18px;
+            width: 260px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid #dbe4ff;
+        }
+
+            .filter-card label {
+                display: block;
+                font-size: 12px;
+                font-weight: 700;
+                color: #64748b;
+                margin-bottom: 5px;
+            }
+
+            .filter-card select {
+                width: 100%;
+                border: none;
+                outline: none;
+                background: none;
+                color: #0f172a;
+                font-weight: 700;
+                font-size: 16px;
+            }
+
+        /* INFO BOX */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
+            max-width: 600px;
+        }
+
+        .info-box {
+            position: relative;
+            background: #fff;
+            border-radius: 22px;
+            padding: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            transition: 0.3s;
+            border: 1px solid #dce6ff;
+        }
+
+            .info-box:hover {
+                transform: translateY(-6px);
+            }
+
+            .info-box::before {
+                content: '';
+                position: absolute;
+                width: 120px;
+                height: 120px;
+                background: linear-gradient(135deg,#dbeafe,#eff6ff);
+                border-radius: 50%;
+                top: -50px;
+                right: -40px;
+            }
+
+        .box-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .box-count {
+            font-size: 54px;
+            font-weight: 800;
+            color: #082f75;
+            line-height: 1;
+            margin-top: 12px;
+        }
+
+        .box-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #334155;
+            margin-top: 10px;
+        }
+
+        .box-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: #0ea5e9;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* RIGHT SIDE */
+
+        .sector-panel {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sector-wheel {
+            width: 580px;
+            height: 580px;
+            position: relative;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            padding: 20px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient( #14b8a6 0deg 45deg, #0f766e 45deg 90deg, #9333ea 90deg 135deg, #ec4899 135deg 180deg, #f97316 180deg 225deg, #eab308 225deg 270deg, #22c55e 270deg 315deg, #3b82f6 315deg 360deg );
+            position: relative;
+        }
+
+            .wheel::before {
+                content: '';
+                position: absolute;
+                width: 220px;
+                height: 220px;
+                background: #fff;
+                border-radius: 50%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#eff6ff,#dbeafe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            font-size: 55px;
+            color: #082f75;
+            font-weight: bold;
+        }
+
+        /* LABELS */
+
+        .sector-tag {
+            position: absolute;
+            color: #fff;
+            font-weight: 700;
+            font-size: 17px;
+            text-align: center;
+            width: 120px;
+            z-index: 10;
+        }
+
+        .t1 {
+            top: 70px;
+            left: 230px;
+        }
+
+        .t2 {
+            top: 140px;
+            right: 40px;
+        }
+
+        .t3 {
+            top: 270px;
+            right: 0px;
+        }
+
+        .t4 {
+            bottom: 120px;
+            right: 60px;
+        }
+
+        .t5 {
+            bottom: 40px;
+            left: 240px;
+        }
+
+        .t6 {
+            bottom: 120px;
+            left: 60px;
+        }
+
+        .t7 {
+            top: 280px;
+            left: -10px;
+        }
+
+        .t8 {
+            top: 130px;
+            left: 40px;
+        }
+
+        /* RESPONSIVE */
+
+        @@media(max-width:1200px) {
+
+            .sector-wheel {
+                width: 450px;
+                height: 450px;
+                margin-top: 40px;
+            }
+
+            .heading {
+                font-size: 38px;
+            }
+        }
+
+        @@media(max-width:991px) {
+
+            .dashboard-section {
+                padding: 30px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-wrapper {
+                flex-direction: column;
+            }
+
+            .sector-wheel {
+                width: 350px;
+                height: 350px;
+            }
+
+            .sector-tag {
+                font-size: 12px;
+                width: 90px;
+            }
+        }
+
+    </style>
+    <style nonce="@nonce">
+    /* =========================
+       TOP COUNT BOX DESIGN
+    ========================= */
+
+    .top-count-section {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 18px;
+        margin-bottom: 45px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .count-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        border: 1px solid #dbe7ff;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .count-card::before {
+            content: '';
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background: #eff6ff;
+            border-radius: 50%;
+            right: -30px;
+            top: -30px;
+        }
+
+        .count-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+    .count-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+        background: linear-gradient(135deg,#0ea5e9,#2563eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .count-card h2 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1;
+    }
+
+    .count-card p {
+        margin: 6px 0 0;
+        font-size: 15px;
+        color: #475569;
+        font-weight: 600;
+    }
+
+    /* RESPONSIVE */
+
+    @@media(max - width:1200px) {
+        .top-count-section
+
+    {
+        grid-template-columns: repeat(3,1fr);
+    }
+
+    }
+
+    @@media(max - width:768px) {
+        .top-count-section
+
+    {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    }
+
+    @@media(max - width:576px) {
+        .top-count-section
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+    </style>
+
+
+
+    <section class="dashboard-section">
+
+        <div class="row align-items-center">
+
+            <!-- LEFT -->
+
+            <div class="col-lg-12 left-content">
+
+                <h1 class="heading">
+                    Explore <span>Sectors</span><br>
+                    Smart Insights
+                </h1>
+
+                <p class="subheading">
+                    Discover reports, activities, datasets and resources sector-wise.
+                </p>
+
+                <!-- FILTER -->
+
+                <div class="filter-wrapper">
+
+                    <div class="filter-card">
+                        <label>Select Sector</label>
+                        <select>
+                            <option>All Sectors</option>
+                            <option>Education</option>
+                            <option>Energy</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-card">
+                        <label>Select District</label>
+                        <select>
+                            <option>All District</option>
+                            <option>Ajamer</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- CARDS -->
+            <!-- TOP COUNT BOX SECTION -->
+
+            <div class="top-count-section">
+
+                <div class="count-card">
+                    <div class="count-icon">🏢</div>
+                    <div>
+                        <h2>24</h2>
+                        <p>Sectors</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">🌐</div>
+                    <div>
+                        <h2>18</h2>
+                        <p>Agencies</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">🏛</div>
+                    <div>
+                        <h2>42</h2>
+                        <p>Departments</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">📋</div>
+                    <div>
+                        <h2>156</h2>
+                        <p>Activities</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">🗂</div>
+                    <div>
+                        <h2>320</h2>
+                        <p>Sub Activities</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">🎯</div>
+                    <div>
+                        <h2>17</h2>
+                        <p>Goals</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">✅</div>
+                    <div>
+                        <h2>169</h2>
+                        <p>Targets</p>
+                    </div>
+                </div>
+
+                <div class="count-card">
+                    <div class="count-icon">📊</div>
+                    <div>
+                        <h2>12</h2>
+                        <p>Pillars</p>
+                    </div>
+                </div>
+
+            </div>
+                @* <div class="info-grid">
+
+                    <div class="info-box">
+                        <div class="box-title">Activities</div>
+                        <div class="box-count">720</div>
+                        <div class="box-text">Best Practices</div>
+                        <div class="box-icon">➜</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="box-title">Datasets</div>
+                        <div class="box-count">38</div>
+                        <div class="box-text">Research Files</div>
+                        <div class="box-icon">➜</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="box-title">Policies</div>
+                        <div class="box-count">564</div>
+                        <div class="box-text">Govt Policies</div>
+                        <div class="box-icon">➜</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="box-title">Resources</div>
+                        <div class="box-count">12</div>
+                        <div class="box-text">Toolkit Guides</div>
+                        <div class="box-icon">➜</div>
+                    </div>
+
+                </div> *@
+
+            </div>
+
+            <!-- RIGHT -->
+
+            @* <div class="col-lg-5 sector-panel">
+
+                <div class="sector-wheel">
+
+                    <div class="wheel"></div>
+
+                    <div class="center-circle">
+                        ⚙
+                    </div>
+
+                    <div class="sector-tag t1">Water</div>
+                    <div class="sector-tag t2">MSME</div>
+                    <div class="sector-tag t3">Tourism</div>
+                    <div class="sector-tag t4">Education</div>
+                    <div class="sector-tag t5">Energy</div>
+                    <div class="sector-tag t6">Urban</div>
+                    <div class="sector-tag t7">Agriculture</div>
+                    <div class="sector-tag t8">Health</div>
+
+                </div>
+
+            </div> *@
+
+        </div>
+
+    </section>
+    <style  nonce="@nonce">
+    /* =========================
+       MAIN SECTION
+    ========================= */
+
+    .agency-dashboard-section {
+        padding: 60px 40px;
+        background: #eef4ff;
+        border-radius: 35px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .agency-dashboard-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -250px;
+            right: -200px;
+        }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .agency-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 45px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .agency-main-title {
+        font-size: 46px;
+        font-weight: 800;
+        color: #082f75;
+        margin-bottom: 10px;
+    }
+
+    .agency-subtitle {
+        font-size: 18px;
+        color: #64748b;
+    }
+
+    .agency-count-box {
+        width: 150px;
+        height: 150px;
+        border-radius: 30px;
+        background: linear-gradient(135deg,#2563eb,#0ea5e9);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 40px rgba(37,99,235,0.25);
+    }
+
+        .agency-count-box h3 {
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .agency-count-box span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+    /* =========================
+       GRID
+    ========================= */
+
+    .agency-grid {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 28px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .agency-card {
+        background: #fff;
+        border-radius: 28px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    }
+
+        .agency-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .agency-card::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+            opacity: 0.08;
+        }
+
+    /* COLORS */
+
+    .green-card::before {
+        background: #22c55e;
+    }
+
+    .pink-card::before {
+        background: #ec4899;
+    }
+
+    .blue-card::before {
+        background: #2563eb;
+    }
+
+    .orange-card::before {
+        background: #f97316;
+    }
+
+    .purple-card::before {
+        background: #7c3aed;
+    }
+
+    .teal-card::before {
+        background: #14b8a6;
+    }
+
+    /* =========================
+       TOP
+    ========================= */
+
+    .agency-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .agency-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 22px;
+        background: #f8fbff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #dbeafe;
+    }
+
+        .agency-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+    .agency-status {
+        padding: 8px 14px;
+        border-radius: 30px;
+        background: #dcfce7;
+        color: #166534;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* =========================
+       TEXT
+    ========================= */
+
+    .agency-card h3 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #082f75;
+        margin-bottom: 15px;
+    }
+
+    .agency-card p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.7;
+        min-height: 90px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .agency-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+        .agency-footer span {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .agency-footer button {
+            border: none;
+            background: linear-gradient(135deg,#2563eb,#0ea5e9);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+            .agency-footer button:hover {
+                transform: scale(1.05);
+            }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @@media(max - width:1200px) {
+        .agency-grid
+
+    {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    }
+
+    @@media(max - width:768px) {
+        .agency-header
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .agency-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .agency-main-title {
+        font-size: 34px;
+    }
+
+    }
+    </style>
+<div class="container-fluid agency-dashboard-section">
+
+    <!-- HEADER -->
+
+    <div class="agency-header">
+
+        <div>
+            <h2 class="agency-main-title">
+                Explore UN Agencies
+            </h2>
+
+            <p class="agency-subtitle">
+                Connected agencies working across sectors, goals and monitoring initiatives.
+            </p>
+        </div>
+
+        <div class="agency-count-box">
+            <h3>10+</h3>
+            <span>UN Agencies</span>
+        </div>
+
+    </div>
+
+    <!-- AGENCY GRID -->
+
+    <div class="agency-grid">
+
+        <!-- CARD -->
+
+        <div class="agency-card green-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/UNFPA.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>UNFPA</h3>
+
+            <p>
+                United Nations Population Fund working on health,
+                youth and population welfare initiatives.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>Health Sector</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CARD -->
+
+        <div class="agency-card pink-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/UN.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>United Nations</h3>
+
+            <p>
+                Supporting SDG implementation and governance
+                initiatives across Rajasthan.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>SDG Mission</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CARD -->
+
+        <div class="agency-card blue-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/UNICEF.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>UNICEF</h3>
+
+            <p>
+                Working in education, child welfare,
+                nutrition and social development.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>Education</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CARD -->
+
+        <div class="agency-card orange-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/UNESCO.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>UNESCO</h3>
+
+            <p>
+                Supporting educational, cultural and
+                scientific initiatives globally.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>Culture</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CARD -->
+
+        <div class="agency-card purple-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/UNDP.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>UNDP</h3>
+
+            <p>
+                Governance, sustainability and development
+                support for public systems.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>Development</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CARD -->
+
+        <div class="agency-card teal-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/WFP.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>WFP</h3>
+
+            <p>
+                Food security and nutrition focused
+                humanitarian support programs.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>Food Security</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="container-fluid cmpad">
+    <div class="infographic-border">
+        <h1 class="main-title">UN Agencies</h1>
+        <div class="sector-row">
+            <div class="sector-item color-green">
+                <div class="icon-diamond"><i class="fas fa-wheat-awn"><img src="~/public/img/Agency_logo/UNFPA.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">                   
+                    <p class="color-white">
+                        United Nations Population Fund
+                    </p>
+                </div>
+            </div>
+
+            <div class="sector-item color-pink">
+                <div class="icon-diamond"><i class="fas fa-heart-pulse"><img src="~/public/img/Agency_logo/UN.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">
+                        United Nations
+                    </p>
+                </div>
+            </div>
+
+            <div class="sector-item color-dark-blue">
+                <div class="icon-diamond"><i class="fas fa-user-graduate"><img src="~/public/img/Agency_logo/UN_HABITAT.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">United Nations Population Fund</p>
+                </div>
+            </div>
+
+            <div class="sector-item color-dark-green">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/UN_VOLUNTEERS.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+            <div class="sector-item color-mustard">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/UN_WOMEN.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+            <div class="sector-item color-purple">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/UNDP.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+            <div class="sector-item color-orange">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/UNESCO.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+            <div class="sector-item color-red">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/UNICEF.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+                    
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+            <div class="sector-item color-blue">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/UNIDO.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+            <div class="sector-item color-light-blue">
+                <div class="icon-diamond"><i class="fas fa-users-viewfinder"><img src="~/public/img/Agency_logo/WFP.png" /></i></div>
+                <div class="connector-line"></div>
+                <div class="text-block">
+
+                    <p class="color-white">United Nations Educational, Scientific and Cultural Organization</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h2>Department Activities Dashboard</h2>
+
+    <div id="dashboard"></div>
+</div>
+
+<style nonce="@nonce">
+    .container {
+        font-family: Arial;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Department Card */
+    .department {
+        margin-bottom: 25px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #f4f6f9;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+        /* Title */
+        .department h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+    /* Activity Grid */
+    .activities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Activity Card */
+    .activity {
+        padding: 10px 15px;
+        border-radius: 8px;
+        background: #e0e0e0;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+        /* Nodal Highlight */
+        .activity.nodal {
+            background: #28a745;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Hover Effect */
+        .activity:hover {
+            transform: scale(1.1);
+        }
+
+    /* Animation */
+    @@keyframes pulse {
+        0%
+
+    {
+        box-shadow: 0 0 0 0 rgba(40,167,69,0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(40,167,69,0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(40,167,69,0);
+    }
+
+    }
+</style>
+
+<script nonce="@nonce">
+    const data = [
+        { dept: "Department of Health", activity: "Health Awareness Camp", nodal: 1 },
+        { dept: "Department of Women and Child Development", activity: "Health Awareness Camp", nodal: 0 },
+        { dept: "Department of Health", activity: "Village Sanitation Drive", nodal: 1 },
+        { dept: "Department of Health", activity: "Water Conservation Campaign", nodal: 1 },
+        { dept: "Department of Women and Child Development", activity: "Village Sanitation Drive", nodal: 0 },
+        { dept: "Department of Education", activity: "School Inspection Drive", nodal: 1 },
+        { dept: "Department of Education", activity: "Labour Inspection", nodal: 1 },
+        { dept: "Department of Health", activity: "Women Empowerment Workshop", nodal: 0 },
+        { dept: "Department of Women and Child Development", activity: "Women Empowerment Workshop", nodal: 1 },
+        { dept: "Department of Water Resources", activity: "Employment Camp", nodal: 1 }
+    ];
+
+    // Group by department
+    const grouped = {};
+    data.forEach(item => {
+        if (!grouped[item.dept]) grouped[item.dept] = [];
+        grouped[item.dept].push(item);
+    });
+
+    // Render
+    const container = document.getElementById("dashboard");
+
+    for (let dept in grouped) {
+        let deptDiv = document.createElement("div");
+        deptDiv.className = "department";
+
+        let title = `<h3>${dept}</h3>`;
+        let activities = `<div class="activities">`;
+
+        grouped[dept].forEach(a => {
+            activities += `<div class="activity ${a.nodal ? 'nodal' : ''}">
+                            ${a.activity}
+                          </div>`;
+        });
+
+        activities += `</div>`;
+        deptDiv.innerHTML = title + activities;
+
+        container.appendChild(deptDiv);
+    }
+</script>
+@* <div class="infographic-container">
+    <div class="title">Figure VIII : Major Policies for Economic Growth in Industrial & Mining</div>
+
+    <div class="content-layout">
+        <div class="policy-covers">
+            <div class="cover-placeholder">Logistics<br>Policy</div>
+            <div class="cover-placeholder">Textile<br>Policy</div>
+            <div class="cover-placeholder">Trade<br>Policy</div>
+        </div>
+
+        <div class="central-hub">
+
+            <div class="center-element">
+                <svg viewBox="0 0 100 100">
+                    <path class="hub-icon" d="M50 10 L60 40 L90 50 L60 60 L50 90 L40 60 L10 50 L40 40 Z" />
+                    <circle class="hub-icon" cx="50" cy="50" r="10" fill="none" stroke="#9933CC" stroke-width="3" />
+                </svg>
+            </div>
+
+            <div class="hex-group hex-1">
+                <svg viewBox="0 0 100 100">
+                    <polygon class="hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25" />
+                    <text x="50" y="60" class="icon-placeholder" text-anchor="middle">🏭</text>
+                </svg>
+            </div>
+
+            <div class="hex-group hex-2">
+                <svg viewBox="0 0 100 100">
+                    <polygon class="hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25" />
+                    <text x="50" y="60" class="icon-placeholder" text-anchor="middle">🚚</text>
+                </svg>
+            </div>
+
+            <div class="hex-group hex-3">
+                <svg viewBox="0 0 100 100">
+                    <polygon class="hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25" />
+                    <text x="50" y="60" class="icon-placeholder" text-anchor="middle">🏢</text>
+                </svg>
+            </div>
+
+            <div class="hex-group hex-4">
+                <svg viewBox="0 0 100 100">
+                    <polygon class="hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25" />
+                    <text x="50" y="60" class="icon-placeholder" text-anchor="middle">🧶</text>
+                </svg>
+            </div>
+
+            <div class="hex-group hex-5">
+                <svg viewBox="0 0 100 100">
+                    <polygon class="hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25" />
+                    <text x="50" y="60" class="icon-placeholder" text-anchor="middle">💻</text>
+                </svg>
+            </div>
+
+            <div class="hex-group hex-6">
+                <svg viewBox="0 0 100 100">
+                    <polygon class="hexagon" points="50,1 95,25 95,75 50,99 5,75 5,25" />
+                    <text x="50" y="60" class="icon-placeholder" text-anchor="middle">🌐</text>
+                </svg>
+            </div>
+        </div>
+
+        <div class="policy-texts">
+            <div class="policy-text-item text-1">
+                <div class="policy-label">Rajasthan Logistics</div>
+                <div class="policy-year">Policy 2025</div>
+            </div>
+            <div class="policy-text-item text-2">
+                <div class="policy-label">Rajasthan Textile and</div>
+                <div class="policy-year">Apparel Policy 2025</div>
+            </div>
+            <div class="policy-text-item text-3">
+                <div class="policy-label">Rajasthan Trade</div>
+                <div class="policy-year">Promotion Policy 2025</div>
+            </div>
+            <div class="policy-text-item text-4">
+                <div class="policy-label alt-label">Non-Resident</div>
+                <div class="policy-year alt-label">Rajasthani Policy 2025</div>
+            </div>
+            <div class="policy-text-item text-5">
+                <div class="policy-label">Rajasthan Data Centre</div>
+                <div class="policy-year">Policy 2025</div>
+            </div>
+            <div class="policy-text-item text-6">
+                <div class="policy-label employment-label">Rajasthan Employment</div>
+                <div class="policy-year employment-label">Policy 2026</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="map-sec">
+    <div class="map-con">
+        <div class="container-fluid cmpad">
+            <div class="row">
+                <div class="col-md-6 flexVcenter">
+
+                    <h1>
+                        Liquid Waste Management
+                    </h1>
+
+
+                    <p class="mb-4" id="ovtext">
+                        Technical Support Group (TSG) in Waste Management sector under the Local  Self Government  Department of Kerala.
+
+                    </p>
+
+
+
+                    <div class="stprow">
+                        <div class="stpcol">
+                            <div class="stp-box">
+                                <div class="stp-img">
+                                    <img src="https://cms.suchitwamission.org/public/storage/lwms/category/HziKvGmdatsd3O3DbgID.svg" alt="">
+                                </div>
+                                <div class="stp-con">
+                                    <span>GWM</span>
+                                    <p>
+                                        Grey Water Management
+                                    </p>
+                                    <h4>2</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stpcol">
+                            <div class="stp-box">
+                                <div class="stp-img">
+                                    <img src="https://cms.suchitwamission.org/public/storage/lwms/category/lmJsnWIn4vM5qAb15XCp.svg" alt="">
+                                </div>
+                                <div class="stp-con">
+                                    <span>MTU</span>
+                                    <p>
+                                        Mobile Treatment Unit
+                                    </p>
+                                    <h4>7</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stpcol">
+                            <div class="stp-box">
+                                <div class="stp-img">
+                                    <img src="https://cms.suchitwamission.org/public/storage/lwms/category/mFPesLiMd5JEEdoFyrth.svg" alt="">
+                                </div>
+                                <div class="stp-con">
+                                    <span>FSTP</span>
+                                    <p>
+                                        Fecal Sludge Treatment Plant
+                                    </p>
+                                    <h4>5</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stpcol">
+                            <div class="stp-box">
+                                <div class="stp-img">
+                                    <img src="https://cms.suchitwamission.org/public/storage/lwms/category/Q84AiUpfF7ql01dnSpYK.svg" alt="">
+                                </div>
+                                <div class="stp-con">
+                                    <span>STP</span>
+                                    <p>
+                                        Sewage Treatment Plant
+                                    </p>
+                                    <h4>31</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 map-right position-relative">
+
+
+
+                    <input type="hidden" value="1" name="maptype" id="maptype">
+                    <a href="https://suchitwamission.org/digital-library/lwm" class="digi"> Digital Library<img src="https://suchitwamission.org/public/img/icons/local_library.svg"> </a>
+
+                    <div class="mapmain posrel">
+                        <div id="map" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, -90px, 0px);"><div class="leaflet-pane leaflet-tile-pane"></div><div class="leaflet-pane leaflet-overlay-pane"><svg pointer-events="none" class="leaflet-zoom-animated" width="698" height="360" viewBox="-58 60 698 360" style="transform: translate3d(-58px, 60px, 0px);"><g><path class="leaflet-interactive" stroke="#ecc2d8" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#ecc2d8" fill-opacity="1" fill-rule="evenodd" d="M301 334L300 338L303 350L302 361L309 360L311 365L313 365L312 371L314 378L311 379L310 381L316 382L318 380L317 379L321 379L325 381L326 385L330 385L326 388L327 389L325 391L325 393L326 392L329 395L327 398L320 401L314 399L310 401L311 403L307 397L301 380L299 378L293 351L293 329L300 331L300 334z"></path><path class="leaflet-interactive" stroke="#cce2a1" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#cce2a1" fill-opacity="1" fill-rule="evenodd" d="M329 294L325 304L343 318L339 316L336 318L336 320L332 320L330 328L325 327L325 331L322 334L321 333L317 338L316 335L314 335L314 333L303 335L300 334L299 330L297 331L294 329L292 339L289 322L285 315L282 302L289 300L292 303L294 303L295 300L301 297L305 292L319 293L319 291L324 294L329 294z"></path><path class="leaflet-interactive" stroke="#c8c2de" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#c8c2de" fill-opacity="1" fill-rule="evenodd" d="M384 298L385 299L383 302L383 307L376 309L376 311L382 317L381 320L383 322L379 325L377 331L379 333L378 336L380 336L380 338L378 339L379 340L376 345L377 347L373 354L379 358L387 356L387 358L389 359L390 356L391 362L395 364L394 368L392 370L391 369L388 373L389 378L385 380L383 386L378 383L380 380L379 374L374 368L371 369L370 366L367 367L366 369L362 369L364 372L363 373L360 374L358 372L352 372L352 370L354 370L357 367L356 365L353 366L348 362L348 353L352 355L348 346L340 338L326 334L324 332L324 328L330 328L332 323L331 320L336 321L336 318L338 316L342 318L343 317L338 315L338 313L325 304L329 295L343 293L351 298L352 297L356 299L362 296L362 293L365 291L376 286L379 287L378 290L382 295L381 298L384 298z"></path><path class="leaflet-interactive" stroke="#cce2a1" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#cce2a1" fill-opacity="1" fill-rule="evenodd" d="M218 106L223 110L225 114L224 115L230 120L234 120L237 125L240 124L242 127L249 127L251 134L256 139L260 139L260 149L250 147L248 151L243 154L239 152L233 159L229 160L231 162L227 164L226 161L224 161L211 147L209 147L205 143L204 140L208 140L203 135L202 138L199 132L194 132L191 125L193 123L193 119L191 116L201 112L202 109L204 108L206 109L211 106L218 106zM225 158L224 159L227 160L225 156L225 158z"></path><path class="leaflet-interactive" stroke="#ecc2d8" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#ecc2d8" fill-opacity="1" fill-rule="evenodd" d="M214 87L214 91L209 91L209 95L214 100L213 101L215 105L207 109L205 108L202 110L202 112L196 113L196 115L192 116L192 128L184 106L175 91L168 72L163 63L175 60L176 63L174 65L176 65L176 67L179 66L181 68L181 72L184 70L184 68L190 72L190 76L194 75L194 79L196 81L200 78L200 76L202 78L203 77L206 80L202 80L200 82L201 85L207 88L206 91L213 87z"></path><path class="leaflet-interactive" stroke="#cce2a1" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#cce2a1" fill-opacity="1" fill-rule="evenodd" d="M377 405L375 408L373 407L373 409L371 410L380 422L318 422L310 401L316 399L318 402L325 398L327 402L326 403L336 403L336 405L338 401L342 403L346 399L349 401L354 400L351 399L352 396L357 399L376 405z"></path><path class="leaflet-interactive" stroke="#fcf9cc" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#fcf9cc" fill-opacity="1" fill-rule="evenodd" d="M324 332L333 337L336 336L340 338L344 344L348 345L352 354L348 354L348 362L353 366L356 365L357 368L352 370L353 371L351 373L347 370L337 371L334 368L332 370L329 367L327 367L322 369L320 373L316 373L314 375L312 371L313 366L310 364L310 362L307 360L302 361L303 348L301 347L301 334L305 336L309 333L313 333L314 335L316 335L317 338L321 333L322 334L324 332z"></path><path class="leaflet-interactive" stroke="#fcf9cc" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#fcf9cc" fill-opacity="1" fill-rule="evenodd" d="M225 162L226 161L227 164L229 164L231 162L229 160L236 157L240 152L242 154L246 152L248 154L248 158L259 163L257 169L260 172L268 179L271 180L274 178L275 182L280 185L280 187L276 190L275 193L278 197L273 199L271 202L265 202L259 205L258 204L254 208L257 210L254 211L254 213L251 215L249 212L251 212L248 210L243 194L240 188L232 182L225 163z"></path><path class="leaflet-interactive" stroke="#fbdebc" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#fbdebc" fill-opacity="1" fill-rule="evenodd" d="M307 208L305 208L304 210L304 216L301 218L300 217L297 220L297 222L293 224L297 225L297 227L300 227L300 229L297 228L297 234L292 234L290 237L282 235L280 237L279 236L279 238L277 238L275 242L270 241L270 249L273 250L273 252L270 255L263 256L258 246L255 227L251 215L253 213L254 214L254 212L257 210L254 209L255 207L258 204L259 205L264 202L271 202L277 197L278 196L275 194L276 190L279 187L280 188L279 185L282 184L288 178L290 180L290 183L293 182L297 185L298 183L305 186L307 190L314 192L314 194L316 194L317 199L308 205L308 207z"></path><path class="leaflet-interactive" stroke="#ecc2d8" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#ecc2d8" fill-opacity="1" fill-rule="evenodd" d="M343 288L336 288L335 285L330 286L327 284L323 284L320 279L315 277L306 269L307 268L303 264L305 264L305 259L308 258L307 255L310 252L310 250L302 250L302 248L300 248L299 250L290 250L288 247L284 247L285 250L281 254L279 252L274 252L271 249L269 243L271 241L275 242L276 239L279 238L279 236L280 237L282 235L286 235L290 237L292 234L297 235L297 228L300 229L300 227L296 226L296 224L293 225L293 223L296 222L298 218L304 215L304 208L309 209L310 207L314 207L324 209L331 204L333 207L334 206L333 209L330 211L331 214L335 214L334 217L336 219L334 220L337 223L340 221L337 224L332 223L327 233L329 235L339 237L345 242L345 244L349 245L349 249L346 254L346 261L341 260L343 265L343 274L341 280L344 285L343 287z"></path><path class="leaflet-interactive" stroke="#fbdebc" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#fbdebc" fill-opacity="1" fill-rule="evenodd" d="M384 386L381 394L382 397L376 405L357 399L352 396L351 399L355 400L353 401L346 399L343 403L338 401L336 405L336 403L326 403L326 399L329 396L325 392L325 390L330 385L326 385L325 381L321 379L317 379L318 380L316 382L312 382L311 379L314 378L313 375L315 373L321 373L321 371L326 367L330 367L331 370L333 368L335 368L336 371L345 369L351 373L358 372L360 374L364 372L362 370L363 369L370 366L371 369L374 368L379 373L380 380L378 383L383 386z"></path><path class="leaflet-interactive" stroke="#ecc2d8" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#ecc2d8" fill-opacity="1" fill-rule="evenodd" d="M0 0"></path><path class="leaflet-interactive" stroke="#fcf9cc" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#fcf9cc" fill-opacity="1" fill-rule="evenodd" d="M343 288L342 290L346 292L346 294L349 296L344 293L335 293L330 295L327 293L323 294L319 291L319 293L306 292L295 300L294 303L292 303L289 300L283 302L279 298L280 296L275 281L271 275L272 273L270 271L273 271L271 267L270 272L269 271L263 255L268 256L272 254L272 252L279 252L281 254L285 250L284 247L288 247L289 250L298 250L301 248L303 250L309 250L309 254L307 255L308 258L305 259L306 262L304 264L304 266L306 266L306 270L316 278L320 279L324 284L329 286L335 285L336 288L343 288z"></path><path class="leaflet-interactive" stroke="#c8c2de" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#c8c2de" fill-opacity="1" fill-rule="evenodd" d="M304 156L305 161L303 161L304 164L307 166L306 168L303 168L299 172L297 171L295 173L292 171L288 174L289 177L280 185L275 181L274 178L271 180L268 179L259 171L257 169L259 163L255 161L253 162L253 160L248 158L248 153L246 152L249 147L260 149L260 139L267 140L277 136L278 148L280 146L284 146L286 147L287 152L292 151L296 157L301 158L304 156z"></path></g></svg></div><div class="leaflet-pane leaflet-shadow-pane"></div><div class="leaflet-pane leaflet-marker-pane"><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(309px, 376px, 0px); z-index: 376;"><span>Alappuzha</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(309px, 315px, 0px); z-index: 315;"><span>Ernakulam</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(363px, 336px, 0px); z-index: 336;"><span>Idukki</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(220px, 139px, 0px); z-index: 139;"><span>Kannur</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(188px, 90px, 0px); z-index: 90;"><span>Kasaragod</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(344px, 416px, 0px); z-index: 416;"><span>Kollam</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(328px, 356px, 0px); z-index: 356;"><span>Kottayam</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(248px, 183px, 0px); z-index: 183;"><span>Kozhikode</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(280px, 221px, 0px); z-index: 221;"><span>Malappuram</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(313px, 246px, 0px); z-index: 246;"><span>Palakkad</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(347px, 384px, 0px); z-index: 384;"><span>Pathanamthitta</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(352px, 448px, 0px); z-index: 448;"><span>Thiruvananthapuram</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(296px, 276px, 0px); z-index: 276;"><span>Thrissur</span></div><div class="leaflet-marker-icon district-label leaflet-zoom-animated leaflet-interactive" tabindex="0" role="button" style="margin-left: 0px; margin-top: 0px; width: 0px; height: 0px; transform: translate3d(274px, 160px, 0px); z-index: 160;"><span>Wayanad</span></div></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(23326px, 15390px, 0px) scale(64);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com" title="A JavaScript library for interactive maps"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"></path><path fill="#FFD500" d="M0 4h12v3H0z"></path><path fill="#E0BC00" d="M0 7h12v1H0z"></path></svg> Leaflet</a></div></div></div></div>
+                        <div class="mapfilter" id="filter-container" style="display:none;">
+                            <button class="filter-btn active" onclick="filterMarkers('all', this)">ALL</button>
+                            <button class="filter-btn" onclick="filterMarkers('stp', this)">STP <img width="5" height="5" src="https://suchitwamission.org/public/map/icons/gwm_existing.svg" style="width:10px" alt="STP"></button>
+                            <button class="filter-btn" onclick="filterMarkers('fstp', this)">FSTP <img width="5" height="5" src="https://suchitwamission.org/public/map/icons/gwm_proposed.svg" style="width:10px" alt="FSTP"></button>
+                            <button class="filter-btn" onclick="filterMarkers('mtu', this)">MTU <img width="5" height="5" src="https://suchitwamission.org/public/map/icons/gwm_underconstruction.svg" style="width:10px" alt="MTU"></button>
+                            <button class="filter-btn" onclick="filterMarkers('gwm', this)">GWM <img width="5" height="5" src="https://suchitwamission.org/public/map/icons/gwm.svg" style="width:10px" alt="GWM"></button>
+                            <!--<button class="filter-btn" onclick="filterMarkers('minimcf', this)">Mini MCF <img width="5" height="5" src="https://suchitwamission.org/public/map/icons/stp_underconstruction.svg" style="width:10px" alt="MiniMCF"></button>-->
+                            <!--<button class="filter-btn" onclick="filterMarkers('rrf', this)">RRF <img width="5" height="5" src="https://suchitwamission.org/public/map/icons/stp_existing.svg" style="width:10px" alt="RRF"></button>-->
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div><!-- cfluid -->
+    </div>
+</div> *@
+@* <div class="publications posrel pt-5">
+    <div class="container-fluid cmpad posrel">
+        <div class="row">
+            <div class="col publicol pb-5 pb-lg-0">
+                <div class="publibox">
+                    <h3 class="head1 mb-3">Latest Publications</h3>
+                    <div class="swiper publislide h-auto px-4">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="publi-card">
+                                    <img class="lazyload" src="/public/img/icons/loader.svg"
+                                         data-src="https://cms.suchitwamission.org/public/storage/publicationImage/mYsXozmjXB35yIZYJSav3KL0L.png" alt="Publication"
+                                         height="350">
+                                    <a href="https://suchitwamission.org/publication/green-assembly-election-2026" class="stretched-link" aria-label="Publication"></a>
+                                </div><!-- imgcard -->
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="publi-card">
+                                    <img class="lazyload" src="/public/img/icons/loader.svg"
+                                         data-src="https://cms.suchitwamission.org/public/storage/publicationImage/OjFCVXWdXbIabXY11LkvK41MP.png" alt="Publication"
+                                         height="350">
+                                    <a href="https://suchitwamission.org/publication/kerala-cleans-up" class="stretched-link" aria-label="Publication"></a>
+                                </div><!-- imgcard -->
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="publi-card">
+                                    <img class="lazyload" src="/public/img/icons/loader.svg"
+                                         data-src="https://cms.suchitwamission.org/public/storage/publicationImage/t2Ju4CGV3cnLAQNnFzjMseWki.png" alt="Publication"
+                                         height="350">
+                                    <a href="https://suchitwamission.org/publication/technical-manual-for-solid-waste-management" class="stretched-link" aria-label="Publication"></a>
+                                </div><!-- imgcard -->
+                            </div>
+
+                        </div>
+                    </div><!-- swiper -->
+                    <div class="publi-text-box">
+                        <div class="swiper publislidetext h-auto">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <p>
+                                        Green Assembly Election 2026
+                                    </p>
+                                </div>
+                                <div class="swiper-slide">
+                                    <p>
+                                        Kerala  Cleans Up
+                                    </p>
+                                </div>
+                                <div class="swiper-slide">
+                                    <p>
+                                        Technical Manual for Solid Waste Management
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div><!-- swiper -->
+                        <div class="navibtn btgroup mx-1">
+                            <div class="swiper-button-prev slidebtn publi-prev"></div>
+                            <div class="swiper-button-next slidebtn publi-next"></div>
+                        </div>
+                        <a href="https://suchitwamission.org/publication" class="morebtn mx-1">View All</a>
+                    </div><!-- col -->
+                </div><!-- publibox -->
+            </div><!-- col -->
+
+            <div class="col inicol posrel">
+
+                <div>
+                    <div class="headrow mb-2">
+                        <div class="col">
+                            <h3 class="head1">Our Initiatives</h3>
+                        </div><!-- col -->
+                        <div class="col navcol">
+                            <div class="navibtn btgroup">
+                                <div class="swiper-button-prev slidebtn ini-prev"></div>
+                                <div class="swiper-button-next slidebtn ini-next"></div>
+                            </div>
+                            <a href="https://suchitwamission.org/initatives" class="morebtn">View all initiatives</a>
+                        </div><!-- col -->
+                    </div><!-- headrow -->
+
+
+                    <div class="swiper initiaslides h-auto">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="inibox">
+                                    <div class="iniimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/initiatives/ngX8cEUFQIt4wqUo9BBJ.jpeg" alt="initiatives"
+                                             height="260">
+                                    </div><!-- imgbox -->
+                                    <div class="inicon">
+                                        <p class="inihead">
+                                            KLOO App
+                                        </p>
+                                        <p class="inipara">
+                                            KLOO is an innovative mobile application designed to build a Public Toilet Network by connecting people in need of clean, accessible toilets with existing facilities in hotels, restaurants, and other establishments.&nbsp
+                                        </p>
+                                    </div>
+                                    <a href="javascript:void(0)" class="stretched-link initiativesnew" data-id="Nw==" aria-label="View Initiative"></a>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="inibox">
+                                    <div class="iniimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/initiatives/tHZh29TY1EQOJ957Iy6V.jpg" alt="initiatives"
+                                             height="260">
+                                    </div><!-- imgbox -->
+                                    <div class="inicon">
+                                        <p class="inihead">
+                                            Thelineer Ozhkum NavaKeralam
+                                        </p>
+                                        <p class="inipara">
+                                            Green protocol promotes waste reduction by replacing
+                                            disposables
+                                            with reusable
+                                            alternatives like glass, stainless steel, and porcelain cutlery.
+                                        </p>
+                                    </div>
+                                    <a href="javascript:void(0)" class="stretched-link initiativesnew" data-id="NA==" aria-label="View Initiative"></a>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="inibox">
+                                    <div class="iniimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/initiatives/Jl9BLnFrjEyZslhkTqP6.jpg" alt="initiatives"
+                                             height="260">
+                                    </div><!-- imgbox -->
+                                    <div class="inicon">
+                                        <p class="inihead">
+                                            Sneharamam
+                                        </p>
+                                        <p class="inipara">
+                                            Reusing involves using items again. Items like clothes,
+                                            books,
+                                            shoes, and electronics may still be valuable for some other.
+                                        </p>
+                                    </div>
+                                    <a href="javascript:void(0)" class="stretched-link initiativesnew" data-id="Mw==" aria-label="View Initiative"></a>
+                                </div>
+                            </div><!-- slide -->
+                            <div class="swiper-slide">
+                                <div class="inibox">
+                                    <div class="iniimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/initiatives/yksvPMsr2myqYcULOBHW.jpg" alt="initiatives"
+                                             height="260">
+                                    </div><!-- imgbox -->
+                                    <div class="inicon">
+                                        <p class="inihead">
+                                            Green Leaf Rating System
+                                        </p>
+                                        <p class="inipara">
+                                            It is not a well-known fact that India recycles almost 60% of
+                                            its
+                                            Non- biodegradable waste.
+                                        </p>
+                                    </div>
+                                    <a href="javascript:void(0)" class="stretched-link initiativesnew" data-id="Mg==" aria-label="View Initiative"></a>
+                                </div>
+                            </div><!-- slide -->
+
+
+
+                        </div><!-- wrapper -->
+                        <div class="swiper-pagination mainpagination inipagination"></div>
+                    </div><!-- swiper -->
+                </div>
+
+
+
+            </div><!-- col -->
+
+
+        </div><!-- row -->
+
+    </div><!-- cfluid -->
+</div><!-- orderspubli --> *@
+@* <div class="watchvideo pt-3 pt-md-5 posrel">
+    <span class="element leave">
+        <img width="52" height="52" src="/public/img/element/leave6.svg"
+             alt="Leaves">
+    </span>
+    <!-- <span class="element donut d1"><img class="mw-none" width="280" height="280"
+            src="/public/img/element/donut.svg" alt="Dounut"></span> -->
+
+    <div class="container-fluid cmpad posrel pt-3">
+
+        <!-- <span class="element donut d2"><img width="200" height="200" src="/public/img/element/donut.svg"
+                alt="Dounut"></span> -->
+
+        <div class="row">
+            <div class="col-lg-5 pe-lg-5 posrel">
+                <div class="videobox xycenter" data-fancybox="gallery" data-src="https://youtube.com/shorts/tJZqXolEooI">
+                    <img width="490" height="200" class="vidimg lazyload" src="/public/img/icons/loader.svg"
+                         data-src="/public/img/images/videobag.jpg" alt="Video">
+                    <span class="playbtn xycenter">
+                        <img width="22" height="20"
+                             src="/public/img/icons/thumbvid.svg" alt="Play">
+                    </span>
+                </div><!-- videobox -->
+
+            </div><!-- col -->
+
+            <div class="col-lg-7 flexVcenter posrel">
+
+
+                <h2 class="head1">
+                    My Waste My Responsibility
+                </h2>
+                <p class="mt-1 mb-0 mb-sm-5 pb-5">
+
+                    Waste management is an important part of our daily living, especially if you
+                    are living in a city. Remember, managing food and bio degradable waste at home, keeping non bio degradable
+                    waste clean and dry and handing over to scrap dealers or local body collection systems are as
+                    important as consuming food!
+                </p>
+                <!-- <a href="#" class="btn btn-primary btn-lg">Watch all Videos</a> -->
+
+            </div><!-- col -->
+        </div><!-- row -->
+
+    </div><!-- cfluid -->
+</div><!-- watchvideo --> *@
+
+
+
+@* <div class="gallery py-5 posrel">
+    <!-- <span class="element dots"><img width="250" height="250" src="/public/img/element/dots.svg"
+            alt="Dots"></span> -->
+    <div class="container-fluid cmpad">
+
+        <div class="row">
+            <div class="col-lg-3 flexVcenter posrel justify-content-end">
+
+
+
+
+
+                <h2 class="head1 mb-3">Discover the mission gallery</h2>
+                <div class="exp">
+                    <a href="https://suchitwamission.org/photo-gallery">
+                        Explore Images<img width="32" height="22" src="/public/img/icons/g-img.svg"
+                                           alt="Images">
+                    </a>
+                    <a href="https://suchitwamission.org/video-gallery">
+                        More Videos<img width="32" height="22" src="/public/img/icons/g-video.svg"
+                                        alt="Videos">
+                    </a>
+                </div>
+
+
+
+            </div><!-- col -->
+
+            <div class="col-lg-9 posrel">
+                <div class="gallery-sec">
+                    <div class="navibtn btgroup">
+                        <div class="swiper-button-prev slidebtn gal-prev"></div>
+                        <div class="swiper-button-next slidebtn gal-next"></div>
+                    </div>
+                    <div class="gallery-sec-pad">
+                        <div class="swiper swipergal h-auto">
+                            <div class="swiper-wrapper">
+
+
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://youtube.com/shorts/tJZqXolEooI">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://img.youtube.com/vi/tJZqXolEooI/hqdefault.jpg"
+                                                 alt="Gallery">
+                                            <span class="galicon vid">
+                                                <img width="18" height="18"
+                                                     src="/public/img/icons/thumbvid.svg" alt="Image">
+                                            </span>
+                                        </div><!-- galimg -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/CEjhBd12rx3UQuMgwGY0.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/CEjhBd12rx3UQuMgwGY0.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                ലോക പരിസ്ഥിതി ദിനം
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/oPaIhHrnQicSf1gbkv2U.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/oPaIhHrnQicSf1gbkv2U.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                പേപ്പർ , കരിയില എന്നിവ കത്തിക്കുന്നത് ഒഴിവാക്കൂ
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/nv7fBEdf0E6jgyUub4Xi.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/nv7fBEdf0E6jgyUub4Xi.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                പ്ലാസ്റ്റിക് , ഇലക്ട്രോണിക് വസ്തുക്കൾ എന്നിവ കത്തിക്കാൻ പാടില്ല
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/PuixpRqReiHUWszQQeiG.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/PuixpRqReiHUWszQQeiG.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                ഒരു തരത്തിലും ഒഴിവാക്കാനാവില്ല എന്നുളളവ മറക്കാതെ തിരികെ കൊണ്ട്‌ പോരുക.
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/dkUomva5igFdI61myRRQ.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/dkUomva5igFdI61myRRQ.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                കുടിവെള്ളത്തിനായി നിര്‍ബന്ധമായും സ്റ്റീല്‍ കുഷികൾ കരുതുക
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/licuxeCbcAzRw1Hmt7Me.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/licuxeCbcAzRw1Hmt7Me.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                കുടിവെള്ളത്തിനായി നിര്‍ബന്ധമായും സ്റ്റീല്‍ കുഷികൾ കരുതുക
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/FnATRnoF3ws4K2xNIpZu.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/FnATRnoF3ws4K2xNIpZu.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                ഐസ്‌ (കീം കഴിക്കുമ്പോള്‍ - കുഴിക്കാനാകുന്ന 0856 ഉള്ള ഐസ്‌ക്രീം വാങ്ങിക്കൂടേ?
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/9UqqslE5P8OdFPJRi4Zt.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/9UqqslE5P8OdFPJRi4Zt.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                പാനിയങ്ങള്‍ കുടിക്കുമ്പോൾ സ്ട്രോകളോട്‌ നോ പറയൂ...
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+                                <div class="swiper-slide">
+                                    <div class="galbox" data-fancybox="gallery"
+                                         data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/AV1zst6TOjQuNo4I1Kzq.webp">
+                                        <div class="galimg">
+                                            <img width="280" height="190" class="lazyload coverimg"
+                                                 src="/public/img/icons/loader.svg"
+                                                 data-src="https://cms.suchitwamission.org/public/storage/galleries/photos/AV1zst6TOjQuNo4I1Kzq.webp" alt="Gallery">
+                                            <span class="galicon">
+                                                <img width="24" height="24"
+                                                     src="/public/img/icons/galplus.svg" alt="Image" loading="lazy">
+                                            </span>
+                                        </div><!-- galimg -->
+                                        <div class="galcont">
+                                            <span>
+                                                ഭക്ഷണം കഴിക്കാന്‍ സ്റ്റീൽ പാത്രങ്ങളും ആവശ്യമെങ്കില്‍ സ്പൂണുകളും കരുതുക. ഭക്ഷണം പൊതികളായി കൊണ്ടുപോകുന്നത്‌ ഒഴിവാക്കാം.
+                                            </span>
+                                        </div><!-- galcont -->
+                                    </div><!-- galbox -->
+                                </div><!-- slide -->
+
+
+                            </div><!-- wrapper -->
+                        </div><!-- swiper -->
+                    </div>
+                </div>
+            </div><!-- col -->
+
+
+
+        </div><!-- row -->
+
+    </div><!-- cfluid -->
+</div><!-- gallery --> *@
+<div class="orderspubli posrel py-5">
+
+    <span class="element dots d1">
+        @* <img width="250" height="250" src="/public/img/element/donut.svg"
+             alt="Dots"> *@
+    </span>
+    <!-- <span class="element donut ovhidden"><img class="mw-none" width="250" height="250"
+            src="/public/img/element/donut.svg" alt="Dounut"></span> -->
+
+    <div class="container-fluid cmpad posrel">
+
+
+        <!-- <span class="element fly1 ro-r"><img width="32" height="22" src="/public/img/element/flylt1.svg"
+                alt="Fly" class="butterfly__wing"></span> -->
+
+        <div class="row">
+            <div class="col ordercol flexVcenter posrel m-auto">
+
+                @* <span class="element fly ro-l">
+                    <img width="32" height="22"
+                         src="/public/img/element/flylt1.svg" alt="Fly" class="butterfly__wing">
+                </span>
+                <span class="element fly1 ro-r">
+                    <img width="32" height="22"
+                         src="/public/img/element/flylt1.svg" alt="Fly" class="butterfly__wing">
+                </span>
+                <!-- <span class="element dots d2"><img width="250" height="250"
+                        src="/public/img/element/dots.svg" alt="Dots"></span> -->
+                <span class="element leave">
+                    <img width="32" height="32" src="/public/img/element/leave4.svg"
+                         alt="Leaves">
+                </span>
+                <span class="element leave1">
+                    <img width="32" height="32"
+                         src="/public/img/element/leave5.svg" alt="Leaves">
+                </span> *@
+
+                <h2 class="head1">Orders &amp; Notifications</h2>
+                <p class="hdcap">Find out the latest orders and publications with ease.</p>
+                <div class="ordermain mytabs mt-4">
+                    <div class="nav nav-tabs custscroll" id="orderTab" role="tablist">
+
+                        <div class="nav-item" role="presentation">
+                            <button class="nav-link  active " id="tab-1" data-bs-toggle="tab" data-bs-target="#tab-pane-1" type="button" role="tab" aria-controls="tab-pane-1" aria-selected="true">
+                                <img width="24" height="24" src="/public/img/icons/orders.svg" alt="Govt. Orders">
+                                Govt. Orders
+                            </button>
+                        </div>
+                        <div class="nav-item" role="presentation">
+                            <button class="nav-link " id="tab-2" data-bs-toggle="tab" data-bs-target="#tab-pane-2" type="button" role="tab" aria-controls="tab-pane-2" aria-selected="true">
+                                <img width="24" height="24" src="/public/img/icons/notifications1.svg" alt="Notifications">
+                                Notifications
+                            </button>
+                        </div>
+                        <div class="nav-item" role="presentation">
+                            <button class="nav-link " id="tab-3" data-bs-toggle="tab" data-bs-target="#tab-pane-3" type="button" role="tab" aria-controls="tab-pane-3" aria-selected="true">
+                                <img width="24" height="24" src="/public/img/icons/circulars1.svg" alt="Circulars">
+                                Circulars
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="orderTabContent">
+
+
+                        <div class="tab-pane fade  show active " id="tab-pane-1" role="tabpanel"
+                             aria-labelledby="tab-1" tabindex="0">
+                            <div class="tablerowmain">
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            <span class="new me-1">New</span> Haritha Sena Scholarship
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            Orders issued.
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            Orders issued.
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            # ery tere ryue
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            tesr
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+
+
+                                <a href="#" class="morebtn">
+                                    View all Govt. Orders
+                                </a>
+
+
+
+                            </div><!-- tablerowmain -->
+                        </div><!-- tab -->
+                        <div class="tab-pane fade " id="tab-pane-2" role="tabpanel"
+                             aria-labelledby="tab-2" tabindex="0">
+                            <div class="tablerowmain">
+
+                                <div class="tablerow">
+                                    <div class="col date">
+                                        16 Apr 2026
+                                        <img src="/public/img/icons/calendar.svg" width="14"
+                                             height="14" alt="Date">
+                                    </div><!-- col -->
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            test test news
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+
+
+                                <a href="#" class="morebtn">
+                                    View all Tender/Quotations
+                                </a>
+
+
+
+                            </div><!-- tablerowmain -->
+                        </div><!-- tab -->
+                        <div class="tab-pane fade " id="tab-pane-3" role="tabpanel"
+                             aria-labelledby="tab-3" tabindex="0">
+                            <div class="tablerowmain">
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            <span class="new me-1">New</span>test1
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#=" Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+                                <div class="tablerow">
+                                    <!--<div class="col numcol">-->
+                                    <!--   -->
+                                    <!--</div>-->
+                                    <!-- col -->
+                                    <div class="col subject">
+                                        <a href="#" target="_blank">
+                                            <span class="new me-1">New</span> test2344
+                                        </a>
+                                    </div><!-- col -->
+                                    <div class="col action">
+
+
+                                        <a href="#" class="actionbtn" download title="Download">
+                                            <img src="/public/img/icons/download.svg" width="16" height="20" alt="Download">
+                                        </a>
+                                        <a href="#" class="actionbtn" target="_blank" title="View">
+                                            <img src="/public/img/icons/view.svg" width="20" height="20" alt="View">
+                                        </a>
+
+                                    </div><!-- col -->
+                                </div><!-- tablerow -->
+
+
+
+                                <a href="#" class="morebtn">
+                                    View all Notifications
+                                </a>
+
+
+
+                            </div><!-- tablerowmain -->
+                        </div><!-- tab -->
+                    </div>
+                </div><!-- ordermain -->
+            </div><!-- col -->
+        </div><!-- row -->
+
+    </div><!-- cfluid -->
+</div><!-- orderspubli -->
+<div class="newsevent pb-2 pb-md-5 posrel">
+    <span class="element lt md md50 elenewslt"></span>
+    <div class="container-fluid cmpad pt-0 pt-sm-5">
+        <div class="headrow">
+            <div class="col">
+                <h3 class="head1">Latest News &amp; Events</h3>
+            </div><!-- col -->
+            <div class="col navcol">
+                <div class="navibtn btgroup">
+                    <div class="swiper-button-prev slidebtn newsev-prev"></div>
+                    <div class="swiper-button-next slidebtn newsev-next"></div>
+                </div>
+                <a href="#" class="morebtn">View All</a>
+            </div><!-- col -->
+        </div><!-- headrow -->
+
+
+        <div class="container-fluid posrel pt-2">
+            <div class="swiper newsevslide h-auto">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event1.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">08</span> <span class="mmyy">Mar 2026</span></span>
+                                <p class="desc">
+                                    Launching of Rajasthan SDGs Status Report on 29th June, 2025 at RIC, Jaipur
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event2.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">24</span> <span class="mmyy">Dec 2025</span></span>
+                                <p class="desc">
+                                    Launching of Rajasthan SDGs Status Report on 29th June, 2025 at RIC, Jaipur
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event3.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">03</span> <span class="mmyy">Dec 2025</span></span>
+                                <p class="desc">
+                                    Launching of Rajasthan SDGs Status Report on 29th June, 2025 at RIC, Jaipur
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event3.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+                                    Haritha Local Body Election – 2025: The handbook on Haritha Compliance – Questions and Answers was releasing
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event4.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+
+                                    Launching of Rajasthan SDGs Status Report on 29th June, 2025 at RIC, Jaipur
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event5.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+                                    Haritha Local Body Election – 2025: The handbook on Haritha Compliance – Questions and Answers was releasing
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event5.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+                                    Haritha Local Body Election – 2025: The handbook on Haritha Compliance – Questions and Answers was releasing
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event1.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+                                    Haritha Local Body Election – 2025: The handbook on Haritha Compliance – Questions and Answers was releasing
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event3.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+                                    Haritha Local Body Election – 2025: The handbook on Haritha Compliance – Questions and Answers was releasing
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+                    <div class="swiper-slide">
+                        <div class="imgcard">
+                            <div class="imgbox">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="/public/highlights/Event2.jpg" alt="Official" width="200"
+                                     height="260">
+                            </div><!-- imgbox -->
+                            <div class="imgcont">
+                                <span class="date"><span class="dd">14</span> <span class="mmyy">Nov 2025</span></span>
+                                <p class="desc">
+                                    Haritha Local Body Election – 2025: The handbook on Haritha Compliance – Questions and Answers was releasing
+                                </p>
+                                <!--<span class="morebtn">Read More</span>-->
+                                <a href="#">Read More</a>
+                            </div><!-- imgcont -->
+                            <a href="#" class="stretched-link" aria-label="View News and Events"></a>
+                        </div><!-- imgcard -->
+                    </div><!-- slide -->
+
+
+
+                </div><!-- wrapper -->
+            </div><!-- swiper -->
+        </div><!-- row -->
+
+
+    </div><!-- cfluid -->
+</div><!-- newsevent -->
+@* <div class="testimonials pb-5 posrel">
+    <div class="container-fluid cmpad pt-3">
+
+
+        <div class="row">
+            <div class="col-lg-8 pe-lg-5 py-5">
+
+                <img src="/public/img/images/testi-bag.png" alt="testimonil" class="testi-bag" loading="lazy">
+
+                <div class="headcenter mb-4 justify-content-between">
+                    <h2 class="m-0 head1">What people says!</h2>
+                    <div class="d-flex gap-3">
+
+                        <div class="navibtn btgroup">
+                            <div class="swiper-button-prev slidebtn test-prev"></div>
+                            <span class="line"></span>
+                            <div class="swiper-button-next slidebtn test-next"></div>
+                        </div>
+                        <a href="https://suchitwamission.org/testimonials" class="morebtn">View All</a>
+                    </div>
+
+                </div>
+                <div class="swiper testislide h-auto">
+                    <div class="swiper-wrapper">
+
+                        <div class="swiper-slide">
+                            <div class="reviewcard">
+                                <img class="quote" src="/public/img/icons/quotes1.svg" alt="Quote" width="34" height="34">
+
+                                <div class="cardcont ">
+                                    <p class="desc">
+                                         is an ideal launchpad for aspiring environmental sustainability professionals. It offers hands-on experience with sanitation and waste management projects implemented by local self-government institutions, state governments, and central government agencies. The valuable experience that one can acquire here can lead to career opportunities in government projects and also at  renowned national organizations.
+                                    </p>
+                                    <a href="https://suchitwamission.org/testimonials/abraham-thomas-renjith" class="morebtn">Read More</a>
+                                </div><!-- cardcont -->
+
+                                <div class="cardhead">
+                                    <div class="userimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/testimonials/6ZcanVEwiDOgU3d7LLCq.jpeg" alt="Testimonial"
+                                             width="50" height="50">
+                                    </div><!-- userimg -->
+                                    <div class="cardinfo">
+                                        <p class="head">
+                                            Abraham Thomas Renjith
+                                        </p>
+                                        <p class="desig">
+                                            Project Manager,  Plastic Fisher
+                                        </p>
+                                    </div>
+                                </div><!-- cardhead -->
+
+                            </div><!-- reviewcard -->
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="reviewcard">
+                                <img class="quote" src="/public/img/icons/quotes1.svg" alt="Quote" width="34" height="34">
+
+                                <div class="cardcont ">
+                                    <p class="desc">
+                                          has been a game-changer in the field of waste management. Through its innovative and community-driven initiatives, the Mission has empowered local bodies and citizens to adopt sustainable waste disposal practices. From promoting source-level segregation to supporting decentralized waste treatment,  has set a model for effective and inclusive sanitation efforts. Its continuous awareness campaigns and capacity-building programs have played a key role in transforming Kerala into a cleaner and greener state.
+                                    </p>
+                                    <a href="https://suchitwamission.org/testimonials/maneesh-muhammed" class="morebtn">Read More</a>
+                                </div><!-- cardcont -->
+
+                                <div class="cardhead">
+                                    <div class="userimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/testimonials/ePfyK9t1EzYJcwR6Al3i.jpeg" alt="Testimonial"
+                                             width="50" height="50">
+                                    </div><!-- userimg -->
+                                    <div class="cardinfo">
+                                        <p class="head">
+                                            Maneesh Muhammed
+                                        </p>
+                                        <p class="desig">
+                                            Asst Branch i/c - SKM
+                                        </p>
+                                    </div>
+                                </div><!-- cardhead -->
+
+                            </div><!-- reviewcard -->
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="reviewcard">
+                                <img class="quote" src="/public/img/icons/quotes1.svg" alt="Quote" width="34" height="34">
+
+                                <div class="cardcont ">
+                                    <p class="desc">
+                                        Interning at  was a valuable experience that provided me with in-depth knowledge of waste management practices and the opportunity to engage with experts in the field. This experience has empowered me to contribute to bringing about positive change in my community through effective waste management. The internship has also had a profound impact on my personal and professional growth, and I'm grateful for the experience.
+                                    </p>
+                                    <a href="https://suchitwamission.org/testimonials/greeshma-gireesh-kg" class="morebtn">Read More</a>
+                                </div><!-- cardcont -->
+
+                                <div class="cardhead">
+                                    <div class="userimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/testimonials/uLUnv3NzkdQMBCVcSoa1.jpeg" alt="Testimonial"
+                                             width="50" height="50">
+                                    </div><!-- userimg -->
+                                    <div class="cardinfo">
+                                        <p class="head">
+                                            Greeshma Gireesh KG
+                                        </p>
+                                        <p class="desig">
+
+                                        </p>
+                                    </div>
+                                </div><!-- cardhead -->
+
+                            </div><!-- reviewcard -->
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="reviewcard">
+                                <img class="quote" src="/public/img/icons/quotes1.svg" alt="Quote" width="34" height="34">
+
+                                <div class="cardcont ">
+                                    <p class="desc">
+                                        What makes Suchit Mishana different from other agencies is that during the internship period, instead of doing the agency's work, they gave the interns the opportunity to choose an area of interest, work in that area, and bring about changes, and accepted the ideas put forward and provided the necessary support. During the two-month internship, I was able to understand all my strengths and weaknesses, and I also gained a lot of good experience.
+                                    </p>
+                                    <a href="https://suchitwamission.org/testimonials/lekshmi-a-s" class="morebtn">Read More</a>
+                                </div><!-- cardcont -->
+
+                                <div class="cardhead">
+                                    <div class="userimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/testimonials/dWXtXVIkypyM2XIfuLQF.jpeg" alt="Testimonial"
+                                             width="50" height="50">
+                                    </div><!-- userimg -->
+                                    <div class="cardinfo">
+                                        <p class="head">
+                                            Lekshmi A S
+                                        </p>
+                                        <p class="desig">
+
+                                        </p>
+                                    </div>
+                                </div><!-- cardhead -->
+
+                            </div><!-- reviewcard -->
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="reviewcard">
+                                <img class="quote" src="/public/img/icons/quotes1.svg" alt="Quote" width="34" height="34">
+
+                                <div class="cardcont ">
+                                    <p class="desc">
+                                        ശുചിത്വമിഷനിലെ ഇന്റേൺഷിപ്പ്  രാജാജി നഗറിലെ  വേസ്റ്റ് മാനേജ്മെന്റിനെ കേന്ദ്രീകരിച്ചായിരുന്നു.  ഇൻെറൺസിനു പ്രൊഫഷണൽ ആയിട്ടുള്ള വികസനത്തിനായി   മികച്ച രീതിയിലുള്ള പ്രവർത്തനങ്ങൾ കാഴ്ചവെക്കാൻ സാധിച്ചു.
+                                        ആദ്യമായി
+                                        കൂട്ടായ പ്രവർത്തനത്തിന്റെ ഫലമായി ഒരു സർവ്വേ  നടത്തി രാജാജി നഗറിലെ പ്രശ്നങ്ങളെ അറിഞ്ഞത്തിന് ശേഷം,   നാല് മേഖലകളിൽ  പ്രവർത്തിച്ചു. സ്ത്രീകൾ, യുവാക്കൾ, കുട്ടികൾ,കടകൾ  എന്നീ മേഖലകൾ ആയിരുന്നു.  അതിൽ കുട്ടികളിലൂടെ നടത്തിയ പ്രവർത്തനങ്ങളിലൂടെ
+                                        വളർന്നു വരുന്ന പുതുതലമുറകൾക്കിടയിൽ  മാലിന്യസംസ്കാരണത്തെക്കുറിച്ച് ഒരു അവബോധം ഉണ്ടാക്കിയെടുക്കാൻ ഇതിലൂടെ സാധിച്ചു.
+                                    </p>
+                                    <a href="https://suchitwamission.org/testimonials/praveena" class="morebtn">Read More</a>
+                                </div><!-- cardcont -->
+
+                                <div class="cardhead">
+                                    <div class="userimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/testimonials/YeiRz8k5vGdpbWD2OkU1.jpeg" alt="Testimonial"
+                                             width="50" height="50">
+                                    </div><!-- userimg -->
+                                    <div class="cardinfo">
+                                        <p class="head">
+                                            Praveena
+                                        </p>
+                                        <p class="desig">
+                                            St. Joseph college pilathara
+                                        </p>
+                                    </div>
+                                </div><!-- cardhead -->
+
+                            </div><!-- reviewcard -->
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="reviewcard">
+                                <img class="quote" src="/public/img/icons/quotes1.svg" alt="Quote" width="34" height="34">
+
+                                <div class="cardcont ">
+                                    <p class="desc">
+                                        The internship with the Malinya Muktha Navakeralam campaign Secretariat was a transformative experience that deepened my understanding of the complex relationships between social justice, community development, and environmental sustainability. The team's efforts to engage marginalized communities, promote participatory governance, and advocate for policy changes profoundly impacted me. Through this internship, I gained hands-on experience in community organizing, social mobilization, and advocacy. I directly witnessed the impact of collective action on how a community can act as a medium for behavioral change towards proper waste management. This experience reinforced my conviction that social work and environmental sustainability are linked and helped me realize how a social work student can make the impossible possible. I returned to my studies with renewed passion and a clearer understanding of how to integrate environmental justice into my future social work practice. I highly recommend this internship to fellow social work students and professionals seeking to explore the interconnections between social justice, community development, and environmental sustainability.
+                                    </p>
+                                    <a href="https://suchitwamission.org/testimonials/vinishma" class="morebtn">Read More</a>
+                                </div><!-- cardcont -->
+
+                                <div class="cardhead">
+                                    <div class="userimg">
+                                        <img class="lazyload" src="/public/img/icons/loader.svg"
+                                             data-src="https://cms.suchitwamission.org/public/storage/testimonials/BgXSnmD0L8h2PdHTO5qb.jpeg" alt="Testimonial"
+                                             width="50" height="50">
+                                    </div><!-- userimg -->
+                                    <div class="cardinfo">
+                                        <p class="head">
+                                            Vinishma
+                                        </p>
+                                        <p class="desig">
+
+                                        </p>
+                                    </div>
+                                </div><!-- cardhead -->
+
+                            </div><!-- reviewcard -->
+                        </div><!-- slide -->
+
+
+
+
+                    </div><!-- wrapper -->
+                </div><!-- swiper -->
+            </div>
+
+            <div class="col-lg-4">
+                <div class="swiper testislideright h-auto">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="testi-banner-sec">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="https://cms.suchitwamission.org/public/storage/highlights/IyPbN9Bb2HQMsQa4r767.jpeg" alt="Testimonial">
+                            </div>
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="testi-banner-sec">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="https://cms.suchitwamission.org/public/storage/highlights/0KB5vdeoQEVz4oX29zFh.png" alt="Testimonial">
+                            </div>
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="testi-banner-sec">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="https://cms.suchitwamission.org/public/storage/highlights/xZW3HB3Wmw460lZBRSqE.png" alt="Testimonial">
+                            </div>
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="testi-banner-sec">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="https://cms.suchitwamission.org/public/storage/highlights/qjDmbNKHESsUtahMW1rO.png" alt="Testimonial">
+                            </div>
+                        </div><!-- slide -->
+                        <div class="swiper-slide">
+                            <div class="testi-banner-sec">
+                                <img class="lazyload" src="/public/img/icons/loader.svg"
+                                     data-src="https://cms.suchitwamission.org/public/storage/highlights/tW4d9m5qXtYQcEdM0E6b.jpg" alt="Testimonial">
+                            </div>
+                        </div><!-- slide -->
+
+
+                    </div><!-- wrapper -->
+                    <div class="swiper-pagination mainpagination testislideright-pagi cen"></div>
+
+                </div><!-- swiper -->
+                <div class="headrow mb-2">
+                    <div class="col navcol">
+                        <a href="https://suchitwamission.org/footer-banners" class="morebtn">View All</a>
+                    </div><!-- col -->
+                </div>
+            </div>
+        </div>
+
+
+
+    </div><!-- cfluid -->
+</div><!-- testimonials --> *@
+<div class="partners posrel">
+
+    <div class="container-fluid cmpad posrel pb-3">
+
+        <div class="swiper partnerslide">
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UNFPA.png" data-src="/public/img/Agency_logo/UNFPA.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UN.png" data-src="/public/img/Agency_logo/UN.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UN_HABITAT.png" data-src="/public/img/Agency_logo/UN_HABITAT.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UN_VOLUNTEERS.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UN_WOMEN.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UNDP.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UNESCO.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UNICEF.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/UNIDO.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->
+                <div class="swiper-slide">
+                    <a href="#" target="_blank">
+                        <img width="150" height="80" class="lazyload" src="/public/img/Agency_logo/WFP.png" alt="UN Agencies Logo">
+                    </a>
+                </div><!-- swiper-slide -->                
+
+
+
+            </div><!-- swiper-wrapper -->
+            <!-- <div class="navibtn btgroup">
+            <div class="swiper-button-prev slidebtn banner-prev"></div>
+                <div class="swiper-pagination bannerpagination"></div>
+            <div class="swiper-button-next slidebtn banner-next"></div>
+            </div> -->
+
+        </div><!-- swiper -->
+
+    </div><!-- cfluid -->
+</div><!-- partners -->
+<!-- <div class="secbg footer" style="background-image:url('/public/demo/footbg.png')">
+    <div class="cmpad">
+    <img src="/public/demo/footer.png" alt="">
+    </div>
+</div> -->
+@* <script nonce="@nonce" src="~/public/js/d3.v7.min.js"></script>
+<script nonce="@nonce">
+        
+    const data = [
+        { sector: "Agriculture", value: 0 },
+        { sector: "Child Development", value: 0 },
+        { sector: "Disaster Management", value: 0 },
+        { sector: "Education", value: 2 },
+        { sector: "Employment and Livelihood", value: 3 },
+        { sector: "Environment and Climate Change", value: 0 },
+        { sector: "Food Security", value: 1 },
+        { sector: "Health", value: 2 },
+        { sector: "Infrastructure", value: 0 },
+        { sector: "Nutrition", value: 2 },
+        { sector: "Rural Development", value: 1 },
+        { sector: "Social Protection", value: 0 },
+        { sector: "Urban Development", value: 0 },
+        { sector: "Water and Sanitation", value: 2 },
+        { sector: "Women Empowerment", value: 1 }
+    ];
+
+    // Chart size
+    const margin = { top: 40, right: 20, bottom: 120, left: 50 };
+    const width = 900 - margin.left - margin.right;
+    const height = 450 - margin.top - margin.bottom;
+
+    // SVG
+    const svg = d3.select("#sectorChart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // X axis
+    const x = d3.scaleBand()
+        .domain(data.map(d => d.sector))
+        .range([0, width])
+        .padding(0.3);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "rotate(-40)")
+        .style("text-anchor", "end");
+
+    // Y axis
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value)])
+        .nice()
+        .range([height, 0]);
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    // Bars
+    svg.selectAll(".bar")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("x", d => x(d.sector))
+        .attr("y", d => y(d.value))
+        .attr("width", x.bandwidth())
+        .attr("height", d => height - y(d.value))
+        .attr("fill", "#3498db");
+
+    // Labels on bars
+    svg.selectAll(".label")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("x", d => x(d.sector) + x.bandwidth()/2)
+        .attr("y", d => y(d.value) - 5)
+        .attr("text-anchor", "middle")
+        .text(d => d.value);
+
+    // Title
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Sector-wise Activities");
+</script> *@

@@ -1,0 +1,208 @@
+﻿@model MO.Management.MainModels
+@{
+    ViewData["Title"] = "Sector Mapping";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    /* Progress Bar Styling */
+    .wizard-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+        .wizard-steps::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #dee2e6;
+            z-index: 1;
+        }
+
+    .step-item {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        width: 100%;
+    }
+
+    .step-num {
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        border: 2px solid #dee2e6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .step-item.active .step-num {
+        border-color: #0d6efd;
+        background: #0d6efd;
+        color: #fff;
+        box-shadow: 0 0 10px rgba(13, 110, 253, 0.3);
+    }
+
+    .step-item.completed .step-num {
+        background: #198754;
+        border-color: #198754;
+        color: #fff;
+    }
+
+    .step-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+    }
+
+    .step-item.active .step-label {
+        color: #0d6efd;
+    }
+
+    /* Content Transition */
+    .step-content {
+        display: none;
+    }
+
+        .step-content.active {
+            display: block;
+        }
+
+        /* Fallback */
+        .step-content:first-child {
+            display: block;
+        }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<div class="container">
+    <div class="card shadow-lg border-0">
+        <div class="card-body">
+
+            <div class="row">
+
+                <!-- LEFT SIDE (Wizard Steps) -->
+                <div class="col-md-2">
+                    <div class="wizard-steps-vertical">
+                        <div class="step-item active" id="s1">
+                            <div class="step-num">1</div>
+                            <div class="step-label">Activity</div>
+                        </div>
+                        <div class="step-item" id="s2">
+                            <div class="step-num">2</div>
+                            <div class="step-label">Geo Level</div>
+                        </div>
+                        <div class="step-item" id="s3">
+                            <div class="step-num">3</div>
+                            <div class="step-label">Department</div>
+                        </div>
+                        <div class="step-item" id="s4">
+                            <div class="step-num">4</div>
+                            <div class="step-label">Goals & Targets</div>
+                        </div>
+                        <div class="step-item" id="s5">
+                            <div class="step-num">5</div>
+                            <div class="step-label">Viksit Rajasthan@2047</div>
+                        </div>
+                        <div class="step-item" id="s6">
+                            <div class="step-num">6</div>
+                            <div class="step-label">Nature Of Support</div>
+                        </div>                       
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE (Content) -->
+                <div class="col-md-10">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <a asp-action="ActivityManagement" asp-controller="Management" class="btn btn-light border" id="topBackBtn">
+                            <i class="bx bx-arrow-back"></i> Back To List
+                        </a>
+
+                        <h5 class="mb-0">Activity Setup</h5>
+                    </div>
+                    <form id="multiStepForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ActivityGuid" name="ActivityGuid" value="@(Model?.ActivityGuid)" />
+                        <div class="step-content active" id="content1">
+                            <partial name="_ActivityAdd" model="@Model.Activity" />
+                        </div>
+                        <div class="step-content" id="content2">
+                            <partial name="_AddGeoLevel" />
+                        </div>
+                        <div class="step-content" id="content3">
+                            <partial name="_AddDepartment" />
+                        </div>
+                        <div class="step-content" id="content4">
+                            <partial name="_AddGoalTarget" />
+                        </div>
+                        <div class="step-content" id="content5">
+                            <partial name="_AddViksit" />
+                        </div>
+                        <div class="step-content" id="content6">
+                            <partial name="_AddNatureOfSupport" />
+                        </div>
+                        
+
+                        <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                            <button type="button" class="btn btn-outline-secondary px-4" id="prevBtn" disabled>Previous</button>
+                            @* <div class="text-end mt-4">
+                                <button type="button" id="masterActivityForm" class="btn btn-success px-5 shadow">
+                                    Save & Next →
+                                </button>
+                            </div> *@
+                            <button type="button" class="btn btn-primary px-5" id="nextBtn">Save & Next →</button>
+                            @* <button type="submit" class="btn btn-success px-5 d-none" id="submitBtn">Finish & Save All</button> *@
+                        </div>
+                    </form>
+                    </<div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        </div>
+    </div>
+<script nonce="@nonce" src="~/custom/ActivityMaster.js" asp-append-version="true"></script>
+
+
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.addEventListener('click', async function () {
+            await activityMaster.savedata();
+        }); // 🔥 WAIT    
+
+
+        let ActivityGuid = $('#ActivityGuid').val();
+        if (ActivityGuid != "") {
+            // Departments load
+           activityMaster.getDeptMap();
+           activityMaster.getGoalMap();
+           activityMaster.getPillarMap();
+           activityMaster.getNatureOfSupportMap();
+
+        }
+    });
+</script>
+

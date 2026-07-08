@@ -1,0 +1,587 @@
+﻿@* =========================================
+   PARTIAL VIEW : _TaskTracking.cshtml
+   PURPOSE      : Task Based Tracking
+   ========================================= *@
+
+@model MO.Management.ActivityDTO
+
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <!-- Header -->
+    <div class="card-header bg-success text-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h5 class="mb-0">
+
+                    <i class="bx bx-task"></i>
+
+                    Task Tracking
+
+                </h5>
+
+            </div>
+
+            <span class="badge bg-light text-dark">
+
+                @(Model?.SubActivities?.Sum(x => x.Tasks?.Count ?? 0)
+                                ?? Model?.DirectTasks?.Count
+                                ?? 0)
+                Tasks
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+
+        <!-- Activity -->
+        <div class="alert alert-light border mb-4">
+
+            <div class="fw-bold text-primary fs-6">
+
+                <i class="bx bx-folder-open"></i>
+
+                Activity :
+
+                <span id="activityTitle">
+                    @Model?.ActivityName
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- Tracking Container -->
+        <div id="taskTrackingContainer">
+
+            @* =========================================
+                SUB ACTIVITY TASKS
+                ========================================= *@
+
+            @if (Model?.HasSubActivity == true
+                       && Model?.SubActivities != null
+                       && Model.SubActivities.Count > 0)
+            {
+                int subIndex = 1;
+
+                foreach (var sub in Model.SubActivities)
+                {
+                    <div class="card border shadow-sm mb-4">
+
+                        <!-- Sub Activity Header -->
+                        <div class="card-header bg-light">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+
+                                    <span class="badge bg-primary">
+
+                                        Sub Activity @subIndex
+
+                                    </span>
+
+                                    <span class="fw-bold ms-2">
+
+                                        @sub.SubActivityName
+
+                                    </span>
+
+                                </div>
+
+                                <span class="badge bg-dark">
+
+                                    @(sub.Tasks?.Count ?? 0) Tasks
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Sub Activity Body -->
+                        <div class="card-body">
+
+                            @if (sub.Tasks != null
+                                               && sub.Tasks.Count > 0)
+                            {
+                                <div class="table-responsive">
+
+                                    <table class="table table-bordered align-middle">
+
+                                        <thead class="table-light">
+
+                                            <tr>
+
+                                                <th width="5%">#</th>
+                                                <th width="45%">Task Name</th>
+                                                <th width="20%">Status</th>
+                                                <th width="30%">Remarks</th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            @{
+                                                int taskIndex = 1;
+                                            }
+
+                                            @foreach (var task in sub.Tasks)
+                                            {
+                                                <tr>
+
+                                                    <!-- INDEX -->
+                                                    <td>
+                                                        @taskIndex
+                                                    </td>
+
+                                                    <!-- TASK -->
+                                                    <td>
+
+                                                        <input type="hidden"
+                                                               class="tracking-id"
+                                                               value="@(task.Tracking?.TrackingId ?? 0)" />
+
+                                                        <input type="hidden"
+                                                               class="task-id"
+                                                               value="@task.TaskId" />
+
+                                                        <span class="fw-semibold text-success">
+
+                                                            <i class="bx bx-task"></i>
+
+                                                            @task.TaskName
+
+                                                        </span>
+
+                                                    </td>
+
+                                                    <!-- STATUS -->
+                                                    <td>
+
+                                                        <select class="form-select form-select-sm tracking-status">
+
+                                                            <option value="">
+                                                                Choose
+                                                            </option>
+
+                                                            <option value="Not Started"
+                                                                    selected="@(task.Tracking?.Status == "Not Started")">
+
+                                                                Not Started
+
+                                                            </option>
+
+                                                            <option value="In Progress"
+                                                                    selected="@(task.Tracking?.Status == "In Progress")">
+
+                                                                In Progress
+
+                                                            </option>
+
+                                                            <option value="Completed"
+                                                                    selected="@(task.Tracking?.Status == "Completed")">
+
+                                                                Completed
+
+                                                            </option>
+
+                                                            <option value="Delayed"
+                                                                    selected="@(task.Tracking?.Status == "Delayed")">
+
+                                                                Delayed
+
+                                                            </option>
+
+                                                        </select>
+
+                                                    </td>
+
+                                                    <!-- REMARKS -->
+                                                    <td>
+
+                                                        <textarea class="form-control form-control-sm tracking-remarks"
+                                                                  rows="1"
+                                                                  placeholder="Enter remarks">@task.Tracking?.Remarks</textarea>
+
+                                                    </td>
+
+                                                </tr>
+
+                                                taskIndex++;
+                                            }
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning mb-0">
+
+                                    No Tasks Found
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                    subIndex++;
+                }
+            }
+
+            @* =========================================
+                DIRECT TASKS
+                ========================================= *@
+
+            else if (Model?.DirectTasks != null
+            && Model.DirectTasks.Count > 0)
+            {
+                <div class="card border shadow-sm mb-4">
+
+                    <div class="card-header bg-light">
+
+                        <div class="fw-bold text-primary">
+
+                            Direct Tasks
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered align-middle">
+
+                                <thead class="table-light">
+
+                                    <tr>
+
+                                        <th width="5%">#</th>
+                                        <th width="45%">Task Name</th>
+                                        <th width="20%">Status</th>
+                                        <th width="30%">Remarks</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @{
+                                        int taskIndex = 1;
+                                    }
+
+                                    @foreach (var task in Model.DirectTasks)
+                                    {
+                                        <tr>
+
+                                            <!-- INDEX -->
+                                            <td>
+                                                @taskIndex
+                                            </td>
+
+                                            <!-- TASK -->
+                                            <td>
+
+                                                <input type="hidden"
+                                                       class="tracking-id"
+                                                       value="@(task.Tracking?.TrackingId ?? 0)" />
+
+                                                <input type="hidden"
+                                                       class="task-id"
+                                                       value="@task.TaskId" />
+
+                                                <span class="fw-semibold text-success">
+
+                                                    <i class="bx bx-task"></i>
+
+                                                    @task.TaskName
+
+                                                </span>
+
+                                            </td>
+
+                                            <!-- STATUS -->
+                                            <td>
+
+                                                <select class="form-select form-select-sm tracking-status">
+
+                                                    <option value="">
+                                                        Choose
+                                                    </option>
+
+                                                    <option value="On Track"
+                                                            selected="@(task.Tracking?.Status == "On Track")">
+
+                                                        On Track
+
+                                                    </option>
+
+                                                    <option value="Partially On Track"
+                                                            selected="@(task.Tracking?.Status == "Partially On Track")">
+
+                                                        Partially On Track
+
+                                                    </option>
+
+                                                    <option value="Delayed/Constrained"
+                                                            selected="@(task.Tracking?.Status == "Delayed/Constrained")">
+
+                                                        Delayed/Constrained
+
+                                                    </option>
+
+                                                    <option value="Completed"
+                                                            selected="@(task.Tracking?.Status == "Completed")">
+
+                                                        Completed
+
+                                                    </option>
+                                                    <option value="Discontinued"
+                                                            selected="@(task.Tracking?.Status == "Discontinued")">
+
+                                                        Discontinued
+
+                                                    </option>
+
+                                                </select>
+
+                                            </td>
+
+                                            <!-- REMARKS -->
+                                            <td>
+
+                                                <textarea class="form-control form-control-sm tracking-remarks"
+                                                          rows="1"
+                                                          placeholder="Enter remarks">@task.Tracking?.Remarks</textarea>
+
+                                            </td>
+
+                                        </tr>
+
+                                        taskIndex++;
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+            @* =========================================
+                NO TASK FOUND
+                ========================================= *@
+
+            else
+            {
+                <div class="alert alert-warning">
+
+                    No Tasks Found
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="border rounded p-3 bg-white">
+
+        <h5 class="fw-bold mb-3">
+            Contact Details:
+        </h5>
+
+        <div class="row text-center fw-bold border-bottom pb-2 mb-3">
+            <div class="col-md-6">
+                Department
+            </div>
+
+            <div class="col-md-6 border-start">
+                UN Agency
+            </div>
+        </div>
+
+        <!-- Name -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Name of the Nodal Officer
+                </label>
+                <input type="text"
+                       class="form-control" id="DepartmentOfficerName"
+                       placeholder="Enter Name">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Name of the Nodal Officer
+                </label>
+                <input type="text"
+                       class="form-control" id="AgencyOfficerName"
+                       placeholder="Enter Name">
+            </div>
+        </div>
+
+        <!-- Designation -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Designation
+                </label>
+                <input type="text"
+                       class="form-control" id="DepartmentDesignation"
+                       placeholder="Enter Designation">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Designation
+                </label>
+                <input type="text"
+                       class="form-control" id="AgencyDesignation"
+                       placeholder="Enter Designation">
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Email ID
+                </label>
+                <input type="email"
+                       class="form-control" id="DepartmentEmail"
+                       placeholder="Enter Email">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Email ID
+                </label>
+                <input type="email"
+                       class="form-control" id="AgencyEmail"
+                       placeholder="Enter Email">
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Contact Number
+                </label>
+                <input type="text"
+                       class="form-control" id="DepartmentContactNumber"
+                       placeholder="Enter Contact Number">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Contact Number
+                </label>
+                <input type="text"
+                       class="form-control" id="AgencyContactNumber"
+                       placeholder="Enter Contact Number">
+            </div>
+        </div>
+
+        <!-- Place -->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Place
+                </label>
+                <input type="text"
+                       class="form-control" id="DepartmentPlace"
+                       placeholder="Enter Place">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Place
+                </label>
+                <input type="text"
+                       class="form-control" id="AgencyPlace"
+                       placeholder="Enter Place">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script nonce="@nonce" src="~/custom/monitoringreport.js" asp-append-version="true"></script>
+<script nonce="@nonce">
+    //monitoringreport.loadConatctDetails();
+    // =============================================
+    // GET TRACKING DATA
+    // =============================================
+
+    function getTrackingData() {
+
+        let trackingData = [];
+
+        $("#taskTrackingContainer tbody tr").each(function () {
+
+            let row = $(this);
+
+            let trackingId =
+                row.find(".tracking-id").val() || 0;
+
+            let taskId =
+                row.find(".task-id").val();
+
+            let status =
+                row.find(".tracking-status").val();
+
+            let remarks =
+                row.find(".tracking-remarks").val();
+
+            if (taskId) {
+
+                trackingData.push({
+
+                    TrackingId: parseInt(trackingId),
+
+                    ActivityId:
+                        $("#ActivityId").val(),
+
+                    TaskId:
+                        parseInt(taskId),
+
+                    Status:
+                        status,
+
+                    Remarks:
+                        remarks || ""
+
+                });
+
+            }
+        });
+        return trackingData;
+    }
+</script>

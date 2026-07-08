@@ -1,0 +1,111 @@
+﻿@using MO.Common
+@model MO.Master.AgencyMasterMO
+@{
+    ViewData["Title"] = "Agency Master";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Agency Details Registration</h5>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="SaveAgency" method="post">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Agency Name</label>
+                    <input asp-for="AgencyName" class="form-control" required placeholder="Enter agency name" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Agency Code</label>
+                    <input asp-for="AgencyCode" class="form-control" placeholder="e.g. UNICEF" />
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold">Website</label>
+                    <input asp-for="Websitelink" type="url" class="form-control" placeholder="https://example.com" />
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter agency details..."></textarea>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="0">Active</option>
+                        <option value="1">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-transparent px-0 pb-0">
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="fas fa-save me-1"></i> Save Agency
+                </button>
+                <a href="#" class="btn btn-danger px-4">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="card shadow-lg rounded-3">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Agencies</h5>            
+        </div>
+
+        <div class="">
+            @if (Model != null && Model.list != null && Model.list.Any())
+                    {
+                        int sr = 1;
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Agency Name</th>
+                        <th>Short Name</th>
+                        <th>Category</th>
+                        <th>Country</th>
+                        <th>Established</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach (var item in Model.list)
+                    {
+                        <tr>
+                            <td>@sr</td>
+                            <td>@item.AgencyName</td>
+                            <td>@item.AgencyCode</td>
+                            <td>@item.Description</td>                            
+                            <td>
+                                <span class="badge bg-@(item.Status == 1 ? "success" : "danger")">
+                                    @(item.Status == 1 ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/Agency/Edit/@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="/Agency/Delete/@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                        }                    
+                    
+                </tbody>
+            </table>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    No Agencys Found
+                </div>
+            }
+        </div>
+    </div>
+</div>

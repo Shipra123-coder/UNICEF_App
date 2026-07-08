@@ -1,0 +1,63 @@
+﻿
+   
+    .q-row
+
+{
+    background: #f0f0f0;
+    font-weight: bold;
+    border: 1px solid #000;
+}
+
+.q-row td, .q-row th {
+    padding: 8px;
+}
+
+/* Answer row */
+.a-row {
+    border: 1px solid #000;
+}
+
+    .a-row td {
+        padding: 8px 10px 8px 25px;
+    }
+
+/* Sub table rows */
+.subtable-row td {
+    border: 1px solid #000;
+    padding: 6px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+/* Print settings */
+@media print {
+    body {
+        margin: 10mm;
+        font-family: Mangal, Arial, sans-serif;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    h4, h5, h6 {
+        text-align: center;
+    }
+}
+
+    
+

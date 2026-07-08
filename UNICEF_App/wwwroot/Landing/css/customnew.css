@@ -1,0 +1,379 @@
+﻿/**************************************************************
+ * Base / Global Styles
+ **************************************************************/
+
+/* Smooth transitions for elements that change on scroll or hover */
+.header-top-fix,
+.my-portlet,
+.btn-views,
+.header,
+body {
+    transition: 0.5s;
+}
+
+/* Basic font and layout resets */
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: var(--bs-body-bg);
+    color: var(--body-color);
+}
+
+/* Scrollbar styling (optional) */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+/**************************************************************
+ * Header and Portlet
+ **************************************************************/
+
+/* Container that becomes fixed on scroll */
+.header-top-fix {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+    animation-name: fadeInDown;
+    animation-duration: 1s;
+    background: var(--header-bg); /* Adjust your header background variable */
+    box-shadow: var(--header-box-shadow);
+}
+
+/* Fade-in animation from the top */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Portlet styling */
+.my-portlet {
+    background: var(--header-bg);
+    border-radius: 6px;
+    margin-top: 0;
+    box-shadow: var(--header-box-shadow);
+}
+
+/* Header wrapper */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 1rem;
+    box-sizing: border-box;
+}
+
+/* Left section: Department logo/text */
+.header-left {
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+    .header-left a {
+        text-decoration: none;
+        color: var(--grey);
+    }
+
+    .header-left .logo__topsec {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+    }
+
+        .header-left .logo__topsec img {
+            width: 60px; /* Adjust as needed */
+            height: auto;
+        }
+
+.logo_left_sec {
+    border-left: 1px solid #ddd;
+    padding-left: 20px;
+}
+
+.logo_below_text p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+/* Center section: Program logo/title */
+.header-center {
+    width: 67%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .header-center img {
+        max-width: 100%;
+        height: auto;
+    }
+
+.cm__content h3 {
+    margin: 0;
+    color: #943032;
+    text-transform: uppercase;
+    font-size: 1.25rem; /* Adjust as needed */
+}
+
+/* Right section: CM or other official’s photo/text */
+.header-right {
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.cm__section {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 40px;
+    text-align: center;
+}
+
+.cm__content label {
+    font-size: 14px;
+    color: var(--header-nav-color);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.cm__content p {
+    margin: 0;
+    color: var(--header-menu-color);
+    font-size: 12px;
+}
+
+/**************************************************************
+ * Navigation (Primary Menu)
+ **************************************************************/
+
+.primary-menu {
+    width: 100%;
+    background: #343a40; /* Adjust as needed */
+    margin-top: 0;
+}
+
+    .primary-menu .navbar {
+        padding: 0;
+        background: transparent;
+    }
+
+        .primary-menu .navbar .navbar-nav .nav-item {
+            width: auto;
+        }
+
+        .primary-menu .navbar .navbar-nav a.nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 0.5rem;
+            font-size: 16px;
+            border-radius: 0;
+            padding: 0.25rem 1rem;
+            margin: 2px 0;
+            /*border-bottom: 1px solid #e3e3e3;*/
+            color: #fff;
+        }
+
+            .primary-menu .navbar .navbar-nav a.nav-link:hover {
+                color: #32393f !important;
+                background-color: #f5f6f7 !important;
+            }
+
+            .primary-menu .navbar .navbar-nav a.nav-link:active,
+            .primary-menu .navbar .navbar-nav a.nav-link:focus {
+                color: #ffffff;
+                background-color: #008cff;
+            }
+
+            .primary-menu .navbar .navbar-nav a.nav-link.active,
+            .primary-menu .navbar .navbar-nav a.nav-link.active:hover {
+                color: #ffffff;
+                background-color: #008cff;
+            }
+
+        /* Dropdown styling */
+        .primary-menu .navbar .navbar-nav .dropdown-menu {
+            transform-origin: top center;
+            animation: rotateX 200ms ease-in forwards;
+            box-shadow: none;
+            padding: 0.5rem;
+            margin: 0;
+            background: #fff; /* White background for dropdown */
+        }
+
+@keyframes rotateX {
+    0% {
+        opacity: 0;
+        transform: rotateX(-90deg);
+    }
+
+    50% {
+        transform: rotateX(-20deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotateX(0deg);
+    }
+}
+
+.primary-menu .navbar .navbar-nav .dropdown-menu .dropdown-item {
+    font-size: 16px;
+    flex-shrink: 0;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    color: #000;
+}
+
+    .primary-menu .navbar .navbar-nav .dropdown-menu .dropdown-item:hover {
+        background-color: #f5f6f7;
+    }
+
+/* Optional: Icon usage inside menu links */
+.primary-menu .navbar .navbar-nav a .parent-icon,
+.primary-menu .navbar .navbar-nav a .menu-title i {
+    font-size: 20px;
+}
+/**************************************************************
+ * Gradient Navigation Menu
+ **************************************************************/
+.gradient-menu {
+    background: linear-gradient(to right, #1f4e84, #be2f57); /* Adjust to match your design */
+}
+
+/* Bootstrap Navbar Overrides */
+.navbar {
+    padding: 0;
+}
+
+.navbar-toggler {
+    border: none;
+    color: #fff;
+}
+
+.navbar-toggler-icon {
+    /* Hamburger icon color (white lines on gradient) */
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' " + "xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.85)' " + "stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' " + "d='M4 7h22M4 15h22M4 23h22' /%3E%3C/svg%3E");
+}
+
+.navbar-nav {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.nav-item {
+    margin: 0 5px;
+}
+
+.nav-link {
+    color: #fff !important;
+    font-size: 16px;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+    .nav-link:hover,
+    .nav-link:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff !important;
+    }
+
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.3);
+        color: #fff !important;
+    }
+/**************************************************************
+ * Responsive / Mobile Adjustments
+ **************************************************************/
+
+@media (max-width: 991px) {
+    /* Stack or adjust the header sections for tablet screens and below */
+    .header {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .header-left,
+    .header-center,
+    .header-right {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 1rem;
+
+    }
+
+        .header-left .logo__topsec img {
+            width: 50px; /* Smaller logo for tablets */
+        }
+
+        .header-center .cm__content h3 {
+            font-size: 1rem;
+        }
+
+        .header-right .cm__section {
+            gap: 20px;
+        }
+}
+
+@media (max-width: 767px) {
+    /* Mobile layout: Stack everything vertically */
+    .header {
+        padding: 10px;
+    }
+
+    .header-left,
+    .header-center,
+    .header-right {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        justify-content: center !important;
+    }
+
+        /* Adjust logos for mobile */
+        .header-left .logo__topsec img {
+            width: 50px; /* Adjust as needed */
+        }
+
+    /* Increase nav-link size for easier tapping on mobile */
+    .primary-menu .navbar .navbar-nav a.nav-link {
+        font-size: 18px;
+        padding: 0.75rem 1.5rem;
+    }
+
+    /* Remove dropdown animations on mobile for simpler behavior */
+    .primary-menu .navbar .navbar-nav .dropdown-menu {
+        position: static;
+        transform: none;
+        animation: none;
+        margin: 0;
+        padding: 0.5rem;
+        box-shadow: none;
+    }
+}

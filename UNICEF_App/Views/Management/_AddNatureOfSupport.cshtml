@@ -1,0 +1,301 @@
+﻿@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .mapping-box {
+        background: #fdfdfd;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    /* GROUP CARD */
+    .support-group-card {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        border-left: 5px solid #0d6efd;
+    }
+
+    .support-group-header {
+        background: #f3f8ff;
+        color: #0d6efd;
+        padding: 12px 15px;
+        font-weight: bold;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .support-list-container {
+        padding: 5px 15px;
+        background: #fff;
+    }
+
+    /* ENTRY */
+    .support-entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .support-entry:last-child {
+            border-bottom: none;
+        }
+
+    .support-name {
+        font-size: 13.5px;
+        color: #444;
+        display: flex;
+        align-items: center;
+    }
+
+        .support-name::before {
+            content: "\f0a4";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #0d6efd;
+            margin-right: 12px;
+            font-size: 10px;
+        }
+
+    /* BUTTONS */
+    .btn-remove-support {
+        color: #dc3545;
+        border: 1px solid transparent;
+        background: #fff5f5;
+        cursor: pointer;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        transition: 0.2s;
+    }
+
+        .btn-remove-support:hover {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+
+    .btn-remove-main {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        border-radius: 4px;
+        padding: 4px 10px;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: #999;
+        padding: 40px;
+        border: 2px dashed #dee2e6;
+        border-radius: 10px;
+    }
+</style>
+
+<script nonce="@nonce">
+    // Ensures global accessibility mapping variables exist inside the active window memory stack
+    window.supportData = window.supportData || {};
+</script>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-handshake me-2"></i> Nature Of Support Mapping
+        </h5>
+        <span id="totalSupportBadge" class="badge bg-primary">0 Supports Total</span>
+    </div>
+
+    <div class="card-body bg-light">
+        <div class="mapping-box shadow-sm mb-4">
+            <div class="row align-items-end">
+                <div class="col-md-5 mb-3">
+                    <label class="small fw-bold">1. Select Nature Of Support</label>
+                    <select class="form-select" id="NatureSupport" name="NatureSupport">
+                        <option value="">Select Support</option>
+                        <option value="ALL">Select All</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5 mb-3">
+                    <label class="small fw-bold">2. Select Support Details</label>
+                    <select class="form-select" id="SupportDetails">
+                        <option value="">Select Detail</option>
+                        <option value="ALL">Select All</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <button type="button" id="btnAddSupport" class="btn btn-primary w-100 fw-bold shadow-sm">
+                        <i class="fas fa-plus-circle"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="supportContainer">
+            <div class="empty-state">
+                <i class="fas fa-handshake fa-3x mb-3 opacity-25"></i>
+                <p>No Nature Of Support mapped yet.</p>
+            </div>
+        </div>
+
+        <input type="hidden" id="supportJsonData" name="supportJsonData" />
+    </div>
+</div>
+
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof common !== 'undefined' && common.BindDropdown) {
+            common.BindDropdown("/Master/DDL_NatureOfSupport", "NatureSupport", "NatureSupport", $('#hiddennaturesupport').val());
+        }
+    });
+
+    $(function () {
+        const support = document.getElementById('NatureSupport');
+        if (support) {
+            support.addEventListener('change', function (e) {
+                const supportId = e.target.value;
+                if (supportId && supportId !== "ALL" && typeof common !== 'undefined' && common.BindDropdown) {
+                    common.BindDropdown(`/Master/DDL_SubNatureOfSupport?NatureSupportId=${supportId}`, "SupportDetails", "Support Details", "");
+                }
+            });
+        }
+    });
+</script>
+
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+        const mainDropdown = document.getElementById('NatureSupport');
+        const detailDropdown = document.getElementById('SupportDetails');
+        const btnAddSupport = document.getElementById('btnAddSupport');
+        const supportContainer = document.getElementById('supportContainer');
+
+            // =====================================
+    // ACTIONS: ADD ITEM (FIXED & SYNCED)
+    // =====================================
+    btnAddSupport.addEventListener('click', function () {
+        // 1. एक्स्टर्नल फाइल के supportData ऑब्जेक्ट को करंट विंडो स्कोप से लिंक करें
+        if (typeof supportData !== 'undefined') {
+            window.supportData = supportData;
+        } else {
+            window.supportData = window.supportData || {};
+        }
+
+        const sId = mainDropdown.value;
+        const sName = mainDropdown.options[mainDropdown.selectedIndex]?.text;
+        const dId = detailDropdown.value;
+        const dName = detailDropdown.options[detailDropdown.selectedIndex]?.text;
+
+        if (!sId || !dId) {
+            alert("Please select support and details.");
+            return;
+        }
+
+        if (!window.supportData[sId]) {
+            window.supportData[sId] = {
+                name: sName,
+                details: []
+            };
+        }
+
+        // CASE 1: BULK "SELECT ALL" ASSIGNMENT
+        if (dId === "ALL" || dId === "0") {
+            $("#SupportDetails option").each(function () {
+                const optionValue = $(this).val();
+                const optionText = $(this).text();
+
+                if (optionValue !== "" && optionValue !== "ALL" && optionValue !== "0") {
+                    const exists = window.supportData[sId].details.some(x => x.id === optionValue);
+                    if (!exists) {
+                        window.supportData[sId].details.push({
+                            id: optionValue,
+                            name: optionText
+                        });
+                    }
+                }
+            });
+        }
+        // CASE 2: SINGLE SELECTION MAPPING
+        else {
+            const exists = window.supportData[sId].details.some(x => x.id === dId);
+            if (exists) {
+                alert("Already added.");
+                return;
+            }
+
+            window.supportData[sId].details.push({
+                id: dId,
+                name: dName
+            });
+        }
+
+        // 2. 🌟 CRITICAL FIX: एक्स्टर्नल फाइल के दोनों वेरिएबल्स को ग्लोबल स्कोप में सिंक करें
+        supportData = window.supportData;
+
+        // 3. एक्स्टर्नल फाइल (activityMaster या जो भी ऑब्जेक्ट है) का रेंडर फ़ंक्शन कॉल करें
+        if (typeof activityMaster !== 'undefined' && activityMaster.renderSupportUI) {
+            activityMaster.renderSupportUI();
+        } else if (typeof renderSupportUI === 'function') {
+            activityMaster.renderSupportUI();
+        }
+
+        detailDropdown.value = "";
+    });
+
+        // =============================================================
+        // ACTIONS: REMOVE DELEGATION (COUPLED TO GLOBAL STATE CONTAINER)
+        // =============================================================
+        supportContainer.addEventListener('click', function (e) {
+            // 1. एक्स्टर्नल फाइल के supportData ऑब्जेक्ट को करंट विंडो स्कोप से लिंक करें
+        if (typeof supportData !== 'undefined') {
+            window.supportData = supportData;
+        } else {
+            window.supportData = window.supportData || {};
+        }
+            // 1. Line Detail Entry Deletion Drop Handler
+            const btnDetail = e.target.closest('.btn-remove-support');
+            if (btnDetail) {
+                const sId = btnDetail.getAttribute('data-support');
+                const dId = btnDetail.getAttribute('data-detail-id');
+
+                if (window.supportData[sId]) {
+                    window.supportData[sId].details = window.supportData[sId].details.filter(x => x.id !== dId);
+
+                    if (window.supportData[sId].details.length === 0) {
+                        delete window.supportData[sId];
+                    }
+
+                    // Push mutations back to global state references and update view layouts
+                    supportData = window.supportData;
+                    if (typeof activityMaster !== 'undefined' && activityMaster.renderSupportUI) {
+                        activityMaster.renderSupportUI();
+                    }
+                }
+                return;
+            }
+
+            // 2. Full Wrapper Component Card Deletion Row Handler
+            const btnMain = e.target.closest('.btn-remove-main');
+            if (btnMain) {
+                const sId = btnMain.getAttribute('data-support');
+                if (window.supportData[sId]) {
+                    delete window.supportData[sId];
+
+                    supportData = window.supportData;
+                    if (typeof activityMaster !== 'undefined' && activityMaster.renderSupportUI) {
+                        activityMaster.renderSupportUI();
+                    }
+                }
+            }
+        });
+    });
+</script>

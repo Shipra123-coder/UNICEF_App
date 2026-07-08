@@ -1,0 +1,215 @@
+﻿@model MO.Management.trackingMainModel
+@{
+    ViewData["Title"] = "Add Direct Best Prectices";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .media-type-box {
+        border: 1px dashed #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #ffffff;
+    }
+
+    .shadow-xs {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    }
+
+    .form-label.required::after {
+        content: " *";
+        color: #dc3545;
+        font-weight: bold;
+    }
+    .img-width-height{
+        width: 50px;
+        height: 35px;
+    }
+</style>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-photo-video me-2"></i> Direct Best Prectices
+        </h5>
+        <span class="badge bg-primary font-monospace shadow-sm">Format Visual Builder</span>
+    </div>
+
+    <div class="card-body bg-light">
+        <div class="p-3 bg-white border rounded shadow-xs mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-dark fs-6 mb-2 required">Choose Layout Action Type</label>
+                    <select id="LayoutActionMode" class="form-select">
+                        <option value="CoverPage" selected>📁 Create / Add Cover Page Layout</option>
+                        <option value="InnerImage">🖼️ Add Inner Page Assets to Main Cover</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="coverPageSection" class="section-block">
+            <div class="p-4 bg-white border rounded shadow-xs mb-3 border-top border-primary border-3">
+                <h6 class="fw-bold text-primary mb-3"><i class="fas fa-folder-plus me-2"></i>Cover Page Configuration</h6>
+                <div class="row">
+                    <!--UN Sector -->
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label fw-bold">
+                            Sector
+                        </label>
+
+                        <select class="form-select"
+                                id="Sector">
+
+                            <option value="">
+                                Choose Sector
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-9 mb-3">
+                        <label class="form-label small fw-bold required">Cover Page Heading Title</label>
+                        <input type="text" id="CoverHeading" class="form-control" placeholder="Enter main layout display title heading..." />
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label small fw-bold">Display Order</label>
+                        <input type="number" id="CoverOrderNo" class="form-control" placeholder="1" min="1" value="1" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold text-danger required"><i class="bx bx-image me-1"></i>Upload Cover Banner Image</label>
+                        <input type="file" id="CoverImageFile" class="form-control" accept="image/*" />
+                        <div class="form-text small">Supported Formats: JPG, PNG (Max 2MB).</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold text-dark"><i class="bx bx-file-pdf me-1 text-danger"></i>Upload Description Document (PDF)</label>
+                        <input type="file" id="CoverPdfFile" class="form-control" accept="application/pdf" />
+                        <div class="form-text small">Attach secondary supporting guide guidelines document folder.</div>
+                    </div>
+                </div>
+                <div class="p-4 bg-white border rounded shadow-xs mb-3">
+                    <label class="form-label small fw-bold text-secondary text-uppercase tracking-wider"><i class="bx bx-align-left me-1"></i> Section Description Notes / Remarks</label>
+                    <textarea id="SharedDescription" class="form-control" rows="4" placeholder="Enter explicit metadata details context notes description layout text content here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div id="innerImageSection" class="section-block d-none">
+            <div class="p-4 bg-white border rounded shadow-xs mb-3 border-top border-success border-3">
+                <h6 class="fw-bold text-success mb-3"><i class="fas fa-images me-2"></i>Inner Page Media Asset Mapping</h6>
+                <div class="row">
+                    <!--UN Sector -->
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label fw-bold">
+                            Sector
+                        </label>
+
+                        <select class="form-select"
+                                id="InnerSector">
+
+                            <option value="">
+                                Choose Sector
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold text-primary required">Select Target Parent Main Cover Page</label>
+                        <select id="ParentCoverId" class="form-select border-primary">
+                            <option value="">-- Choose Target Parent Canvas Area --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label small fw-bold text-dark required">Select Media Format Type</label>
+                        <select id="MediaTypeSelector" class="form-select fw-bold text-secondary">
+                            <option value="Image" selected>📸 Standard Imagery / Inner Image File</option>
+                            <option value="Video">🎥 Video Streaming File (.mp4)</option>
+                            <option value="Audio">🎵 Audio Sound / Commentary Stream (.mp3)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                        <div class="media-type-box">
+                            <div id="mediaBox_Image" class="media-input-node">
+                                <label class="form-label small fw-bold text-success required"><i class="fas fa-camera me-1"></i>Choose Inner Image Showcase Asset</label>
+                                <input type="file" id="InnerImageFile" class="form-control" accept="image/*" />
+                            </div>
+
+                            <div id="mediaBox_Video" class="media-input-node d-none">
+                                <label class="form-label small fw-bold text-info required"><i class="fas fa-video me-1"></i>Choose Local MP4 Video Asset</label>
+                                <input type="file" id="InnerVideoFile" class="form-control" accept="video/mp4" />
+                            </div>
+
+                            <div id="mediaBox_Audio" class="media-input-node d-none">
+                                <label class="form-label small fw-bold text-warning required"><i class="fas fa-volume-up me-1"></i>Choose Digital Audio Stream Asset</label>
+                                <input type="file" id="InnerAudioFile" class="form-control" accept="audio/mp3, audio/wav" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center gap-2 pt-3 border-top mt-4 bg-white p-3 rounded shadow-xs">
+            <button type="button" id="btnResetForm" class="btn btn-outline-secondary rounded-pill px-4 btn-sm">
+                <i class="fas fa-undo me-1"></i> Clear Controls
+            </button>
+            <button type="button" id="btnSaveMediaData" class="btn btn-primary rounded-pill px-4 btn-sm shadow">
+                <i class="fas fa-save me-1"></i> Commit & Save Changes
+            </button>
+        </div>
+
+    </div>
+
+
+</div>
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold text-secondary text-uppercase tracking-wider">
+            <i class="fas fa-images me-2 text-primary"></i> <span id="galleryPanelTitle">Uploaded Cover Pages Gallery</span>
+        </h6>
+        <span id="galleryCounterBadge" class="badge bg-dark font-monospace">0 Items Found</span>
+    </div>
+
+    <div class="card-body bg-light">
+        <div class="row g-3" id="liveMediaGalleryContainer">
+            <div class="col-12 text-center py-4 text-muted">
+                <p class="mb-0 small italic">Please wait or select parameters to load live media stack...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script nonce="@nonce" src="~/custom/directmediamanager.js" asp-append-version="true"></script>
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // एलिमेंट को ढूंढकर उनकी वैल्यू निकालने का शुद्ध जावास्क्रिप्ट तरीका
+        const sectorEl = document.getElementById('hiddenSector');
+        const innerSectorEl = document.getElementById('hiddeninnerSector');
+
+        const sectorVal = sectorEl ? sectorEl.value : "";
+        const innerSectorVal = innerSectorEl ? innerSectorEl.value : "";
+
+        // बिना jQuery के फ़ंक्शन कॉल्स
+        if (typeof common !== "undefined" && typeof common.BindDropdown === "function") {
+            common.BindDropdown("/Master/DDL_UNSector", "Sector", "Sector", sectorVal);
+            common.BindDropdown("/Master/DDL_UNSector", "InnerSector", "Sector", innerSectorVal);
+        }
+    });
+</script>

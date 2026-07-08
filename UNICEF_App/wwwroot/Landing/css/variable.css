@@ -1,0 +1,151 @@
+/* dark theme css start */
+:root {
+	--bs-body-bg: #fff;
+    --bs-bodygrid-bg:  #f7f7f7;
+	--body-color: #212529;
+	--theme-color:#14496B;
+	--main-haeding:#14496B;
+	--header-bg: #fff;
+	--header-nav-color: #202020;
+	--header-menu-color: #565656;
+	--header-box-shadow: 0px 0px 25px #e7e7e7;
+	--left-menu-bg:#174556;
+    --footer-bg: #14496B;
+	--footer-color:#fff;
+	--bottom-footer: 1px solid #fff;
+	--footer-menu-color:#ffea1e;
+	--socialmedia-border-color: 1px solid #5382a1;
+	--implinks-bg: #0095B9;
+	--black: #000;
+	--white: #fff;
+	--grey:#333;
+	--scrolltop-bg:#009edb;
+	--default-heading-color:#085180;
+	--table-color:#212529;
+	--table-border-color:#ddd;
+	--tablehead-bg:#01699e;
+	--tablebody-bg:#fff;
+	--breadcrumb-bg:#fff;
+	--breadcrumb-color:#01699e;
+
+
+	--btn-outline-primary:#14496b;
+	--btn-default: #14496B;
+	--btn-default-color:#fff;
+	--accrodion-btn-bg: #fff;
+	--accrodion-bg: #fff;
+	--acrodion-bodybg:#fff;
+	--accrodion-btn-color:#666666;
+	--acrodion-border:1px solid #dfdfdf;
+	--accrodion-active-color:#01699e;
+	--accrodion-boxshadow: 0px 0px 20px #e1e1e1;
+	--resource-boxshadow: 0px 0px 23px #dbdbdb;
+
+
+	/* slider color css */
+		--slider-color: rgba(252, 57, 76, 0.6);  --slider-color2: rgb(180 165 21 / 70%);  --slider-color3: rgb(77 159 70 / 70%);
+		--slider-color4: rgb(198 34 49 / 70%);  --slider-color5: rgb(232 68 48 / 70%);  --slider-color6: rgb(48 191 226 / 70%);
+		--slider-color7: rgb(249 194 28 / 70%);  --slider-color8: rgb(162 30 69 / 70%);  --slider-color9: rgb(245 106 42 / 70%);
+		--slider-color10: rgb(220 25 106 / 70%);  --slider-color11: rgb(245 156 46 / 70%);  --slider-color12: rgb(198 152 45 / 70%);
+		--slider-color13: rgb(66 129 71 / 70%);  --slider-color14: rgb(48 191 226 / 70%);  --slider-color15: rgb(99 180 72 / 70%);
+		--slider-color16: rgb(17 108 158 / 70%);  --slider-color17: rgb(22 74 108 / 70%);
+	/* slider color css */
+
+
+	/* goal bg color css */
+		 --goaltable-bg: #e5233b;  --goaltable-bg2: #dea73a;  --goaltable-bg3: #4ca046;
+		--goaltable-bg4: #c5202e;  --goaltable-bg5: #ef402c;  --goaltable-bg6: #29bee2;
+		--goaltable-bg7: #fac315;  --goaltable-bg8: #a21c44;  --goaltable-bg9: #f26a2c;
+		--goaltable-bg10: #dd1768;  --goaltable-bg11: #f99d29;  --goaltable-bg12: #bf8b2c;
+		--goaltable-bg13: #407f44;  --goaltable-bg14: #1c97d4;  --goaltable-bg15: #5cba47;
+		--goaltable-bg16: #01699e;  --goaltable-bg17: #18496b; 
+
+		--goaltable-subheading: #ffd9d9;  --goaltable-subheading2: #fff2cc;  --goaltable-subheading3: #e2efd9;
+		--goaltable-subheading4: #fad2d8;  --goaltable-subheading5: #ffd8d4;  --goaltable-subheading6: #c8eaf5;
+		--goaltable-subheading7: #fbe9c1;  --goaltable-subheading8: #ffdde1;  --goaltable-subheading9: #fdddcf;
+		--goaltable-subheading10: #ffdbec;  --goaltable-subheading11: #ffeacf;  --goaltable-subheading12: #f9edd7;
+		--goaltable-subheading13: #e3f1da;  --goaltable-subheading14: #d6eef9;  --goaltable-subheading15: #e6f5e8;
+		--goaltable-subheading16: #e9f2fb;  --goaltable-subheading17: #e8f0ff; 
+
+	/* goal bg color css */
+
+
+}
+
+
+
+.theme-dark {
+	--bs-body-bg: #26323c;
+    --bs-bodygrid-bg:  #171d21;
+	--body-color: #d4d7d9;
+	--theme-color:#d4d7d9;
+	--main-haeding:#fff;
+	--header-bg: #1b1c23;
+	--footer-menu-color:#ffea1e;
+	--header-nav-color: #d4d7d9;
+	--header-menu-color: #d4d7d9;
+	--header-box-shadow: 0px 0px 25px #011b2b;
+	--left-menu-bg:#1b1c23;
+    --footer-bg: #1b1c23;
+	--footer-color:#a7a7a7;
+	--bottom-footer: 1px solid #6a6a6a;
+	--socialmedia-border-color: 1px solid #6a6a6a;
+	--implinks-bg: #151515;
+	--grey:#d4d7d9;
+	--scrolltop-bg:#607D8B;
+	--default-heading-color:#d8c827;
+	--black: #fff;
+	--table-color:#d4d7d9;
+	--table-border-color:#3f505f;
+	--tablehead-bg:#1f2529;
+	--tablebody-bg:#26323c;
+	--breadcrumb-bg:#1b1c23;
+	--breadcrumb-color:#fff;
+	
+	--btn-outline-primary:#fff;
+	--btn-default: #fff;
+	--btn-default-color:#333;
+	--accrodion-btn-bg: #1f2529;
+	--accrodion-bg: #26323c;
+	--acrodion-bodybg:#3f505f;
+	--accrodion-btn-color:#b5b5b5;
+	--acrodion-border: 1px solid #3f505f;
+	--accrodion-active-color:#d4d7d9;
+	--accrodion-boxshadow: 4px 0px 0px #141313;
+	--resource-boxshadow: 0px 0px 5px #26323c;
+	
+
+	 /* slider color css */
+
+	/*--slider-color: rgb(6 6 6 / 70%);*/ 
+	--slider-color2: rgb(6 6 6 / 70%); --slider-color3: rgb(6 6 6 / 70%); --slider-color4: rgb(6 6 6 / 70%);
+	--slider-color5: rgb(6 6 6 / 70%); --slider-color6: rgb(6 6 6 / 70%); --slider-color7: rgb(6 6 6 / 70%); --slider-color8: rgb(6 6 6 / 70%);
+	--slider-color9: rgb(6 6 6 / 70%); --slider-color10: rgb(6 6 6 / 70%); --slider-color11: rgb(6 6 6 / 70%); --slider-color12: rgb(6 6 6 / 70%);
+	--slider-color13: rgb(6 6 6 / 70%); --slider-color14: rgb(6 6 6 / 70%); --slider-color15: rgb(6 6 6 / 70%); --slider-color16: rgb(6 6 6 / 70%);
+	
+	/* slider color css */
+
+
+		/* goal bg color css */
+		--goaltable-bg: #1f2529;  --goaltable-bg2: #1f2529;  --goaltable-bg3: #1f2529;
+		--goaltable-bg4: #1f2529;  --goaltable-bg5: #1f2529;  --goaltable-bg6: #1f2529;
+		--goaltable-bg7: #1f2529;  --goaltable-bg8: #1f2529;  --goaltable-bg9: #1f2529;
+		--goaltable-bg10: #1f2529;  --goaltable-bg11: #1f2529;  --goaltable-bg12: #1f2529;
+		--goaltable-bg13: #1f2529;  --goaltable-bg14: #1f2529;  --goaltable-bg15: #1f2529;
+		--goaltable-bg16: #1f2529;  --goaltable-bg17: #1f2529; 
+
+
+		--goaltable-subheading: #303c47;  --goaltable-subheading2: #303c47;  --goaltable-subheading3: #303c47;
+		--goaltable-subheading4: #303c47;  --goaltable-subheading5: #303c47;  --goaltable-subheading6: #303c47;
+		--goaltable-subheading7: #303c47;  --goaltable-subheading8: #303c47;  --goaltable-subheading9: #303c47;
+		--goaltable-subheading10: #303c47;  --goaltable-subheading11: #303c47;  --goaltable-subheading12: #303c47;
+		--goaltable-subheading13: #303c47;  --goaltable-subheading14: #303c47;  --goaltable-subheading15: #303c47;
+		--goaltable-subheading16: #303c47;  --goaltable-subheading17: #303c47; 
+
+	/* goal bg color css */
+
+	
+}
+
+
+/* dark theme css end */

@@ -1,0 +1,1440 @@
+﻿@model MO.DashBoard.SectorDashboardModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<style nonce="@nonce">
+    /** {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }*/
+
+    /*.sector-banner {
+        margin-top: 14%;
+        position: relative;
+        min-height: 420px;
+        background-image: url('/public/img/sector/thumbnails/education.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;
+    }*/
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient( circle at top right, rgba(0, 183, 255, 0.35), transparent 35% ), linear-gradient( 90deg, rgba(5, 15, 35, 0.95) 0%, rgba(10, 35, 80, 0.85) 45%, rgba(20, 90, 160, 0.55) 100% );
+        /*background: linear-gradient( 135deg, rgba(13, 27, 42, 0.95) 0%, rgba(27, 38, 59, 0.85) 40%, rgba(65, 90, 119, 0.55) 100% );*/
+        /*background: linear-gradient( 120deg, rgba(0, 51, 102, 0.95) 0%, rgba(0, 96, 100, 0.80) 50%, rgba(0, 150, 136, 0.40) 100% );*/
+        /*background: linear-gradient( 90deg, rgba(6,22,40,.92) 0%, rgba(6,22,40,.70) 45%, rgba(6,22,40,.25) 100% );*/
+    }
+
+    .container-custom {
+        position: relative;
+        z-index: 2;
+        width: 90%;
+        margin: auto;
+        padding: 40px 0;
+    }
+
+    .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .breadcrumb {
+        color: #d7d7d7;
+        font-size: 14px;
+    }
+
+    .btn-contribute {
+        background: #fff;
+        color: #0b5ed7;
+        padding: 12px 24px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .btn-contribute:hover {
+            transform: translateY(-3px);
+        }
+
+    /*.content-area {
+        margin-top: 50px;
+    }*/
+
+    .left-content h1 {
+        font-size: 35px;
+        line-height: 1;
+        color: #fff;
+        font-weight: 700;
+    }
+
+    .left-content p {
+        margin-top: 0px;
+       /* max-width: 650px;*/
+        color: #fff;
+        line-height: .5;
+        font-size: 18px;
+    }
+
+    .stats-wrapper {
+        display: flex;
+        gap: 20px;
+        margin-top: 60px;
+        flex-wrap: wrap;
+    }
+
+    /*.stat-card {
+        min-width: 180px;
+        padding: 25px;
+        border-radius: 18px;
+        background: rgba(255,255,255,.12);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255,255,255,.15);
+        transition: .3s;
+    }*/
+
+    .stat-card:hover {
+        transform: translateY(-6px);
+        background: rgba(255,255,255,.18);
+    }
+
+    .stat-card h2 {
+        color: #fff;
+        font-size: 42px;
+        margin-bottom: 8px;
+    }
+
+    .stat-card span {
+        color: #f1f1f1;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    @@media(max-width:768px) {
+
+        .top-row {
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .left-content h1 {
+            font-size: 34px;
+        }
+
+        .stats-wrapper {
+            flex-direction: column;
+        }
+
+        .stat-card {
+            width: 100%;
+        }
+    }
+
+    .stat-card {
+        position: relative;
+        min-width: 180px;
+        padding: 25px;
+        border-radius: 20px;
+        background: linear-gradient( 135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.08) );
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 0 20px rgba(0,174,255,0.08);
+        overflow: hidden;
+        transition: all .4s ease;
+    }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient( 90deg, #00c6ff, #0072ff, #6a11cb );
+        }
+
+    .stat-icon {
+        font-size: 24px;
+        color: #00c6ff;
+        margin-bottom: 12px;
+    }
+</style>
+<style nonce="@nonce">
+
+    /*body {
+        margin: 0;
+        font-family: 'Segoe UI',sans-serif;
+        background: #eef3ff;
+        overflow-x: hidden;
+    }*/
+
+    /* MAIN SECTION */
+
+    .dashboard-section {
+        padding: 50px 60px;
+        position: relative;
+    }
+
+        .dashboard-section::before {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -300px;
+            right: -250px;
+            z-index: -1;
+        }
+
+    .left-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .heading {
+        font-size: 48px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1.2;
+    }
+
+        .heading span {
+            color: #0ea5e9;
+        }
+
+    .subheading {
+        font-size: 18px;
+        color: #5b6475;
+        margin-top: 12px;
+        margin-bottom: 35px;
+    }
+
+    /* FILTERS */
+
+    .filter-wrapper {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 35px;
+    }
+
+    .filter-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 14px 18px;
+        width: 260px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border: 1px solid #dbe4ff;
+    }
+
+        .filter-card label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .filter-card select {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: none;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+    /* INFO BOX */
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 20px;
+        max-width: 600px;
+    }
+
+    .info-box {
+        position: relative;
+        background: #fff;
+        border-radius: 22px;
+        padding: 25px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        transition: 0.3s;
+        border: 1px solid #dce6ff;
+    }
+
+        .info-box:hover {
+            transform: translateY(-6px);
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -50px;
+            right: -40px;
+        }
+
+    .box-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .box-count {
+        font-size: 54px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1;
+        margin-top: 12px;
+    }
+
+    .box-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 10px;
+    }
+
+    .box-icon {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: #0ea5e9;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    /* RIGHT SIDE */
+
+    .sector-panel {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sector-wheel {
+        width: 580px;
+        height: 580px;
+        position: relative;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        padding: 20px;
+    }
+
+    .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: conic-gradient( #14b8a6 0deg 45deg, #0f766e 45deg 90deg, #9333ea 90deg 135deg, #ec4899 135deg 180deg, #f97316 180deg 225deg, #eab308 225deg 270deg, #22c55e 270deg 315deg, #3b82f6 315deg 360deg );
+        position: relative;
+    }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+        }
+
+    .center-circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: linear-gradient(135deg,#eff6ff,#dbeafe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        font-size: 55px;
+        color: #082f75;
+        font-weight: bold;
+    }
+
+    /* LABELS */
+
+    .sector-tag {
+        position: absolute;
+        color: #fff;
+        font-weight: 700;
+        font-size: 17px;
+        text-align: center;
+        width: 120px;
+        z-index: 10;
+    }
+
+    .t1 {
+        top: 70px;
+        left: 230px;
+    }
+
+    .t2 {
+        top: 140px;
+        right: 40px;
+    }
+
+    .t3 {
+        top: 270px;
+        right: 0px;
+    }
+
+    .t4 {
+        bottom: 120px;
+        right: 60px;
+    }
+
+    .t5 {
+        bottom: 40px;
+        left: 240px;
+    }
+
+    .t6 {
+        bottom: 120px;
+        left: 60px;
+    }
+
+    .t7 {
+        top: 280px;
+        left: -10px;
+    }
+
+    .t8 {
+        top: 130px;
+        left: 40px;
+    }
+
+    /* RESPONSIVE */
+
+    @@media(max-width:1200px) {
+
+        .sector-wheel {
+            width: 450px;
+            height: 450px;
+            margin-top: 40px;
+        }
+
+        .heading {
+            font-size: 38px;
+        }
+    }
+
+    @@media(max-width:991px) {
+
+        .dashboard-section {
+            padding: 30px;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-wrapper {
+            flex-direction: column;
+        }
+
+        .sector-wheel {
+            width: 350px;
+            height: 350px;
+        }
+
+        .sector-tag {
+            font-size: 12px;
+            width: 90px;
+        }
+    }
+</style>
+<style nonce="@nonce">
+    /* =========================
+           TOP COUNT BOX DESIGN
+        ========================= */
+
+    .top-count-section {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        margin-bottom: 45px;
+        position: relative;
+        z-index: 5;
+        margin-top: 20px;
+    }
+
+    .count-card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        border: 1px solid #dbe7ff;
+        box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        transition: all .4s ease;
+        z-index: 1;
+    }
+
+        /* Background Circle */
+        .count-card::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(13,110,253,.08);
+            border-radius: 50%;
+            right: -45px;
+            top: -45px;
+            transition: all .5s ease;
+        }
+
+        /* Animated Gradient Border */
+        .count-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            padding: 2px;
+            background: linear-gradient(135deg,#0d6efd,#20c997,#0dcaf0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: .4s;
+        }
+
+        /* Show Gradient Border */
+        .count-card:hover::after {
+            opacity: 1;
+        }
+
+        .count-card:hover,
+        .count-card.active {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 45px rgba(13,110,253,.25);
+            border-color: transparent;
+            background: linear-gradient(135deg,#ffffff,#f5faff);
+        }
+
+    .count-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg,#0ea5e9,#2563eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .count-card h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1;
+    }
+
+    .count-card p {
+        margin: 6px 0 0;
+        font-size: 15px;
+        color: #475569;
+        font-weight: 600;
+    }
+
+    /* Double Card */
+    .double-count-card {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #dbe7ff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        position: relative;
+        overflow: hidden;
+        transition: .3s;
+        /* 2 cards ki width */
+        grid-column: span 2;
+    }
+
+        .double-count-card::before {
+            content: '';
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: #eff6ff;
+            border-radius: 50%;
+            right: -30px;
+            top: -30px;
+        }
+
+        .double-count-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+    .double-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .double-card-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .double-card-divider {
+        width: 1px;
+        height: 40px;
+        background: #dbe7ff;
+        margin: 0 15px;
+    }
+
+    .double-card-footer {
+        margin-top: 8px;
+        text-align: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #2563eb;
+        /*text-transform: uppercase;*/
+        letter-spacing: .5px;
+    }
+
+    .double-card-item h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #082f75;
+    }
+
+    .double-card-item p {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: #475569;
+        font-weight: 600;
+    }
+    /* RESPONSIVE */
+
+    @@media(max - width:1200px) {
+        .top-count-section {
+            grid-template-columns: repeat(3,1fr);
+        }
+    }
+
+    @@media(max - width:768px) {
+        .top-count-section {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+
+    @@media(max - width:576px) {
+        .top-count-section {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+<style nonce="@nonce">
+    /* =========================================
+       TABLE BORDERED CSS
+    ========================================= */
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .table-bordered {
+        border: 1px solid #dbeafe;
+    }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dbeafe;
+            padding: 12px;
+            vertical-align: top;
+        }
+
+    /* =========================================
+       TABLE HEADER
+    ========================================= */
+
+    .table thead th {
+        background: #d2d2d2;
+        color: #000;
+        font-size: 15px;
+        font-weight: 700;
+        text-align: left;
+        padding: 10px;
+    }
+
+    /* =========================================
+       TABLE BODY
+    ========================================= */
+
+    .table tbody td {
+        font-size: 14px;
+        color: #334155;
+        line-height: 1.6;
+    }
+
+    /* =========================================
+       INNER TABLE
+    ========================================= */
+
+    .table-sm th,
+    .table-sm td {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    /* =========================================
+       HOVER EFFECT
+    ========================================= */
+
+    .table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .content-area {
+        position: relative;
+        z-index: 2;
+    }
+
+    .sector-content-card {
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 20px;
+        padding: 25px 30px;
+        /*max-width: 850px;*/
+    }
+
+    .custom-breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(8, 47, 117, .85);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .custom-breadcrumb a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+            .custom-breadcrumb a:hover {
+                color: #93c5fd;
+            }
+
+    .separator {
+        color: rgba(255,255,255,.6);
+        font-size: 11px;
+    }
+
+    .breadcrumb-title {
+        color: #fff;
+    }
+
+    .sector-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #eff6ff;
+        color: #2563eb;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .sector-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+
+    .sector-description {
+        color: rgba(255,255,255,.9);
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 0;
+        max-width: 700px;
+    }
+
+    @@media(max-width:768px) {
+
+        .sector-content-card {
+            padding: 20px;
+        }
+
+        .sector-title {
+            font-size: 30px;
+        }
+
+        .sector-description {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<section class="container sector-banner" id="sectorBanner">
+
+    <input type="hidden" id="hiddenSectorId" value="@Model.SectorId" />
+
+    @*<div class="overlay"></div>*@
+    <div class="container-custom">
+        <div class="content-area">
+
+            <div class="sector-content-card">
+
+                <nav class="custom-breadcrumb">
+                    <a href="/">
+                        <i class="fa fa-home"></i>
+                    </a>
+
+                    <span class="separator">
+                        <i class="fa fa-chevron-right"></i>
+                    </span>
+
+                    <span class="breadcrumb-title">
+                        Sector
+                    </span>
+                </nav>
+
+                <div class="left-content">
+                    <h1 class="sector-title">
+                        @Model.SectorName
+                    </h1>
+
+                    <p class="sector-description">
+                        @Model.Description
+                    </p>
+
+                </div>
+
+
+                <div class="top-count-section">
+                    <!-- Department -->
+                    <div class="count-card countDepartmentCard"
+                         data-sectorid="@Model.SectorId">
+                        <div class="count-icon">🏛</div>
+                        <div>
+                            <h2 id="departmentCount">
+                                @Model.DepartmentCount
+                            </h2>
+                            <p>Departments</p>
+                        </div>
+                    </div>
+                    <!-- Agency -->
+                    <div class="count-card countAgencyCard"
+                         data-sectorid="@Model.SectorId">
+                        <div class="count-icon">🌐</div>
+                        <div>
+                            <h2 id="agencyCount">
+                                @Model.AgencyCount
+                            </h2>
+                            <p>Agencies</p>
+                        </div>
+                    </div>
+                    <!-- Activity -->
+                    <div class="count-card">
+                        <div class="count-icon">📋</div>
+                        <div>
+                            <h2>@Model.ActivityCount</h2>
+                            <p>Activities</p>
+                        </div>
+                    </div>
+                    <!-- Task -->
+                    <div class="count-card">
+                        <div class="count-icon">🗂</div>
+                        <div>
+                            <h2>@Model.TaskCount</h2>
+                            <p>Tasks</p>
+                        </div>
+                    </div>
+                    <!-- Best Practice -->
+                    <div class="count-card">
+                        <div class="count-icon">🏆</div>
+                        <div>
+                            <h2>@Model.BestPracticeCount</h2>
+                            <p>Best Practices</p>
+                        </div>
+                    </div>
+                    <div class="double-count-card">
+                        <div class="double-card-top">
+                            <div class="double-card-item">
+                                <div class="count-icon">📊</div>
+                                <div>
+                                    <h2>@Model.GoalCount</h2>
+                                    <p>Goals</p>
+                                </div>
+                            </div>
+                            <div class="double-card-divider"></div>
+                            <div class="double-card-item">
+                                <div class="count-icon">📑</div>
+                                <div>
+                                    <h2>@Model.TargetCount</h2>
+                                    <p>Targets</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="double-card-footer">
+                            SDGs
+                        </div>
+                    </div>
+                    <div class="double-count-card">
+                        <div class="double-card-top">
+                            <div class="double-card-item">
+                                <div class="count-icon">📊</div>
+                                <div>
+                                    <h2>@Model.PillarCount</h2>
+                                    <p>Themes</p>
+                                </div>
+                            </div>
+                            <div class="double-card-divider"></div>
+                            <div class="double-card-item">
+                                <div class="count-icon">📑</div>
+                                <div>
+                                    <h2>@Model.SubPillarCount</h2>
+                                    <p>SubThemes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="double-card-footer">
+                            Viksit Rajasthan@2047
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+       
+            <div class="department-page-title">
+                <h2 id="title">
+                </h2>
+                @*<p>
+                        Explore department wise activity monitoring,
+                        SDGs, sectors and development initiatives.
+                    </p>*@
+            </div>
+            <div class="accordion myaccordion"
+                 id="departmentAccordion">
+            </div>
+        
+    </div>
+</div>
+
+<!-- ========================================= -->
+<!-- BEST PRACTICES PAGE -->
+<!-- ========================================= -->
+
+<section class="best-practice-page">
+    <div class="container">
+        <div class="section-heading-box">
+            <h2 class="section-title">
+                Best Practices
+            </h2>
+            <span class="practice-count" id="practiceCount">
+                16 Results Found
+            </span>
+        </div>
+
+        <div class="row g-4" id="coverPageContainer">
+        </div>
+
+        <!--<div class="row g-4">-->
+        <!-- PRACTICE CARD -->
+        <!--<div class="col-lg-4 col-md-6">
+            <div class="practice-card">
+                <div class="practice-image-box">
+                    <img src="/public/img/homepage/sector_wheel/image_7_grad.png"
+                         class="practice-image">
+                </div>
+                <div class="practice-body">
+                    <span class="practice-sector">
+                        Skilling & Labour Welfare
+                    </span>
+                    <h3 class="practice-title">
+                        Digital Livelihood Training Program
+                    </h3>
+                    <p class="practice-desc">
+                        Empowering youth through skill development
+                        and digital learning initiatives in rural areas.
+                    </p>
+                    <div class="practice-footer">
+                        <span>
+                            Jaipur
+                        </span>
+                        <a href="#"
+                           class="read-more-btn">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <!-- PRACTICE CARD -->
+        <!--<div class="col-lg-4 col-md-6">
+
+            <div class="practice-card">
+
+                <div class="practice-image-box">
+
+                    <img src="/public/img/homepage/sector_wheel/image_5_grad.png"
+                         class="practice-image">
+
+                </div>
+
+                <div class="practice-body">
+
+                    <span class="practice-sector">
+                        Health & Nutrition
+                    </span>
+
+                    <h3 class="practice-title">
+                        Community Nutrition Initiative
+                    </h3>
+
+                    <p class="practice-desc">
+
+                        Strengthening nutrition services for women
+                        and children through local partnerships.
+
+                    </p>
+
+                    <div class="practice-footer">
+
+                        <span>
+                            Udaipur
+                        </span>
+
+                        <a href="#"
+                           class="read-more-btn">
+                            Read More
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>-->
+        <!-- PRACTICE CARD -->
+        <!--<div class="col-lg-4 col-md-6">
+
+                <div class="practice-card">
+
+                    <div class="practice-image-box">
+
+                        <img src="/public/img/homepage/sector_wheel/image_3_grad.png"
+                             class="practice-image">
+
+                    </div>
+
+                    <div class="practice-body">
+
+                        <span class="practice-sector">
+                            Education
+                        </span>
+
+                        <h3 class="practice-title">
+                            Smart Classroom Transformation
+                        </h3>
+
+                        <p class="practice-desc">
+
+                            Enhancing learning outcomes through
+                            digital classrooms and innovative teaching.
+
+                        </p>
+
+                        <div class="practice-footer">
+
+                            <span>
+                                Kota
+                            </span>
+
+                            <a href="#"
+                               class="read-more-btn">
+                                Read More
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>-->
+
+    </div>
+
+</section>
+
+@{
+    var imagePath = Model.SectorId switch
+    {
+        1 => "/public/img/sector/thumbnails/education1.jpg",
+        2 => "/public/img/sector/thumbnails/health.png",
+        3 => "/public/img/sector/thumbnails/education.png",
+        4 => "/public/img/sector/thumbnails/tourism.png",
+        5 => "/public/img/sector/thumbnails/agriculture.png",
+        6 => "/public/img/sector/thumbnails/energy.png",
+        7 => "/public/img/sector/thumbnails/urbanization.png",
+        8 => "/public/img/sector/thumbnails/water.png",
+        9 => "/public/img/sector/thumbnails/msme.png",
+        10 => "/public/img/sector/thumbnails/manufacturing.png",
+        _ => "/public/img/sector/default-sector.jpg"
+    };
+}
+<!-- ========================================= -->
+<!-- CSS -->
+<!-- ========================================= -->
+<script nonce="@nonce">
+document.addEventListener("DOMContentLoaded", function () {
+
+    const imagePath = '@imagePath';
+    const banner = document.getElementById("sectorBanner");
+
+    if (banner) {
+        banner.style.setProperty("--sector-bg", "url('" + imagePath + "')");
+    }
+
+});
+</script>
+
+<style nonce="@nonce">
+    .sector-banner {
+        margin-top: 180px;
+        position: relative;
+        min-height: 420px;
+        background-image: var(--sector-bg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;
+    }
+</style>
+<style nonce="@nonce">
+    .margin-top-new {
+        margin-top: 12%;
+    }
+
+    .color-white {
+        color: #fff;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .hero-section {
+        background: linear-gradient( 135deg, #0d47a1, #26c6da );
+        padding-top: 120px;
+        color: #fff;
+    }
+
+    .page-title {
+        font-size: 52px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+    }
+
+    /* ===================================== */
+
+    .sector-card {
+        position: relative;
+        height: 120px;
+        border-radius: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+        .sector-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .sector-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .sector-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( rgba(0,0,0,0.3), rgba(0,0,0,0.7) );
+    }
+
+    .sector-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+    }
+
+        .sector-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sector-content span {
+            font-size: 14px;
+        }
+
+    /* ===================================== */
+
+    .filter-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .filter-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .custom-select {
+        height: 52px;
+        border-radius: 12px;
+    }
+
+    /* ===================================== */
+
+    .section-heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .section-title {
+        font-size: 34px;
+        font-weight: 700;
+    }
+
+    .practice-count {
+        color: #777;
+    }
+
+    /* ===================================== */
+
+    .practice-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.4s;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        height: 100%;
+    }
+
+        .practice-card:hover {
+            transform: translateY(-6px);
+        }
+
+    .practice-image-box {
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .practice-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.4s;
+    }
+
+    .practice-card:hover .practice-image {
+        transform: scale(1.08);
+    }
+
+    .practice-body {
+        padding: 25px;
+    }
+
+    .practice-sector {
+        display: inline-block;
+        background: #e8f1ff;
+        color: #0d47a1;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .practice-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .practice-desc {
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .practice-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .read-more-btn {
+        background: #0d47a1;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .read-more-btn:hover {
+            background: #1565c0;
+            color: #fff;
+        }
+</style>
+<script nonce="@nonce" src="~/custom/Dashboard.js"></script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+        dashboard.loadCoverPagesBySector();
+    });
+    // =========================
+    // WITHOUT JQUERY
+    // EVENT LISTENER
+    // =========================
+    document.addEventListener("click", function (e) {
+        let departmentCard =
+            e.target.closest(".countDepartmentCard");
+        if (departmentCard) {
+
+            // =========================
+            // GET DATA ATTRIBUTE
+            // =========================
+
+            let sectorId =
+                departmentCard.getAttribute("data-sectorid");
+
+            console.log(sectorId);
+
+
+
+            // =========================
+            // FUNCTION CALL
+            // =========================
+
+            dashboard.loadSectorDepartmentActivityList(sectorId);
+
+        }
+        // =========================
+        // AGENCY CARD
+        // =========================
+        let agencyCard =
+            e.target.closest(".countAgencyCard");
+        if (agencyCard) {
+            let sectorId =
+                agencyCard.getAttribute("data-sectorid");
+            dashboard.loadSectorAgencyActivityList(sectorId);
+        }
+    });
+
+</script>

@@ -1,0 +1,327 @@
+﻿@model MO.Management.trackingMainModel
+
+@{
+    ViewData["Title"] = "Sector Mapping";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+    <div class="row mb-3">
+        <!-- 🔷 Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold">📊 Progress</h4>
+            <a asp-action="ActivityManagement" asp-controller="Management" class="btn btn-light border">
+                <i class="bx bx-arrow-back"></i> Back To List
+            </a>
+        </div>
+        <div class="col-md-12">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <h4 class="fw-bold mb-1">
+                                UN Agency Monitoring
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Reporting & Geo Level Task Tracking
+                            </p>
+                        </div>
+
+                        <span class="badge bg-primary fs-6">
+                            Step <span id="stepNo">1</span> of 2
+                        </span>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <input type="hidden" id="ActivityGuid" value="@Model.ActivityGuid" />
+    <input type="hidden" id="reportingId" value="@Model.reportingId" />
+    <!-- ========================================= -->
+    <!-- STEP 1 -->
+    <!-- ========================================= -->
+
+    <div id="step1Section" class="step-section">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <partial name="_ReportingPeriodPartial" model="Model._activity.ActivityStartDate" />
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- STEP 2 -->
+    <!-- ========================================= -->
+
+    <div id="step2Section"
+         class="step-section"
+         style="display:none;">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <partial name="_TaskGeoTracking"
+                         model="Model._activity" />
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- STEP 3 -->
+    <!-- ========================================= -->
+    @* <div id="step3Section"
+             class="step-section"
+             style="display:none;">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <partial name="_BestPracticesPartial"
+                             model="Model._activity" />
+
+                </div>
+            </div>
+
+        </div> *@
+
+    <!-- ========================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================= -->
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary px-4"
+                                id="btnPrevious"
+                                disabled>
+                            <i class="bx bx-left-arrow-alt"></i>
+                            Previous
+                        </button>
+
+                        <div>
+                            <button type="button"
+                                    class="btn btn-success px-4 me-2 d-none"
+                                    id="btnSave">
+                                <i class="bx bx-save"></i>
+                                Save Draft
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-primary px-4"
+                                    id="btnNext">
+                                Next
+                                <i class="bx bx-right-arrow-alt"></i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-danger px-4 d-none"
+                                    id="btnFinalSubmit">
+                                <i class="bx bx-check-circle"></i>
+                                Final Submit
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script nonce="@nonce" src="~/custom/monitoringreport.js" asp-append-version="true"></script>
+
+<script nonce="@nonce">
+
+    let currentStep = 1;
+    let totalSteps = 2;
+
+    // jQuery के $(document).ready की जगह शुद्ध JS का DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", function () {
+
+        updateStepUI();
+
+        // =========================================
+        // NEXT BUTTON CLICK
+        // =========================================
+        const btnNext = document.getElementById("btnNext");
+        if (btnNext) {
+            btnNext.addEventListener("click", function () {
+                // STEP 1 VALIDATION
+                if (currentStep === 1) {
+                    if (typeof monitoringreport !== "undefined") {
+                        monitoringreport.saveReportingStep();
+                    }
+                    return;
+                }
+
+                // STEP 2 VALIDATION
+                if (currentStep === 2) {
+                    if (typeof monitoringreport !== "undefined") {
+                        monitoringreport.SaveTracking(0);
+                    }
+                    return;
+                }
+            });
+        }
+
+        // =========================================
+        // SAVE BUTTON CLICK
+        // =========================================
+        const btnSave = document.getElementById("btnSave");
+        if (btnSave) {
+            btnSave.addEventListener("click", function () {
+                if (typeof monitoringreport !== "undefined") {
+                    monitoringreport.SaveTracking(0);
+                }
+            });
+        }
+
+        // =========================================
+        // FINAL SUBMIT BUTTON CLICK
+        // =========================================
+        const btnFinalSubmit = document.getElementById("btnFinalSubmit");
+        if (btnFinalSubmit) {
+            btnFinalSubmit.addEventListener("click", function () {
+                if (!confirm("Once submitted, you cannot modify this report. Continue?")) {
+                    return;
+                }
+                if (typeof monitoringreport !== "undefined") {
+                    monitoringreport.SaveTracking(1);
+                }
+            });
+        }
+
+        // =========================================
+        // PREVIOUS BUTTON CLICK
+        // =========================================
+        const btnPrevious = document.getElementById("btnPrevious");
+        if (btnPrevious) {
+            btnPrevious.addEventListener("click", function () {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepUI();
+                    window.scrollTo(0, 0);
+                }
+            });
+        }
+    });
+
+    // =============================================
+    // STEP UI MANAGEMENT
+    // =============================================
+    function updateStepUI() {
+        // सभी .step-section क्लासेस को छुपाने के लिए
+        document.querySelectorAll(".step-section").forEach(function (el) {
+            el.style.display = "none";
+        });
+
+        // करंट स्टेप सेक्शन को दिखाने के लिए
+        const currentSection = document.getElementById("step" + currentStep + "Section");
+        if (currentSection) {
+            currentSection.style.display = "block"; // या जो भी आपका CSS डिस्प्ले हो
+        }
+
+        // स्टेप नंबर टेक्स्ट अपडेट करने के लिए
+        const stepNoEl = document.getElementById("stepNo");
+        if (stepNoEl) {
+            stepNoEl.textContent = currentStep;
+        }
+
+        // Previous बटन को डिसेबल/इनेबल करने के लिए
+        const btnPrevious = document.getElementById("btnPrevious");
+        if (btnPrevious) {
+            btnPrevious.disabled = (currentStep === 1);
+        }
+
+        const btnNext = document.getElementById("btnNext");
+        const btnSave = document.getElementById("btnSave");
+        const btnFinalSubmit = document.getElementById("btnFinalSubmit");
+
+        // UI में बटन्स को दिखाने/छुपाने के लिए (क्लास बदलने का तरीका)
+        if (currentStep === totalSteps) {
+            if (btnNext) btnNext.classList.add("d-none");
+            if (btnSave) btnSave.classList.remove("d-none");
+            if (btnFinalSubmit) btnFinalSubmit.classList.remove("d-none");
+        }
+        else {
+            if (btnNext) btnNext.classList.remove("d-none");
+            if (btnSave) btnSave.classList.add("d-none");
+            if (btnFinalSubmit) btnFinalSubmit.classList.add("d-none");
+        }
+    }
+
+    // =============================================
+    // SAVE FULL DATA
+    // =============================================
+    function saveFullMonitoring() {
+
+        // रेडियो बटन की वैल्यू निकालने का शुद्ध जावास्क्रिप्ट तरीका
+        const isAlignedEl = document.querySelector("input[name='IsAligned']:checked");
+        const hasChallengesEl = document.querySelector("input[name='HasChallenges']:checked");
+
+        let reportingModel = {
+            ReportFromDate: document.getElementById("reportFromDate") ? document.getElementById("reportFromDate").value : "",
+            ReportToDate: document.getElementById("reportToDate") ? document.getElementById("reportToDate").value : "",
+            IsAligned: isAlignedEl ? isAlignedEl.value : "",
+            AlignmentDetails: document.getElementById("AlignmentDetails") ? document.getElementById("AlignmentDetails").value : "",
+            FundUtilization: document.getElementById("FundUtilization") ? document.getElementById("FundUtilization").value : "",
+            HasChallenges: hasChallengesEl ? hasChallengesEl.value : "",
+            ChallengeDetails: document.getElementById("ChallengeDetails") ? document.getElementById("ChallengeDetails").value : "",
+            Suggestions: document.getElementById("Suggestions") ? document.getElementById("Suggestions").value : ""
+        };
+
+        let trackingData = (typeof getTrackingData === "function") ? getTrackingData() : null;
+        let bestPracticeFormData = (typeof getBestPracticeData === "function") ? getBestPracticeData() : new FormData();
+
+        bestPracticeFormData.append("ReportingJson", JSON.stringify(reportingModel));
+        bestPracticeFormData.append("TrackingJson", JSON.stringify(trackingData));
+
+        console.log("Ready To Save");
+
+        /*
+        // बिना jQuery के AJAX (Fetch API) कॉल करने का तरीका:
+        fetch('/Management/SaveMonitoringData', {
+            method: 'POST',
+            body: bestPracticeFormData
+        })
+        .then(response => response.json())
+        .then(r => {
+            if (r.status) {
+                alert("Saved Successfully");
+                window.location.href = '/Management/MonitoringList';
+            } else {
+                alert(r.message);
+            }
+        })
+        .catch(() => {
+            alert("Error while saving");
+        });
+        */
+    }
+
+</script>

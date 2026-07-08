@@ -1,0 +1,161 @@
+﻿@using MO.Common
+@model MO.Master.DepartmentMasterMO
+@{
+    ViewData["Title"] = "Department";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+<form asp-action="SaveDepartment" method="post">
+    <div class="row">
+
+        <div class="col-md-6">
+            <label>Department Name</label>
+            <input asp-for="DepartmentName" class="form-control" required />
+        </div>
+
+        <div class="col-md-3">
+            <label>Short Name</label>
+            <input asp-for="ShortName" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label>Department Type</label>
+            <select asp-for="DepartmentType" class="form-control">
+                <option>Government</option>
+                <option>Private</option>
+            </select>
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>Head Of Department</label>
+            <input asp-for="HeadOfDepartment" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mt-2">
+            <label>Email</label>
+            <input asp-for="Email" type="email" class="form-control" />
+        </div>
+
+        <div class="col-md-3 mt-2">
+            <label>Phone</label>
+            <input asp-for="Phone" class="form-control" />
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>Address</label>
+            <input asp-for="Address" class="form-control" />
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+
+        <div class="col-md-3 mt-2">
+            <label>Status</label>
+            <select asp-for="Status" class="form-control">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Save</button>
+</form>
+
+<div class="mt-4">
+    <div class="card shadow-lg border-0 rounded-3">
+
+        <!-- Header -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Department List</h5>
+            <a href="/Department/Create" class="btn btn-light btn-sm">+ Add Department</a>
+        </div>
+
+        <!-- Body -->
+        <div class="">
+
+            @if (Model != null && Model.list != null && Model.list.Any())
+            {
+                int sr = 1;
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>Department</th>
+                                <th>Short</th>
+                                <th>Type</th>
+                                <th>Head</th>
+                                <th>Contact</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th width="120">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.list)
+                            {
+                                <tr>
+                                    <td>@sr++</td>
+
+                                    <!-- Name + Description -->
+                                    <td>
+                                        <strong>@item.DepartmentName</strong><br />
+                                        <small class="text-muted">@item.Description</small>
+                                    </td>
+
+                                    <td class="text-center">@item.ShortName</td>
+
+                                    <!-- Type Badge -->
+                                    <td class="text-center">
+                                        <span class="badge bg-info text-dark">
+                                            @item.DepartmentType
+                                        </span>
+                                    </td>
+
+                                    <!-- Head -->
+                                    <td>@item.HeadOfDepartment</td>
+
+                                    <!-- Contact -->
+                                    <td>
+                                        📧 @item.Email <br />
+                                        📞 @item.Phone
+                                    </td>
+
+                                    <!-- Address -->
+                                    <td>@item.Address</td>
+
+                                    <!-- Status -->
+                                    <td class="text-center">
+                                        <span class="badge bg-@(item.Status == 1 ? "success" : "danger")">
+                                            @(item.Status == 1 ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+
+                                    <!-- Action -->
+                                    <td class="text-center">
+                                        <a href="/Department/Edit/@item.Id" class="btn btn-warning btn-sm">✏️</a>
+                                        <a href="/Department/Delete/@item.Id" class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure?')">🗑</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    No Departments Found
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

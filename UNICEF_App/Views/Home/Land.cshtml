@@ -1,0 +1,2965 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<link href="~/public/css/instyle.css" rel="stylesheet" />
+<link href="~/public/css/best_practices-new.css" rel="stylesheet" />
+<style nonce="@nonce">
+    .li-text {
+        margin-top: 45px;
+        text-align: justify;
+    }
+
+    .back-color {
+        background-color: #ffffff;
+    }
+
+        .back-color p {
+            text-align: justify;
+        }
+
+    .selected-sector {
+        stroke: #ffffff;
+        stroke-width: 5;
+    }
+</style>
+<style nonce="@nonce">
+
+    .main-container {
+        width: 100%;
+        /* max-width: 1200px; */
+        text-align: center;
+    }
+
+    .main-title {
+        color: #f15a24; /* Orange color from image */
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .infographic-border {
+        border: 2px solid #ffcccc; /* Light pink/red border */
+        border-radius: 6px;
+        padding: 60px 20px;
+        /* background-color: #ffffff; */
+        position: relative;
+        background: linear-gradient(10deg, rgba(240, 241, 171, 1) 0%, rgba(203, 255, 255, 1) 100%);
+    }
+
+    /* --- Flexbox Rows --- */
+    .sector-row {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        gap: 15px; /* Space between items */
+    }
+
+    .mt-50 {
+        margin-top: 50px;
+    }
+
+    /* --- Individual Sector Item Setup --- */
+    .sector-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(16.66% - 15px); /* 6 items per row on desktop */
+        min-width: 150px; /* Prevents items from getting too small */
+        position: relative;
+    }
+
+    /* Row 2 needs specific width for 7 items */
+    .sector-row.mt-50 .sector-item {
+        width: calc(14.28% - 15px);
+    }
+
+    /* --- Icon Diamond (The Rhombus) --- */
+    .icon-diamond {
+        width: 70px;
+        height: 70px;
+        background-color: #ffffff;
+        border: 3px solid; /* Color assigned via specific classes */
+        transform: rotate(45deg); /* Creates the diamond shape */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 2;
+    }
+
+        .icon-diamond i {
+            transform: rotate(-45deg); /* Un-rotates the icon inside */
+            font-size: 30px;
+            color: #333; /* Default icon color */
+        }
+
+    /* --- Connector Line (Pointer) --- */
+    .connector-line {
+        width: 3px;
+        height: 30px;
+        background-color: #333; /* Default color */
+        margin-top: -15px; /* Overlaps with diamond */
+        position: relative;
+        z-index: 1;
+    }
+
+        /* Creating the V-shape pointer at the bottom */
+        .connector-line::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid; /* Color assigned via classes */
+        }
+
+    /* --- Text Block (Rounded Rectangle) --- */
+    .text-block {
+        width: 100%;
+        background-color: #333; /* Default background */
+        color: #ffffff;
+        border-radius: 15px;
+        padding: 15px 10px;
+        text-align: center;
+        margin-top: 5px;
+        min-height: 100px; /* Ensures uniform height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .sector-number {
+        font-size: 20px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .text-block p {
+        font-size: 13px;
+        line-height: 1.3;
+        font-weight: 600;
+    }
+
+    /* =========================================
+               --- COLOR DEFINITIONS (Matching Image) ---
+               ========================================= */
+
+    /* 1. Agri-Food (Green) */
+    .color-green .icon-diamond {
+        border-color: #2e7d32;
+    }
+
+    .color-green .connector-line {
+        background-color: #2e7d32;
+    }
+
+        .color-green .connector-line::after {
+            border-top-color: #2e7d32;
+        }
+
+    .color-green .text-block {
+        background-color: #2e7d32;
+    }
+
+    /* 2. Health (Pink) */
+    .color-pink .icon-diamond {
+        border-color: #ec407a;
+    }
+
+    .color-pink .connector-line {
+        background-color: #ec407a;
+    }
+
+        .color-pink .connector-line::after {
+            border-top-color: #ec407a;
+        }
+
+    .color-pink .text-block {
+        background-color: #ec407a;
+    }
+
+    /* 3. Education (Dark Blue) */
+    .color-dark-blue .icon-diamond {
+        border-color: #1a237e;
+    }
+
+    .color-dark-blue .connector-line {
+        background-color: #1a237e;
+    }
+
+        .color-dark-blue .connector-line::after {
+            border-top-color: #1a237e;
+        }
+
+    .color-dark-blue .text-block {
+        background-color: #1a237e;
+    }
+
+    /* 4. Social Empowerment (Dark Green) */
+    .color-dark-green .icon-diamond {
+        border-color: #1b5e20;
+    }
+
+    .color-dark-green .connector-line {
+        background-color: #1b5e20;
+    }
+
+        .color-dark-green .connector-line::after {
+            border-top-color: #1b5e20;
+        }
+
+    .color-dark-green .text-block {
+        background-color: #1b5e20;
+    }
+
+    /* 5. Industrial (Mustard/Orange) */
+    .color-mustard .icon-diamond {
+        border-color: #f57c00;
+    }
+
+    .color-mustard .connector-line {
+        background-color: #f57c00;
+    }
+
+        .color-mustard .connector-line::after {
+            border-top-color: #f57c00;
+        }
+
+    .color-mustard .text-block {
+        background-color: #f57c00;
+    }
+
+    /* 6. Tourism (Purple) */
+    .color-purple .icon-diamond {
+        border-color: #4a148c;
+    }
+
+    .color-purple .connector-line {
+        background-color: #4a148c;
+    }
+
+        .color-purple .connector-line::after {
+            border-top-color: #4a148c;
+        }
+
+    .color-purple .text-block {
+        background-color: #4a148c;
+    }
+
+    /* 7. Infrastructure (Orange) */
+    .color-orange .icon-diamond {
+        border-color: #ff6d00;
+    }
+
+    .color-orange .connector-line {
+        background-color: #ff6d00;
+    }
+
+        .color-orange .connector-line::after {
+            border-top-color: #ff6d00;
+        }
+
+    .color-orange .text-block {
+        background-color: #ff6d00;
+    }
+
+    /* 8. Water Security (Red) */
+    .color-red .icon-diamond {
+        border-color: #d32f2f;
+    }
+
+    .color-red .connector-line {
+        background-color: #d32f2f;
+    }
+
+        .color-red .connector-line::after {
+            border-top-color: #d32f2f;
+        }
+
+    .color-red .text-block {
+        background-color: #d32f2f;
+    }
+
+    /* 9. Environmental (Blue) */
+    .color-blue .icon-diamond {
+        border-color: #1565c0;
+    }
+
+    .color-blue .connector-line {
+        background-color: #1565c0;
+    }
+
+        .color-blue .connector-line::after {
+            border-top-color: #1565c0;
+        }
+
+    .color-blue .text-block {
+        background-color: #1565c0;
+    }
+
+    /* 10. Rural (Light Blue) */
+    .color-light-blue .icon-diamond {
+        border-color: #03a9f4;
+    }
+
+    .color-light-blue .connector-line {
+        background-color: #03a9f4;
+    }
+
+        .color-light-blue .connector-line::after {
+            border-top-color: #03a9f4;
+        }
+
+    .color-light-blue .text-block {
+        background-color: #03a9f4;
+    }
+
+    /* 11. Urban (Deep Orange) */
+    .color-deep-orange .icon-diamond {
+        border-color: #bf360c;
+    }
+
+    .color-deep-orange .connector-line {
+        background-color: #bf360c;
+    }
+
+        .color-deep-orange .connector-line::after {
+            border-top-color: #bf360c;
+        }
+
+    .color-deep-orange .text-block {
+        background-color: #bf360c;
+    }
+
+    /* 12. Governance (Yellow/Gold) */
+    .color-yellow .icon-diamond {
+        border-color: #fbc02d;
+    }
+
+    .color-yellow .connector-line {
+        background-color: #fbc02d;
+    }
+
+        .color-yellow .connector-line::after {
+            border-top-color: #fbc02d;
+        }
+
+    .color-yellow .text-block {
+        background-color: #fbc02d;
+    }
+
+    .color-yellow .text-block {
+        color: #333;
+    }
+    /* Dark text for light bg */
+
+    /* 13. Fiscal (Maroon) */
+    .color-maroon .icon-diamond {
+        border-color: #880e4f;
+    }
+
+    .color-maroon .connector-line {
+        background-color: #880e4f;
+    }
+
+        .color-maroon .connector-line::after {
+            border-top-color: #880e4f;
+        }
+
+    .color-maroon .text-block {
+        background-color: #880e4f;
+    }
+
+
+    /* =========================================
+               --- RESPONSIVE MEDIA QUERIES ---
+               ========================================= */
+
+    /* Tablet & Mobile (Stacking items) */
+    @@media (max-width: 992px) {
+        .sector-item, .sector-row.mt-50 .sector-item {
+            width: calc(33.33% - 15px); /* 3 items per row */
+            margin-bottom: 30px;
+        }
+
+        .infographic-border {
+            padding: 40px 10px;
+        }
+
+        .mt-50 {
+            margin-top: 0;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .sector-item, .sector-row.mt-50 .sector-item {
+            width: calc(50% - 10px); /* 2 items per row */
+        }
+
+        .main-title {
+            font-size: 18px;
+        }
+
+        .icon-diamond {
+            width: 60px;
+            height: 60px;
+        }
+
+            .icon-diamond i {
+                font-size: 24px;
+            }
+    }
+
+    .color-white {
+        color: #fff;
+    }
+</style>
+<style nonce="@nonce">
+    .infographic-container {
+        width: 1000px;
+        max-width: 100%;
+        background-color: #fff;
+        border: 2px solid var(--primary-orange);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden; /* Contains slide-in animations */
+    }
+
+    /* Title Animation */
+    .title {
+        color: var(--primary-orange);
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: fadeInDown 0.8s ease-out forwards;
+    }
+
+    .content-layout {
+        display: grid;
+        grid-template-columns: 100px 1fr 200px; /* Cover, Hub, Text */
+        gap: 20px;
+        align-items: center;
+    }
+
+    /* Policy Covers Animation */
+    .policy-covers {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        justify-content: center;
+        height: 100%;
+        opacity: 0;
+        animation: fadeInLeft 1s ease-out 0.5s forwards; /* Start after title */
+    }
+
+    .cover-placeholder {
+        width: 90px;
+        height: 110px;
+        background-color: var(--cover-bg);
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        color: #777;
+        text-align: center;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .cover-placeholder:hover {
+            transform: scale(1.05);
+        }
+
+    /* Central Hub and Hexagons Animation */
+    .central-hub {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+        opacity: 0;
+        animation: fadeIn 1s ease-in 1s forwards; /* Start after title */
+    }
+
+    .hex-group {
+        position: absolute;
+        width: 110px;
+        height: 110px;
+        transition: all 0.4s ease;
+        opacity: 0; /* Hidden initially for staggered entry */
+    }
+
+    /* Positions for hexagons based on grid layout */
+    .hex-1 {
+        top: 0;
+        left: 145px;
+        animation: popIn 0.5s ease-out 1.2s forwards;
+    }
+    /* Top */
+    .hex-2 {
+        top: 75px;
+        left: 20px;
+        animation: popIn 0.5s ease-out 1.4s forwards;
+    }
+    /* Top-Left */
+    .hex-3 {
+        top: 75px;
+        left: 270px;
+        animation: popIn 0.5s ease-out 1.6s forwards;
+    }
+    /* Top-Right */
+    .hex-4 {
+        top: 220px;
+        left: 20px;
+        animation: popIn 0.5s ease-out 1.8s forwards;
+    }
+    /* Bottom-Left */
+    .hex-5 {
+        top: 220px;
+        left: 270px;
+        animation: popIn 0.5s ease-out 2.0s forwards;
+    }
+    /* Bottom-Right */
+    .hex-6 {
+        top: 290px;
+        left: 145px;
+        animation: popIn 0.5s ease-out 2.2s forwards;
+    }
+    /* Bottom */
+
+    /* Hexagon Drawing */
+    .hexagon {
+        fill: #fff;
+        stroke: var(--hex-border);
+        stroke-width: 3;
+        transition: stroke 0.3s ease;
+    }
+
+    .hex-group:hover .hexagon {
+        stroke: var(--hex-highlight);
+    }
+
+    .icon-placeholder {
+        font-size: 32px;
+        fill: #555;
+        transition: fill 0.3s ease;
+    }
+
+    .hex-group:hover .icon-placeholder {
+        fill: #222;
+    }
+
+    /* Center Gear Element */
+    .center-element {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 110px;
+        height: 110px;
+        opacity: 0;
+        animation: fadeInRotate 1.5s ease-out 1s forwards;
+    }
+
+    /* Policy Text Animation */
+    .policy-texts {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .policy-text-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        opacity: 0;
+    }
+
+    /* Matching delays for staggered text entry */
+    .text-1 {
+        animation: fadeInLeft 0.6s ease-out 1.2s forwards;
+    }
+
+    .text-2 {
+        animation: fadeInLeft 0.6s ease-out 1.4s forwards;
+    }
+
+    .text-3 {
+        animation: fadeInLeft 0.6s ease-out 1.6s forwards;
+    }
+
+    .text-4 {
+        animation: fadeInLeft 0.6s ease-out 1.8s forwards;
+    }
+
+    .text-5 {
+        animation: fadeInLeft 0.6s ease-out 2.0s forwards;
+    }
+
+    .text-6 {
+        animation: fadeInLeft 0.6s ease-out 2.2s forwards;
+    }
+
+    .policy-label {
+        color: var(--policy-text);
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .policy-year {
+        color: var(--policy-text);
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+
+    /* Custom Label for Non-Resident */
+    .alt-label {
+        color: #C08000; /* Gold */
+    }
+
+    /* Custom Label for Employment */
+    .employment-label {
+        color: #CC0066; /* Magenta */
+    }
+
+    /* --- Keyframe Animations --- */
+    @@keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @@keyframes popIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        70% {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1.0);
+        }
+    }
+
+    @@keyframes fadeInRotate {
+        0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1.0);
+        }
+    }
+
+    /* Placeholder icons using text/SVG */
+    .hub-icon {
+        fill: #9933CC;
+    }
+</style>
+<div class="slider">
+    <div class="swiper mainslider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner1.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner2.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner3.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                            @*<h2>
+                                    UN Monitoring Dashboard
+                                </h2>*@
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+            <div class="swiper-slide">
+                <div class="slideimg">
+                    <img src="/public/storage/banners/Banner4.png" alt="slider Image" fetchpriority="high">
+                    <div class="container-fluid cmpad slider-con">
+                        <div class="col-lg-12 px-4 right">
+                            @*<h2>
+                                    UN Monitoring Dashboard
+                                </h2>*@
+                        </div><!-- col -->
+                    </div>
+                </div>
+            </div><!-- slide -->
+
+        </div>
+
+        <div class="swiper-pagination mainpagination testislideright-pagi mainslider-pagi"></div>
+    </div>
+
+
+
+</div>
+<!-- end slider -->
+<!-- About US-->
+<div class="about posrel pt-5 pb-3">
+    <div class="container-fluid cmpad">
+        <div class="row">
+            <div class="col-lg-5 pe-lg-4 mb-4 mb-lg-0">
+                <div class="vismis">
+                    <div class="vis-sec mb-lg-3 mb-xl-4 mb-xxl-5 mb-4 mb-lg-0">
+
+                        <div class="vis-img d-flex align-items-end gap-3 mb-3">
+                            <img src="/public/img/icons/vision.svg" alt="swm">
+                            <h5 class="mb-0"> Vision </h5>
+                        </div>
+                        <p class="mb-2">
+                            This Vision of this integrated and strategic Platform/Dashboard is to strengthen collaboration
+                            between the Government of Rajasthan and the United Nations system by fostering
+                            convergence and coherence across different sectors. It enhances transparency, drive
+                            inclusive, equitable and resilient development and improve integrated monitoring &amp;
+                            reviewing activities progress made by different UN agencies in the State, which ultimately
+                            positioning Rajasthan as a leading model for effective partnerships.
+                        </p>
+                        <a asp-action="AboutUs" asp-controller="Home" class="morebtn">
+                            Learn more about our vision
+                        </a>
+
+                    </div>
+                    @* <div class="vis-sec">
+
+                            <div class="vis-img d-flex align-items-end gap-3 mb-3">
+                                <img src="/public/img/icons/mission.svg" alt="swm">
+                                <h5 class="mb-0">Mission</h5>
+                            </div>
+                            <p class="mb-2">
+                                To integrate technology, data, and governance for effective monitoring, evaluation, and implementation of development programs aligned with global SDG targets.
+
+                            </p>
+                            <a href="#"
+                               class="morebtn">Learn more about our mission</a>
+                        </div> *@
+                </div>
+            </div>
+            <div class="col-lg-7 position-relative back-color">
+
+                <div class="m-4">
+                    <h3 class="abt-head">
+                        About Us
+                    </h3>
+                    <p>
+                        The United Nations system has been a longstanding and trusted partner to the Government of India and State Governments, supporting inclusive, equitable and sustainable development across sectors. In Rajasthan, the State government has maintained a mature and constructive engagement with multiple United Nations agencies across key sectors including health, nutrition, education, child protection, water and sanitation, skill, adolescent &amp; youth empowerment, climate resilience, social protection and public finance.
+                    </p>
+                    <a asp-action="AboutUs" asp-controller="Home" class="morebtn">
+                        Read more about us
+                    </a>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--About Us-->
+<!--Exploring Sectors -->
+<style nonce="@nonce">
+
+    /*body {
+        margin: 0;
+        font-family: 'Segoe UI',sans-serif;
+        background: #eef3ff;
+        overflow-x: hidden;
+    }*/
+
+    /* MAIN SECTION */
+
+    .dashboard-section {
+        padding: 50px 60px;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+        .dashboard-section::before {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -300px;
+            right: -250px;
+            z-index: -2;
+        }
+
+    .left-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .heading {
+        font-size: 48px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1.2;
+    }
+
+        .heading span {
+            color: #0ea5e9;
+        }
+
+    .subheading {
+        font-size: 18px;
+        color: #5b6475;
+        margin-top: 12px;
+        margin-bottom: 35px;
+    }
+
+    /* FILTERS */
+
+    .filter-wrapper {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 35px;
+    }
+
+    .filter-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 14px 18px;
+        width: 260px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border: 1px solid #dbe4ff;
+    }
+
+        .filter-card label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .filter-card select {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: none;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+    /* INFO BOX */
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 20px;
+        max-width: 600px;
+    }
+
+    .info-box {
+        position: relative;
+        background: #fff;
+        border-radius: 22px;
+        padding: 25px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        transition: 0.3s;
+        border: 1px solid #dce6ff;
+    }
+
+        .info-box:hover {
+            transform: translateY(-6px);
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -50px;
+            right: -40px;
+        }
+
+    .box-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .box-count {
+        font-size: 54px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1;
+        margin-top: 12px;
+    }
+
+    .box-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 10px;
+    }
+
+    .box-icon {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: #0ea5e9;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    /* RIGHT SIDE */
+
+    .sector-panel {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sector-wheel {
+        width: 580px;
+        height: 580px;
+        position: relative;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        padding: 20px;
+    }
+
+    .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: conic-gradient( #14b8a6 0deg 45deg, #0f766e 45deg 90deg, #9333ea 90deg 135deg, #ec4899 135deg 180deg, #f97316 180deg 225deg, #eab308 225deg 270deg, #22c55e 270deg 315deg, #3b82f6 315deg 360deg );
+        position: relative;
+    }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+        }
+
+    .center-circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: linear-gradient(135deg,#eff6ff,#dbeafe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        font-size: 55px;
+        color: #082f75;
+        font-weight: bold;
+    }
+
+    /* LABELS */
+
+    .sector-tag {
+        position: absolute;
+        color: #fff;
+        font-weight: 700;
+        font-size: 17px;
+        text-align: center;
+        width: 120px;
+        z-index: 10;
+    }
+
+    .t1 {
+        top: 70px;
+        left: 230px;
+    }
+
+    .t2 {
+        top: 140px;
+        right: 40px;
+    }
+
+    .t3 {
+        top: 270px;
+        right: 0px;
+    }
+
+    .t4 {
+        bottom: 120px;
+        right: 60px;
+    }
+
+    .t5 {
+        bottom: 40px;
+        left: 240px;
+    }
+
+    .t6 {
+        bottom: 120px;
+        left: 60px;
+    }
+
+    .t7 {
+        top: 280px;
+        left: -10px;
+    }
+
+    .t8 {
+        top: 130px;
+        left: 40px;
+    }
+
+    /* RESPONSIVE */
+
+    @@media(max-width:1200px) {
+
+        .sector-wheel {
+            width: 450px;
+            height: 450px;
+            margin-top: 40px;
+        }
+
+        .heading {
+            font-size: 38px;
+        }
+    }
+
+    @@media(max-width:991px) {
+
+        .dashboard-section {
+            padding: 30px;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-wrapper {
+            flex-direction: column;
+        }
+
+        .sector-wheel {
+            width: 350px;
+            height: 350px;
+        }
+
+        .sector-tag {
+            font-size: 12px;
+            width: 90px;
+        }
+    }
+</style>
+<style nonce="@nonce">
+    /* =========================
+           TOP COUNT BOX DESIGN
+        ========================= */
+
+    .top-count-section {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 15px;
+        margin-bottom: 45px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .count-card {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        border: 1px solid #dbe7ff;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .count-card::before {
+            content: '';
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: #eff6ff;
+            border-radius: 50%;
+            right: -30px;
+            top: -30px;
+        }
+
+
+
+        .count-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+    .count-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg,#0ea5e9,#2563eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .count-card h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #082f75;
+        line-height: 1;
+    }
+
+    .count-card p {
+        margin: 6px 0 0;
+        font-size: 15px;
+        color: #475569;
+        font-weight: 600;
+    }
+
+    /* Double Card */
+    .double-count-card {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #dbe7ff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        position: relative;
+        overflow: hidden;
+        transition: .3s;
+        /* 2 cards ki width */
+        grid-column: span 2;
+    }
+
+        .double-count-card::before {
+            content: '';
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: #eff6ff;
+            border-radius: 50%;
+            right: -30px;
+            top: -30px;
+        }
+
+        .double-count-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+    .double-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .double-card-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .double-card-divider {
+        width: 1px;
+        height: 40px;
+        background: #dbe7ff;
+        margin: 0 15px;
+    }
+
+    .double-card-footer {
+        margin-top: 8px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #2563eb;
+        /*text-transform: uppercase;*/
+        letter-spacing: .5px;
+    }
+
+    .double-card-item h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #082f75;
+    }
+
+    .double-card-item p {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: #475569;
+        font-weight: 600;
+    }
+    /* RESPONSIVE */
+
+    /* Default Circle */
+    .count-card::before,
+    .double-count-card::before {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        right: -15px;
+        top: -15px;
+        border-radius: 50%;
+    }
+
+    /* Agencies */
+    .card-blue::before {
+        background: #E3F2FD;
+    }
+
+    /* Departments */
+    .card-green::before {
+        background: #E8F5E9;
+    }
+
+    /* Activities */
+    .card-orange::before {
+        background: #FFF3E0;
+    }
+
+    /* Tasks */
+    .card-purple::before {
+        background: #F3E5F5;
+    }
+
+    /* SDGs */
+    .card-red::before {
+        background: #FDECEC;
+    }
+
+    /* Viksit Rajasthan */
+    .card-indigo::before {
+        background: #EEF2FF;
+    }
+
+    @@media(max - width:1200px) {
+        .top-count-section {
+            grid-template-columns: repeat(3,1fr);
+        }
+    }
+
+    @@media(max - width:768px) {
+        .top-count-section {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+
+    @@media(max - width:576px) {
+        .top-count-section {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+<style nonce="@nonce">
+    #sectorWheel {
+        width: 100%;
+        max-width: 550px;
+        height: auto;
+    }
+
+        #sectorWheel path {
+            transition: all 0.3s ease;
+        }
+
+            #sectorWheel path:hover {
+                opacity: 0.85;
+                transform: scale(1.02);
+                transform-origin: center;
+            }
+
+        #sectorWheel text {
+            pointer-events: none;
+            font-family: Arial, sans-serif;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        }
+</style>
+<section class="dashboard-section">
+
+    <div class="row align-items-center">
+        <!-- LEFT -->
+        <div class="col-lg-7 left-content">
+            <h1 class="heading">
+                Explore
+            </h1>
+            <p class="subheading">
+                Discover reports, activities, datasets and resources sector-wise.
+            </p>
+            <!-- FILTER -->
+            <div class="filter-wrapper">
+                <div class="filter-card">
+                    <label>Sector</label>
+                    <select id="UNSector" name="UNSector">
+                        <option>Select All</option>
+                        <option>Education</option>
+                        <option>Energy</option>
+                    </select>
+                </div>
+                <div class="filter-card">
+                    <label>UN Agencies</label>
+                    <select id="Agencys" name="Agencys">
+                        <option>Select All</option>
+                        <option>UNICEF</option>
+                    </select>
+                </div>
+                <div class="filter-card">
+                    <label>Department</label>
+                    <select id="Department" name="Department">
+                        <option>Select All</option>
+                        <option>Education</option>
+                        <option>Energy</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- CARDS -->
+            <!-- TOP COUNT BOX SECTION -->
+            <div class="top-count-section">
+
+                <a asp-action="Agency" asp-controller="Home"
+                   class="text-decoration-none">
+                    <div class="count-card card-blue">
+                        <div class="count-icon">🌐</div>
+                        <div>
+                            <h2 id="agencyCount">0</h2>
+                            <p>Agencies</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a asp-action="Department" asp-controller="Home"
+                   class="text-decoration-none">
+                    <div class="count-card card-green">
+                        <div class="count-icon">🏛</div>
+                        <div>
+                            <h2 id="departmentCount">0</h2>
+                            <p>Departments</p>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="count-card card-purple">
+                    <div class="count-icon">📋</div>
+                    <div>
+                        <h2 id="activityCount">0</h2>
+                        <p>Activities</p>
+                    </div>
+                </div>
+
+                <div class="count-card card-orange">
+                    <div class="count-icon">🗂</div>
+                    <div>
+                        <h2 id="taskCount">0</h2>
+                        <p>Tasks</p>
+                    </div>
+                </div>
+
+                <div class="double-count-card card-red">
+
+                    <div class="double-card-top">
+
+                        <div class="double-card-item">
+                            <div class="count-icon">📊</div>
+                            <div>
+                                <h2 id="goalCount">0</h2>
+                                <p>Goals</p>
+                            </div>
+                        </div>
+
+                        <div class="double-card-divider"></div>
+
+                        <div class="double-card-item">
+                            <div class="count-icon">📑</div>
+                            <div>
+                                <h2 id="targetCount">0</h2>
+                                <p>Targets</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="double-card-footer">
+                        SDGs
+                    </div>
+
+                </div>
+                <div class="double-count-card card-indigo">
+                    <div class="double-card-top">
+                        <div class="double-card-item">
+                            <div class="count-icon">📊</div>
+                            <div>
+                                <h2 id="pillarCount">0</h2>
+                                <p>Themes</p>
+                            </div>
+                        </div>
+
+                        <div class="double-card-divider"></div>
+
+                        <div class="double-card-item">
+                            <div class="count-icon">📑</div>
+                            <div>
+                                <h2 id="subPillarCount">0</h2>
+                                <p>SubThemes</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="double-card-footer">
+                        Viksit Rajasthan@2047
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+
+            <div class="d-flex justify-content-center align-items-center">
+
+                <svg id="sectorWheel"
+                     width="500"
+                     height="500"
+                     viewBox="0 0 500 500">
+
+                    <!-- CENTER -->
+                    <circle cx="250"
+                            cy="250"
+                            r="80"
+                            fill="#ffffff"
+                            stroke="#ddd"
+                            stroke-width="2">
+                    </circle>
+
+                    <text x="250"
+                          y="255"
+                          text-anchor="middle"
+                          font-size="18"
+                          font-weight="bold">
+                        Rajasthan
+                    </text>
+
+                </svg>
+
+            </div>
+
+        </div>
+        <script nonce="@nonce">
+
+            const sectors = [
+
+                {
+                    id: 1,
+                    name: "Skilling Livelihoods & Labour Welfare",
+                    code: "SLLW",
+                    color: "#0d6efd",
+                    image: "/public/img/homepage/sector_wheel/image_1_grad.png"
+                },
+
+                {
+                    id: 2,
+                    name: "Health & Nutrition",
+                    code: "HN",
+                    color: "#dc3545",
+                    image: "/public/img/homepage/sector_wheel/image_2_grad.png"
+                },
+
+                {
+                    id: 3,
+                    name: "Education",
+                    code: "EDU",
+                    color: "#198754",
+                    image: "/public/img/homepage/sector_wheel/image_3_grad.png"
+                },
+
+                {
+                    id: 4,
+                    name: "Tourism",
+                    code: "TOUR",
+                    color: "#f59e0b",
+                    image: "/public/img/homepage/sector_wheel/image_4_grad.png"
+                },
+
+                {
+                    id: 5,
+                    name: "Agriculture & Allied Services",
+                    code: "AGRI",
+                    color: "#10b981",
+                    image: "/public/img/homepage/sector_wheel/image_5_grad.png"
+                },
+
+                {
+                    id: 6,
+                    name: "Energy",
+                    code: "ENG",
+                    color: "#ffc107",
+                    image: "/public/img/homepage/sector_wheel/image_6_grad.png"
+                },
+
+                {
+                    id: 7,
+                    name: "Urbanization",
+                    code: "URBAN",
+                    color: "#6c757d",
+                    image: "/public/img/homepage/sector_wheel/image_7_grad.png"
+                },
+
+                {
+                    id: 8,
+                    name: "Water & WASH",
+                    code: "WASH",
+                    color: "#0ea5e9",
+                    image: "/public/img/homepage/sector_wheel/image_8_grad.png"
+                },
+
+                {
+                    id: 9,
+                    name: "MSME",
+                    code: "MSME",
+                    color: "#8b5cf6",
+                    image: "/public/img/homepage/sector_wheel/image_9_grad.png"
+                },
+
+                {
+                    id: 10,
+                    name: "Manufacturing",
+                    code: "MANU",
+                    color: "#212529",
+                    image: "/public/img/homepage/sector_wheel/image_10_grad.png"
+                }
+
+            ];
+
+            const svg =
+                document.getElementById("sectorWheel");
+
+            const svgNS =
+                "http://www.w3.org/2000/svg";
+
+            const centerX = 250;
+            const centerY = 250;
+
+            const outerRadius = 220;
+            const innerRadius = 100;
+
+            const total = sectors.length;
+
+            const anglePerSector =
+                (Math.PI * 2) / total;
+
+            // ==========================================
+            // DEFS
+            // ==========================================
+
+            const defs =
+                document.createElementNS(svgNS, "defs");
+
+            svg.appendChild(defs);
+
+            // ==========================================
+            // CREATE PATTERN
+            // ==========================================
+
+            sectors.forEach((sector, index) => {
+
+                const pattern =
+                    document.createElementNS(svgNS, "pattern");
+
+                pattern.setAttribute(
+                    "id",
+                    `pattern${index}`
+                );
+
+                pattern.setAttribute(
+                    "patternUnits",
+                    "userSpaceOnUse"
+                );
+
+                pattern.setAttribute("width", "500");
+
+                pattern.setAttribute("height", "500");
+
+                // IMAGE
+
+                const image =
+                    document.createElementNS(svgNS, "image");
+
+                image.setAttribute(
+                    "href",
+                    sector.image
+                );
+
+                image.setAttribute("x", "0");
+
+                image.setAttribute("y", "0");
+
+                image.setAttribute("width", "500");
+
+                image.setAttribute("height", "500");
+
+                image.setAttribute(
+                    "preserveAspectRatio",
+                    "xMidYMid slice"
+                );
+
+                // APPEND
+
+                pattern.appendChild(image);
+
+                defs.appendChild(pattern);
+
+            });
+
+            // ==========================================
+            // CREATE ARC
+            // ==========================================
+
+            function createArc(startAngle, endAngle) {
+
+                const x1 =
+                    centerX +
+                    outerRadius * Math.cos(startAngle);
+
+                const y1 =
+                    centerY +
+                    outerRadius * Math.sin(startAngle);
+
+                const x2 =
+                    centerX +
+                    outerRadius * Math.cos(endAngle);
+
+                const y2 =
+                    centerY +
+                    outerRadius * Math.sin(endAngle);
+
+                const x3 =
+                    centerX +
+                    innerRadius * Math.cos(endAngle);
+
+                const y3 =
+                    centerY +
+                    innerRadius * Math.sin(endAngle);
+
+                const x4 =
+                    centerX +
+                    innerRadius * Math.cos(startAngle);
+
+                const y4 =
+                    centerY +
+                    innerRadius * Math.sin(startAngle);
+
+                return `
+                                                                                    M ${x1} ${y1}
+                                                                                    A ${outerRadius} ${outerRadius} 0 0 1 ${x2} ${y2}
+                                                                                    L ${x3} ${y3}
+                                                                                    A ${innerRadius} ${innerRadius} 0 0 0 ${x4} ${y4}
+                                                                                    Z
+                                                                                `;
+            }
+
+            // ==========================================
+            // DRAW SECTORS
+            // ==========================================
+
+            sectors.forEach((sector, index) => {
+
+                const startAngle =
+                    index * anglePerSector - Math.PI / 2;
+
+                const endAngle =
+                    startAngle + anglePerSector;
+
+                // PATH
+
+                const path =
+                    document.createElementNS(svgNS, "path");
+
+                path.setAttribute(
+                    "d",
+                    createArc(startAngle, endAngle)
+                );
+
+                path.setAttribute(
+                    "fill",
+                    `url(#pattern${index})`
+                );
+
+                path.setAttribute(
+                    "stroke",
+                    "#fff"
+                );
+
+                path.setAttribute(
+                    "stroke-width",
+                    "2"
+                );
+
+                path.style.cursor = "pointer";
+
+                // HOVER
+
+                path.addEventListener(
+                    "mouseenter",
+                    function () {
+
+                        this.setAttribute(
+                            "opacity",
+                            "0.8"
+                        );
+
+                    }
+                );
+
+                path.addEventListener(
+                    "mouseleave",
+                    function () {
+
+                        this.setAttribute(
+                            "opacity",
+                            "1"
+                        );
+
+                    }
+                );
+                path.addEventListener("click", function () {
+
+                    document.querySelectorAll("#sectorWheel path")
+                        .forEach(x => x.classList.remove("selected-sector"));
+
+                    this.classList.add("selected-sector");
+                    window.open("/Home/BestPrecticesSubSector?sectorId=" + sector.id, "_blank");
+                    //dashboard.loadDashboardCountsBySector(sector.id);
+                });
+
+                svg.appendChild(path);
+
+                // ======================================
+                // LABEL
+                // ======================================
+
+                const midAngle =
+                    (startAngle + endAngle) / 2;
+
+                const labelRadius = 160;
+
+                const labelX =
+                    centerX +
+                    labelRadius * Math.cos(midAngle);
+
+                const labelY =
+                    centerY +
+                    labelRadius * Math.sin(midAngle);
+
+                const text =
+                    document.createElementNS(svgNS, "text");
+
+                text.setAttribute("x", labelX);
+
+                text.setAttribute("y", labelY);
+
+                text.setAttribute(
+                    "text-anchor",
+                    "middle"
+                );
+
+                text.setAttribute(
+                    "font-size",
+                    "11"
+                );
+
+                text.setAttribute(
+                    "font-weight",
+                    "700"
+                );
+
+                text.setAttribute(
+                    "fill",
+                    "#fff"
+                );
+
+                text.textContent = sector.name;
+
+                svg.appendChild(text);
+
+            });
+
+        </script>
+    </div>
+
+</section>
+<!--Expolring Sectors -->
+<!-- ========================================= -->
+<!-- ========================================= -->
+<!-- TWO CHART SECTION -->
+<!-- ========================================= -->
+
+<style nonce="@nonce">
+
+    .analysis-chart-section {
+        margin-top: 40px;
+    }
+
+    .analysis-chart-grid {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 15px;
+    }
+
+    .analysis-card {
+        background: #ffffff;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
+    }
+
+    .analysis-card-header {
+        /*background: linear-gradient(135deg,#0f172a,#1e3a8a);*/
+        background: linear-gradient( 135deg, #ffb347, #d57d30, #a85c1d );
+        padding: 18px 22px;
+        color: #fff;
+    }
+
+        .analysis-card-header h4 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .analysis-card-header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.85;
+            color: #fff;
+        }
+
+    .analysis-card-headerdp {
+        /*background: linear-gradient(135deg,#0f172a,#1e3a8a);*/
+        /*background: #1f74ea;*/
+        background: linear-gradient( 135deg, rgba(13, 71, 161, 0.95), rgba(38, 198, 218, 0.90) );
+        padding: 18px 22px;
+        color: #fff;
+    }
+
+        .analysis-card-headerdp h4 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .analysis-card-headerdp p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.85;
+            color: #fff;
+        }
+
+    .analysis-card-body {
+        padding: 20px;
+        background: #f8fbff;
+    }
+
+    .chart-box {
+        background: #fff;
+        border-radius: 18px;
+        padding: 15px;
+        border: 1px solid #dbeafe;
+        height: 300px;
+    }
+
+    @@media(max-width:991px) {
+
+        .analysis-chart-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .chart-box {
+            height: 280px;
+        }
+    }
+</style>
+<div class="analysis-chart-section width-bestPrectices">
+    <div class="analysis-chart-grid">
+        <!-- ========================================= -->
+        <!-- UN AGENCY WISE ANALYSIS -->
+        <!-- ========================================= -->
+        <div class="analysis-card">
+            <div class="analysis-card-header">
+                <h4 class="color-white">
+                    UN Agency Wise Status
+                </h4>
+                <p>
+                    Activities, Sectors and Departments supported by agencies
+                </p>
+            </div>
+
+            <div class="analysis-card-body">
+                <div class="chart-box">
+                    <canvas id="agencyWiseChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- ========================================= -->
+        <!-- ACTIVITY WISE ANALYSIS -->
+        <!-- ========================================= -->
+        <div class="analysis-card">
+            <div class="analysis-card-header">
+                <h4 class="color-white">
+                    Activities Wise Status
+                </h4>
+                <p>
+                    Overall progress of monitoring activity
+                </p>
+            </div>
+            <div class="analysis-card-body">
+                <div class="chart-box">
+                    <canvas id="activityStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- ========================================= -->
+        <!-- TASK WISE ANALYSIS -->
+        <!-- ========================================= -->
+        <div class="analysis-card">
+            <div class="analysis-card-header">
+
+                <div class="color-white">
+                    <h4 class="color-white">
+                        📊 Task Status Overview
+                    </h4>
+                    <p>Overall progress of monitoring tasks</p>
+                </div>
+            </div>
+            <div class="analysis-card-body">
+                <div class="chart-box">
+                    <canvas id="taskChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="analysis-chart-section width-bestPrectices">
+
+    <div class="">
+        <!-- ========================================= -->
+        <!-- DEPARTMENT WISE ANALYSIS -->
+        <!-- ========================================= -->
+
+        <div class="analysis-card">
+
+            <div class="analysis-card-headerdp">
+
+                <h4 class="color-white">
+
+                    Department Wise Status
+
+                </h4>
+
+                <p>
+
+                    Activities, Agencies and Sectors supported by departments
+
+                </p>
+
+            </div>
+
+            <div class="analysis-card-body">
+
+                <div class="chart-box">
+
+                    <canvas id="departmentWiseChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+@*<script nonce="@nonce">
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById("taskChart");
+
+            new Chart(ctx, {
+
+                type: "bar",
+
+                data: {
+
+                    labels: [
+                        "Web refresh",
+                        "Q4 campaign",
+                        "Brand refresh",
+                        "Social pilot",
+                        "Product launch"
+                    ],
+
+                    datasets: [{
+
+                        data: [110, 74, 50, 48, 17],
+
+                        backgroundColor: [
+                            "#6C63FF",
+                            "#7B68EE",
+                            "#9A8CFF",
+                            "#B5A8FF",
+                            "#BDBDBD"
+                        ],
+
+                        borderRadius: 8,
+                        barThickness: 18
+
+                    }]
+                },
+
+                options: {
+
+                    indexAxis: 'y',
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        tooltip: {
+                            enabled: true
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            grid: {
+                                color: "#ececec"
+                            },
+
+                            ticks: {
+                                stepSize: 25
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                },
+
+                plugins: [{
+
+                    id: 'valueLabel',
+
+                    afterDatasetsDraw(chart) {
+
+                        const { ctx } = chart;
+
+                        ctx.font = "bold 11px Arial";
+                        ctx.fillStyle = "#fff";
+
+                        chart.getDatasetMeta(0).data.forEach((bar, index) => {
+
+                            ctx.fillText(
+                                chart.data.datasets[0].data[index],
+                                bar.x - 22,
+                                bar.y + 4
+                            );
+
+                        });
+
+                    }
+
+                }]
+
+            });
+        });
+    </script>*@
+
+
+
+
+<!--Agences-->
+<!-- ===== UN Agencies Section ===== -->
+<style nonce="@nonce">
+    /* =========================
+           MAIN SECTION
+        ========================= */
+
+    .agency-dashboard-section {
+        padding: 60px 40px;
+        background: #eef4ff;
+        border-radius: 35px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .agency-dashboard-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -250px;
+            right: -200px;
+        }
+
+    /* =========================
+           HEADER
+        ========================= */
+
+    .agency-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 45px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .agency-main-title {
+        font-size: 46px;
+        font-weight: 800;
+        color: #082f75;
+        margin-bottom: 10px;
+    }
+
+    .agency-subtitle {
+        font-size: 18px;
+        color: #64748b;
+    }
+
+    .agency-count-box {
+        width: 150px;
+        height: 150px;
+        border-radius: 30px;
+        background: linear-gradient(135deg,#2563eb,#0ea5e9);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 40px rgba(37,99,235,0.25);
+    }
+
+        .agency-count-box h3 {
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .agency-count-box span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+    /* =========================
+       GRID
+    ========================= */
+
+    .agency-grid {
+        display: grid;
+        grid-template-columns: repeat(5,1fr); /* CHANGE THIS */
+        gap: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* CARD SMALL WIDTH OPTIMIZATION */
+
+    .agency-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 18px; /* reduce padding */
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    }
+
+
+        .agency-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .agency-card::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+    /* COLORS */
+
+    .green-card::before {
+        background: #22c55e;
+    }
+
+    .pink-card::before {
+        background: #ec4899;
+    }
+
+    .blue-card::before {
+        background: #2563eb;
+    }
+
+    .orange-card::before {
+        background: #f97316;
+    }
+
+    .purple-card::before {
+        background: #7c3aed;
+    }
+
+    .teal-card::before {
+        background: #14b8a6;
+    }
+
+    /* =========================
+           TOP
+        ========================= */
+
+    .agency-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .agency-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 22px;
+        background: #f8fbff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #dbeafe;
+    }
+
+        .agency-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+    .agency-status {
+        padding: 8px 14px;
+        border-radius: 30px;
+        background: #dcfce7;
+        color: #166534;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* =========================
+           TEXT
+        ========================= */
+
+    .agency-card h3 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #082f75;
+        margin-bottom: 15px;
+    }
+
+    .agency-card p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.7;
+        min-height: 90px;
+    }
+
+    /* =========================
+           FOOTER
+        ========================= */
+
+    .agency-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .agency-view-btn {
+        display: inline-block;
+        padding: 10px 18px;
+        background: linear-gradient(135deg,#2563eb,#0ea5e9);
+        color: #fff;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        position: relative;
+        z-index: 10;
+    }
+
+        .agency-view-btn:hover {
+            transform: scale(1.05);
+            color: #fff;
+        }
+
+    .agency-card::before {
+        pointer-events: none;
+    }
+
+    .agency-footer span {
+        font-size: 14px;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    .agency-footer button {
+        border: none;
+        background: linear-gradient(135deg,#2563eb,#0ea5e9);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 14px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+        .agency-footer button:hover {
+            transform: scale(1.05);
+        }
+
+
+    /* =========================
+           RESPONSIVE
+        ========================= */
+
+    @@media(max - width:1200px) {
+        .agency-grid {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+
+    @@media(max - width:768px) {
+        .agency-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .agency-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .agency-main-title {
+            font-size: 34px;
+        }
+    }
+</style>
+<div class="agency-dashboard-section width-bestPrectices">
+    <!-- HEADER -->
+    <div class="agency-header">
+        <div>
+            <h2 class="agency-main-title">
+                Explore UN Agencies
+            </h2>
+
+            <p class="agency-subtitle">
+                Connected agencies working across sectors, goals and monitoring initiatives.
+            </p>
+        </div>
+
+        <div class="agency-count-box">
+            <h3 id="agencyCountAgency"></h3>
+            <span>UN Agencies</span>
+        </div>
+
+    </div>
+    <!-- AGENCY GRID -->
+    <div class="agency-grid" id="agencyGrid">
+    </div>
+</div>
+<!--Agences-->
+<!-- SDG GOAL WISE BAR GRAPH SECTION -->
+<!-- ========================================= -->
+<style nonce="@nonce">
+
+    .sdg-chart-section {
+        margin-top: 40px;
+    }
+
+    .sdg-chart-card {
+        border: none;
+        border-radius: 22px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    .sdg-chart-header {
+        background: linear-gradient( 135deg, rgba(13, 71, 161, 0.95), rgba(38, 198, 218, 0.90) );
+        padding: 18px 25px;
+        color: #fff;
+    }
+
+    .sdg-chart-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .sdg-chart-subtitle {
+        font-size: 14px;
+        opacity: 0.85;
+        margin-top: 4px;
+    }
+
+    .sdg-chart-body {
+        padding: 25px;
+        background: #f8fbff;
+    }
+
+    .chart-top-box {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    }
+
+    .mini-info-box {
+        background: #fff;
+        padding: 16px 20px;
+        border-radius: 16px;
+        min-width: 150px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        border: 1px solid #dbeafe;
+    }
+
+        .mini-info-box h4 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+            color: #082f75;
+        }
+
+        .mini-info-box p {
+            margin: 5px 0 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+    .chart-container-custom {
+        position: relative;
+        width: 100%;
+        height: 350px;
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+    }
+
+    @@media(max-width:768px) {
+
+        .chart-container-custom {
+            height: 250px;
+            padding: 10px;
+        }
+
+        .sdg-chart-title {
+            font-size: 18px;
+        }
+    }
+</style>
+<div class="sdg-chart-section width-bestPrectices">
+
+    <div class="sdg-chart-card">
+
+        <!-- HEADER -->
+
+        <div class="sdg-chart-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h3 class="sdg-chart-title color-white">
+                        SDG Goal Wise Analysis
+                    </h3>
+                    <div class="sdg-chart-subtitle">
+                        Agencies, Activities and Departments mapped across all SDGs
+                    </div>
+                </div>
+                <div>
+                    <span class="badge bg-light text-dark fs-6 px-3 py-2">
+                        17 Sustainable Development Goals
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BODY -->
+
+        <div class="sdg-chart-body">
+
+            <!-- TOP SUMMARY -->
+
+            <div class="chart-top-box">
+
+                @*<div class="mini-info-box">
+                        <h4 id="totalSectors"></h4>
+                        <p>Total Sectors</p>
+                    </div>*@
+
+                <div class="mini-info-box">
+                    <h4 id="totalActivities"></h4>
+                    <p>Total Activities</p>
+                </div>
+
+                <div class="mini-info-box">
+                    <h4 id="totalDepartments"></h4>
+                    <p>Total Departments</p>
+                </div>
+
+                <div class="mini-info-box">
+                    <h4 id="totalAgencies"></h4>
+                    <p>Total Agencies</p>
+                </div>
+
+            </div>
+
+            <!-- CHART -->
+
+            <div class="chart-container-custom">
+
+                <canvas id="goalWiseChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--Best Prectices New-->
+<style nonce="@nonce">
+    .color-white {
+        color: #fff;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .hero-section {
+        background: linear-gradient( 135deg, #0d47a1, #26c6da );
+        padding-top: 120px;
+        color: #fff;
+    }
+
+    .page-title {
+        font-size: 52px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+    }
+
+    /* ===================================== */
+    .sector-card {
+        position: relative;
+        height: 120px;
+        border-radius: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+        .sector-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .sector-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .sector-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( rgba(0,0,0,0.3), rgba(0,0,0,0.7) );
+    }
+
+    .sector-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+    }
+
+        .sector-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sector-content span {
+            font-size: 14px;
+        }
+
+    /* ===================================== */
+    .filter-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .filter-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .custom-select {
+        height: 52px;
+        border-radius: 12px;
+    }
+
+    /* ===================================== */
+    .section-heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .section-title {
+        font-size: 34px;
+        font-weight: 700;
+    }
+
+    .practice-count {
+        color: #777;
+    }
+
+    /* ===================================== */
+    .practice-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.4s;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        height: 100%;
+    }
+
+        .practice-card:hover {
+            transform: translateY(-6px);
+        }
+
+    .practice-image-box {
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .practice-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.4s;
+    }
+
+    .practice-card:hover .practice-image {
+        transform: scale(1.08);
+    }
+
+    .practice-body {
+        padding: 25px;
+    }
+
+    .practice-sector {
+        display: inline-block;
+        background: #e8f1ff;
+        color: #0d47a1;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .practice-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .practice-desc {
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .practice-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .read-more-btn {
+        background: #0d47a1;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .read-more-btn:hover {
+            background: #1565c0;
+            color: #fff;
+        }
+
+    /* 🌟 Slider Layout के लिए अतिरिक्त सपोर्ट ट्यूनिंग */
+    .agency-dashboard-section .headrow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .agency-dashboard-section .navcol {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .agency-dashboard-section .swiper-button-prev, .agency-dashboard-section .swiper-button-next {
+        position: static;
+        margin-top: 0;
+    }
+
+    .width-bestPrectices {
+        margin: 40px 40px;
+    }
+</style>
+
+<div class="analysis-chart-section width-bestPrectices">
+
+    <div class="analysis-chart-grid">
+
+    </div>
+</div>
+
+<div class="width-bestPrectices">
+    <div class="headrow px-2">
+        <div>
+            <h3 class="section-title mb-0">Best Practice</h3>
+        </div>
+        <div class="navcol">
+            <div class="navibtn btgroup d-flex gap-2">
+                <div class="swiper-button-prev slidebtn best-prac-prev"></div>
+                <div class="swiper-button-next slidebtn best-prac-next"></div>
+            </div>
+            <a href="/Management/AllBestPractices" class="morebtn">View All</a>
+        </div>
+    </div>
+    <div class="posrel pt-2">
+        <div class="swiper bestPracNewSlide h-auto">
+            <div class="swiper-wrapper" id="coverPageContainer">
+                <!-- Dynamic Slides -->
+            </div>
+        </div>
+    </div>
+</div>
+<!--Best Prectices New-->
+<script nonce="@nonce" src="~/custom/Common.js" asp-append-version="true"></script>
+<script nonce="@nonce" src="~/lib/chartjs/chart.min.js"></script>
+<script nonce="@nonce" src="~/lib/chart.js/chart.umd.js"></script>
+<script nonce="@nonce" src="~/lib/chart.js/chart.umd.min.js"></script>
+<script nonce="@nonce" src="~/custom/Dashboard.js" asp-append-version="true"></script>
+<!-- BAR GRAPH SCRIPT -->
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+
+        dashboard.loadChartAgency();
+        dashboard.loadChartDepartment();
+
+        dashboard.loadActivityStatusChart();
+        dashboard.loadChartTask();
+
+
+        // एलिमेंट्स से वैल्यू निकालने का शुद्ध जावास्क्रिप्ट तरीका
+        const unsectorEl = document.getElementById('hiddenunsector');
+        const agencysEl = document.getElementById('hiddenagencys');
+        const departmentEl = document.getElementById('hiddendepartment');
+
+        const unsectorVal = unsectorEl ? unsectorEl.value : "";
+        const agencysVal = agencysEl ? agencysEl.value : "";
+        const departmentVal = departmentEl ? departmentEl.value : "";
+
+        // ड्रॉपडाउन बाइंड करना
+        if (typeof common !== "undefined" && typeof common.BindDropdown === "function") {
+            common.BindDropdown("/Master/DDL_UNSector", "UNSector", "All", unsectorVal);
+            common.BindDropdown("/Master/DDL_Agency", "Agencys", "All", agencysVal);
+            common.BindDropdown("/Master/DDL_Department", "Department", "All", departmentVal);
+        }
+
+        // डैशबोर्ड फंक्शन्स लोड करना
+        if (typeof dashboard !== "undefined") {
+            if (typeof dashboard.loadCoverPages === "function") dashboard.loadCoverPages();
+            if (typeof dashboard.loadDashboardCounts === "function") dashboard.loadDashboardCounts();
+            if (typeof dashboard.loadAgencyList === "function") dashboard.loadAgencyList();
+            if (typeof dashboard.loadChartGoal === "function") dashboard.loadChartGoal();
+        }
+
+        // =======================================================
+        // DROPDOWN CHANGE EVENTS (UNSector, Agencys, Department)
+        // =======================================================
+        // इन तीनों ड्रॉपडाउन आईडी को एक एरे में रखकर सीधे इवेंट लिस्टनर जोड़ना
+        const dropdownIds = ["UNSector", "Agencys", "Department"];
+
+        dropdownIds.forEach(function (id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener("change", function () {
+                    if (typeof dashboard !== "undefined" && typeof dashboard.loadDashboardCounts === "function") {
+                        dashboard.loadDashboardCounts();
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+

@@ -1,0 +1,277 @@
+﻿@model string
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            <i class="bx bx-file"></i> Reporting & Challenges Details
+        </h5>
+    </div>
+    
+    <div class="card-body">
+
+        <!-- Reporting Period -->
+        <div class="row mb-4">
+
+            <!-- Activity Start Date -->
+            <div class="col-md-6">
+                <label class="fw-bold mb-2">
+                    Activity Start Date
+                </label>
+
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-primary text-white">
+                        <i class="bx bx-calendar"></i>
+                    </span>
+
+                    <input type="text"
+                           class="form-control"
+                           id="reportFromDate"
+                           name="ReportFromDate"
+                           value="@Model"
+                           readonly>
+                </div>
+            </div>
+
+            <!-- Reporting As On Date -->
+            <div class="col-md-6">
+                <label class="fw-bold mb-2">
+                    Reporting As On Date
+                </label>
+
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-primary text-white">
+                        <i class="bx bx-calendar"></i>
+                    </span>
+
+                    <input type="text"
+                           class="form-control datepicker"
+                           id="reportToDate"
+                           name="ReportToDate"
+                           placeholder="dd-mm-yyyy">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Validation -->
+        <small id="dateValidation" class="text-danger d-none">
+            Reporting As On Date must be greater than or equal to Activity Start Date
+        </small>
+
+        <!-- Alignment -->
+        <div class="mb-4">
+
+            <label class="fw-bold d-block mb-2">
+                Is the support from UN Agency aligned with any
+                central/state flagship or government priority?
+            </label>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input"
+                       type="radio"
+                       name="IsAligned"
+                       id="alignedYes"
+                       value="1">
+
+                <label class="form-check-label" for="alignedYes">
+                    Yes
+                </label>
+            </div>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input"
+                       type="radio"
+                       name="IsAligned"
+                       id="alignedNo"
+                       value="0">
+
+                <label class="form-check-label" for="alignedNo">
+                    No
+                </label>
+            </div>
+
+        </div>
+
+        <!-- Alignment Details -->
+        <div class="mb-4 d-none" id="alignmentDetailsBox">
+
+            <label class="fw-bold">
+                Give Details
+            </label>
+
+            <textarea class="form-control"
+                      rows="3"
+                      id="AlignmentDetails"
+                      name="AlignmentDetails"
+                      placeholder="Enter details..."></textarea>
+
+        </div>
+
+        <!-- Fund Utilization -->
+        <div class="mb-4">
+
+            <label class="fw-bold d-block mb-2">
+                Level of fund utilization
+            </label>
+
+            <select class="form-select"
+                    id="FundUtilization"
+                    name="FundUtilization">
+
+                <option value="">Choose</option>
+                <option value="Fully Utilized">Fully Utilized</option>
+                <option value="Partially Utilized">Partially Utilized</option>
+                <option value="Not Utilized">Not Utilized</option>
+                <option value="Not Applicable">Not Applicable</option>
+
+            </select>
+
+        </div>
+
+        <!-- Challenges -->
+        <div class="mb-4">
+
+            <label class="fw-bold d-block mb-2">
+                Are you facing any implementation challenges?
+            </label>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input"
+                       type="radio"
+                       name="HasChallenges"
+                       id="challengeYes"
+                       value="1">
+
+                <label class="form-check-label" for="challengeYes">
+                    Yes
+                </label>
+            </div>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input"
+                       type="radio"
+                       name="HasChallenges"
+                       id="challengeNo"
+                       value="0">
+
+                <label class="form-check-label" for="challengeNo">
+                    No
+                </label>
+            </div>
+
+        </div>
+
+        <!-- Challenge Details -->
+        <div class="mb-4 d-none" id="challengeDetailsBox">
+
+            <label class="fw-bold">
+                Specify Challenges
+            </label>
+
+            <textarea class="form-control"
+                      rows="4"
+                      id="ChallengeDetails"
+                      name="ChallengeDetails"
+                      placeholder="Enter challenge details..."></textarea>
+
+        </div>
+
+        <!-- Suggestions -->
+        <div class="mb-3">
+            <label class="fw-bold">
+                Suggestions for strengthening partnership
+            </label>
+            <textarea class="form-control"
+                      rows="4"
+                      id="Suggestions"
+                      name="Suggestions"
+                      placeholder="Enter suggestions..."></textarea>
+        </div>
+    </div>
+</div>
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Flatpickr इनिशियलाइजेशन (यह पहले से ही शुद्ध JS में था)
+        flatpickr("#reportFromDate", {
+            dateFormat: "d-m-Y",
+            defaultDate: '@Model',
+            clickOpens: false
+        });
+
+        flatpickr("#reportToDate", {
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+
+        // डाटा लोड करने के लिए फंक्शन कॉल
+        if (typeof monitoringreport !== "undefined" && typeof monitoringreport.loadReportingData === "function") {
+            monitoringreport.loadReportingData();
+        }
+
+        // =======================================================
+        // ALIGNMENT CHANGE EVENT (रेडियो बटन)
+        // =======================================================
+        const alignmentRadios = document.querySelectorAll("input[name='IsAligned']");
+        const alignmentBox = document.getElementById("alignmentDetailsBox");
+        const alignmentInput = document.getElementById("AlignmentDetails");
+
+        alignmentRadios.forEach(function (radio) {
+            radio.addEventListener("change", function () {
+                if (this.value === "1") {
+                    // d-none हटाकर एनीमेशन क्लास जोड़ें (Slide Down)
+                    if (alignmentBox) {
+                        alignmentBox.classList.remove("d-none");
+                        // छोटे से डिले के बाद क्लास जोड़ें ताकि ट्रांजिशन काम करे
+                        setTimeout(() => alignmentBox.classList.add("show"), 10);
+                    }
+                } else {
+                    // (Slide Up)
+                    if (alignmentBox) {
+                        alignmentBox.classList.remove("show");
+                        // एनीमेशन पूरा होने के बाद d-none लगाएं और वैल्यू क्लियर करें
+                        setTimeout(() => {
+                            if (!alignmentBox.classList.contains("show")) {
+                                alignmentBox.classList.add("d-none");
+                                if (alignmentInput) alignmentInput.value = '';
+                            }
+                        }, 400); // 400ms CSS ट्रांजिशन टाइम के बराबर है
+                    }
+                }
+            });
+        });
+
+        // =======================================================
+        // CHALLENGES CHANGE EVENT (रेडियो बटन)
+        // =======================================================
+        const challengeRadios = document.querySelectorAll("input[name='HasChallenges']");
+        const challengeBox = document.getElementById("challengeDetailsBox");
+        const challengeInput = document.getElementById("ChallengeDetails");
+
+        challengeRadios.forEach(function (radio) {
+            radio.addEventListener("change", function () {
+                if (this.value === "1") {
+                    // Slide Down
+                    if (challengeBox) {
+                        challengeBox.classList.remove("d-none");
+                        setTimeout(() => challengeBox.classList.add("show"), 10);
+                    }
+                } else {
+                    // Slide Up
+                    if (challengeBox) {
+                        challengeBox.classList.remove("show");
+                        setTimeout(() => {
+                            if (!challengeBox.classList.contains("show")) {
+                                challengeBox.classList.add("d-none");
+                                if (challengeInput) challengeInput.value = '';
+                            }
+                        }, 400);
+                    }
+                }
+            });
+        });
+
+    });
+</script>

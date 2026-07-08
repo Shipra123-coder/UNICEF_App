@@ -1,0 +1,746 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#fff">
+    <meta name="description" content="UN Project Monitoring Dashboard Rajasthan">
+    <meta name="keywords" content="UN Monitoring, Rajasthan, SDG">
+    <meta name="author" content="Government of Rajasthan">
+    <meta name="cache-control" content="no-cache">
+    <meta name="distribution" content="Global">
+    <meta name="document-distribution" content="Global">
+    <meta name="document-rating" content="General">
+    <meta name="document-rights" content="Public">
+    <meta name="document-state" content="static">
+    <meta name="publisher" content="Directorate of Economics & Statistics">
+    <meta name="rating" content="General">
+    <meta name="expires" content="never">
+    <meta name="resource-type" content="General">
+
+    <meta property="og:title" content="Un Monitoring">
+    <meta property="og:url" content="home">
+    <meta property="og:description" content="Rajasthan Government">
+    <meta property="og:type" content="website">
+    <meta property="og:country-name" content="India">
+
+    <title>UN Monitoring</title>
+    <link rel="icon" href="#" sizes="32x32" type="image/png">
+
+    <link href="/public/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/bootstrap-utilities.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/public/css/swiper-bundle.min.css">
+    <link href="/public/css/mystyle.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/dark.css" rel="stylesheet" type="text/css">
+
+    <link href="/public/css/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="/public/css/css2?family=Open+Sans:wght@300..800&family=Noto+Sans+Devanagari:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="canonical" href="">
+</head>
+<body>
+    @{
+        var nonce = Context.Items["CSPNonce"]?.ToString();
+    }
+
+    <script nonce="@nonce">
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NN5S62G9');
+    </script>
+    <script nonce="@nonce">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "sy8nhmaog6");
+    </script>
+
+    <script src="/public/js/fancybox.umd.js" nonce="@nonce"></script>
+    <link rel="stylesheet" href="/public/css/fancybox.css" nonce="@nonce">
+
+    <style nonce="@nonce">
+        .secbg img {
+            width: 100%;
+            max-width: 100%;
+            pointer-events: none;
+        }
+
+        .secbg {
+            background-position: top;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .text-align-center {
+            text-align: center;
+        }
+
+        .margin-top {
+            margin-top: 160px;
+        }
+    </style>
+
+    <header class="two-tier-fixed-header header-top-fix">
+        <div class="header d-flex align-items-center header-top screen__reader">
+
+            <div class="header-left screen__reader">
+                <a asp-action="Land" asp-controller="Home" title="SDG Logo" class="screen__reader logo__topsec">
+                    <img src="~/Landing/images/indian.png" class="Rajasthan_logo" alt="Govt Logo" width="65" height="130">
+                    <div class="d-flex flex-column logo_left_sec">
+                        <div class="logo_below_text fontfamily">
+                            <p class="m-1"><strong>SDGs Coordination and Acceleration Centre</strong></p>
+                            <p class="m-1"><strong>Directorate of Economics & Statistics</strong></p>
+                            <p class="m-1"><strong>Department of Statistics</strong></p>
+                            <p class="m-1"><strong>Government of Rajasthan</strong></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="header-center screen__reader">
+                <a asp-action="Land" asp-controller="Home" title="Rajasthan UN Logo" class="screen__reader">
+                    <img src="~/public/img/UNLogo.png" class="Rajasthan_logo" alt="Rajasthan UN Monitoring Dashboard" width="250">
+                </a>
+            </div>
+
+            <div class="header-right screen__reader">
+                <div class="top_widgets_flex_wrapper">
+                    <div class="">
+                        <div class="cm__section d-flex align-items-center gap-2">
+                            <div>
+                                <img src="~/Landing/images/cm-photo.jpeg" alt="Shri BhajanLal Sharma" width="75" height="74" class="cmphoto">
+                            </div>
+                            <div class="cm__content fontfamily text-center">
+                                <label class="d-block">Shri Bhajan Lal Sharma </label>
+                                <p class="m-0"> Hon'ble Chief Minister </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* <div class="d-flex align-items-center language-sec mob__hide">
+                            <a id="El" class="btn btn-outline-primary active me-1" href="#" onclick="document.getElementById('set-culture-en').submit();">English</a>
+                            <a id="OL" class="btn btn-outline-primary" href="#" onclick="document.getElementById('set-culture-hi').submit();">हिन्दी</a>
+
+                            <form id="set-culture-en" asp-action="SetLanguage" method="post" style="display:none;">
+                                <input type="hidden" name="culture" value="en" />
+                            </form>
+                            <form id="set-culture-hi" asp-action="SetLanguage" method="post" style="display:none;">
+                                <input type="hidden" name="culture" value="hi" />
+                            </form>
+                        </div> *@
+                </div>
+            </div>
+        </div>
+
+        <div class="header-bottom-navigation-bar d-none d-lg-block">
+            <div class="nav-strip-container">
+                <nav class="d-flex justify-content-between align-items-center w-100">
+                    <ul class="navbar-links-list m-0 p-0">
+                        <li><a asp-action="Land" asp-controller="Home" class="nav-link-item"><i class="bx bx-home-alt me-1"></i>Home</a></li>
+                        <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item">About Us</a></li>
+                        <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item">Sector</a></li>
+                        <li><a asp-action="AgencyList" asp-controller="Home" class="nav-link-item">Agency</a></li>
+                        <li><a asp-action="DepartmentList" asp-controller="Home" class="nav-link-item">Department</a></li>
+                        <li><a href="/contact" class="nav-link-item">Contact Us</a></li>
+                    </ul>
+
+                    <div class="navbar-right-action-wrapper">
+                        <a asp-action="Login" asp-controller="Account" class="portal-login-btn">
+                            <i class="bx bx-log-in-circle"></i> Portal Login
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <footer>
+        <div class="container-fluid cmpad foot-pos">
+            <div class="footmid">
+                <div class="row mb-5">
+                    <div class="col d-none d-lg-block">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 mb-0 mb-lg-3">
+                                <p class="menuhead">Nodal Officer</p>
+                                <ul class="footmenu">
+                                    <li><a href="#">Dr. Praveen Kumar</a></li>
+                                    <li><a href="#">Assistant Director</a></li>
+                                    <li><a href="#">9351085433</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 mb-0 mb-lg-3">
+                                <p class="menuhead">Useful Links</p>
+                                <ul class="footmenu">
+                                    <li><a href="#">Niti Ayog</a></li>
+                                    <li><a href="#">MoSPI, GoI</a></li>
+                                    <li><a href="#">Department of Planning, GoR</a></li>
+                                    <li><a href="#">DES, GoR</a></li>
+                                    <li><a href="#">Website Policy</a></li>
+                                    <li><a href="#">Disclaimer</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col contcol">
+                        <p class="menuhead">Contact Info</p>
+                        <p>
+                            SDGs Coordination and Acceleration Centre<br>
+                            Directorate of Economics & Statistics<br>
+                            Department of Statistics<br>
+                            SDG Cell<br>
+                            Yojna Bhawan, Tilak Marg C- Scheme, <br>
+                            Jaipur, Rajasthan Pin-302005
+                        </p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-12 col-md-12 text-align-center">
+                        <p class="menuhead">We are always here to help you!</p>
+                        <ul class="contlist">
+                            <li>
+                                <div class="icon facenter">
+                                    <img width="20" height="20" src="/public/img/icons/headset.svg" alt="Call">
+                                </div>
+                                <div class="data">
+                                    <a href="tel:01411234567">0141-1234567</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon facenter">
+                                    <img width="20" height="20" src="/public/img/icons/envelope.svg" alt="Mail">
+                                </div>
+                                <div class="data">
+                                    <a href="mailto:ddsdg.des@rajasthan.gov.in">ddsdg.des@rajasthan.gov.in</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center gap-3 foot-counter">
+                    <div>
+                        <div class="count">
+                            <div class="count-img">
+                                <img width="24" height="24" src="/public/img/icons/stat.svg" alt="Stat">
+                            </div>
+                            <div class="count-con">
+                                <p class="menuhead">Visitors</p>
+                                <span class="value">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 pt-3 cpy-sec">
+                <div class="col-md-12 copycol">
+                    <p class="copy m-0">© 2026 UN Monitoring. All Rights Reserved. </p>
+                    <p class="power m-0">
+                        Powered by <a href="#" target="_blank">Rajasthan Government</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script nonce="@nonce">
+        var url = "#";
+        var CSRF_TOKEN = "QYotKPMii43xDYe0KGS8VzyJLdd7Bx8zr3Lfu5sq";
+        var url_setInitiative = "/set_initiative";
+        var url_getInitiative = "/initatives";
+        var url_add_contact = "/add-contact";
+        var url_searchData = "/searchData";
+        var url_subscribe = "/subscribe";
+        var url_setLatestNews = "/set_latest_news";
+        var url_getLatestNews = "/latest-updates";
+    </script>
+
+    <script src="/js/site-lib.min.js" nonce="@nonce"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js" nonce="@nonce"></script>
+    <script src="/public/js/swiper-bundle.min.js" nonce="@nonce"></script>
+    <script src="/public/js/lazysizes.min.js" nonce="@nonce"></script>
+    <script src="/public/js/sm.js" nonce="@nonce"></script>
+    <!-- Yahan lagao -->
+    <script nonce="@nonce">
+        $.fn.jquery = "";
+    </script>
+    <script nonce="@nonce">
+        if (window.Fancybox) {
+
+            try {
+                Fancybox.version = "";
+            } catch (e) { }
+
+            try {
+                Fancybox.VERSION = "";
+            } catch (e) { }
+        }
+    </script>
+    @*@await RenderSectionAsync("Scripts", required: false)*@
+    <script nonce="@nonce">
+        $(function () {
+            $(window).on('load scroll resize orientationchange', function () {
+                if ($(window).scrollTop() < 80) {
+                    $("header").removeClass("active");
+                } else {
+                    $("header").addClass("active");
+                }
+            });
+        });
+    </script>
+    <script nonce="@nonce">
+        const megalistElements = document.querySelectorAll('.megalist');
+        megalistElements.forEach(list => {
+            const listItems = list.querySelectorAll('li');
+            if (listItems.length > 8) {
+                list.classList.add('listfifty');
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            $('.toggleSidemenu, .accessOpen').click(function () {
+                $(this).toggleClass('active');
+                $('#accessMain').fadeToggle();
+            });
+            $('#accessClose').click(function () {
+                $('#accessMain').fadeOut();
+                $('.toggleSidemenu, .accessOpen').removeClass('active');
+            });
+
+            var btnAccessOpen = document.querySelector('.accessOpen');
+            if (btnAccessOpen) {
+                btnAccessOpen.addEventListener('click', function () {
+                    const accessMain = document.getElementById('accessMain');
+                    if (accessMain) accessMain.style.display = 'block';
+                });
+            }
+
+            var btnAccessClose = document.getElementById('accessClose');
+            if (btnAccessClose) {
+                btnAccessClose.addEventListener('click', function () {
+                    const accessMain = document.getElementById('accessMain');
+                    if (accessMain) accessMain.style.display = 'none';
+                });
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        Fancybox.bind('[data-fancybox="gallery"]', {});
+        Fancybox.bind('[data-fancybox="galleryiec"]', {
+            Toolbar: {
+                display: {
+                    left: ["infobar"],
+                    middle: [],
+                    right: ["iterateZoom", "slideshow", "fullscreen", "thumbs", "download", "close"]
+                }
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        var digislide = new Swiper(".digislide", {
+            spaceBetween: 20,
+            slidesPerView: 5,
+            autoplay: true,
+            loop: true,
+            navigation: {
+                nextEl: ".digi-next",
+                prevEl: ".digi-prev",
+            },
+        });
+        $(".digislide").mouseenter(function () {
+            if (digislide.autoplay) digislide.autoplay.stop();
+        });
+        $(".digislide").mouseleave(function () {
+            if (digislide.autoplay) digislide.autoplay.start();
+        });
+    </script>
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            $('.bannernavmain').show();
+            $('.navslider li').addClass('swiper-slide');
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const activeSlide = document.querySelector('.swiper-wrapper .active');
+            if (activeSlide) {
+                const activeIndex = Array.prototype.indexOf.call(activeSlide.parentNode.children, activeSlide);
+                const swiper = new Swiper('.navslider', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 8,
+                    initialSlide: activeIndex,
+                    navigation: {
+                        nextEl: '.navslider-next',
+                        prevEl: '.navslider-prev',
+                    },
+                });
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        var newsevslide = new Swiper(".newsevslide", {
+            spaceBetween: 30,
+            autoplay: true,
+            navigation: {
+                nextEl: ".newsev-next",
+                prevEl: ".newsev-prev",
+            },
+            breakpoints: {
+                1199: { slidesPerView: 4 },
+                992: { slidesPerView: 3 },
+                768: { slidesPerView: 3 },
+                575: { slidesPerView: 2 },
+                425: { slidesPerView: 1 },
+                0: { slidesPerView: 1 }
+            },
+        });
+    </script>
+    <script nonce="@nonce">
+        const triggerDiv = document.getElementById("triggerDiv");
+        const targetDiv = document.getElementById("targetDiv");
+        if (triggerDiv && targetDiv) {
+            const closeButton = document.querySelector(".close-btn");
+            triggerDiv.addEventListener("click", () => {
+                $('.searchInput').focus();
+                targetDiv.style.width = targetDiv.style.width === "600px" ? "0" : "600px";
+            });
+            if (closeButton) {
+                closeButton.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    targetDiv.style.width = "0";
+                    $('.searchdata').html('');
+                    $('.searchInput').val('');
+                });
+            }
+        }
+    </script>
+    <script nonce="@nonce">
+        const triggerDiv1 = document.getElementById("triggerDiv1");
+        const targetDiv1 = document.getElementById("targetDiv1");
+        if (triggerDiv1 && targetDiv1) {
+            const closeButton1 = document.querySelector(".close-btn1");
+            triggerDiv1.addEventListener("click", () => {
+                $('.searchInput').focus();
+                if (window.innerWidth <= 658) {
+                    targetDiv1.style.width = targetDiv1.style.width === "300px" ? "0" : "300px";
+                } else {
+                    targetDiv1.style.width = targetDiv1.style.width === "600px" ? "0" : "600px";
+                }
+            });
+            if (closeButton1) {
+                closeButton1.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    targetDiv1.style.width = "0";
+                    $('.searchdata').html('');
+                    $('.searchInput').val('');
+                });
+            }
+        }
+    </script>
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            $('.sideBtn').click(function () {
+                $('.sidebar').addClass('show');
+            });
+            $('.closebtn').click(function () {
+                $('.sidebar').removeClass('show');
+            });
+        });
+    </script>
+    <script nonce="@nonce">
+        const playPauseBtns = document.querySelectorAll('.play-btn');
+        const audioElements = document.querySelectorAll('.audio-element');
+        const seekBars = document.querySelectorAll('.seek-bar');
+        playPauseBtns.forEach((btn, index) => {
+            const audio = audioElements[index];
+            const seekBar = seekBars[index];
+            if (audio && seekBar) {
+                btn.addEventListener('click', () => {
+                    if (audio.paused) {
+                        audio.play();
+                        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" width="24" height="24"><path d="M6 6h4v12H6zm8 0h4v12h-4z"></path></svg>`;
+                    } else {
+                        audio.pause();
+                        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" width="24" height="24"><path d="M8 5v14l11-7z"></path></svg>`;
+                    }
+                });
+                audio.addEventListener('timeupdate', () => {
+                    seekBar.max = audio.duration;
+                    seekBar.value = audio.currentTime;
+                });
+                seekBar.addEventListener('input', () => {
+                    audio.currentTime = seekBar.value;
+                });
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        document.addEventListener('DOMContentLoaded', function () {
+            const accbtn = document.querySelector('.darkbtn');
+            const body = document.body;
+            if (accbtn) {
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    body.classList.add('dark');
+                    accbtn.classList.add('active');
+                }
+                accbtn.addEventListener('click', function () {
+                    body.classList.toggle('dark');
+                    accbtn.classList.toggle('active');
+                    if (body.classList.contains('dark')) {
+                        localStorage.setItem('darkMode', 'enabled');
+                    } else {
+                        localStorage.setItem('darkMode', 'disabled');
+                    }
+                });
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        let isFontSizeIncreased = false;
+        function toggleFontSize(button) {
+            const htmlElement = document.documentElement;
+            const defaultFontSize = 16;
+            if (isFontSizeIncreased) {
+                htmlElement.style.fontSize = "100%";
+                isFontSizeIncreased = false;
+                if (button.querySelector('span')) button.querySelector('span').textContent = "Bigger Text";
+                button.classList.remove('active');
+            } else {
+                const currentFontSize = parseFloat(window.getComputedStyle(htmlElement).fontSize) || defaultFontSize;
+                const newFontSize = currentFontSize * 1.1;
+                htmlElement.style.fontSize = newFontSize + "px";
+                isFontSizeIncreased = true;
+                if (button.querySelector('span')) button.querySelector('span').textContent = "Smaller Text";
+                button.classList.add('active');
+            }
+        }
+    </script>
+    <script nonce="@nonce">
+        let linksHighlighted = false;
+        function highlightLinks(button) {
+            const links = document.querySelectorAll('a');
+            if (linksHighlighted) {
+                links.forEach(link => {
+                    link.style.color = "";
+                    link.style.removeProperty("text-decoration");
+                });
+                linksHighlighted = false;
+                button.classList.removeClass('active');
+            } else {
+                links.forEach(link => {
+                    link.style.color = "#d50707";
+                    link.style.setProperty("text-decoration", "underline", "important");
+                });
+                linksHighlighted = true;
+                button.classList.add('active');
+            }
+        }
+    </script>
+    <script nonce="@nonce">
+        let isCursorIncreased = false;
+        function increaseCursorSize(button) {
+            const body = document.body;
+            if (isCursorIncreased) {
+                body.style.cursor = "";
+                button.classList.remove('active');
+                isCursorIncreased = false;
+            } else {
+                body.style.cursor = "url('public/img/icons/mouse-pointer.svg'), auto";
+                button.classList.add('active');
+                isCursorIncreased = true;
+            }
+        }
+    </script>
+    <script nonce="@nonce">
+        const desatButton = document.querySelector('.desat');
+        if (desatButton) {
+            const htmlElement = document.documentElement;
+            desatButton.addEventListener('click', function () {
+                htmlElement.classList.toggle('gray');
+                desatButton.classList.toggle('active');
+            });
+        }
+    </script>
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            if ($('body').hasClass('slide-bag')) {
+                $('.mainslider').hide();
+                $('.default').show();
+            } else {
+                $('.mainslider').show();
+                $('.default').hide();
+            }
+        });
+    </script>
+    <script nonce="@nonce">
+        var swiper = new Swiper(".mainslider", {
+            effect: 'fade',
+            autoplay: true,
+            pagination: { el: ".mainpagination", clickable: true },
+            speed: 1500,
+            loop: true,
+            navigation: { nextEl: ".main-next", prevEl: ".main-prev" },
+        });
+    </script>
+    <script nonce="@nonce">
+        var swiperOther = new Swiper(".othrpageslide", {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            autoplay: true,
+            pagination: { el: ".mainpagination", clickable: true },
+            speed: 1500,
+            loop: true,
+        });
+    </script>
+    <script nonce="@nonce">
+        var swiperAbt = new Swiper(".abtslide", {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            autoplay: true,
+            pagination: { el: ".mainpagination", clickable: true },
+            speed: 1500,
+            loop: true,
+        });
+    </script>
+    <script nonce="@nonce">
+        var swipernews = new Swiper('.swipernews', {
+            spaceBetween: 20,
+            mousewheel: true,
+            direction: 'vertical',
+            slidesPerView: 4,
+            loop: true,
+            speed: 2000,
+            autoplay: { delay: 1000, disableOnInteraction: false },
+        });
+        $(".swipernews").mouseenter(function () {
+            if (swipernews.autoplay) swipernews.autoplay.stop();
+        });
+        $(".swipernews").mouseleave(function () {
+            if (swipernews.autoplay) swipernews.autoplay.start();
+        });
+    </script>
+    <script nonce="@nonce">
+        var bannerslide = new Swiper(".bannerslide", {
+            grabCursor: true,
+            effect: "creative",
+            creativeEffect: {
+                prev: { shadow: true, translate: ["-20%", 0, -1] },
+                next: { translate: ["100%", 0, 0] },
+            },
+            pagination: { el: ".bannerpagination", clickable: true },
+            speed: 1500,
+            loop: true,
+            navigation: { nextEl: ".banner-next", prevEl: ".banner-prev" },
+        });
+    </script>
+    <script nonce="@nonce">
+        var updateslide = new Swiper(".updateslide", {
+            spaceBetween: 10,
+            speed: 1500,
+            slidesPerView: 'auto',
+            autoplay: true,
+            loop: true,
+            navigation: { nextEl: ".update-next", prevEl: ".update-prev" },
+        });
+        $(".updateslide").mouseenter(function () {
+            if (updateslide.autoplay) updateslide.autoplay.stop();
+        });
+        $(".updateslide").mouseleave(function () {
+            if (updateslide.autoplay) updateslide.autoplay.start();
+        });
+    </script>
+    <script nonce="@nonce">
+        var partnerslide = new Swiper(".partnerslide", {
+            spaceBetween: 20,
+            navigation: { nextEl: ".part-next", prevEl: ".part-prev" },
+            autoplay: true,
+            loop: true,
+            breakpoints: {
+                1200: { slidesPerView: 8 },
+                992: { slidesPerView: 7 },
+                768: { slidesPerView: 6 },
+                575: { slidesPerView: 3, spaceBetween: 10 },
+                425: { slidesPerView: 3, spaceBetween: 10 },
+                0: { slidesPerView: 3, spaceBetween: 10 }
+            },
+        });
+        $(".partnerslide").mouseenter(function () {
+            if (partnerslide.autoplay) partnerslide.autoplay.stop();
+        });
+        $(".partnerslide").mouseleave(function () {
+            if (partnerslide.autoplay) partnerslide.autoplay.start();
+        });
+    </script>
+    <script nonce="@nonce">
+        var publislide = new Swiper(".publislide", {
+            spaceBetween: 20,
+            slidesPerView: 1,
+            navigation: { nextEl: ".publi-next", prevEl: ".publi-prev" },
+            effect: "cards",
+            grabCursor: true,
+        });
+    </script>
+    <script nonce="@nonce">
+        var publislidetext = new Swiper(".publislidetext", {
+            slidesPerView: 1,
+            navigation: { nextEl: ".publi-next", prevEl: ".publi-prev" },
+        });
+    </script>
+    <script nonce="@nonce">
+        var swipergal = new Swiper(".swipergal", {
+            spaceBetween: 20,
+            slidesPerView: 3,
+            navigation: { nextEl: ".gal-next", prevEl: ".gal-prev" },
+            breakpoints: {
+                768: { slidesPerView: 3 },
+                575: { slidesPerView: 2 },
+                425: { slidesPerView: 2, spaceBetween: 10 },
+                0: { slidesPerView: 2, spaceBetween: 10 }
+            },
+        });
+    </script>
+    <script nonce="@nonce">
+        var testislide = new Swiper(".testislide", {
+            spaceBetween: 30,
+            navigation: { nextEl: ".test-next", prevEl: ".test-prev" },
+            breakpoints: {
+                1199: { slidesPerView: 2 },
+                992: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                575: { slidesPerView: 2 },
+                425: { slidesPerView: 1 },
+                0: { slidesPerView: 1 }
+            },
+        });
+    </script>
+    <script nonce="@nonce">
+        var testislideright = new Swiper(".testislideright", {
+            slidesPerView: 1,
+            autoplay: true,
+            loop: true,
+            pagination: { el: ".mainpagination", clickable: true },
+        });
+    </script>
+    <script nonce="@nonce">
+        var initiaslides = new Swiper(".initiaslides", {
+            spaceBetween: 20,
+            slidesPerView: 3,
+            navigation: { nextEl: ".ini-next", prevEl: ".ini-prev" },
+            pagination: { el: ".mainpagination", clickable: true },
+            breakpoints: {
+                1199: { slidesPerView: 3 },
+                992: { slidesPerView: 2 },
+                768: { slidesPerView: 2 },
+                575: { slidesPerView: 2 },
+                425: { slidesPerView: 1 },
+                0: { slidesPerView: 1 }
+            },
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+﻿@model MO.Management.MainModels
+@{
+    ViewData["Title"] = "Sector Mapping";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .text-cloor {
+        color:#fff;
+    }
+</style>
+<div class="container-fluid mt-4">
+    <input type="hidden" id="ActivityGuid" value="@ViewBag.Guid" />
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a asp-action="ActivityManagement" asp-controller="Management" class="btn btn-light border" id="topBackBtn">
+            <i class="bx bx-arrow-back"></i> Back To List
+        </a>
+
+        <h5 class="mb-0">Activity Setup</h5>
+    </div>
+    <!-- 🔷 HEADER -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center">
+
+            <div>
+                <h4 class="fw-bold mb-1"></h4>
+                <small class="text-muted1">
+                    
+                </small>
+                <br />
+                <small class="text-muted">
+
+                </small>
+            </div>
+
+            <div>
+                <span class="badge bg-success px-3 py-2">Active</span>
+                <button class="btn btn-outline-primary ms-2">Edit</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🔷 SUMMARY -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card stat-card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h6 class="text-cloor">Departments</h6>
+                    <h3 class="text-cloor"></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card bg-success text-white">
+                <div class="card-body text-center">
+                    <h6 class="text-cloor">Goals</h6>
+                    <h3 class="text-cloor"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h6 class="text-cloor">Pillars</h6>
+                    <h3 class="text-cloor"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <h6 class="text-cloor">Sectors</h6>
+                    <h3 class="text-cloor"></h3>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </div>
+
+    <!-- 🔷 MAIN CONTENT -->
+    <div class="row">
+
+        <!-- LEFT SIDE -->
+        <div class="col-md-4">
+
+            <!-- Departments -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+
+                    <h5 class="mb-3">🏢 Departments</h5>
+
+                    <!-- 🔷 Nodal Department -->
+                    <div class="mb-3">
+                        <label class="fw-bold text-primary">Nodal Department</label>
+                        <div class="nodal-dept-box mt-2">
+                            <i class="bx bxs-star text-warning me-2"></i>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <!-- 🔷 Supporting Departments -->
+                    <div>
+                        <label class="fw-bold text-secondary">Supporting Departments</label>
+
+                        <div class="d-flex flex-wrap gap-2 mt-2" id="supportDeptContainer">
+                            @* <span class="badge bg-light text-dark border">Water Supply</span>
+                            <span class="badge bg-light text-dark border">Education</span>
+                            <span class="badge bg-light text-dark border">Agriculture</span> *@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>📝 Description</h5>
+                    <p class="text-muted1">
+                        @* Implementation of water sustainability programs across rural areas... *@
+                    </p>
+                    <p class="text-muted">
+                        @* Implementation of water sustainability programs across rural areas... *@
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="col-md-8">
+
+            <!-- Tabs -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#goalTab">
+                                🎯 Goals
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pillarTab">
+                                🏛 Pillars
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#subTab">Sub Activities</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!-- 🔷 GOALS -->
+                        <div class="tab-pane fade show active" id="goalTab">
+
+                            <div class="accordion" id="goalAccordion">
+
+                                @* <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#g1">
+                                            SDG 6 - Clean Water
+                                        </button>
+                                    </h2>
+
+                                    <div id="g1" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Target 6.1 - Safe Drinking Water</li>
+                                                <li class="list-group-item">Target 6.2 - Sanitation</li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div> *@
+
+                            </div>
+
+                        </div>
+
+                        <!-- 🔷 PILLARS -->
+                        <div class="tab-pane fade" id="pillarTab">
+
+                            <div class="accordion" id="pillarAccordion">
+
+                               @*  <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#p1">
+                                            Sustainable Growth
+                                        </button>
+                                    </h2>
+
+                                    <div id="p1" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+
+                                            <div class="mb-2 fw-bold text-primary">
+                                                Sector: Urban Development
+                                            </div>
+
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Water Infrastructure</li>
+                                                <li class="list-group-item">Drainage System</li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div> *@
+
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="subTab">
+                            <!-- Sub Activity Accordion here -->
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-body">
+
+                                    <h5 class="mb-3">📂 Sub Activities & Tasks</h5>
+
+                                    <div class="accordion" id="subActivityAccordion">
+
+                                        <!-- 🔷 Sub Activity -->
+                                       @*  <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#sub1">
+                                                    📁 Vaccination Drive
+                                                    <span class="badge bg-primary ms-2">3 Tasks</span>
+                                                </button>
+                                            </h2>
+
+                                            <div id="sub1" class="accordion-collapse collapse show">
+                                                <div class="accordion-body">
+
+                                                    <ul class="task-list">
+                                                        <li>✔ Register citizens</li>
+                                                        <li>✔ Schedule vaccination</li>
+                                                        <li>✔ Generate certificates</li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </div> *@
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script nonce="@nonce" src="~/custom/ActivityDetail.js" asp-append-version="true"></script>
+<script nonce="@nonce">
+        $(document).ready(function () {
+
+        let guid = $('#ActivityGuid').val();
+
+        if (guid) {
+            actdetail.loadFullData(guid); // 👈 ye tum already bana chuki ho
+        }
+
+    });
+</script>
+@* <div class="container-fluid mt-4">
+
+    <!-- 🔷 Activity Header -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-1">🌍 Activity: Clean Water Initiative</h4>
+                <small class="text-muted">Short Name: CWI | Created on: 12 Apr 2026</small>
+            </div>
+            <span class="badge bg-success px-3 py-2">Active</span>
+        </div>
+    </div>
+
+    <!-- 🔷 Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Departments</h5>
+                    <h3 class="text-primary">5</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Sectors</h5>
+                    <h3 class="text-success">3</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Goals</h5>
+                    <h3 class="text-warning">7</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Pillars</h5>
+                    <h3 class="text-danger">4</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔷 Departments -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="mb-3">🏢 Departments</h5>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-primary">Health</span>
+                <span class="badge bg-secondary">Education</span>
+                <span class="badge bg-info text-dark">Water Supply</span>
+                <span class="badge bg-warning text-dark">Agriculture</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔷 Tabs Section -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <ul class="nav nav-tabs mb-3" id="activityTabs">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#sectorTab">Sectors</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#goalTab">Goals</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pillarTab">Pillars</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- Sector -->
+                <div class="tab-pane fade show active" id="sectorTab">
+                    <ul class="list-group">
+                        <li class="list-group-item">Urban Development</li>
+                        <li class="list-group-item">Rural Water Supply</li>
+                    </ul>
+                </div>
+
+                <!-- Goals -->
+                <div class="tab-pane fade" id="goalTab">
+                    <ul class="list-group">
+                        <li class="list-group-item">SDG 6 - Clean Water</li>
+                        <li class="list-group-item">SDG 3 - Health</li>
+                    </ul>
+                </div>
+
+                <!-- Pillars -->
+                <div class="tab-pane fade" id="pillarTab">
+                    <ul class="list-group">
+                        <li class="list-group-item">Sustainable Growth</li>
+                        <li class="list-group-item">Inclusive Development</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div> *@

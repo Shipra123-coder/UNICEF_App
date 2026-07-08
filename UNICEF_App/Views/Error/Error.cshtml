@@ -1,0 +1,115 @@
+﻿@model string
+@{
+    ViewBag.Title = "Access Denied"; Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Found</title>
+  
+</head>
+<body>
+    @{
+        var nonce = Context.Items["CSPNonce"]?.ToString();
+    }
+    <style nonce="@nonce">
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .error-container {
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .error-code {
+            font-size: 96px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 0;
+        }
+
+        .error-message {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .error-description {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .error-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+            .error-buttons a {
+                text-decoration: none;
+                color: #fff;
+                background-color: #3498db;
+                padding: 10px 20px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+                .error-buttons a:hover {
+                    background-color: #2980b9;
+                }
+
+                .error-buttons a.home {
+                    background-color: #2ecc71;
+                }
+
+                    .error-buttons a.home:hover {
+                        background-color: #27ae60;
+                    }
+    </style>
+    <div class="error-container">
+        <div class="error-code">403</div>
+        <div class="error-message">Oops! Error Found</div>
+        <div class="error-description">
+            @Model
+        </div>
+        <div class="error-buttons">
+            @using (Html.BeginForm("Logout", "Account", FormMethod.Post))
+            {
+                <button type="submit" class="home" title="LogOut">Logout</button>
+            }
+            <a id="goBackLink">Go Back</a>
+        </div>
+    </div>
+    <script nonce="@nonce">
+        document.getElementById('goBackLink').addEventListener('click', function (e) {
+            history.back();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

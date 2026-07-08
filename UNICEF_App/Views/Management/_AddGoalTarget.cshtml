@@ -1,0 +1,275 @@
+﻿@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+     .mapping-box {
+         background: #fdfdfd;
+         border: 1px solid #dee2e6;
+         border-radius: 8px;
+         padding: 20px;
+     }
+
+     /* Grouped Goal Card */
+     .goal-group-card {
+         background: #fff;
+         border: 1px solid #e0e0e0;
+         border-radius: 8px;
+         margin-bottom: 20px;
+         overflow: hidden;
+         box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+         border-left: 5px solid #6610f2;
+     }
+
+     /* Header with Full Goal Remove */
+     .goal-group-header {
+         background: #f8f6ff;
+         color: #6610f2;
+         padding: 12px 15px;
+         font-weight: bold;
+         border-bottom: 1px solid #eee;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+     }
+
+     .target-list-container {
+         padding: 5px 15px;
+         background: #fff;
+     }
+
+     /* Target Entry with Remove */
+     .target-entry {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 10px 0;
+         border-bottom: 1px solid #f1f1f1;
+     }
+
+         .target-entry:last-child {
+             border-bottom: none;
+         }
+
+     .target-name {
+         font-size: 13.5px;
+         color: #444;
+         display: flex;
+         align-items: center;
+     }
+
+         .target-name::before {
+             content: "\f05b";
+             font-family: "Font Awesome 5 Free";
+             font-weight: 900;
+             color: #6610f2;
+             margin-right: 12px;
+             font-size: 10px;
+         }
+
+     /* Buttons */
+     .btn-remove-target {
+         color: #dc3545;
+         border: 1px solid transparent;
+         background: #fff5f5;
+         cursor: pointer;
+         padding: 2px 8px;
+         border-radius: 4px;
+         font-size: 12px;
+         transition: 0.2s;
+     }
+
+         .btn-remove-target:hover {
+             background: #dc3545;
+             color: #fff;
+             border-color: #dc3545;
+         }
+
+     .btn-remove-goal {
+         font-size: 11px;
+         text-transform: uppercase;
+         letter-spacing: 0.5px;
+         font-weight: 700;
+         border-radius: 4px;
+         padding: 4px 10px;
+     }
+
+     .empty-state {
+         text-align: center;
+         color: #999;
+         padding: 40px;
+         border: 2px dashed #dee2e6;
+         border-radius: 10px;
+     }
+</style>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-project-diagram me-2"></i> Goal & Target Hierarchy</h5>
+        <span id="totalCountBadge" class="badge bg-primary">0 Targets Total</span>
+    </div>
+
+    <div class="card-body bg-light">
+        <div class="mapping-box shadow-sm mb-4">
+            <div class="row align-items-end">
+                <div class="col-md-5 mb-3">
+                    <label class="small fw-bold">1. Select Strategic Goal</label>
+                    <select class="form-select" id="Goal" name="Goal">                      
+                    </select>
+                </div>
+                <div class="col-md-5 mb-3">
+                    <label class="small fw-bold">2. Select Linked Target</label>
+                    <select class="form-select" id="Target" name="Target">                      
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <button type="button" id="btnAddMapping" class="btn btn-primary w-100 fw-bold shadow-sm">
+                        <i class="fas fa-plus-circle"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mappingContainer">
+            <div class="empty-state">
+                <i class="fas fa-layer-group fa-3x mb-3 opacity-25"></i>
+                <p>No goals or targets mapped yet. Use the form above to start.</p>
+            </div>
+        </div>
+
+        <input type="hidden" name="mappingJsonData" id="mappingJsonData">
+
+        @* <div class="text-end border-top pt-3">
+            <button type="button" id="SaveMapping" class="btn btn-primary px-5 shadow">Save & Proceed</button>
+        </div>   *@     
+    </div>
+</div>
+<script nonce="@nonce">
+     $(function () {
+       
+     });
+</script>
+<script nonce="@nonce">
+      document.addEventListener('DOMContentLoaded', function() {
+           common.BindDropdown("/Master/DDL_Goal", "Goal", "Goal", $('#hiddengoal').val());
+          //  const SbtnSave = document.getElementById('SaveMapping');
+          //  // Add Sub-Activity Block
+          // SbtnSave.addEventListener('click', function() {
+          //  activityMaster.saveGoal();
+          // });
+    });</script>
+<script nonce="@nonce">
+    $(function () {
+        const goal = document.getElementById('Goal');
+        goal.addEventListener('change', function(e) {
+            const selectedGoalId = e.target.value;
+            console.log("Selected Goal ID:", selectedGoalId);
+            common.BindDropdown(`/Master/DDL_Target?GoalId=` + selectedGoalId, "Target", "Target", $('#hiddentargetId').val());
+        });
+    });
+</script>
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function() {
+        const goalDropdown = document.getElementById('Goal');
+        const targetDropdown = document.getElementById('Target');
+        const btnAdd = document.getElementById('btnAddMapping');
+        const mappingContainer = document.getElementById('mappingContainer');
+        const hiddenInput = document.getElementById('mappingJsonData');
+        const totalCountBadge = document.getElementById('totalCountBadge');
+
+       
+
+        // ADD LOGIC
+        btnAdd.addEventListener('click', function() {
+            const gId = goalDropdown.value;
+            const gName = goalDropdown.options[goalDropdown.selectedIndex].text;
+            const tId = targetDropdown.value;
+            const tName = targetDropdown.options[targetDropdown.selectedIndex].text;
+
+            if (!gId || !tId) { alert("Goal aur Target dono select karein."); return; }
+
+            if (!mappingData[gId]) {
+                mappingData[gId] = { name: gName, targets: [] };
+            }
+
+            const exists = mappingData[gId].targets.some(t => t.id === tId);
+            if (exists) { alert("Yeh target pehle se add hai."); return; }
+
+            mappingData[gId].targets.push({ id: tId, name: tName });
+            renderUI();
+            targetDropdown.value = "";
+        });
+
+        // RENDER UI
+        function renderUI() {
+            const goalIds = Object.keys(mappingData);
+            if (goalIds.length === 0) {
+                mappingContainer.innerHTML = '<div class="empty-state"><i class="fas fa-layer-group fa-3x mb-3 opacity-25"></i><p>No goals or targets mapped yet.</p></div>';
+                totalCountBadge.textContent = "0 Targets Total";
+                hiddenInput.value = "";
+                return;
+            }
+
+            mappingContainer.innerHTML = '';
+            let totalTargets = 0;
+
+            goalIds.forEach(gId => {
+                const goal = mappingData[gId];
+                totalTargets += goal.targets.length;
+
+                const card = document.createElement('div');
+                card.className = 'goal-group-card';
+
+                let targetHtml = '';
+                goal.targets.forEach((t, idx) => {
+                    targetHtml += `
+                        <div class="target-entry">
+                            <span class="target-name">${t.name}</span>
+                            <button type="button" class="btn-remove-target" data-goal="${gId}" data-target-idx="${idx}">
+                                <i class="fas fa-times me-1"></i> Remove
+                            </button>
+                        </div>`;
+                });
+
+                card.innerHTML = `
+                    <div class="goal-group-header">
+                        <span><i class="fas fa-bullseye me-2"></i> ${goal.name}</span>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-remove-goal" data-goal="${gId}">
+                            <i class="fas fa-trash-alt me-1"></i> Remove Full Goal
+                        </button>
+                    </div>
+                    <div class="target-list-container">
+                        ${targetHtml}
+                    </div>
+                `;
+                mappingContainer.appendChild(card);
+            });
+
+            totalCountBadge.textContent = `${totalTargets} Targets Total`;
+            hiddenInput.value = JSON.stringify(mappingData);
+        }
+
+        // REMOVE LOGIC (Event Delegation)
+        mappingContainer.addEventListener('click', function(e) {
+            // 1. Remove Single Target
+            const btnT = e.target.closest('.btn-remove-target');
+            if (btnT) {
+                const gId = btnT.getAttribute('data-goal');
+                const tIdx = btnT.getAttribute('data-target-idx');
+                mappingData[gId].targets.splice(tIdx, 1);
+                if (mappingData[gId].targets.length === 0) delete mappingData[gId];
+                renderUI();
+                return;
+            }
+
+            // 2. Remove Full Goal
+            const btnG = e.target.closest('.btn-remove-goal');
+            if (btnG) {
+                const gId = btnG.getAttribute('data-goal');
+                if (confirm("Kya aap is Goal aur iske saare Targets ko hatana chahte hain?")) {
+                    delete mappingData[gId];
+                    renderUI();
+                }
+            }
+        });
+    });
+</script>

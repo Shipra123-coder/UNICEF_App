@@ -1,0 +1,114 @@
+﻿@model List<MO.Management.ActivityMaster>
+@{
+    ViewData["Title"] = "Sector Mapping";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .table tbody tr td:last-child {
+        width: 60%;
+    }
+</style>
+<div class="container-fluid mt-4">
+   
+    <!-- 🔷 Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">📊 Activity Management</h4>
+        <a asp-action="Main" asp-controller="Management" class="btn btn-primary">
+            <i class="bx bx-plus"></i> Add New Activity
+        </a>
+    </div>
+
+    <!-- 🔷 Search + Filter -->
+    <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body d-flex gap-3">
+            <input type="text" class="form-control" placeholder="Search Activity..." />
+            <select class="form-select" style="max-width:200px;">
+                <option value="">All Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+            </select>
+            <button class="btn btn-outline-secondary">Search</button>
+        </div>
+    </div>
+
+    <!-- 🔷 Activity Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Activity Name</th>
+                        <th>Short Name</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                        <th class="text-end widthtdend">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.ActivityName</td>
+                            <td>@item.ShortName</td>
+                            <td>@item.ActivityStatus</td>      
+                            <td>@item.CreatedDate.ToString("dd MMM yyyy")</td>
+
+                            <td class="text-end widthtdend">
+                                <!-- View -->
+                                <a asp-action="ActivityLand"
+                                   asp-controller="Management"
+                                   asp-route-guid="@item.ActivityGuid"
+                                   class="btn btn-sm btn-info">
+                                    <i class="bx bx-show"></i>
+                                </a>
+                                <!-- Edit -->
+                                <a asp-action="Main"
+                                   asp-controller="Management"
+                                   asp-route-guid="@item.ActivityGuid"
+                                   class="btn btn-sm btn-warning">
+                                    <i class="bx bx-edit"></i>
+                                </a>
+                                <!-- Monitoring -->
+                                <a asp-action="MonitoringEntry"
+                                   asp-controller="Management"
+                                   asp-route-guid="@item.ActivityGuid"
+                                   class="btn btn-sm btn-warning" title="Agreement">
+                                    <i class="bx bx-edit-alt"></i> Agreement
+                                </a>                                
+                                <a asp-action="MonitoringEntryTwo"
+                                   asp-controller="Management"
+                                   asp-route-guid="@item.ActivityGuid"
+                                   asp-route-reportingId="@item.ReportingId"
+                                   class="btn btn-sm btn-warning" title="Progerss">
+                                    <i class="bx bx-line-chart"></i> Progerss
+                                </a>
+                                <!-- Monitoring -->
+                                <a asp-action="AddActivityBestPrectices"
+                                   asp-controller="Management"
+                                   asp-route-guid="@item.ActivityGuid"
+                                   class="btn btn-sm btn-warning" title="Best Practice">
+                                    <i class="bx bx-medal"></i> Best Practice
+                                </a>
+                            </td>
+                        </tr>
+
+                        count++;
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>

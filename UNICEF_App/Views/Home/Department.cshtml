@@ -1,0 +1,366 @@
+﻿@{
+    ViewData["Title"] = "Department Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .section-padding-gaurav {
+        background: antiquewhite;
+        padding: 15px;
+        margin-top: 192px;
+    }
+    /* --- Premium Category Cards --- */
+    .category-card {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px; /* Smoother rounded corners */
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); /* Soft ambient shadow */
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Ultra smooth ease */
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        /* Card Hover Effect */
+        .category-card:hover {
+            transform: translateY(-8px); /* Card lifts up */
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.1); /* Deep glowing shadow */
+        }
+
+        /* Background subtle glow on hover */
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .category-card:hover::before {
+            background: linear-gradient(90deg, #0284c7, #ea580c); /* Multi-color top border line on hover */
+        }
+
+    /* --- Icon Animations & Sizes --- */
+    .card-icon {
+        font-size: 42px; /* Slightly larger for better visibility */
+        margin-bottom: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    /* Icon wiggle/bounce on card hover */
+    .category-card:hover .card-icon {
+        transform: scale(1.12) translateY(-2px);
+    }
+
+    /* Vibrant Icon Colors */
+    .icon-blue {
+        color: #2563eb;
+    }
+
+    .icon-green {
+        color: #16a34a;
+    }
+
+    .icon-lightgreen {
+        color: #65a30d;
+    }
+
+    .icon-darkblue {
+        color: #1e3a8a;
+    }
+
+    .icon-cyan {
+        color: #0891b2;
+    }
+
+    .icon-yellow {
+        color: #ea580c;
+    }
+
+    /* --- Card Typography --- */
+    .category-card h4 {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #1e293b;
+        transition: color 0.3s ease;
+        padding-top: 10px;
+    }
+
+    .category-card:hover h4 {
+        color: #1e3a8a; /* Title shifts to primary brand color on hover */
+    }
+
+    .category-card p {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.5;
+        margin-bottom: 22px;
+        min-height: 42px; /* Keeps buttons perfectly aligned */
+    }
+    .h-100 {
+        height: 100% !important;
+    }
+
+    /*.view-all-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        background: #0d6efd;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+    }
+
+        .view-all-btn i {
+            transition: transform 0.3s ease;
+        }*/
+
+    .section-padding-gaurav {
+        background: #f8fafc;
+        padding: 30px 20px;
+        margin-top: 190px;
+    }
+
+    .category-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 5px 18px rgba(0,0,0,.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 18px;
+        text-align: center;
+        transition: .35s;
+        overflow: hidden;
+        width: 100%;
+        min-height: 300px;
+    }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,.12);
+        }
+
+        .category-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            transition: .35s;
+        }
+
+        .category-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .category-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    .view-all-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px;
+        background-color: #f1f5f9;
+        color: #334155;        
+        border-radius: 30px;       
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+    }
+
+        .view-all-btn i {
+            margin-left: 8px;
+        }
+
+
+
+        .view-all-btn:hover {
+            background: #198754;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);
+        }
+
+            .view-all-btn:hover i {
+                transform: translateX(5px);
+            }
+    @@media(max-width:575px) {
+
+        .section-padding-gaurav {
+            margin-top: 120px;
+        }
+
+        .category-card {
+            min-height: 250px;
+            padding: 18px;
+        }
+
+            .category-card img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .category-card h4 {
+                font-size: 14px;
+                min-height: 42px;
+            }
+
+        .view-all-btn {
+            width: 130px;
+            height: 38px;
+            font-size: 13px;
+        }
+    }
+
+    @@media(min-width:576px) and (max-width:991px) {
+
+        .category-card {
+            min-height: 270px;
+        }
+
+            .category-card img {
+                width: 80px;
+                height: 80px;
+            }
+    }
+
+    @@media(min-width:992px) and (max-width:1399px) {
+
+        .category-card {
+            min-height: 290px;
+        }
+
+            .category-card img {
+                width: 90px;
+                height: 90px;
+            }
+    }
+
+    @@media(min-width:1400px) {
+
+        .category-card {
+            min-height: 320px;
+        }
+
+            .category-card img {
+                width: 105px;
+                height: 105px;
+            }
+
+            .category-card h4 {
+                font-size: 17px;
+            }
+    }
+
+    @@media(min-width:1800px) {
+
+        .container {
+            max-width: 1700px;
+        }
+
+        .category-card {
+            min-height: 350px;
+            padding: 28px;
+        }
+
+            .category-card img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .category-card h4 {
+                font-size: 18px;
+            }
+
+        .view-all-btn {
+            width: 170px;
+            height: 46px;
+            font-size: 15px;
+        }
+    }
+
+    .department-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .department-main-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .department-subtitle {
+        color: #64748b;
+        font-size: 17px;
+    }
+</style>
+<section class="container section-padding-gaurav">
+
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h3 class="department-main-title" style="font-size: 24px; color: #1e3a8a; font-weight: 700; display: inline-block; position: relative; padding-bottom: 10px;">
+                Explor Department
+            </h3>
+        </div>
+    </div>
+    <div id="departmentGrid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-5 row-cols-xxl-5 g-4">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-2">
+            <div class="category-card h-100">
+                <img src="/public/img/DepartmentIcon/agriculture.png" height="100" />
+                <h4>Agriculture</h4>
+                <a asp-action="District" asp-controller="Home" class="view-all-btn">View All <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+    @*<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-4">
+
+
+
+            <div class="col">
+                    <div class="category-card">
+                        <img src="/public/img/DepartmentIcon/agriculture.png" height="100" />
+                        <h4>Agriculture</h4>
+                        <a asp-action="District" asp-controller="Home" class="view-all-btn">View All <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+
+
+        </div>*@
+</section>
+
+<script nonce="@nonce" src="~/custom/Dashboard.js"></script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+        dashboard.loadDepartmentList();
+    });
+</script>

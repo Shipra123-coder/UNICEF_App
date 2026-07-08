@@ -1,0 +1,212 @@
+﻿@using MO.Common
+@model MO.Master.UserMasterMO
+@{
+    ViewData["Title"] = "User Master";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+
+<form asp-action="SaveUser" method="post">
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            👤 User Details
+        </div>
+
+        <div class="card-body row g-3">
+
+            <div class="col-md-4">
+                <label>Name</label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label>Display Name</label>
+                <input asp-for="DisplayName" class="form-control" />
+            </div>           
+
+            <div class="col-md-4">
+                <label>Email</label>
+                <input asp-for="EmailId" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label>Mobile</label>
+                <input asp-for="Mobile" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label>Whatsapp</label>
+                <input asp-for="WhatsappMobile" class="form-control" />
+            </div>
+
+            <!-- UserLevel -->
+            <div class="col-md-4">
+                <label>User Level</label>
+                <select asp-for="UserLevel" class="form-control">
+                    <option value="">-- Select User Level --</option>
+                    @foreach (var d in Model.userLevelListDDLs)
+                    {
+                        <option value="@d.Id">@d.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Department -->
+            <div class="col-md-4">
+                <label>Department</label>
+                <select asp-for="DepartmentId" class="form-control">
+                    <option value="">-- Select Department --</option>
+                    @foreach (var d in Model.departmentListDDLs)
+                    {
+                        <option value="@d.Id">@d.DepartmentName</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Agency -->
+            <div class="col-md-4">
+                <label>Agency</label>
+                <select asp-for="AgencyId" class="form-control">
+                    <option value="">-- Select Agency --</option>
+                    @foreach (var a in Model.agencyListDDLs)
+                    {
+                        <option value="@a.Id">@a.AgencyName</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Group -->
+            <div class="col-md-4">
+                <label>Group</label>
+                <select asp-for="GroupId" class="form-control">
+                    <option value="">-- Select Group --</option>
+                    @foreach (var a in Model.groupListDDLs)
+                    {
+                        <option value="@a.Id">@a.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-3">
+                <label>Status</label>
+                <select asp-for="IsActive" class="form-control">
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-success px-4">
+                💾 Save User
+            </button>
+        </div>
+    </div>
+
+</form>
+<div class="container mt-4">
+    <div class="card shadow-lg border-0 rounded-3">
+
+        <!-- Header -->
+        <div class="card-header bg-dark text-white d-flex justify-content-between">
+            <h5 class="mb-0">👤 User Management</h5>
+            <a href="/User/Create" class="btn btn-light btn-sm">+ Add User</a>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            @if (Model.list?.Any() == true)
+            {
+                int sr = 1;
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Department / Agency</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th width="120">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var user in Model.list)
+                            {
+                                <tr>
+                                    <td>@sr++</td>
+
+                                    <!-- User Info -->
+                                    <td>
+                                        <strong>@user.DisplayName</strong><br />
+                                        <small class="text-muted">@user.EmailId</small>
+                                    </td>
+
+                                    <!-- Role -->
+                                    <td class="text-center">
+                                        <span class="badge bg-info text-dark">
+                                            @user.Designation
+                                        </span>
+                                    </td>
+
+                                    <!-- Dept / Agency -->
+                                    <td>
+                                        @if (user.DepartmentId != null)
+                                        {
+                                            <span class="badge bg-success">Dept</span>
+                                        }
+                                        @if (user.AgencyId != null)
+                                        {
+                                            <span class="badge bg-secondary">Agency</span>
+                                        }
+                                    </td>
+
+                                    <!-- Contact -->
+                                    <td>
+                                        📞 @user.Mobile <br />
+                                        📧 @user.EmailId
+                                    </td>
+
+                                    <!-- Status -->
+                                    <td class="text-center">
+                                        <span class="badge bg-@(user.IsActive == 1 ? "success" : "danger")">
+                                            @(user.IsActive == 1 ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+
+                                    <!-- Actions -->
+                                    <td class="text-center">
+                                        <a href="/User/Edit/@user.UserId" class="btn btn-warning btn-sm">✏️</a>
+                                        <a href="/User/Delete/@user.UserId"
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure?')">🗑</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    No Users Found
+                </div>
+            }
+
+            else{
+            <div class="alert alert-warning text-center">
+                No Users Found
+            </div>
+            }
+        </div>
+    </div>
+</div>

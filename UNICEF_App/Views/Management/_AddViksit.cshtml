@@ -1,0 +1,493 @@
+﻿@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+
+    /* 🔹 Pillar Card */
+    .pillar-card {
+        border-left: 5px solid #fd7e14 !important;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* 🔹 Pillar Header */
+    .pillar-group-header {
+        background: #fff5eb;
+        color: #d9480f;
+        padding: 12px 15px;
+        font-weight: 600;
+        border-bottom: 1px solid #ffe8cc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* 🔹 Sector Block */
+    .sector-block {
+        padding: 10px 15px;
+        background: #fff;
+        border-bottom: 1px dashed #eee;
+    }
+
+        .sector-block:last-child {
+            border-bottom: none;
+        }
+
+    /* 🔹 Sector Title */
+    .sector-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #0d6efd;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+        .sector-title::before {
+            content: "\f0e8"; /* fa-sitemap */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            margin-right: 8px;
+            color: #0d6efd;
+            font-size: 12px;
+        }
+
+    /* 🔹 SubSector Entry */
+    .subsector-entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0 6px 20px; /* indent for hierarchy */
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+        .subsector-entry:last-child {
+            border-bottom: none;
+        }
+
+    /* 🔹 SubSector Name */
+    .subsector-name {
+        font-size: 13px;
+        color: #444;
+        display: flex;
+        align-items: center;
+    }
+
+        /* Icon before SubSector */
+        .subsector-name::before {
+            content: "\f111"; /* circle */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #fd7e14;
+            margin-right: 10px;
+            font-size: 6px;
+        }
+
+    /* 🔹 Remove Button */
+    .btn-remove-sub {
+        color: #dc3545;
+        background: #fff5f5;
+        border: 1px solid transparent;
+        cursor: pointer;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        transition: 0.2s;
+    }
+
+        .btn-remove-sub:hover {
+            background: #dc3545;
+            color: #fff;
+        }
+
+    /* 🔹 Remove Full Pillar */
+    .btn-remove-pillar {
+        font-size: 11px;
+    }
+
+    /* 🔹 Empty State */
+    .empty-mapping {
+        text-align: center;
+        color: #adb5bd;
+        padding: 50px;
+        border: 2px dashed #e9ecef;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    /* 🔹 Badge Style */
+    #pillarCountBadge {
+        font-size: 12px;
+        font-weight: 600;
+        background: #fff3bf;
+        color: #e67700;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+
+</style>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-dark"><i class="fas fa-monument text-warning me-2"></i> Themes & SubThemes</h5>
+        <span id="pillarCountBadge" class="badge bg-warning text-dark">0 Sub-Themes Mapped</span>
+    </div>
+
+    <div class="card-body bg-light">
+        <div class="p-4 bg-white border rounded shadow-sm mb-4">
+            <div class="row align-items-end">
+                <div class="col-md-6 mb-3">
+                    <label class="small fw-bold text-muted">Select Viksir Rajasthan 2047 Themes</label>
+                    <select class="form-select" id="Themes" name="Themes">
+                        <option value="">-- Choose Themes --</option>
+                        <option value="P1">Themes 1: Economic Growth</option>
+                        <option value="P2">Themes 2: Social Justice</option>
+                        <option value="P3">Themes 3: Good Governance</option>
+                        <option value="P4">Themes 4: Infrastructure Excellence</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="small fw-bold text-muted">Select Sub Themes</label>
+                    <select class="form-select" id="SubThemes" name="SubThemes">
+                        <option value="">-- Choose Sub Themes --</option>
+                        <option value="SP1.1">Sub-Themes 1.1: Industrial Investment</option>
+                        <option value="SP1.2">Sub-Themes 1.2: MSME Support</option>
+                        <option value="SP2.1">Sub-Themes 2.1: Women Empowerment</option>
+                        <option value="SP3.1">Sub-Themes 3.1: Digital Rajasthan</option>
+                    </select>
+                </div>
+                @* <div class="col-md-6 mb-3">
+                    <label class="small fw-bold text-muted">Select Sub Sector</label>
+                    <select class="form-select" id="SubSector" name="SubSector">
+                        <option value="">-- Choose SubSector --</option>
+                        <option value="SP1.1">Sub-Pillar 1.1: Industrial Investment</option>
+                        <option value="SP1.2">Sub-Pillar 1.2: MSME Support</option>
+                        <option value="SP2.1">Sub-Pillar 2.1: Women Empowerment</option>
+                        <option value="SP3.1">Sub-Pillar 3.1: Digital Rajasthan</option>
+                    </select>
+                </div> *@
+                <div class="col-md-4 mb-3">
+                    <button type="button" id="btnAddPillarMapping" class="btn btn-warning w-100 fw-bold text-white shadow-sm">
+                        <i class="bx bx-plus"></i> Add to List
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="pillarMappingContainer">
+            <div class="empty-mapping">
+                <i class="fas fa-columns fa-3x mb-3"></i>
+                <p>No pillars have been mapped yet. Use the dropdowns above to start building the framework.</p>
+            </div>
+        </div>
+
+        <input type="hidden" name="pillarJsonData" id="pillarJsonData">
+
+        @* <div class="text-end border-top pt-3">
+            <button type="button" id="SavePillarMapping" class="btn btn-primary px-5 shadow">Save & Proceed</button>
+        </div> *@
+
+        @* <div class="mt-4 text-end border-top pt-3">
+            <button type="submit" class="btn btn-dark btn-lg px-5 shadow fw-bold">
+                <i class="fas fa-check-double me-2"></i> Save Pillar Framework
+            </button>
+        </div> *@
+    </div>
+</div>
+<script nonce="@nonce">
+      document.addEventListener('DOMContentLoaded', function() {
+           common.BindDropdown("/Master/DDL_Pillar", "Themes", "Themes", $('#hiddentheames').val());
+          //  const SbtnSave = document.getElementById('SavePillarMapping');
+          //  //Add Sub-Activity Block
+
+          //  SbtnSave.addEventListener('click', function() {
+          //       alert("in");
+          //  activityMaster.savePillar();
+          // });
+    });</script>
+<script nonce="@nonce">
+    $(function () {
+        const pillar = document.getElementById('Themes');
+        pillar.addEventListener('change', function(e) {
+            const selectedPillarId = e.target.value;
+            console.log("Selected Sector ID:", selectedPillarId);
+            common.BindDropdown(`/Master/DDL_Sector?Id=` + selectedPillarId, "SubThemes", "SubThemes", $('#hiddensubtheames').val());
+        });
+        // const sector = document.getElementById('Sector');
+        // sector.addEventListener('change', function(e) {
+        //     const selectedSectorId = e.target.value;
+        //     console.log("Selected Sub Sector ID:", selectedSectorId);
+        //     common.BindDropdown(`/Master/DDL_SubSector?Id=` + selectedSectorId, "SubSector", "SubSector", $('#hiddensubsectorId').val());
+        // });
+    });
+</script>
+<script nonce="@nonce">
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const themeDropdown =
+            document.getElementById('Themes');
+
+        const subThemeDropdown =
+            document.getElementById('SubThemes');
+
+        const btnAdd =
+            document.getElementById('btnAddPillarMapping');
+
+        const container =
+            document.getElementById('pillarMappingContainer');
+
+        const hiddenInput =
+            document.getElementById('pillarJsonData');
+
+        const badge =
+            document.getElementById('pillarCountBadge');
+
+        // =========================================
+        // STORE DATA
+        // =========================================
+
+        //let themeData = {};
+
+        // =========================================
+        // ADD LOGIC
+        // =========================================
+
+        btnAdd.addEventListener('click', function () {
+
+            const tId =
+                themeDropdown.value;
+
+            const tName =
+                themeDropdown.options[
+                    themeDropdown.selectedIndex
+                ].text;
+
+            const stId =
+                subThemeDropdown.value;
+
+            const stName =
+                subThemeDropdown.options[
+                    subThemeDropdown.selectedIndex
+                ].text;
+
+            // Validation
+            if (!tId || !stId) {
+
+                alert("Themes aur SubThemes select karein.");
+
+                return;
+            }
+
+            // Theme Create
+            if (!themeData[tId]) {
+
+                themeData[tId] = {
+
+                    name: tName,
+
+                    subThemes: []
+                };
+            }
+
+            // Duplicate Check
+            const exists =
+                themeData[tId]
+                    .subThemes
+                    .some(x => x.id == stId);
+
+            if (exists) {
+
+                alert("Yeh SubTheme pehle se add hai.");
+
+                return;
+            }
+
+            // Add SubTheme
+            themeData[tId].subThemes.push({
+
+                id: stId,
+
+                name: stName
+            });
+
+            renderUI();
+
+            subThemeDropdown.value = "";
+        });
+
+        // =========================================
+        // RENDER UI
+        // =========================================
+
+        function renderUI() {
+
+            const themeIds =
+                Object.keys(themeData);
+
+            // Empty State
+            if (themeIds.length === 0) {
+
+                container.innerHTML = `
+                    <div class="empty-mapping">
+
+                        <i class="fas fa-columns fa-3x mb-3"></i>
+
+                        <p>
+                            No Themes mapped yet.
+                        </p>
+
+                    </div>
+                `;
+
+                badge.textContent =
+                    "0 SubThemes Mapped";
+
+                hiddenInput.value = "";
+
+                return;
+            }
+
+            container.innerHTML = '';
+
+            let total = 0;
+
+            // Loop Themes
+            themeIds.forEach(tId => {
+
+                const theme =
+                    themeData[tId];
+
+                let subThemeHtml = '';
+
+                // Loop SubThemes
+                theme.subThemes.forEach((st, idx) => {
+
+                    total++;
+
+                    subThemeHtml += `
+
+                        <div class="subsector-entry">
+
+                            <span class="subsector-name">
+
+                                ${st.name}
+
+                            </span>
+
+                            <button
+                                class="btn-remove-sub"
+                                data-t="${tId}"
+                                data-idx="${idx}">
+
+                                <i class="bx bx-trash"></i>
+
+                            </button>
+
+                        </div>
+                    `;
+                });
+
+                // Theme Card
+                const card = `
+
+                    <div class="pillar-card mb-3">
+
+                        <div class="pillar-group-header">
+
+                            <span>
+
+                                ${theme.name}
+
+                            </span>
+
+                            <button
+                                class="btn btn-danger btn-sm btn-remove-theme"
+                                data-t="${tId}">
+
+                                <i class="bx bx-trash"></i>
+
+                            </button>
+
+                        </div>
+
+                        <div class="sector-block">
+
+                            <div class="sector-title">
+
+                                SubThemes
+
+                            </div>
+
+                            ${subThemeHtml}
+
+                        </div>
+
+                    </div>
+                `;
+
+                container.innerHTML += card;
+            });
+
+            badge.textContent =
+                `${total} SubThemes Mapped`;
+
+            hiddenInput.value =
+                JSON.stringify(themeData);
+        }
+
+        // =========================================
+        // REMOVE LOGIC
+        // =========================================
+
+        container.addEventListener('click', function (e) {
+
+            // Remove SubTheme
+            const subBtn =
+                e.target.closest('.btn-remove-sub');
+
+            if (subBtn) {
+
+                const tId =
+                    subBtn.dataset.t;
+
+                const idx =
+                    subBtn.dataset.idx;
+
+                themeData[tId]
+                    .subThemes
+                    .splice(idx, 1);
+
+                // Remove Empty Theme
+                if (themeData[tId]
+                    .subThemes.length === 0) {
+
+                    delete themeData[tId];
+                }
+
+                renderUI();
+
+                return;
+            }
+
+            // Remove Full Theme
+            const themeBtn =
+                e.target.closest('.btn-remove-theme');
+
+            if (themeBtn) {
+
+                const tId =
+                    themeBtn.dataset.t;
+
+                if (confirm("Pura Theme delete karna hai?")) {
+
+                    delete themeData[tId];
+
+                    renderUI();
+                }
+            }
+        });
+
+    });
+
+</script>

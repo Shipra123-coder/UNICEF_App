@@ -1,0 +1,250 @@
+﻿@{
+    ViewData["Title"] = "Sector Mapping";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="container mt-4">
+
+    <h4 class="mb-3">UN Agency Partnership Details</h4>
+
+    <!-- Section 1 -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            Commitment Details
+        </div>
+        <div class="card-body">
+
+            <label>Is the partnership governed by written commitment?</label><br>
+            <input type="radio" name="commitment"> Yes
+            <input type="radio" name="commitment"> No
+
+            <div class="mt-3">
+                <label>If Yes, Specify:</label><br>
+
+                <input type="checkbox"> Letter Exchange <br>
+                <input type="checkbox"> Signed Work Plan <br>
+                <input type="checkbox"> MOU <br>
+                <input type="checkbox"> LOU <br>
+
+                <input type="checkbox"> Other
+                <input type="text" class="form-control mt-1" placeholder="Specify">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="card mb-3">
+        <div class="card-header bg-success text-white">
+            Nature of Support
+        </div>
+        <div class="card-body">
+
+            <input type="checkbox"> Technical Advice <br>
+            <input type="checkbox"> Technical Assistance (NGO) <br>
+            <input type="checkbox"> Human Resources <br>
+            <input type="checkbox"> Financial Resources <br>
+            <input type="checkbox"> Project Support <br>
+
+            <input type="checkbox"> Other
+            <textarea class="form-control mt-2"></textarea>
+
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="card mb-3">
+        <div class="card-header bg-warning">
+            Financial Commitment
+        </div>
+        <div class="card-body">
+
+            <label>Direct (INR)</label>
+            <input type="text" class="form-control mb-2">
+
+            <label>Indirect (INR)</label>
+            <input type="text" class="form-control" value="56000000">
+
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="card mb-3">
+        <div class="card-header bg-info text-white">
+            Supporting Documents
+        </div>
+        <div class="card-body">
+
+            <input type="file" class="form-control mb-2">
+
+            <button class="btn btn-outline-primary">
+                View Uploaded File
+            </button>
+
+        </div>
+    </div>
+
+    <button class="btn btn-success">Submit</button>
+
+</div>
+<div class="container-fluid mt-4">
+
+    <!-- 🔷 HEADER -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body d-flex justify-content-between">
+
+            <div>
+                <h4 id="activityName">🌍 Activity Name</h4>
+                <small id="activityInfo" class="text-muted"></small>
+            </div>
+
+            <span class="badge bg-success">Active</span>
+
+        </div>
+    </div>
+
+    <!-- 🔷 EXISTING DETAILS -->
+    <div class="row">
+
+        <!-- LEFT -->
+        <div class="col-md-4">
+
+            <!-- Departments -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <h6>🏢 Departments</h6>
+
+                    <div>
+                        <label class="fw-bold">Nodal</label>
+                        <div id="nodalDept"></div>
+                    </div>
+
+                    <div class="mt-2">
+                        <label class="fw-bold">Supporting</label>
+                        <div id="supportDept"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6>Description</h6>
+                    <p id="desc"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-md-8">
+
+            <!-- Tabs -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#goalTab">Goals</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pillarTab">Pillars</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade show active" id="goalTab">
+                            <div id="goalContainer"></div>
+                        </div>
+
+                        <div class="tab-pane fade" id="pillarTab">
+                            <div id="pillarContainer"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🔷 UN AGENCY SECTION -->
+    <div class="card shadow-sm mt-4 border-primary">
+        <div class="card-body">
+
+            <h5 class="text-primary">🌐 UN Agency Details</h5>
+
+            <!-- FORM ROW -->
+            <div class="row g-2 mt-2">
+
+                <div class="col-md-3">
+                    <input type="text" id="agency" class="form-control" placeholder="UN Agency">
+                </div>
+
+                <div class="col-md-3">
+                    <select id="dept" class="form-control"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <select id="assocDept" multiple class="form-control"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <select id="commitment" class="form-control">
+                        <option value="true">YES</option>
+                        <option value="false">NO</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="text" id="commitType" class="form-control" placeholder="If Yes, Specify">
+                </div>
+
+                <div class="col-md-4">
+                    <input type="text" id="support" class="form-control"
+                           placeholder="Technical / HR etc">
+                </div>
+
+                <div class="col-md-2">
+                    <select id="finType" class="form-control">
+                        <option>Direct</option>
+                        <option>Indirect</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="number" id="amount" class="form-control" placeholder="Amount">
+                </div>
+
+                <div class="col-md-1">
+                    <button class="btn btn-success w-100" onclick="addRow()">+</button>
+                </div>
+
+            </div>
+
+            <!-- 🔷 TABLE -->
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Agency</th>
+                            <th>Dept</th>
+                            <th>Support</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agencyTable"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,462 @@
+﻿@model MO.Management.trackingMainModel
+@{
+    ViewData["Title"] = "Best Prectices Page";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="container-fluid">
+    <input type="hidden" id="ActivityGuid" value="@Model.ActivityGuid" />
+    <div class="row">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a asp-action="ActivityManagement" asp-controller="Management" class="btn btn-light border" id="topBackBtn">
+                <i class="bx bx-arrow-back"></i> Back To List
+            </a>
+        </div>
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0 mb-4">
+                <!-- HEADER -->
+                <div class="card-header bg-warning">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-dark">
+                            <i class="bx bx-award"></i>
+                            Best Practices Documentation
+                        </h5>
+                        <span class="badge bg-dark">
+                            @(Model?._activity?.HasSubActivity == true
+                                                        ? Model?._activity?.SubActivities?.Sum(x => x.Tasks?.Count ?? 0)
+                                                        : Model?._activity?.DirectTasks?.Count ?? 0)
+
+                            Tasks
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- BODY -->
+                <div class="card-body">
+
+                    <!-- ACTIVITY -->
+                    <div class="alert alert-light border">
+
+                        <div class="fw-bold text-primary">
+
+                            <i class="bx bx-folder-open"></i>
+
+                            Activity :
+                            @Model?._activity?.ActivityName
+
+                        </div>
+
+                    </div>
+
+                    <!-- FORM -->
+                    <div class="card border shadow-sm">
+
+                        <div class="card-header bg-light">
+
+                            <div class="fw-bold">
+                                Add Best Practice
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+                                <!-- SUB ACTIVITY -->
+                                @if (Model?._activity?.HasSubActivity == true)
+                                {
+                                    <div class="col-md-4 mb-3">
+
+                                        <label class="form-label fw-bold">
+                                            Sub Activity
+                                        </label>
+
+                                        <select class="form-select"
+                                                id="ddlSubActivity">
+
+                                            <option value="">
+                                                Choose
+                                            </option>
+
+                                            @foreach (var sub in Model?._activity.SubActivities)
+                                            {
+                                                <option value="@sub.SubActivityId">
+                                                    @sub.SubActivityName
+                                                </option>
+                                            }
+
+                                        </select>
+
+                                    </div>
+                                }
+
+                                <!-- TASK -->
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label fw-bold">
+                                        Task
+                                    </label>
+
+                                    <select class="form-select"
+                                            id="ddlTask">
+
+                                        <option value="">
+                                            Choose Task
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- GEO LOCATION -->
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label fw-bold">
+                                        Geo Location
+                                    </label>
+
+                                    <select class="form-select"
+                                            id="ddlGeoLocation">
+
+                                        <option value="">
+                                            Choose Geo Location
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- HEADING -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Heading
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="txtHeading">
+
+                            </div>
+
+                            <!-- DESCRIPTION -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Description
+                                </label>
+
+                                <textarea class="form-control"
+                                          rows="5"
+                                          id="txtDescription"></textarea>
+
+                            </div>
+
+                            <!-- MAIN IMAGE -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Main Image
+                                </label>
+
+                                <input type="file"
+                                       class="form-control"
+                                       id="mainImage"
+                                       accept="image/*">
+
+                            </div>
+
+                            <!-- PDF -->
+                            <div class="mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Upload PDF
+                                </label>
+
+                                <input type="file"
+                                       class="form-control"
+                                       id="pdfFile"
+                                       accept=".pdf">
+
+                            </div>
+
+                            <!-- SAVE -->
+                            <div class="text-end">
+
+                                <button type="button"
+                                        class="btn btn-success"
+                                        id="btnSaveBestPractice">
+
+                                    <i class="bx bx-save"></i>
+                                    Save Best Practice
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- GALLERY -->
+                    <div class="card border shadow-sm mt-4 d-none"
+                         id="gallerySection">
+
+                        <div class="card-header bg-light">
+
+                            <div class="fw-bold">
+                                Add Other Images
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <input type="hidden"
+                                   id="savedBestPracticeId" />
+
+                            <div class="mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Gallery Images
+                                </label>
+
+                                <input type="file"
+                                       class="form-control"
+                                       id="galleryImages"
+                                       multiple
+                                       accept="image/*">
+
+                            </div>
+
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    id="btnUploadGallery">
+
+                                Upload Images
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script nonce="@nonce" src="~/custom/bestprecticesmaster.js"></script>
+<script nonce="@nonce">
+    // =========================================
+    // ARRAYS
+    // =========================================
+
+    let taskData = [];
+    let geoData = [];
+
+    // =========================================
+    // WITH SUB ACTIVITY
+    // =========================================
+
+    @if (Model?._activity?.HasSubActivity == true)
+    {
+                            foreach (var sub in Model?._activity.SubActivities)
+                        {
+                                            foreach (var task in sub.Tasks)
+                                            {
+                                                                <text>
+
+                                                                taskData.push({
+                                                                    subId: '@sub.SubActivityId',
+                                                                    taskId: '@task.TaskId',
+                                                                    taskName: '@task.TaskName'
+                                                                });
+
+                                                                </text>
+
+                                                                if (task.GeoLevelList != null)
+                                                                {
+                                                                                    foreach (var geo in task.GeoLevelList)
+                                                                                    {
+                                                                                                        <text>
+
+                                                                                                        geoData.push({
+
+                                                                                                            taskId: '@task.TaskId',
+                                                                                                            geoId: '@geo.GeoId',
+                                                                                                            geoLevel: '@geo.GeoLevel',
+                                                                                                            district: '@(geo.DistrictName ?? "")',
+                                                                                                            block: '@(geo.BlockName ?? "")',
+                                                                                                            city: '@(geo.CityName ?? "")'
+
+                                                                                                        });
+
+                                                                                                        </text>
+                                                                                    }
+                                                                }
+                                            }
+                        }
+    }
+
+    // =========================================
+    // DIRECT TASKS
+    // =========================================
+
+    @if (Model?._activity?.HasSubActivity == false
+                                                                                                                                                                                                                                                                && Model?._activity?.DirectTasks != null)
+    {
+                            foreach (var task in Model?._activity.DirectTasks)
+                        {
+                                            <text>
+
+                                            taskData.push({
+
+                                                subId: 0,
+                                                taskId: '@task.TaskId',
+                                                taskName: '@task.TaskName'
+
+                                            });
+
+                                            </text>
+
+                                            if (task.GeoLevelList != null)
+                                            {
+                                                                foreach (var geo in task.GeoLevelList)
+                                                                {
+                                                                                    <text>
+
+                                                                                    geoData.push({
+
+                                                                                        taskId: '@task.TaskId',
+                                                                                        geoId: '@geo.GeoId',
+                                                                                        geoLevel: '@geo.GeoLevel',
+                                                                                        district: '@(geo.DistrictName ?? "")',
+                                                                                        block: '@(geo.BlockName ?? "")',
+                                                                                        city: '@(geo.CityName ?? "")'
+
+                                                                                    });
+
+                                                                                    </text>
+                                                                }
+                                            }
+                        }
+
+                        <text>
+
+                        $(document).ready(function () {
+
+                            loadTaskDropdown(0);
+
+                        });
+
+                        </text>
+    }
+
+    // =========================================
+    // SUB ACTIVITY CHANGE
+    // =========================================
+
+    $("#ddlSubActivity").change(function () {
+
+        let subId = $(this).val();
+
+        loadTaskDropdown(subId);
+
+    });
+    // =========================================
+    // LOAD TASK DROPDOWN
+    // =========================================
+    function loadTaskDropdown(subId) {
+
+        let html = `
+            <option value="">
+                Choose Task
+            </option>
+        `;
+
+        let filtered =
+            taskData.filter(x => x.subId == subId);
+
+        $.each(filtered, function (i, item) {
+
+            html += `
+                <option value="${item.taskId}">
+                    ${item.taskName}
+                </option>
+            `;
+
+        });
+
+        $("#ddlTask").html(html);
+
+    }
+    // =========================================
+    // TASK CHANGE
+    // =========================================
+    $("#ddlTask").change(function () {
+
+        let taskId = $(this).val();
+
+        let html = `
+            <option value="">
+                Choose Geo Location
+            </option>
+        `;
+
+        let filtered =
+            geoData.filter(x => x.taskId == taskId);
+
+        $.each(filtered, function (i, item) {
+            let location = '';
+            if (item.geoLevel == "State") {
+
+                location = "Rajasthan";
+
+            }
+            else if (item.geoLevel == "District") {
+
+                location = item.district;
+
+            }
+            else if (item.geoLevel == "Block") {
+
+                location =
+                    item.block + ' (' + item.district + ')';
+
+            }
+            else if (item.geoLevel == "City") {
+
+                location = item.city;
+
+            }
+            html += `
+                <option value="${item.geoId}">
+                    ${item.geoLevel} - ${location}
+                </option>
+            `;
+
+        });
+
+        $("#ddlGeoLocation").html(html);
+
+    });
+
+</script>
+@* <script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnSaveBestPractice = document.getElementById('btnSaveBestPractice');
+      btnSaveBestPractice.addEventListener('click', async function () {
+          await bestPrecticesMaster.saveBestPrectices();
+      }); // 🔥 WAIT
+    });
+</script> *@

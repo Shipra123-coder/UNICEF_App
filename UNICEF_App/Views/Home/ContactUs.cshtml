@@ -1,0 +1,527 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .margin-top-new{
+        margin-top:200px;
+    }
+    .contact-card,
+    .agency-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,.08);
+        overflow: hidden;
+        transition: .3s;
+        height: 100%;
+    }
+
+        .contact-card:hover,
+        .agency-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .contact-header {
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
+        color: #fff;
+        padding: 14px 20px;
+        font-weight: 600;
+    }
+
+    .contact-body {
+        padding: 20px;
+    }
+
+    .agency-card {
+        text-align: center;
+        padding: 25px;
+    }
+
+    .agency-logo {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        margin-bottom: 15px;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-weight: 600;
+    }
+
+        .nav-pills .nav-link.active {
+            background: #2563eb;
+        }
+
+    .table thead {
+        background: #f1f5f9;
+    }
+</style>
+<div class="container py-4 margin-top-new">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Contact Directory</h2>
+        <p class="text-muted">
+            State Level, Department and UN Agency Contact Details
+        </p>
+    </div>
+    <ul class="nav nav-pills justify-content-center mb-4"
+        id="contactTab">
+
+        <li class="nav-item">
+            <button class="nav-link active"
+                    data-bs-toggle="pill"
+                    data-bs-target="#stateTab">
+                State Level
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link"
+                    data-bs-toggle="pill"
+                    data-bs-target="#departmentTab">
+                Departments
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link"
+                    data-bs-toggle="pill"
+                    data-bs-target="#agencyTab">
+                UN Agencies
+            </button>
+        </li>
+
+    </ul>
+    <div class="tab-content">
+
+        <!-- STATE LEVEL -->
+
+        <div class="tab-pane fade show active" id="stateTab">
+
+            <div class="row g-4">
+
+                <!-- Officer 1 -->
+                <div class="col-12">
+                    <div class="contact-card">
+
+                        <div class="contact-body d-flex align-items-center">
+
+                            <div class="me-4">
+                                <img src="/vertical/assets/images/avatars/avatar-admin.png"
+                                     class="rounded-circle border"
+                                     width="80"
+                                     height="80"
+                                     alt="Officer">
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <h5 class="text-primary mb-2">
+                                    Dr. Ravi Kumar Surpur, IAS
+                                </h5>
+
+                                <p class="fw-bold mb-2">
+                                    Secretary (Planning and Statistics)
+                                </p>
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <strong>Office Landline No. :</strong>
+                                        0141-2227004
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <strong>Office I.P. Number :</strong>
+                                        21445
+                                    </div>
+
+                                </div>
+
+                                <p class="mt-2 mb-0">
+                                    <strong>E-Mail ID :</strong>
+                                    secretary[dot]plan[at]rajasthan[dot]gov[dot]in
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Officer 2 -->
+                <div class="col-12">
+                    <div class="contact-card">
+
+                        <div class="contact-body d-flex align-items-center">
+
+                            <div class="me-4">
+                                <img src="/vertical/assets/images/avatars/avatar-admin.png"
+                                     class="rounded-circle border"
+                                     width="80"
+                                     height="80"
+                                     alt="Officer">
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <h5 class="text-primary mb-2">
+                                    Sh. Vinesh Singhvi
+                                </h5>
+
+                                <p class="fw-bold mb-2">
+                                    Director & Joint Secretary, DES
+                                </p>
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <strong>Office Landline No. :</strong>
+                                        0141-2222740
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <strong>Office I.P. Number :</strong>
+                                        23340
+                                    </div>
+
+                                </div>
+
+                                <p class="mt-2 mb-0">
+                                    <strong>E-Mail ID :</strong>
+                                    dir[dot]des[at]rajasthan[dot]gov[dot]in
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Officer 3 -->
+                <div class="col-12">
+                    <div class="contact-card">
+
+                        <div class="contact-body d-flex align-items-center">
+
+                            <div class="me-4">
+                                <img src="/vertical/assets/images/avatars/avatar-admin.png"
+                                     class="rounded-circle border"
+                                     width="80"
+                                     height="80"
+                                     alt="Officer">
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <h5 class="text-primary mb-2">
+                                    Dr. Praveen Kumar
+                                </h5>
+
+                                <p class="fw-bold mb-2">
+                                    Assistant Director (SDG)
+                                </p>
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <strong>Office Landline No. :</strong>
+                                        0141-2923370
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <strong>Office I.P. Number :</strong>
+                                        23370
+                                    </div>
+
+                                </div>
+
+                                <p class="mt-2 mb-0">
+                                    <strong>E-Mail ID :</strong>
+                                    ddsdg[dot]des[at]rajasthan[dot]gov[dot]in
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- DEPARTMENT -->
+
+        <div class="tab-pane fade" id="departmentTab">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered align-middle">
+
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Department</th>
+                            <th>Officer</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Department of Health</td>
+                            <td>Smt. Gayatri A. Rathore</td>
+                            <td>phs@rajasthan.gov.in</td>
+                            <td>0141-2227389</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                        <tr>
+                            <td>Department of Education</td>
+                            <td>Shri Sita Ram Jat</td>
+                            <td>dir.dse@rajasthan.gov.in</td>
+                            <td>0141-2522238</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                        <tr>
+                            <td>Department of UDH</td>
+                            <td>Sh. Devendra Gupta</td>
+                            <td>cehqudh@rajasthan.gov.in</td>
+                            <td>0141-2821577</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                        <tr>
+                            <td>Department of Women and Child Development</td>
+                            <td>Ms. Rakesh Rajoriya</td>
+                            <td>commissionerwe.wcd@rajasthan.gov.in</td>
+                            <td>0141-2716400</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                        <tr>
+                            <td>Department of Tourism</td>
+                            <td>Ms. Rukmani Riar, IAS</td>
+                            <td>director.tourism@rajasthan.gov.in</td>
+                            <td>0141-2822800</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                        <tr>
+                            <td>Department of Youth and Sports</td>
+                            <td>Mr. Vikash Sharma</td>
+                            <td>rssc.it@rajasthan.gov.in</td>
+                            <td>0141-226961</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                        <tr>
+                            <td>Department of Food and Civil Supply</td>
+                            <td>Shri Sita Ram Jat</td>
+                            <td>dir.dse@rajasthan.gov.in</td>
+                            <td>0141-2522239</td>
+                            <td>Jaipur, Rajasthan</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- AGENCY TAB -->
+        <div class="tab-pane fade" id="agencyTab">
+
+            <div class="row g-4">
+
+                <!-- UNDP -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UNDP.png" class="agency-logo" alt="UNDP">
+
+                        <h5>UNDP</h5>
+
+                        <p><strong>Mr. Abhimanyu Saxena</strong></p>
+
+                        <p>OIC, Health and Governance</p>
+
+                        <p>📍 New Delhi</p>
+
+                        <p>📧 Abhimanyu.saxena@undp.org</p>
+
+                        <p>📞 +91 9650448821</p>
+                    </div>
+                </div>
+
+                <!-- UNFPA -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UNFPA.png" class="agency-logo" alt="UNFPA">
+
+                        <h5>UNFPA</h5>
+
+                        <p><strong>Deepesh Gupta</strong></p>
+
+                        <p>State Representative</p>
+
+                        <p>📍 Jaipur, Rajasthan</p>
+
+                        <p>📧 dgupta@unfpa.org</p>
+
+                        <p>📞+91 9910205481</p>
+                    </div>
+                </div>
+
+                <!-- UNICEF -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UNICEF.png" class="agency-logo" alt="UNICEF">
+
+                        <h5>UNICEF</h5>
+
+                        <p><strong>Shafqat Hussain</strong></p>
+
+                        <p>Social Policy Expert</p>
+
+                        <p>📍 Jaipur, Rajasthan</p>
+
+                        <p>📧 shhussain@unicef.org</p>
+
+                        <p>📞 +91 7024148144</p>
+                    </div>
+                </div>
+
+                <!-- UNIDO -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UNIDO.png" class="agency-logo" alt="UNIDO">
+
+                        <h5>UNIDO</h5>
+
+                        <p><strong>Mr. Sameer Saraswat</strong></p>
+
+                        <p>Urban Technology and Investment Specialist</p>
+
+                        <p>📍 New Delhi</p>
+
+                        <p>📧 s.saraswat@unido.org</p>
+
+                        <p>📞 +91 9998886818</p>
+                    </div>
+                </div>
+
+                <!-- UN Women -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UN_WOMEN.png" class="agency-logo" alt="UN Women">
+
+                        <h5>UN Women</h5>
+
+                        <p><strong>Dr. Mukta Arora</strong></p>
+
+                        <p>Technical Consultant</p>
+
+                        <p>📍 New Delhi</p>
+
+                        <p>📧 mukta.arora@unwomen.org</p>
+
+                        <p>📞 +91 9414070098</p>
+                    </div>
+                </div>
+
+                <!-- UNESCO -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UNESCO.png" class="agency-logo" alt="UNESCO">
+
+                        <h5>UNESCO</h5>
+
+                        <p><strong>Mr. Ankush Seth</strong></p>
+
+                        <p>Programme Officer</p>
+
+                        <p>📍 New Delhi</p>
+
+                        <p>📧 a.seth@unesco.org</p>
+
+                        <p>📞 +91 9870557902</p>
+                    </div>
+                </div>
+
+                <!-- UNV -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UN_VOLUNTEERS.png" class="agency-logo" alt="UNV">
+
+                        <h5>UNV</h5>
+
+                        <p><strong>Mr. Tarun Joshi</strong></p>
+
+                        <p>District Youth Officer</p>
+
+                        <p>📍 Sikar, Rajasthan</p>
+
+                        <p>📧 tarun.joshi@undp.org</p>
+
+                        <p>📞 +91 7727972414</p>
+                    </div>
+                </div>
+
+                <!-- WFP -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/WFP.png" class="agency-logo" alt="WFP">
+
+                        <h5>WFP</h5>
+
+                        <p><strong>Ankit Sood</strong></p>
+
+                        <p>Head, Supply Chain & PDS Unit</p>
+
+                        <p>📍 New Delhi</p>
+
+                        <p>📧 Ankit.sood@wfp.org</p>
+
+                        <p>📞 +91 9871535111</p>
+                    </div>
+                </div>
+
+                <!-- UN Habitat -->
+                <div class="col-md-4">
+                    <div class="agency-card h-100">
+                        <img src="/public/img/Agency_logo/UN_HABITAT.png" class="agency-logo" alt="UN-Habitat">
+
+                        <h5>UN-Habitat</h5>
+
+                        <p><strong>Ms. Parul Agarwala</strong></p>
+
+                        <p>India Program Coordinator</p>
+
+                        <p>📍 Delhi</p>
+
+                        <p>📧 Parul.agarwala@un.org</p>
+
+                        <p>📞 +91 9205257406</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,572 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="color-header headercolor7">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache" />
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery
+    <meta name="csrf-token" content="@antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 minimum-scale=1.0">
+    <title>UN Project Monitoring DashBoard Rajasthan  </title>
+    <meta name="title" content="UN Project Monitoring DashBoard Rajasthan ">
+    <meta name="description" content="UN Project Monitoring DashBoard Rajasthan">
+    <meta name="description" content="The UN Project Monitoring DashBoard ">
+    <meta name="keyword" content="UN Project Monitoring DashBoard  Rajasthan">
+
+    <!--favicon-->
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+    <link rel="shortcut icon" href="~/Landing/images/favicon.ico" type="image/x-icon">
+    <link href="~/lib/boxicons/css/boxicons.css" rel="stylesheet" />
+    <link href="~/lib/boxicons/css/boxicons.min.css" rel="stylesheet" />
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" asp-append-version="true" />
+    @* <link href="~/lib/jquery-toast-plugin/demos/css/jquery.toast.css" rel="stylesheet" />
+        <link href="~/lib/jquery-toast-plugin/demos/css/jquery.toast.min.css" rel="stylesheet" /> *@
+    @* <script src="~/js/jquery-3.7.1.min.js"></script> *@
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" asp-append-version="true" />
+    @*<link rel="stylesheet" type="text/css" href="~/Landing/css/banner.css" asp-append-version="true">*@
+    <link rel="stylesheet" href="~/Landing/css/swiper.css" asp-append-version="true" />
+    @* <link href="~/landing/css/styles_newdashboard.css" rel="stylesheet" /> *@
+    <link href="~/landing/css/stylesheet.css" rel="stylesheet" asp-append-version="true" />
+    <!--data table css-->
+    <link href="~/lib/datatables.net-dt/css/datatables.datatables.min.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/dist/sweetalert2.min.css" asp-append-version="true" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <link href="~/vertical/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/vertical/assets/css/app.css" rel="stylesheet" asp-append-version="true">
+    <link href="/public/css/mystyle.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/dark.css" rel="stylesheet" type="text/css">
+    <title>@ViewData["Title"] - UN Activity</title>
+</head>
+
+<body>
+    @{
+        var nonce = Context.Items["CSPNonce"]?.ToString();
+    }
+
+    <style nonce="@nonce">
+        /* ==================================================================
+               GLOBAL TOAST CONTAINER POSITIONING
+               ================================================================== */
+        .jq-toast-wrap {
+            top: 250px !important;
+            right: 20px !important;
+            left: auto !important;
+            bottom: auto !important;
+            position: fixed !important;
+            z-index: 999999 !important; /* Ensures it overlays headers, sidebars, and modals */
+        }
+
+        /* Base styles for all toast notifications */
+        .jq-toast-single {
+            color: #ffffff !important;
+            font-family: inherit;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ==================================================================
+               SUCCESS TOAST STYLES
+               ================================================================== */
+        .jq-toast-wrap .jq-has-success {
+            background-color: #0ddbb9 !important; /* Clean modern green background */
+            border-left: 5px solid #00a383 !important; /* Darker green accent border */
+        }
+
+            /* Targets the text inside a success toast if needed */
+            .jq-toast-wrap .jq-has-success .jq-toast-heading,
+            .jq-toast-wrap .jq-has-success {
+                color: #ffffff !important;
+            }
+
+        /* ==================================================================
+               ERROR TOAST STYLES
+               ================================================================== */
+        .jq-toast-wrap .jq-has-danger,
+        .jq-toast-wrap .jq-toast-single:has(.jq-toast-icon[class*="error"]) {
+            background-color: #ff5e5e !important; /* Premium crimson red background */
+            border-left: 5px solid #d93838 !important; /* Darker red accent border */
+        }
+
+            /* Targets the text inside an error toast if needed */
+            .jq-toast-wrap .jq-has-danger .jq-toast-heading,
+            .jq-toast-wrap .jq-has-danger {
+                color: #ffffff !important;
+            }
+    </style>
+    <style nonce="@nonce">
+        /* Custom Logout Button Style */
+        .btn-logout-custom {
+            background-color: #ffffff;
+            color: #d93838;
+            border: 1px solid #ff5e5e;
+            padding: 6px 14px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+            .btn-logout-custom:hover {
+                background-color: #d93838;
+                color: #ffffff;
+                border-color: #d93838;
+                box-shadow: 0 4px 10px rgba(217, 56, 56, 0.2);
+            }
+
+        /* Header layout management to support alignment */
+        .headmain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .Indian_logo {
+            width: 65px !important;
+        }
+
+        .logo_below_text p {
+            font-size: 17px !important;
+            line-height: 17px;
+        }
+    </style>
+    @using Microsoft.AspNetCore.Http
+    @using System.Security.Claims
+    @inject IHttpContextAccessor HttpContextAccessor
+    @{
+        var user = HttpContextAccessor.HttpContext.User;
+        var isAuthenticated = user.Identity.IsAuthenticated;
+        var district = user.FindFirst("DistrictName")?.Value;
+        var name = user.FindFirst("UserName")?.Value;
+        var role = user.FindFirst("Role")?.Value;
+        var Fytext = user.FindFirst("Financialtext")?.Value;
+        var Fy = user.FindFirst("FinancialYear")?.Value;
+        var groupId = user.FindFirst("GroupId")?.Value;
+        var agencyCode = user.FindFirst("agencyCode")?.Value;
+    }
+    <!-- Bootstrap JS -->
+    <script nonce="@nonce" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- Toast CSS -->
+    <link nonce="@nonce" href="~/lib/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" />
+
+
+    <style nonce="@nonce">
+        /* Center Logout */
+        .logout-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Bottom FY Button */
+        .fy-wrapper {
+            margin-top: auto;
+        }
+
+        .float-right {
+            background-color: #122b6d;
+            border: 1px solid #122b6d;
+            color: #fff;
+            padding: 5px 5px 1px 5px;
+        }
+
+        #dvLoader {
+            display: block; /* ye hona chahiye */
+        }
+
+        .text_align {
+            text-align: center !important;
+        }
+
+        .projectName_size {
+            color: #021759;
+            font-size: 30px;
+        }
+
+        footer:before {
+            content: "";
+            position: absolute !important;
+            z-index: -1;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            /* background-image: url(../img/images/footer-bag1_new1.png); */
+            /* background-position: center;
+            background-size: cover; */
+        }
+
+        footer:after {
+            content: "";
+            position: initial !important;
+            z-index: 1;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            /* background-image: url(../img/images/footer-bag1_new1.png); */
+            /*  background-position: center;
+            background-size: cover;
+            backdrop-filter: blur(2px); */
+        }
+    </style>
+    <script nonce="@nonce" src="~/custom/toast.helper.js"></script>
+    <div class="loader-layout" id="dvLoader">
+        <div class="dot-opacity-loader">
+            <div></div>
+
+        </div>
+    </div>
+    <!--wrapper-->
+    @* <div class="header-strip screen__reader"> <img src="~/Landing/images/footerline.png" alt="Strip Line"> </div> *@
+    <header class="two-tier-fixed-header header-top-fix">
+        <div class="header d-flex align-items-center header-top screen__reader">
+
+            <div class="header-left screen__reader">
+                <a asp-action="Land" asp-controller="Home" title="SDG Logo" class="screen__reader logo__topsec">
+                    <img src="~/Landing/images/indian.png" class="Indian_logo" alt="Govt Logo" width="65" height="130">
+                    <div class="d-flex flex-column logo_left_sec">
+                        <div class="logo_below_text fontfamily">
+                            <p class="m-1"><strong>SDGs Coordination and Acceleration Centre</strong></p>
+                            <p class="m-1"><strong>Directorate of Economics & Statistics</strong></p>
+                            <p class="m-1"><strong>Department of Statistics</strong></p>
+                            <p class="m-1"><strong>Government of Rajasthan</strong></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="header-center screen__reader">
+                <a asp-action="Land" asp-controller="Home" title="Rajasthan UN Logo" class="screen__reader">
+                    <img src="~/public/img/UNLogo.png" class="Rajasthan_logo" alt="Rajasthan UN Monitoring Dashboard" width="250">
+                </a>
+            </div>
+
+            <div class="header-right screen__reader">
+                <!-- ✅ NEWLY ADDED: Logout Button Layer -->
+                <div class="header-logout-section">
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-logout-custom d-flex align-items-center gap-2">
+                            <i class="bx bx-log-out-circle font_size_18"></i>
+                            <span class="fw-bold small d-none d-sm-inline">Logout</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    @* <a asp-action="ChangeFinancialyear" asp-controller="Master" type="button"
+                class="float-right"
+                title="Change Financial Year">
+            Financial Year : @Fytext
+        </a> *@
+    <!--sidebar wrapper -->
+    <div class="sidebar-wrapper" data-simplebar="true">
+        <div class="sidebar-header">
+            <div>
+                <img src="~/vertical/assets/images/avatars/avatar-admin.png" class="user-img" alt="user avatar">
+            </div>
+            <div b-cuxf7clalm="" class="user-info">
+                <p b-cuxf7clalm="" class="user-name mb-0">@name</p>
+                <p b-cuxf7clalm="" class="designattion mb-0">Agency  @(!string.IsNullOrEmpty(agencyCode) ? (" - " + agencyCode) : "")</p>
+            </div>
+            <div class="toggle-icon ms-auto">
+                <i class='bx bx-arrow-to-left'></i>
+            </div>
+        </div>
+        <ul class="metismenu" id="menu">
+            @if (role == "Agency")
+            {
+            <li>
+                <a asp-controller="Management" asp-action="ActivityManagement">
+                    <div class="parent-icon">
+                        <i class='fa fa-dashboard'></i>
+                    </div>
+                    <div class="menu-title">Activity</div>
+                </a>
+            </li>
+            }
+            @if (role == "DES")
+            {
+                <li>
+                    <a asp-controller="Management" asp-action="AddDirectBestPrectices">
+                        <div class="parent-icon">
+                            <i class='fa fa-dashboard'></i>
+                        </div>
+                        <div class="menu-title">Best Practice</div>
+                    </a>
+                </li>
+            }
+        </ul>
+        <!--navigation-->
+        @* @await  Component.InvokeAsync("PermissionMenu",groupId) *@
+        @*  <ul class="metismenu" id="menu">
+                <li>
+                    <a asp-controller="Indicator" asp-action="Dashboard">
+                        <div class="parent-icon">
+                            <i class='fa fa-dashboard'></i>
+                        </div>
+                        <div class="menu-title">Dashboard</div>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Profile" asp-action="MainProfile">
+                        <div class="parent-icon">
+                            <i class='fa fa-briefcase'></i>
+                        </div>
+                        <div class="menu-title">District Profile</div>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Profile" asp-action="Dashboard">
+                        <div class="parent-icon">
+                            <i class='fa fa-pencil-square-o'></i>
+                        </div>
+                        <div class="menu-title">District Work Plan</div>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Profile" asp-action="PendingProfileVerification">
+                        <div class="parent-icon">
+                            <i class='fa fa-file-powerpoint-o'></i>
+                        </div>
+                        <div class="menu-title">Pending Verification</div>
+                    </a>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon">
+                            <i class='fa fa-user'></i>
+                        </div>
+                        <div class="menu-title">User Master</div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a asp-controller="UserProfile" asp-action="AddUser"><i class="bx bx-right-arrow-alt"></i>Add User</a>
+                        </li>
+                        <li>
+                            <a asp-controller="UserProfile" asp-action="ListUser"><i class="bx bx-right-arrow-alt"></i>List User</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon">
+                            <i class='fa fa-cogs'></i>
+                        </div>
+                        <div class="menu-title">Master</div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a asp-controller="Menu" asp-action="Menu"><i class="bx bx-right-arrow-alt"></i>Menu</a>
+
+                        </li>
+                        <li>
+                            <a asp-controller="Menu" asp-action="SubMenu"><i class="bx bx-right-arrow-alt"></i>SubMenu</a>
+                        </li>
+                        <li>
+                            <a asp-controller="GroupMaster" asp-action="Group"><i class="bx bx-right-arrow-alt"></i>Group</a>
+
+                        </li>
+                        <li>
+                            <a asp-controller="GroupMaster" asp-action="GroupPermission"><i class="bx bx-right-arrow-alt"></i>Group Permission</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Master" asp-action="Department"><i class="bx bx-right-arrow-alt"></i>Department</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Master" asp-action="Gaurav"><i class="bx bx-right-arrow-alt"></i>Gaurav</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Master" asp-action="GauravDepartment"><i class="bx bx-right-arrow-alt"></i>Gaurav Department Mapping</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Master" asp-action="GauravDistrictItem"><i class="bx bx-right-arrow-alt"></i>Gaurav District Item</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul> *@
+        <!--end navigation-->
+    </div>
+    <!--end sidebar wrapper -->
+    <!--start header -->
+    <!--end header -->
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            @RenderBody()
+        </div>
+    </div>
+    <!--end page wrapper -->
+    <!--start overlay-->
+    <div class="overlay toggle-icon"></div>
+    <!--end overlay-->
+    <!--Start Back To Top Button-->
+    <a href="javaScript:;" class="back-to-top"><i class='fa fa-arrow-up'></i></a>
+    <!--End Back To Top Button-->
+    <footer class="page-footer">
+        <p class="mb-0">Copyright © 2026. All right reserved.</p>
+    </footer>
+
+    <script nonce="@nonce">
+        if (window.trustedTypes && window.trustedTypes.createPolicy) {
+            window.trustedTypes.createPolicy('default', {
+                createHTML: (string, sink) => string // Allow strings in sinks
+            });
+        }
+    </script>
+    <script nonce="@nonce" src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <!-- ✅ CHANGED: bootstrap.bundle use kiya (modal/backdrop fix) -->
+    <script nonce="@nonce" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <!-- 3. Select2 AFTER jQuery -->
+    <script nonce="@nonce"
+            src="~/lib/select2/js/select2.min.js"
+            asp-append-version="true"></script>
+    @* <script nonce="@nonce" src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script> *@
+    @* <link nonce="@nonce" href="~/lib/jquery-toast-plugin/demos/css/jquery.toast.css" rel="stylesheet" /> *@
+    <!-- Date Time Picker -->
+    <!-- Toast JS -->
+    <script nonce="@nonce" src="~/lib/jquery-toast-plugin/dist/jquery.toast.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/custom/toast.helper.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" asp-append-version="true"></script>
+    @*     <!-- DataTables JS -->
+        <script nonce="@nonce" src="~/lib/datatables.net/js/datatables.min.js"></script>
+        <script nonce="@nonce" src="~/lib/datatables.net/js/datatables.js"></script> duplicate k vagah se remove kishan *@
+
+    @* <script nonce="@nonce" src="~/lib/jquery-toast-plugin/demos/js/jquery.toast.js"></script> *@
+    <!--Datatable js-->
+    <script nonce="@nonce" src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/lib/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js" asp-append-version="true"></script>
+
+    <script nonce="@nonce" src="~/landing/sweetalert/sweetalert2.min.js" asp-append-version="true"></script>
+    @* <script nonce="@nonce" src="~/custom/common.js"></script> *@
+
+    <script nonce="@nonce" src="~/vertical/assets/js/app.js" asp-append-version="true"></script>
+    @*<script nonce="@nonce" src="~/vertical/assets/plugins/simplebar/js/simplebar.min.js" asp-append-version="true"></script>*@
+    <script nonce="@nonce" src="~/vertical/assets/plugins/metismenu/js/metisMenu.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js" asp-append-version="true"></script>
+
+    <!--app JS-->
+    <!-- DataTables JS -->
+    @*  <script nonce="@nonce" src="~/lib/datatables.net/js/datatables.min.js" asp-append-version="true"></script> *@
+    @*  <script src="~/lib/datatables.net/js/datatables.min.js" asp-append-version="true"></script> *@
+    <!-- ✅ CHANGED: nonce added -->
+    <script nonce="@nonce" src="~/lib/datatables.net/js/datatables.min.js" asp-append-version="true"></script>
+
+    <script nonce="@nonce" src="~/Landing/js/wow.min.js" defer asp-append-version="true"></script>
+
+
+    <script nonce="@nonce" src="~/lib/sweetalert2/dist/sweetalert2.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/Landing/js/swiper-bundle-min.js" asp-append-version="true"></script>
+
+    <script nonce="@nonce" src="~/custom/Common.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/custom/notify.js" asp-append-version="true"></script> <!-- Uses `common` -->
+
+    <script nonce="@nonce" src="~/custom/table.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script nonce="@nonce">
+        $.fn.jquery = "";
+    </script>
+    <script nonce="@nonce">
+        if (window.Fancybox) {
+
+            try {
+                Fancybox.version = "";
+            } catch (e) { }
+
+            try {
+                Fancybox.VERSION = "";
+            } catch (e) { }
+        }
+    </script>
+    <script nonce="@nonce">
+        if ($.fn.dataTable) {
+
+            try {
+                $.fn.dataTable.version = "";
+            } catch (e) { }
+
+            try {
+                $.fn.DataTable.version = "";
+            } catch (e) { }
+
+        }
+    </script>
+    <script nonce="@nonce">
+        try {
+
+            if (window.__core_js_shared__) {
+
+                if (__core_js_shared__.versions) {
+                    __core_js_shared__.versions = [];
+                }
+
+                if (__core_js_shared__.version) {
+                    __core_js_shared__.version = "";
+                }
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script nonce="@nonce">
+        //  document.addEventListener('DOMContentLoaded', function () {
+        //   var el = document.getElementById('dvLoader');
+        //   if (el) el.style.display = 'none';
+        // });
+        window.addEventListener('load', function () {
+            var el = document.getElementById('dvLoader');
+            if (el) el.style.display = 'none';
+        });
+
+    </script>
+    <!-- ✅ CHANGED: permanent modal cleanup -->
+    <script nonce="@nonce">
+        document.addEventListener('hidden.bs.modal', function () {
+            document.body.classList.remove('modal-open');
+
+            document.querySelectorAll('.modal-backdrop')
+                .forEach(el => el.remove());
+        });
+    </script>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script nonce="@nonce">
+         document.addEventListener("DOMContentLoaded", () => {
+             window.toast.showToast('Success','@TempData["SuccessMessage"]','success');
+         });
+         @* window.addEventListener('load', function () {
+             var el = document.getElementById('dvLoader');
+             if (el) el.style.display = 'none';
+         }); *@
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script nonce="@nonce">
+         document.addEventListener("DOMContentLoaded", () => {
+             window.toast.showToast('Error','@TempData["ErrorMessage"]','error');
+         });
+         @* window.addEventListener('load', function () {
+             var el = document.getElementById('dvLoader');
+             if (el) el.style.display = 'none';
+         }); *@
+
+        </script>
+    }
+
+</body>
+</html>

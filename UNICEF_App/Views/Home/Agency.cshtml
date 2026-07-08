@@ -1,0 +1,565 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<!--Agences-->
+<!-- ===== UN Agencies Section ===== -->
+<style nonce="@nonce">
+  
+    .agency-dashboard-section {
+        /*padding: 60px 40px;*/
+        /* max-width: 1600px;
+        width: 95%;
+        margin: auto;
+        padding: 50px;*/
+        background: #eef4ff;
+        padding: 15px;
+        margin-top: 192px;               
+        /*border-radius: 35px;*/
+        position: relative;
+        overflow: hidden;
+    }
+
+        /*.agency-dashboard-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg,#dbeafe,#eff6ff);
+            border-radius: 50%;
+            top: -250px;
+            right: -200px;
+        }*/
+
+    /* =========================
+               HEADER
+            ========================= */
+
+    .agency-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 45px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .agency-main-title {
+        font-size: clamp(28px,3vw,48px);
+        font-weight: 800;
+        color: #082f75;
+        margin-bottom: 10px;
+    }
+
+    .agency-subtitle {
+        font-size: clamp(14px,1vw,18px);
+        color: #64748b;
+    }
+
+    .agency-count-box {
+        /*width: 150px;
+        height: 150px;*/
+        width: 130px;
+        height: 130px;
+        flex-shrink: 0;
+        border-radius: 30px;
+        background: linear-gradient(135deg,#2563eb,#0ea5e9);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 40px rgba(37,99,235,0.25);
+    }
+
+        .agency-count-box h3 {
+            font-size: 40px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .agency-count-box span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+    /* =========================
+           GRID
+        ========================= */
+
+    /*.agency-grid {
+        display: grid;
+        grid-template-columns: repeat(5,1fr);*/ /* CHANGE THIS */
+        /*gap: 20px;
+        position: relative;
+        z-index: 2;
+    }*/
+    .agency-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+        gap: 24px;
+    }
+
+    /* CARD SMALL WIDTH OPTIMIZATION */
+    .agency-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 22px;
+        background: #fff;
+        border-radius: 24px;
+        transition: 0.3s;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    }
+    /*.agency-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 18px;*/ /* reduce padding */
+        /*position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    }*/
+
+
+        .agency-card:hover {
+            transform: translateY(-8px);
+        }
+
+    .agency-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .agency-view-btn {
+        display: inline-block;
+        padding: 10px 18px;
+        background: linear-gradient(135deg,#2563eb,#0ea5e9);
+        color: #fff;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        position: relative;
+        z-index: 10;
+    }
+
+        .agency-view-btn:hover {
+            transform: scale(1.05);
+            color: #fff;
+        }
+
+    /* COLORS */
+
+    .green-card::before {
+        background: #22c55e;
+    }
+
+    .pink-card::before {
+        background: #ec4899;
+    }
+
+    .blue-card::before {
+        background: #2563eb;
+    }
+
+    .orange-card::before {
+        background: #f97316;
+    }
+
+    .purple-card::before {
+        background: #7c3aed;
+    }
+
+    .teal-card::before {
+        background: #14b8a6;
+    }
+
+    /* =========================
+               TOP
+            ========================= */
+
+    .agency-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .agency-logo {
+        width: 70px;
+        height: 70px;
+        border-radius: 22px;
+        background: #f8fbff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #dbeafe;
+    }
+
+        .agency-logo img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+    .agency-status {
+        padding: 8px 14px;
+        border-radius: 30px;
+        background: #dcfce7;
+        color: #166534;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* =========================
+               TEXT
+            ========================= */
+
+    .agency-card h3 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #082f75;
+        margin-bottom: 15px;
+    }
+
+    .agency-card p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.7;
+        flex: 1;
+        min-height: 70px;
+        margin-bottom: 20px;
+    }
+
+    /* =========================
+               FOOTER
+            ========================= */
+
+    .agency-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+        .agency-footer span {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .agency-footer button {
+            border: none;
+            background: linear-gradient(135deg,#2563eb,#0ea5e9);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+            .agency-footer button:hover {
+                transform: scale(1.05);
+            }
+
+    @@media (min-width:1600px) {
+
+        .agency-grid {
+            grid-template-columns: repeat(5,1fr);
+        }
+    }
+    @@media (max-width:1400px) {
+
+        .agency-grid {
+            grid-template-columns: repeat(4,1fr);
+        }
+    }
+    @@media (max-width:1200px) {
+
+        .agency-grid {
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        .agency-dashboard-section {
+            padding: 40px;
+        }
+    }
+    @@media (max-width:992px) {
+
+        .agency-grid {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .agency-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 25px;
+        }
+    }
+    @@media (max-width:576px) {
+
+        .agency-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .agency-dashboard-section {
+            padding: 20px;
+        }
+
+        .agency-card {
+            padding: 18px;
+        }
+
+        .agency-count-box {
+            width: 100px;
+            height: 100px;
+        }
+    }
+</style>
+<div class="container agency-dashboard-section margin-top">
+
+    <!-- HEADER -->
+    <div class="agency-header">
+
+        <div>
+            <h2 class="agency-main-title">
+                Explore UN Agencies
+            </h2>
+
+            <p class="agency-subtitle">
+                Connected agencies working across sectors, goals and monitoring initiatives.
+            </p>
+        </div>
+
+        <div class="agency-count-box">
+            <h3 id="agencyCountAgency"></h3>
+            <span>UN Agencies</span>
+        </div>
+
+    </div>
+    <!-- AGENCY GRID -->
+
+    <div class="agency-grid" id="agencyGrid">
+    </div>
+    <!-- AGENCY GRID -->
+    <!--<div class="agency-grid">-->
+    <!-- CARD -->
+    <!--<div class="agency-card green-card">
+
+        <div class="agency-top">
+
+            <div class="agency-logo">
+                <img src="~/public/img/Agency_logo/UNFPA.png" />
+            </div>
+
+            <div class="agency-status">
+                Active
+            </div>
+
+        </div>
+
+        <h3>UNFPA</h3>
+
+        <p>
+            United Nations Population Fund working on health,
+            youth and population welfare initiatives.
+        </p>
+
+        <div class="agency-footer">
+
+            <span>Health Sector</span>
+
+            <button>
+                View →
+            </button>
+
+        </div>
+
+    </div>-->
+    <!-- CARD -->
+    <!--<div class="agency-card pink-card">
+
+        <div class="agency-top">
+
+            <div class="agency-logo">
+                <img src="~/public/img/Agency_logo/UN.png" />
+            </div>
+
+            <div class="agency-status">
+                Active
+            </div>
+
+        </div>
+
+        <h3>United Nations</h3>
+
+        <p>
+            Supporting SDG implementation and governance
+            initiatives across Rajasthan.
+        </p>
+
+        <div class="agency-footer">
+
+            <span>SDG Mission</span>
+
+            <button>
+                View →
+            </button>
+
+        </div>
+
+    </div>-->
+    <!-- CARD -->
+    <!--<div class="agency-card blue-card">
+
+        <div class="agency-top">
+
+            <div class="agency-logo">
+                <img src="~/public/img/Agency_logo/UNICEF.png" />
+            </div>
+
+            <div class="agency-status">
+                Active
+            </div>
+
+        </div>
+
+        <h3>UNICEF</h3>
+
+        <p>
+            Working in education, child welfare,
+            nutrition and social development.
+        </p>
+
+        <div class="agency-footer">
+
+            <span>Education</span>
+
+            <button>
+                View →
+            </button>
+
+        </div>
+
+    </div>-->
+    <!-- CARD -->
+    <!--<div class="agency-card orange-card">
+
+        <div class="agency-top">
+
+            <div class="agency-logo">
+                <img src="~/public/img/Agency_logo/UNESCO.png" />
+            </div>
+
+            <div class="agency-status">
+                Active
+            </div>
+
+        </div>
+
+        <h3>UNESCO</h3>
+
+        <p>
+            Supporting educational, cultural and
+            scientific initiatives globally.
+        </p>
+
+        <div class="agency-footer">
+
+            <span>Culture</span>
+
+            <button>
+                View →
+            </button>
+
+        </div>
+
+    </div>-->
+    <!-- CARD -->
+    <!--<div class="agency-card purple-card">
+
+        <div class="agency-top">
+
+            <div class="agency-logo">
+                <img src="~/public/img/Agency_logo/UNDP.png" />
+            </div>
+
+            <div class="agency-status">
+                Active
+            </div>
+
+        </div>
+
+        <h3>UNDP</h3>
+
+        <p>
+            Governance, sustainability and development
+            support for public systems.
+        </p>
+
+        <div class="agency-footer">
+
+            <span>Development</span>
+
+            <button>
+                View →
+            </button>
+
+        </div>
+
+    </div>-->
+    <!-- CARD -->
+    <!--<div class="agency-card teal-card">
+
+            <div class="agency-top">
+
+                <div class="agency-logo">
+                    <img src="~/public/img/Agency_logo/WFP.png" />
+                </div>
+
+                <div class="agency-status">
+                    Active
+                </div>
+
+            </div>
+
+            <h3>WFP</h3>
+
+            <p>
+                Food security and nutrition focused
+                humanitarian support programs.
+            </p>
+
+            <div class="agency-footer">
+
+                <span>Food Security</span>
+
+                <button>
+                    View →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>-->
+
+</div>
+<!--Agences-->
+<script nonce="@nonce" src="~/custom/Dashboard.js"></script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+        dashboard.loadAgencyList();
+    });
+</script>

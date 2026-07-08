@@ -1,0 +1,1210 @@
+﻿@{
+    ViewData["Title"] = "Activity";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+        /* =========================================
+       DEPARTMENT TABLE CSS
+    ========================================= */
+    .card-title {
+        background: #d2d2d2;
+        padding: 10px;
+        font-weight: 700;
+    }
+        .margin-top-200{
+            margin-top:200px;
+            width:85%
+        }
+
+    /* =========================================
+   TABLE BORDERED CSS
+========================================= */
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .table-bordered {
+        border: 1px solid #dbeafe;
+    }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dbeafe;
+            padding: 12px;
+            vertical-align: top;
+        }
+
+    /* =========================================
+   TABLE HEADER
+========================================= */
+
+    .table thead th {
+        background: #d2d2d2;
+        color: #000;
+        font-size: 15px;
+        font-weight: 700;
+        text-align: left;
+    }
+
+    /* =========================================
+   TABLE BODY
+========================================= */
+
+    .table tbody td {
+        font-size: 14px;
+        color: #334155;
+        line-height: 1.6;
+    }
+
+    /* =========================================
+   INNER TABLE
+========================================= */
+
+    .table-sm th,
+    .table-sm td {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    /* =========================================
+   HOVER EFFECT
+========================================= */
+
+    .table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    /* =========================================
+   RESPONSIVE
+========================================= */
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* =========================================
+   PRINT CSS
+========================================= */
+
+    @@media print {
+
+        .table,
+        .table-bordered {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table th,
+            .table td {
+                border: 1px solid #000 !important;
+            }
+    }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .department-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+            .department-table thead th {
+                background: #d2d2d2;
+                color: #000;
+                padding: 14px;
+                font-size: 15px;
+                font-weight: 700;
+                text-align: left;
+                border: 1px solid #dbeafe;
+            }
+
+            .department-table tbody td {
+                padding: 12px;
+                border: 1px solid #dbeafe;
+                vertical-align: top;
+                font-size: 14px;
+                color: #334155;
+            }
+
+        /* =========================================
+       INNER TABLE
+    ========================================= */
+
+        .inner-department-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
+
+            .inner-department-table thead th {
+                background: #dbeafe;
+                color: #1e293b;
+                padding: 10px;
+                font-size: 13px;
+                font-weight: 600;
+                border: 1px solid #bfdbfe;
+            }
+
+            .inner-department-table tbody td {
+                padding: 10px;
+                border: 1px solid #bfdbfe;
+                font-size: 13px;
+                color: #475569;
+            }
+
+        /* =========================================
+       HOVER
+    ========================================= */
+
+        .department-table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        /* =========================================
+       PRINT CSS
+    ========================================= */
+
+        @@media print {
+
+            .department-table,
+            .inner-department-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                .department-table th,
+                .department-table td,
+                .inner-department-table th,
+                .inner-department-table td {
+                    border: 1px solid #000 !important;
+                }
+        }
+
+    /* =========================================
+   SDG TABLE MAIN
+========================================= */
+
+    .sdg-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+        .sdg-table thead th {
+            background: #d2d2d2;
+            color: #000;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: left;
+            border: 1px solid #dbeafe;
+            vertical-align: middle;
+        }
+
+        .sdg-table tbody td {
+            padding: 12px;
+            border: 1px solid #dbeafe;
+            vertical-align: top;
+            font-size: 14px;
+            color: #334155;
+        }
+
+    /* =========================================
+   INNER TARGET TABLE
+========================================= */
+
+    .inner-target-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+        background: #fff;
+    }
+
+        .inner-target-table thead th {
+            background: #dbeafe;
+            color: #1e293b;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #bfdbfe;
+        }
+
+        .inner-target-table tbody td {
+            padding: 10px;
+            border: 1px solid #bfdbfe;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+    /* =========================================
+   GOAL TITLE
+========================================= */
+
+    .sdg-table strong {
+        color: #0f172a;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    /* =========================================
+   HOVER EFFECT
+========================================= */
+
+    .sdg-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    /* =========================================
+   RESPONSIVE
+========================================= */
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* =========================================
+   PRINT CSS
+========================================= */
+
+    @@media print {
+
+        .sdg-table,
+        .inner-target-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .sdg-table th,
+            .sdg-table td,
+            .inner-target-table th,
+            .inner-target-table td {
+                border: 1px solid #000 !important;
+            }
+    }
+</style>
+<div class="container-fluid activity-report-page margin-top-200">
+    <!-- HEADER -->
+
+    <div class="report-header">
+        <div class="report-title-section">
+            <h1>
+                Activity Detailed Report
+            </h1>
+            <p>
+                Comprehensive activity monitoring, SDG mapping,
+                geo coverage and implementation progress report.
+            </p>
+        </div>
+
+        <div class="report-action no-print">
+            <button class="btn btn-primary"
+                    onclick="window.print()">
+                Print Report
+            </button>
+        </div>
+    </div>
+    <!-- COVER -->
+    <div class="report-cover-card">
+
+        <img src="/public/img/demo.jpg" />
+
+        <div class="cover-overlay">
+
+            <h2>
+                Jal Jeevan Mission Awareness Campaign
+            </h2>
+
+            <span>
+                Activity Code : ACT-2026-001
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="report-card">
+        <div class="card-title">
+            Basic Information
+        </div>
+        <table class="table table-bordered">
+
+            <tbody>
+                <tr>
+                    <th width="20%">
+                        Activity Name
+                    </th>
+                    <td width="30%">
+                        Jal Jeevan Mission Awareness Campaign
+                    </td>
+                    <th width="20%">
+                        Status
+                    </th>
+                    <td width="30%">
+                        Active
+                    </td>
+                </tr>
+                <tr>
+                    <th width="20%">
+                        Description
+                    </th>
+
+                    <td width="30%" colspan="3">
+                        Jal Jeevan Mission Awareness Campaign
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+                        Sector
+                    </th>
+
+                    <td>
+                        Water & Sanitation
+                    </td>
+
+                    <th>
+                        Agency
+                    </th>
+
+                    <td>
+                        UNICEF
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <th>
+                        Start Date
+                    </th>
+
+                    <td>
+                        01 Jan 2026
+                    </td>
+
+                    <th>
+                        End Date
+                    </th>
+
+                    <td>
+                        31 Dec 2026
+                    </td>
+
+                </tr>               
+                <tr>
+                    <!-- =========================================
+                         DEPARTMENT MAPPING TABLE
+                    ========================================= -->
+
+                            <table class="table table-bordered department-table">
+                                <thead>
+
+                                    <tr>
+
+                                        <th width="25%">
+                                            Nodal Department
+                                        </th>
+
+                                        <th width="75%">
+                                            Associated Departments
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <!-- ROW 1 -->
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="nodal-department">
+
+                                                Water Resources Department
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <table class="table table-sm table-bordered inner-department-table">
+
+                                                <thead>
+
+                                                    <tr>
+
+                                                        <th width="10%">
+                                                            Sr No
+                                                        </th>
+
+                                                        <th width="90%">
+                                                            Department Name
+                                                        </th>
+
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            1
+                                                        </td>
+
+                                                        <td>
+                                                            Health Department
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            2
+                                                        </td>
+
+                                                        <td>
+                                                            Rural Development Department
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            3
+                                                        </td>
+
+                                                        <td>
+                                                            Education Department
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            4
+                                                        </td>
+
+                                                        <td>
+                                                            Women & Child Development Department
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                       
+                </tr>
+
+
+
+                <tr>
+                    <!-- =========================================
+                         SDG GOALS & TARGETS TABLE
+                    ========================================= -->
+
+                    <div class="report-card">
+
+                        <div class="card-title">
+                            SDG Goals & Targets Mapping
+                        </div>
+
+                        
+                            <table class="table table-bordered sdg-table">
+                                <thead>
+                                    <tr>
+
+                                        <th width="15%">
+                                            SDG No.
+                                        </th>
+
+                                        <th width="35%">
+                                            Goal
+                                        </th>
+
+                                        <th width="50%">
+                                            Targets
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <!-- GOAL 1 -->
+
+                                    <tr>
+
+                                        <td>
+                                            SDG 1
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                No Poverty
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+
+                                            <table class="table table-sm table-bordered inner-target-table">
+
+                                                <thead>
+
+                                                    <tr>
+
+                                                        <th width="20%">
+                                                            Target Code
+                                                        </th>
+
+                                                        <th width="80%">
+                                                            Target Description
+                                                        </th>
+
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            1.1
+                                                        </td>
+
+                                                        <td>
+                                                            Eradicate extreme poverty for all people.
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            1.2
+                                                        </td>
+
+                                                        <td>
+                                                            Reduce at least half the proportion of men,
+                                                            women and children living in poverty.
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            1.3
+                                                        </td>
+
+                                                        <td>
+                                                            Implement social protection systems.
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+
+
+
+
+
+                                    <!-- GOAL 2 -->
+
+                                    <tr>
+
+                                        <td>
+                                            SDG 2
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                Zero Hunger
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+
+                                            <table class="table table-sm table-bordered inner-target-table">
+
+                                                <thead>
+
+                                                    <tr>
+
+                                                        <th width="20%">
+                                                            Target Code
+                                                        </th>
+
+                                                        <th width="80%">
+                                                            Target Description
+                                                        </th>
+
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            2.1
+                                                        </td>
+
+                                                        <td>
+                                                            End hunger and ensure access to safe food.
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            2.2
+                                                        </td>
+
+                                                        <td>
+                                                            End all forms of malnutrition.
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            2.3
+                                                        </td>
+
+                                                        <td>
+                                                            Double agricultural productivity and incomes.
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+
+
+
+
+
+                                    <!-- GOAL 3 -->
+
+                                    <tr>
+
+                                        <td>
+                                            SDG 3
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                Good Health & Well Being
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+
+                                            <table class="table table-sm table-bordered inner-target-table">
+
+                                                <thead>
+
+                                                    <tr>
+
+                                                        <th width="20%">
+                                                            Target Code
+                                                        </th>
+
+                                                        <th width="80%">
+                                                            Target Description
+                                                        </th>
+
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            3.1
+                                                        </td>
+
+                                                        <td>
+                                                            Reduce global maternal mortality ratio.
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            3.2
+                                                        </td>
+
+                                                        <td>
+                                                            End preventable deaths of newborns and children.
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            3.8
+                                                        </td>
+
+                                                        <td>
+                                                            Achieve universal health coverage.
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        
+
+                    </div>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- DESCRIPTION -->
+
+    <div class="report-card">
+
+        <div class="card-title">
+            Activity Description
+        </div>
+
+        <p class="description-text">
+
+            This activity focuses on awareness generation,
+            water conservation, sanitation improvement and
+            sustainable drinking water management across
+            rural and urban Rajasthan.
+
+        </p>
+
+    </div>
+
+    <!-- SDG MAPPING -->
+
+    <div class="report-card">
+
+        <div class="card-title">
+            SDG, Targets & Viksit Rajasthan Mapping
+        </div>
+
+        <table class="table table-bordered table-striped">
+
+            <thead class="table-primary">
+
+                <tr>
+
+                    <th>
+                        SDG
+                    </th>
+
+                    <th>
+                        Goal
+                    </th>
+
+                    <th>
+                        Targets
+                    </th>
+
+                    <th>
+                        Pillars
+                    </th>
+
+                    <th>
+                        Sub Pillars
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        SDG 6
+                    </td>
+
+                    <td>
+                        Clean Water & Sanitation
+                    </td>
+
+                    <td>
+
+                        <ul>
+
+                            <li>
+                                Universal access to safe drinking water
+                            </li>
+
+                            <li>
+                                Improve water quality
+                            </li>
+
+                        </ul>
+
+                    </td>
+
+                    <td>
+
+                        <ul>
+
+                            <li>
+                                Human Development
+                            </li>
+
+                            <li>
+                                Sustainable Infrastructure
+                            </li>
+
+                        </ul>
+
+                    </td>
+
+                    <td>
+
+                        <ul>
+
+                            <li>
+                                Health
+                            </li>
+
+                            <li>
+                                Drinking Water
+                            </li>
+
+                            <li>
+                                Rural Water Supply
+                            </li>
+
+                        </ul>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        SDG 3
+                    </td>
+
+                    <td>
+                        Good Health & Well Being
+                    </td>
+
+                    <td>
+
+                        <ul>
+
+                            <li>
+                                Universal health coverage
+                            </li>
+
+                        </ul>
+
+                    </td>
+
+                    <td>
+
+                        <ul>
+
+                            <li>
+                                Healthcare Transformation
+                            </li>
+
+                        </ul>
+
+                    </td>
+
+                    <td>
+
+                        <ul>
+
+                            <li>
+                                Public Health
+                            </li>
+
+                            <li>
+                                Child Care
+                            </li>
+
+                        </ul>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- GEO COVERAGE -->
+
+    <div class="report-card">
+
+        <div class="card-title">
+            Geo Coverage
+        </div>
+
+        <table class="table table-bordered">
+
+            <thead class="table-light">
+
+                <tr>
+
+                    <th>
+                        Geo Level
+                    </th>
+
+                    <th>
+                        Location Name
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        State
+                    </td>
+
+                    <td>
+                        Rajasthan
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        District
+                    </td>
+
+                    <td>
+                        Jaipur
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        Block
+                    </td>
+
+                    <td>
+                        Amber
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        Village
+                    </td>
+
+                    <td>
+                        Rampura
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- TASK DETAILS -->
+
+    <div class="report-card">
+
+        <div class="card-title">
+            Task Details
+        </div>
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-success">
+
+                <tr>
+
+                    <th>
+                        Sr No
+                    </th>
+
+                    <th>
+                        Task Name
+                    </th>
+
+                    <th>
+                        Assigned To
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Progress
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        1
+                    </td>
+
+                    <td>
+                        Village Awareness Campaign
+                    </td>
+
+                    <td>
+                        UNICEF Team
+                    </td>
+
+                    <td>
+                        Completed
+                    </td>
+
+                    <td>
+                        100%
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        2
+                    </td>
+
+                    <td>
+                        Water Testing Survey
+                    </td>
+
+                    <td>
+                        Health Department
+                    </td>
+
+                    <td>
+                        Ongoing
+                    </td>
+
+                    <td>
+                        75%
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- GALLERY -->
+
+    <div class="report-card">
+
+        <div class="card-title">
+            Activity Gallery
+        </div>
+
+        <div class="gallery-grid">
+
+            <img src="/public/img/demo.jpg">
+
+            <img src="/public/img/demo.jpg">
+
+            <img src="/public/img/demo.jpg">
+
+            <img src="/public/img/demo.jpg">
+
+        </div>
+
+    </div>
+
+</div>

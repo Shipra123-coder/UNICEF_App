@@ -1,0 +1,352 @@
+body.dark {
+    background-color: #052d0f;
+}
+body.dark header::before {
+    display: none;
+}
+body.dark header {
+    background-color: #001806;
+}
+
+body.dark .menulist li a {
+    color: rgb(255 255 255 / 95%);
+}
+
+body.dark .logocol img {
+    filter: brightness(0) invert(1);
+}
+
+body.dark .menulist .dropdown-content {
+    background-color: #012d0c;
+}
+body.dark .menulist .sub-dropdown {
+    background-color: #012d0c;
+}
+body.dark .headsearch input {
+    background-color: #00350c;
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .headsearch input::placeholder {
+    color: rgb(255 255 255 / 20%);
+}
+body.dark .accessbox {
+    background-color: #012d0c;
+    border: 1px solid #03912333;
+}
+body.dark .accessbox .hdbox .head {
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .accessbox .accbtn {
+    background-color: #034113;
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .accessbox .accbtn:hover {
+    background-color: #28a043;
+}
+
+body.dark .accessbox .hdbox button img {
+    filter: brightness(0) invert(1);
+}
+body.dark .lang {
+    border: 1px solid rgb(255 255 255 / 50%);
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .lang img {
+    filter: brightness(0) invert(1);
+}
+body.dark .news-box {
+    background-color: #034113;
+}
+body.dark .news-con {
+    background-color: #012d0c;
+}
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6 {
+    color: white;
+}
+body.dark .morebtn {
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .morebtn {
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .news-con .news-sec h5 {
+    color: rgb(255 255 255 / 100%);
+}
+body.dark .news-con .news-sec p {
+    color: rgb(255 255 255 / 90%);
+}
+body.dark .dirsec .head {
+    color: white;
+}
+body.dark p {
+    color: rgb(255 255 255 / 80%);
+}
+body.dark .lwm-list .lwm-sec a,
+body.dark .cap-list .cap-sec a {
+    border: 1px solid rgb(238 238 238 / 10%);
+    background-color: #034113;
+}
+body.dark .lwm-list .lwm-sec p,
+body.dark .cap-list .cap-sec a p {
+    color: white;
+}
+body.dark .lwm-list .lwm-sec a img {
+    background: #045f1b;
+    border-radius: 50%;
+}
+body.dark .about::before {
+    opacity: 0.5;
+}
+body.dark .vismis .vis-sec {
+    border: 1px solid rgb(238 238 238 / 10%);
+    background-color: #034113;
+}
+body.dark .vismis .vis-sec .vis-img img {
+    opacity: 0.5;
+}
+body.dark .publications::before {
+    opacity: 0.5;
+}
+body.dark .inibox {
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .inibox .inihead {
+    color: white;
+}
+body.dark .publi-text-box {
+    background-color: #034113;
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .navibtn {
+    background-color: #034113;
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .videobox:after {
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .exp a {
+    border: 1px solid rgb(255 255 255 / 30%);
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .orderspubli::before {
+    opacity: 0.5;
+}
+body.dark .gallery-sec::before {
+    border: 1px solid rgb(255 255 255 / 30%);
+    background-color: #034113;
+}
+body.dark .galbox {
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .galbox .galimg .galicon.vid {
+    background-color: #034113;
+}
+body.dark .mytabs .nav-link {
+    color: rgb(255 255 255 / 95%);
+    border: 1px solid rgb(255 255 255 / 30%);
+    background-color: #012d0c;
+}
+body.dark .mytabs .nav-link.active,
+body.dark .mytabs .nav-link.active:hover {
+    color: white;
+    border: 1px solid rgb(255 255 255 / 30%);
+    background-color: #034113;
+}
+body.dark .tablerow {
+    color: rgb(255 255 255 / 95%);
+    background-color: #013f10;
+}
+body.dark .tablerow .date img,
+body.dark .actionbtn img {
+    filter: brightness(0) invert(1);
+}
+body.dark .ordermain .tablerow .subject a,
+body.dark .ordermain .tablerow .numcol {
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .imgcard .imgcont {
+    background-color: #034113;
+}
+body.dark .testimonials .testi-bag {
+    opacity: 0.5;
+}
+body.dark .reviewcard {
+    background-color: transparent;
+}
+body.dark .imgcard::after {
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .reviewcard .cardcont {
+    border: 1px solid rgb(255 255 255 / 30%);
+    background-color: #034113;
+}
+body.dark .reviewcard .head {
+    color: rgb(255 255 255 / 95%);
+}
+body.dark .partnerslide a {
+    border: 1px solid rgb(255 255 255 / 30%);
+    background-color: #ffffff96;
+}
+body.dark .footmid {
+    background-color: rgb(3 65 19 / 80%);
+    border: 1px solid rgb(238 238 238 / 30%);
+}
+body.dark footer a {
+    color: rgb(255 255 255 / 80%);
+}
+body.dark footer:before,
+body.dark footer:after {
+    opacity: 0.3;
+}
+body.dark .footmid .contcol .locbtn {
+    background-color: #00531a;
+}
+body.dark .footmid .contcol .locbtn img {
+    filter: brightness(0) invert(1);
+}
+body.dark .foot-counter .count {
+    background-color: #00531a;
+}
+body.dark footer p {
+    color: rgb(255 255 255 / 90%);
+}
+body.dark .quick p {
+    background-color: #034113;
+}
+body.dark .search-results {
+    background-color: #034113;
+}
+body.dark .search-results .field2 select {
+    color: rgb(255 255 255 / 90%);
+    background: #08531b;
+}
+body.dark .govlogo img {
+    filter: brightness(0) invert(1);
+}
+body.dark footer .social,
+body.dark footer .contlist .icon {
+    background-color: rgb(3 17 35);
+}
+body.dark .map-sec{
+    background: unset;
+}
+body.dark .flwbox {
+    background-color: #012d0c;
+}
+body.dark .flwbox.tech h4 {
+    color: white;
+}
+
+body.dark .stp-tab .nav-link {
+    color: white;
+    background-color: #012c0c;
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+body.dark .stp-tab .nav-link.active,
+body.dark .stp-tab .nav-link.active:hover {
+    color: white;
+    background-color: #ff595e;
+    border: 1px solid rgb(255 255 255 / 30%);
+}
+.lwmimg{
+        border-radius: 10px 10px 60px 10px;
+}
+body.dark .btn-outline {
+    color: rgb(255 255 255 / 80%);
+    border: 1px solid rgb(255 255 255 / 80%);
+}
+body.dark .bannernav {
+    background-color: #012d0c;
+    border: 1px solid rgb(255 255 255 / 10%);
+}
+body.dark .navslider a {
+    color: #ffffff;
+    background-color: #012d0c;
+    border: 1px solid rgb(255 255 255 / 20%);
+}
+body.dark .navslider a img {
+    filter: brightness(0) invert(1);
+}
+body.dark .breadcrumb a{
+    color: white;
+}
+body.dark .breadcrumb-item.active {
+    color: #dddddd;
+}
+body.dark .innercont ul{
+    color: rgb(255 255 255 / 80%);
+}
+body.dark .mycard {
+    
+    background-color: #012d0c;
+    border: 1px solid var(--clrpri20);
+}
+body.dark .mycard .cardcont .head {
+    color: #ffffff;
+}
+body.dark .myaccordion .accordion-item{
+    background-color: #012d0c;
+}
+body.dark .myaccordion .accordion-button{
+    color: white;
+}
+header.active .accessbox {
+   
+}
+
+body.dark .map-sec.iec > img{
+    display: none
+}
+body.dark .myaccordion.date span {
+    color: white;
+}
+body.dark .myaccordion.date span:after {
+    background: #ffffff52;
+}
+body.dark .imgcard .imgcont .head {
+    color: #ffffff;
+}
+body.dark .myform input, .myform textarea, .myform select {
+    border: 1px solid #eeeeee33;
+}
+body.dark .myform input::placeholder, .myform textarea::placeholder, .myform select::placeholder {
+    color: white;
+}
+body.dark .inpgroup.align-items-center{
+    color: white;
+}
+body.dark .inpgroup.align-items-center select {
+    background-color: #00350c;
+    border: 1px solid #eeeeee33;
+    color: white;
+}
+body.dark table td, table th {
+    border: 1px solid rgb(255 255 255 / 10%);
+}
+body.dark table {
+    color: rgb(255 255 255 / 90%);
+}
+body.dark .box {
+    border: 1px solid rgb(255 255 255 / 20%);
+}
+body.dark .box .con span{
+    color: white;
+}
+body.dark .box .con a{
+    color: rgb(255 255 255 / 80%);
+}
+
+
+ .accessbox .accbtn.active {
+    box-shadow: 0 0 0 2px #fcb913;
+} 
+
+/* Grayscale filter */
+.gray {
+    filter: saturate(50%);
+}

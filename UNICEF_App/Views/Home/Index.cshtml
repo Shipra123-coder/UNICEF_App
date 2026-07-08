@@ -1,0 +1,179 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutOut.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<!-- slider section -->
+<div class="container-fluid slider-main" style="">
+    <section class="bg-banner intro screen__reader">
+        <div class="container_gallery slider-container_gallery" id="container" style="width:100%; padding:0px;">
+            <div class="caption" id="slider-caption">
+                <div class="caption-heading">
+                    <h1>Lorem Ipsum</h1>
+
+                </div>
+                <div class="caption-subhead"><span>dolor sit amet, consectetur adipiscing elit.</span></div><a class="btn" href="#">Sit Amet</a>
+            </div>
+            <div class="left-col" id="left-col">
+                <div id="left-slider"></div>
+            </div>
+            <ul class="nav">
+                <li class="slide-up"> <a href="#"><</a></li>
+                <li class="slide-down"> <a id="down_button" href="#">></a></li>
+            </ul>
+
+        </div>
+    </section>
+    <!-- About Us section End-->
+@* <section class="about_nicsi nicsi_sec_pad aboutus-container" style="margin-top:0px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-8 mb-4 mb-sm-4 mb-md-4 mb-lg-4 mb-xl-0 mb-xxl-0">
+                    <div class="nicsi_shadow_box" data-aos="fade-up">
+                        <div class="row align-items-center">
+                            <div class="col-md-5">
+                                <img src="~/Landing/images/homeimg.jpg" alt="Intership" class="w-75 h-100 m-auto strengths_img brown_color_img"> <img src="Landing/images/homeimg.jpg" alt="Intership" class="w-75 h-100 m-auto strengths_img formal_color_img">
+                            </div>
+                            <div class="col-md-7">
+                                <h2 class="nicsi_heading about_nicsi_heading">
+                                    Panch Gaurav  Programme <span> (PGP) </span>
+                                </h2>
+                                <div class="about_nicsi_heading_line heading_division_footer"></div>
+                                <!-- <div class="heading_division_white mb-3"></div> -->
+
+                                <p>To promote this regional pride and create opportunities for economic growth and employment, the “Panch Gaurav” Programme has been initiated. Each district will identify five key elements:</p>
+                                <ul class="vs_list padding_left_40">
+                                    <li>
+                                        One District-One Agricultural Produce
+                                    </li>
+                                    <li>One District-One Botanical Species</li>
+                                    <li>One District-One industrial product</li>
+                                    <li>One District-One Tourist Place</li>
+                                    <li>One District-One Sport</li>
+                                </ul>
+                                <a asp-action="AboutUs" asp-controller="Home" class="col-6 btn nicsi_btn d-block aboutus_btn_viewmore" style="text-decoration:none !important">
+                                    View
+                                    More
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-4">
+                    <div class="nicsi_shadow_box p-3">
+                        <div class="heading_2 mb-4 p-2">
+                            <img src="/Landing/images/announcement_icon.svg" class="anouncement_icon_heding" alt="Announcement icon" style="height: 28px;">
+                            <h5>Announcements</h5>
+                        </div>
+                        <div class="announcements_box">                           
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>*@
+    <!-- About Us section Start-->
+
+
+</div> 
+<script nonce="@nonce">
+
+    let slide_data = [
+        {
+            src: "/images/slider/banner1.jpg",
+            title: "Food Availability Index",
+            copy: "Food Availability Index Analysis 2026"
+        },
+        {
+            src: "/images/slider/banner2.jpg",
+            title: "Food Accessibility Index",
+            copy: "Food Accessibility Index Analysis 2026"
+        },
+        {
+            src: "/images/slider/banner3.jpg",
+            title: "Food Utilisation Index",
+            copy: "Food Utilisation Index Analysis 2026"
+        }
+    ];
+
+    let slides = [], captions = [];
+
+    let autoplay = setInterval(nextSlide, 5000);
+
+    let container = document.getElementById('container');
+    let leftSlider = document.getElementById('left-col');
+    let down_button = document.getElementById('down_button');
+
+    if (down_button) {
+        down_button.addEventListener('click', function (e) {
+            e.preventDefault();
+            clearInterval(autoplay);
+            nextSlide();
+        });
+    }
+
+    for (let i = 0; i < slide_data.length; i++) {
+
+        let slide = document.createElement('div');
+        let caption = document.createElement('div');
+        let slide_title = document.createElement('div');
+
+        slide.classList.add('slide');
+        slide.style.backgroundImage = `url('${slide_data[i].src}')`;
+
+        caption.classList.add('caption');
+        slide_title.classList.add('caption-heading');
+
+        // 👉 TITLE add karna bhool gaye the (important)
+        slide_title.innerText = slide_data[i].title;
+
+        if (i === 0) {
+            slide.classList.add('current');
+            caption.classList.add('current-caption');
+        } else if (i === 1) {
+            slide.classList.add('next');
+            caption.classList.add('next-caption');
+        } else if (i === slide_data.length - 1) {
+            slide.classList.add('previous');
+            caption.classList.add('previous-caption');
+        }
+
+        caption.appendChild(slide_title);
+
+        caption.insertAdjacentHTML(
+            'beforeend',
+            `<div class="caption-subhead"><span>${slide_data[i].copy}</span></div>`
+        );
+
+        slides.push(slide);
+        captions.push(caption);
+
+        leftSlider.appendChild(slide);
+        container.appendChild(caption);
+    }
+
+    function nextSlide() {
+
+        let currentIndex = slides.findIndex(s => s.classList.contains('current'));
+
+        if (currentIndex === -1) return; // safety fix
+
+        let nextIndex = (currentIndex + 1) % slides.length;
+
+        slides.forEach(s => s.classList.remove('current', 'next', 'previous'));
+        captions.forEach(c => c.classList.remove('current-caption', 'next-caption', 'previous-caption'));
+
+        slides[currentIndex].classList.add('previous');
+        slides[nextIndex].classList.add('current');
+        slides[(nextIndex + 1) % slides.length].classList.add('next');
+
+        captions[currentIndex].classList.add('previous-caption');
+        captions[nextIndex].classList.add('current-caption');
+        captions[(nextIndex + 1) % captions.length].classList.add('next-caption');
+    }
+
+</script>

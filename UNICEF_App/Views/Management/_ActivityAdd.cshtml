@@ -1,0 +1,983 @@
+﻿@model MO.Management.ActivityMaster
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: none;
+    }
+
+    .input-group-text {
+        font-size: 12px;
+        font-weight: bold;
+        min-width: 70px;
+    }
+
+    .sub-activity-block {
+        transition: transform 0.2s;
+    }
+
+        .sub-activity-block:hover {
+            transform: scale(1.005);
+        }
+</style>
+<div class="card shadow border-0">
+    <div class="card-body bg-light">
+        <div class="bg-white p-3 border rounded mb-4 shadow-sm">
+            <h6 class="text-secondary fw-bold border-bottom pb-2 mb-3">Main Activity Details</h6>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="small fw-bold">Activity Name</label>
+                    <input type="text" class="form-control" id="activityName" name="activityName" value="@Model?.ActivityName" placeholder="Activity Name">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="small fw-bold">Short Name</label>
+                    <input type="text" class="form-control" id="shortName" name="shortName" value="@Model?.ShortName" placeholder="Short Name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="small fw-bold">Sector</label>
+                    <input type="hidden" id="hiddenunsector" value="@Model.UNSector" />
+                    <select class="form-select" id="UNSector" name="UNSector" asp-for="@Model.UNSector">
+                    </select>
+                </div>    
+            </div>
+            <div class="row">
+                <!-- DESCRIPTION -->
+                <div class="col-md-12 mb-3">
+                    <label class="small fw-bold">
+                        Description
+                    </label>
+                    <textarea class="form-control"
+                              id="Description"
+                              name="Description"
+                              rows="1">@Model?.Description</textarea>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <!-- ACTIVITY PERIOD -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="small fw-bold mb-2 d-block">
+                        Activity Period
+                    </label>
+
+                    <div class="input-group shadow-sm">
+
+                        <!-- START DATE -->
+                        <span class="input-group-text bg-primary text-white">
+                            <i class="bx bx-calendar"></i>
+                        </span>
+                        <input type="text"
+                               class="form-control datepicker"
+                               id="StartDate"
+                               name="StartDate"
+                               placeholder="dd-mm-yyyy"
+                               value="@Model?.StartDate">
+                        @* <input type="date"
+                               class="form-control"
+                               id="StartDate"
+                               name="StartDate"
+                               value="@Model?.StartDate"> *@
+
+                        <!-- TO -->
+                        <span class="input-group-text bg-light fw-bold">
+                            To
+                        </span>
+
+                        <!-- END DATE -->
+                        <input type="text"
+                               class="form-control datepicker"
+                               id="EndDate"
+                               name="EndDate"
+                               value="@Model?.EndDate">
+
+                    </div>
+
+                    <!-- VALIDATION MESSAGE -->
+                    <small id="dateValidation"
+                           class="text-danger d-none">
+                        End Date must be greater than or equal to Start Date
+                    </small>
+                </div>       
+            </div>                
+        </div>
+        <div class="bg-white p-3 border rounded mb-4 shadow-sm">
+            <label class="fw-bold me-3">Do you want to add Sub-Activities?</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hasSubActivity" id="subYes" value="1"
+                       @(Model?.HasSubActivity == true ? "checked" : "")>
+                <label class="form-check-label" for="subYes">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hasSubActivity" id="subNo" value="0"
+                       @(Model?.HasSubActivity == false ? "checked" : "")>
+                <label class="form-check-label" for="subNo">No</label>
+            </div>
+        </div>
+        <input type="hidden" id="DeletedSubIds" value="" />
+        <input type="hidden" id="DeletedTaskIds" value="" />
+        <div id="subActivityWrapper" style="display:@(Model?.HasSubActivity == true ? "block" : "none")">
+            @if (Model?.SubActivities != null && Model.SubActivities.Count > 0)
+            {
+                int subIndex = 1;
+                foreach (var sub in Model.SubActivities)
+                {
+                    <div class="sub-activity-block mb-4 p-3 bg-white border rounded shadow-sm" style="border-left: 5px solid #0d6efd !important;">
+                        <input type="hidden" class="sub-id" name="SubActivityId[]" value="@sub.SubActivityId" />
+
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-md-9">
+                                <label class="fw-bold text-primary">Sub-Activity @subIndex Name</label>
+                                <input type="text" class="form-control form-control-lg" name="SubActivityName[]" value="@sub.SubActivityName" placeholder="Enter sub-activity name...">
+                            </div>
+                            <div class="col-md-3 text-end pt-4">
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-sub">
+                                    <i class="bx bx-trash"></i> Remove Sub
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-section p-2 bg-light rounded">
+                            <div class="task-list">
+
+                                @if (sub.Tasks != null && sub.Tasks.Count > 0)
+                                {
+                                    int taskIndex = 1;
+                                    foreach (var task in sub.Tasks)
+                                    {
+                                        <div class="border rounded p-3 mb-3 bg-white task-item">
+                                            <div class="row">
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="small fw-bold">Task Description</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white task-number">Task @taskIndex</span>
+
+                                                        <input type="hidden" class="task-id" name="TaskId[]" value="@task.TaskId" />
+                                                        <input type="text" class="form-control" name="Tasks[]" value="@task.TaskDescription" placeholder="Enter task detail..." />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="small fw-bold">Task Detailed Description</label>
+
+                                                    <textarea class="form-control"
+                                                              name="TaskDetailDescription[]"
+                                                              rows="3"
+                                                              placeholder="Enter task detailed description...">@task.TaskDetailDescription</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8 mb-2">
+                                                    <label class="small fw-bold">Task Period</label>
+                                                    <div class="input-group shadow-sm">
+                                                        <span class="input-group-text bg-primary text-white">
+                                                            <i class="bx bx-calendar"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" value="@task.StartDate" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                                        <span class="input-group-text bg-light fw-bold">To</span>
+                                                        <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" value="@task.EndDate" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                                    </div>
+                                                    <small class="text-danger d-none task-date-validation">
+                                                        End Date must be greater than or equal to Start Date
+                                                    </small>
+                                                </div>
+
+                                                <div class="col-md-4 d-flex align-items-end justify-content-end gap-2 mb-2">
+                                                    <button class="btn btn-outline-secondary btn-add-task" type="button">
+                                                        <i class="bx bx-plus"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger btn-remove-task" type="button">
+                                                        <i class="bx bx-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        taskIndex++;
+                                    }
+                                }
+                                else
+                                {
+                            <div class="border rounded p-3 mb-3 bg-white task-item">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">Task Description</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white task-number">Task 1</span>
+                                            <input type="hidden" class="task-id" name="TaskId[]" value="0" />
+                                            <input type="text" class="form-control" name="Tasks[]" placeholder="Enter task detail..." />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">Task Detailed Description</label>
+
+                                        <textarea class="form-control"
+                                                  name="TaskDetailDescription[]"
+                                                  rows="3"
+                                                  placeholder="Enter task detailed description..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 mb-2">
+                                        <label class="small fw-bold">Task Period</label>
+                                        <div class="input-group shadow-sm">
+                                            <span class="input-group-text bg-primary text-white"><i class="bx bx-calendar"></i></span>
+                                            <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                            <span class="input-group-text bg-light fw-bold">To</span>
+                                            <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                        </div>
+                                        <small class="text-danger d-none task-date-validation">
+                                            End Date must be greater than or equal to Start Date
+                                        </small>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end justify-content-end gap-2 mb-2">
+                                        <button class="btn btn-outline-secondary btn-add-task" type="button"><i class="bx bx-plus"></i></button>
+                                        <button class="btn btn-outline-danger btn-remove-task" type="button"><i class="bx bx-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    subIndex++;
+                }
+            }
+            else
+            {
+                <div class="sub-activity-block mb-4 p-3 bg-white border rounded shadow-sm" style="border-left: 5px solid #0d6efd !important;">
+                    <input type="hidden" class="sub-id" name="SubActivityId[]" value="0" />
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-9">
+                            <label class="fw-bold text-primary">Sub-Activity Name</label>
+                            <input type="text" class="form-control form-control-lg" name="SubActivityName[]" placeholder="Enter Sub-Activity">
+                        </div>
+                    </div>
+                    <!-- TASK SECTION -->
+                    <div class="task-section p-2 bg-light rounded">
+
+                        <div class="task-list">
+
+                            <div class="border rounded p-3 mb-3 bg-white task-item">
+
+                                <!-- TASK NAME -->
+                                <div class="row">
+
+                                    <div class="col-md-12 mb-3">
+
+                                        <label class="small fw-bold">
+                                            Task Description
+                                        </label>
+
+                                        <div class="input-group">
+
+                                            <span class="input-group-text bg-white">
+                                                Task 1
+                                            </span>
+
+                                            <input type="hidden"
+                                                   class="task-id"
+                                                   name="TaskId[]"
+                                                   value="0" />
+
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="Tasks[]"
+                                                   placeholder="Enter task detail..." />
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <!-- TASK Description -->
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">Task Detailed Description</label>
+
+                                        <textarea class="form-control"
+                                                  name="TaskDetailDescription[]"
+                                                  rows="3"
+                                                  placeholder="Enter task detailed description..."></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- TASK PERIOD -->
+                                <div class="row">
+
+                                    <div class="col-md-6 mb-2">
+
+                                        <label class="small fw-bold">
+                                            Task Period
+                                        </label>
+
+                                        <div class="input-group shadow-sm">
+
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="bx bx-calendar"></i>
+                                            </span>
+
+                                            <!-- START DATE -->
+
+                                            <input type="text"
+                                                   class="form-control task-start-date datepicker"
+                                                   name="TaskStartDate[]" />
+
+                                            <span class="input-group-text bg-light fw-bold">
+                                                To
+                                            </span>
+
+                                            <!-- END DATE -->
+
+                                            <input type="text"
+                                                   class="form-control task-end-date datepicker"
+                                                   name="TaskEndDate[]" />
+
+                                        </div>
+
+                                        <!-- VALIDATION -->
+
+                                        <small class="text-danger d-none task-date-validation">
+
+                                            End Date must be greater than or equal to Start Date
+
+                                        </small>
+
+                                    </div>
+
+                                    <!-- BUTTONS -->
+
+                                    <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
+
+                                        <button class="btn btn-outline-secondary btn-add-task"
+                                                type="button">
+
+                                            <i class="bx bx-plus"></i>
+
+                                        </button>
+
+                                        <button class="btn btn-outline-danger btn-remove-task"
+                                                type="button">
+
+                                            <i class="bx bx-trash"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            <button type="button" id="btnAddSubActivity" class="btn btn-info text-white w-100 mb-3 shadow-sm">
+                <i class="fas fa-layer-group"></i> + Add Another Sub-Activity Block
+            </button>
+        </div>
+        <div id="onlyTaskSection" style="display:@(Model?.HasSubActivity == false ? "block" : "none")">
+            <div class="bg-white p-3 border rounded shadow-sm mb-4">
+                <h6 class="text-secondary fw-bold border-bottom pb-2 mb-3">
+                    Tasks
+                </h6>
+                <div id="mainTaskList">
+                    @if (Model?.Tasks != null && Model.Tasks.Count > 0)
+                    {
+                        foreach (var task in Model.Tasks)
+                        {
+                            <div class="border rounded p-3 mb-3 bg-light task-item">
+                                <!-- TASK NAME -->
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">
+                                            Task Description
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                Task
+                                            </span>
+                                            <input type="hidden"
+                                                   name="TaskId[]"
+                                                   value="@task.TaskId" />
+
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="Tasks[]"
+                                                   value="@task.TaskDescription"
+                                                   placeholder="Enter task detail">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- TASK Description -->
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">Task Detailed Description</label>
+
+                                        <textarea class="form-control"
+                                                  name="TaskDetailDescription[]"
+                                                  rows="3"
+                                                  placeholder="Enter task detailed description...">@task.TaskDetailDescription</textarea>
+                                    </div>
+                                </div>
+                                <!-- TASK PERIOD -->
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <label class="small fw-bold">
+                                            Task Period
+                                        </label>
+                                        <div class="input-group shadow-sm">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="bx bx-calendar"></i>
+                                            </span>
+                                            <!-- START DATE -->
+                                            <input type="text"
+                                                   class="form-control task-start-date datepicker"
+                                                   name="TaskStartDate[]"
+                                                   value="@task.StartDate" />
+                                            <span class="input-group-text bg-light fw-bold">
+                                                To
+                                            </span>
+                                            <!-- END DATE -->
+                                            <input type="text"
+                                                   class="form-control task-end-date datepicker"
+                                                   name="TaskEndDate[]"
+                                                   value="@task.EndDate" />
+                                        </div>
+
+                                        <!-- VALIDATION -->
+                                        <small class="text-danger d-none task-date-validation">
+                                            End Date must be greater than or equal to Start Date
+                                        </small>
+                                    </div>
+
+                                    <!-- BUTTONS -->
+
+                                    <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
+
+                                        <button class="btn btn-outline-secondary btn-add-main-task"
+                                                type="button">
+
+                                            <i class="bx bx-plus"></i>
+
+                                        </button>
+
+                                        <button class="btn btn-outline-danger btn-remove-main-task"
+                                                type="button">
+
+                                            <i class="bx bx-trash"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                <div class="border rounded p-3 mb-3 bg-light task-item">
+
+                    <!-- TASK NAME -->
+
+                    <div class="row">
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="small fw-bold">
+                                Task Description
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-white">
+                                    Task
+                                </span>
+
+                                <input type="hidden"
+                                       name="TaskId[]"
+                                       value="0" />
+
+                                <input type="text"
+                                       class="form-control"
+                                       name="Tasks[]"
+                                       placeholder="Enter task detail">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- TASK Description -->
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="small fw-bold">Task Detailed Description</label>
+
+                            <textarea class="form-control"
+                                      name="TaskDetailDescription[]"
+                                      rows="3"
+                                      placeholder="Enter task detailed description..."></textarea>
+                        </div>
+                    </div>
+                    <!-- TASK PERIOD -->
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-2">
+
+                            <label class="small fw-bold">
+                                Task Period
+                            </label>
+
+                            <div class="input-group shadow-sm">
+
+                                <span class="input-group-text bg-primary text-white">
+                                    <i class="bx bx-calendar"></i>
+                                </span>
+
+                                <!-- START DATE -->
+
+                                <input type="text"
+                                       class="form-control task-start-date datepicker"
+                                       name="TaskStartDate[]" />
+
+                                <span class="input-group-text bg-light fw-bold">
+                                    To
+                                </span>
+
+                                <!-- END DATE -->
+
+                                <input type="text"
+                                       class="form-control task-end-date datepicker"
+                                       name="TaskEndDate[]" />
+
+                            </div>
+
+                            <!-- VALIDATION -->
+
+                            <small class="text-danger d-none task-date-validation">
+
+                                End Date must be greater than or equal to Start Date
+
+                            </small>
+
+                        </div>
+
+                        <!-- BUTTON -->
+
+                        <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
+
+                            <button class="btn btn-outline-secondary btn-add-main-task"
+                                    type="button">
+
+                                <i class="bx bx-plus"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script nonce="@nonce">
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ======================================
+    // GLOBAL VARIABLES & INITIALIZATION
+    // ======================================
+    let deletedTaskIds = [];
+    let deletedSubIds = [];
+
+    // Dropdown binding
+    if (typeof common !== 'undefined' && common.BindDropdown) {
+        common.BindDropdown("/Master/DDL_UNSector", "UNSector", "UNSector", $('#hiddenunsector').val());
+    }
+
+    // Flatpickr initialization function
+    function initializeDatePicker(element = ".datepicker") {
+        flatpickr(element, {
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+    }
+
+    // Initialize datepicker on page load
+    initializeDatePicker();
+
+    // ======================================
+    // TOGGLE SECTION (Sub-Activity vs Main Task)
+    // ======================================
+    function toggleSections() {
+        var val = $("input[name='hasSubActivity']:checked").val();
+        if (val == "1") {
+            $("#subActivityWrapper").show();
+            $("#onlyTaskSection").hide();
+        } else {
+            $("#subActivityWrapper").hide();
+            $("#onlyTaskSection").show();
+        }
+    }
+
+    $("input[name='hasSubActivity']").change(toggleSections);
+    toggleSections(); // Run on initial load
+
+    // ======================================
+    // RENUMBER TASKS FUNCTION
+    // ======================================
+    function renumberTasks(containerSelector) {
+        $(containerSelector).find('.task-item').each(function (index) {
+            $(this).find('.task-number').text(`Task ${index + 1}`);
+        });
+    }
+
+    // ======================================
+    // DATE VALIDATION ENGINE
+    // ======================================
+    function parseDateString(dateStr) {
+        if (!dateStr) return null;
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return null;
+        // Convert dd-mm-yyyy to Date Object (yyyy, mm-1, dd)
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+
+    function validateTaskDates(taskItem) {
+        const startVal = taskItem.find('.task-start-date').val();
+        const endVal = taskItem.find('.task-end-date').val();
+        const validationMsg = taskItem.find('.task-date-validation');
+
+        if (startVal && endVal) {
+            const startDate = parseDateString(startVal);
+            const endDate = parseDateString(endVal);
+
+            if (startDate && endDate && endDate < startDate) {
+                validationMsg.removeClass('d-none');
+                taskItem.find('.task-end-date').val('').focus();
+                return false;
+            }
+        }
+        validationMsg.addClass('d-none');
+        return true;
+    }
+
+    // ======================================
+    // SUB-ACTIVITY MANAGEMENT (Dynamic Elements)
+    // ======================================
+    const wrapper = document.getElementById('subActivityWrapper');
+    const btnAddSubActivity = document.getElementById('btnAddSubActivity');
+
+    if (btnAddSubActivity && wrapper) {
+           btnAddSubActivity.addEventListener('click', function () {
+        const newBlock = document.createElement('div');
+        newBlock.className = 'sub-activity-block mb-4 p-3 bg-white border rounded shadow-sm';
+        newBlock.style.borderLeft = '5px solid #0d6efd';
+
+        newBlock.innerHTML = `
+            <input type="hidden" class="sub-id" name="SubActivityId[]" value="0" />
+
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-9">
+                    <label class="fw-bold text-primary">Sub-Activity Name</label>
+                    <input type="text" class="form-control form-control-lg" name="SubActivityName[]" placeholder="Enter sub-activity name..." />
+                </div>
+                <div class="col-md-3 text-end pt-4">
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-remove-sub">
+                        <i class="bx bx-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+
+            <div class="task-section p-2 bg-light rounded">
+                <div class="task-list">
+
+                    <div class="border rounded p-3 mb-3 bg-white task-item">
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="small fw-bold">Task</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white">Task 1</span>
+                                    <input type="hidden" class="task-id" name="TaskId[]" value="0" />
+                                    <input type="text" class="form-control" name="Tasks[]" placeholder="Enter task detail..." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12 mb-3">
+                              <label class="small fw-bold">Task Description</label>
+                          
+                              <textarea class="form-control"
+                                        name="TaskDetailDescription[]"
+                                        rows="3"
+                                        placeholder="Enter task detailed description..."></textarea>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 mb-2">
+                                <label class="small fw-bold">Task Period</label>
+                                <div class="input-group shadow-sm">
+                                    <span class="input-group-text bg-primary text-white">
+                                        <i class="bx bx-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+
+                                    <span class="input-group-text bg-light fw-bold">To</span>
+
+                                    <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                </div>
+
+                                <small class="text-danger d-none task-date-validation">
+                                    End Date must be greater than or equal to Start Date
+                                </small>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-end justify-content-end gap-2 mb-2">
+                                <button class="btn btn-outline-secondary btn-add-task" type="button" title="Add Task">
+                                    <i class="bx bx-plus"></i>
+                                </button>
+                                <button class="btn btn-outline-danger btn-remove-task" type="button" title="Remove Task">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div></div></div>`;
+
+        // Append newly created Sub-Activity architecture node to DOM
+        wrapper.appendChild(newBlock);
+
+        // 🌟 RE-INITIALIZE DATEPICKERS FOR DYNAMIC INPUTS
+        // This hooks date component attachments securely right after node injection
+        if (typeof $.fn.datepicker !== 'undefined') {
+            $(newBlock).find('.datepicker').datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                todayHighlight: true
+            });
+        } else if (typeof flatpickr !== 'undefined') {
+            flatpickr(newBlock.querySelectorAll('.datepicker'), {
+                dateFormat: "dd-mm-yyyy",
+                allowInput: true
+            });
+        }
+    });
+        // Click events inside Sub-Activity (Dynamic Event Delegation)
+        wrapper.addEventListener('click', function (e) {
+            const target = e.target;
+
+            // 1. Add Task inside Sub-Activity
+            if (target.closest('.btn-add-task')) {
+                const taskList = target.closest('.task-list');
+                const taskCount = taskList.querySelectorAll('.task-item').length + 1;
+                const newTask = document.createElement('div');
+                newTask.className = 'border rounded p-3 mb-3 bg-white task-item';
+
+                newTask.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="small fw-bold">Task</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white task-number">Task ${taskCount}</span>
+                                <input type="hidden" class="task-id" name="TaskId[]" value="0" />
+                                <input type="text" class="form-control" name="Tasks[]" placeholder="Enter task detail..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="small fw-bold">Task Description</label>
+
+                            <textarea class="form-control"
+                                      name="TaskDetailDescription[]"
+                                      rows="3"
+                                      placeholder="Enter task detailed description..."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label class="small fw-bold">Task Period</label>
+                            <div class="input-group shadow-sm">
+                                <span class="input-group-text bg-primary text-white"><i class="bx bx-calendar"></i></span>
+                                <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" placeholder="dd-mm-yyyy" />
+                                <span class="input-group-text bg-light fw-bold">To</span>
+                                <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" placeholder="dd-mm-yyyy" />
+                            </div>
+                            <small class="text-danger d-none task-date-validation">End Date must be greater than or equal to Start Date</small>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
+                            <button class="btn btn-outline-secondary btn-add-task" type="button"><i class="bx bx-plus"></i></button>
+                            <button class="btn btn-outline-danger btn-remove-task" type="button"><i class="bx bx-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                taskList.appendChild(newTask);
+                initializeDatePicker(newTask.querySelectorAll('.datepicker'));
+            }
+
+            // 2. Remove Task inside Sub-Activity
+            if (target.closest('.btn-remove-task')) {
+                const taskItem = target.closest('.task-item');
+                const taskList = target.closest('.task-list');
+                const totalTasks = taskList.querySelectorAll('.task-item').length;
+
+                if (totalTasks > 1) {
+                    const taskId = taskItem.querySelector('.task-id')?.value;
+                    if (taskId && taskId != "0") {
+                        deletedTaskIds.push(taskId);
+                        $("#DeletedTaskIds").val(deletedTaskIds.join(','));
+                    }
+                    taskItem.remove();
+                    renumberTasks(taskList);
+                }
+            }
+
+            // 3. Remove entire Sub-Activity Block
+            if (target.closest('.btn-remove-sub')) {
+                const subBlock = target.closest('.sub-activity-block');
+                const subId = subBlock.querySelector('.sub-id')?.value;
+
+                if (subId && subId != "0") {
+                    deletedSubIds.push(subId);
+                    $("#DeletedSubIds").val(deletedSubIds.join(','));
+                }
+
+                // Push all inner task IDs to the deleted list before removal
+                subBlock.querySelectorAll('.task-id').forEach(task => {
+                    let taskId = task.value;
+                    if (taskId && taskId != "0") {
+                        deletedTaskIds.push(taskId);
+                    }
+                });
+                $("#DeletedTaskIds").val(deletedTaskIds.join(','));
+                subBlock.remove();
+            }
+        });
+
+        // Sub-Activity Date Validation Trigger (On Change)
+        wrapper.addEventListener('change', function (e) {
+            if (e.target.classList.contains('task-start-date') || e.target.classList.contains('task-end-date')) {
+                const taskItem = $(e.target).closest('.task-item');
+                validateTaskDates(taskItem);
+            }
+        });
+    }
+
+    // ======================================
+    // MAIN TASK MANAGEMENT (jQuery Dynamic Events)
+    // ======================================
+    
+    // Add Main Task
+    $(document).on("click", ".btn-add-main-task", function () {
+        let taskCount = $("#mainTaskList .task-item").length + 1;
+        let html = `
+            <div class="border rounded p-3 mb-3 bg-light task-item">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="small fw-bold">Task</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white task-number">Task ${taskCount}</span>
+                            <input type="hidden" name="TaskId[]" value="0" />
+                            <input type="text" class="form-control" name="Tasks[]" placeholder="Enter task detail">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                      <label class="small fw-bold">Task Description</label>
+                  
+                      <textarea class="form-control"
+                                name="TaskDetailDescription[]"
+                                rows="3"
+                                placeholder="Enter task detailed description..."></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label class="small fw-bold">Task Period</label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-primary text-white"><i class="bx bx-calendar"></i></span>
+                            <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" placeholder="dd-mm-yyyy" />
+                            <span class="input-group-text bg-light fw-bold">To</span>
+                            <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" placeholder="dd-mm-yyyy" />
+                        </div>
+                        <small class="text-danger d-none task-date-validation">End Date must be greater than or equal to Start Date</small>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
+                        <button class="btn btn-outline-secondary btn-add-main-task" type="button"><i class="bx bx-plus"></i></button>
+                        <button class="btn btn-outline-danger btn-remove-main-task" type="button"><i class="bx bx-trash"></i></button>
+                    </div>
+                </div>
+            </div>`;
+
+        $("#mainTaskList").append(html);
+        initializeDatePicker($("#mainTaskList .task-item:last .datepicker"));
+    });
+
+    // Remove Main Task
+    $(document).on("click", ".btn-remove-main-task", function () {
+        let totalTasks = $("#mainTaskList .task-item").length;
+        if (totalTasks > 1) {
+            $(this).closest(".task-item").remove();
+            renumberTasks("#mainTaskList");
+        }
+    });
+
+    // Main Task Date Validation Trigger
+    $(document).on("change", ".task-start-date, .task-end-date", function () {
+        const taskItem = $(this).closest(".task-item");
+        validateTaskDates(taskItem);
+    });
+
+    // ======================================
+    // PROJECT MASTER START/END DATE VALIDATION
+    // ======================================
+    const projectStartDate = document.getElementById("StartDate");
+    const projectEndDate = document.getElementById("EndDate");
+    const projectValidationMsg = document.getElementById("dateValidation");
+
+    function validateProjectDates() {
+        if (projectStartDate && projectEndDate && projectValidationMsg) {
+            const startVal = projectStartDate.value;
+            const endVal = projectEndDate.value;
+
+            if (startVal && endVal) {
+                const start = parseDateString(startVal);
+                const end = parseDateString(endVal);
+
+                if (start && end && end < start) {
+                    projectValidationMsg.classList.remove("d-none");
+                    projectEndDate.value = "";
+                    projectEndDate.focus();
+                } else {
+                    projectValidationMsg.classList.add("d-none");
+                }
+            }
+        }
+    }
+
+    if (projectStartDate && projectEndDate) {
+        projectStartDate.addEventListener("change", validateProjectDates);
+        projectEndDate.addEventListener("change", validateProjectDates);
+    }
+});
+</script>

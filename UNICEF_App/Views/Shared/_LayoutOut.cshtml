@@ -1,0 +1,399 @@
+﻿
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache" />
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 minimum-scale=1.0">
+    <title>UN Project Monitoring DashBoard Rajasthan </title>
+    <meta name="title" content="UN Project Monitoring DashBoard Rajasthan">
+    <meta name="description" content="UN Project Monitoring DashBoard ,Rajasthan">
+    <meta name="keyword" content="UN Project Monitoring DashBoard Rajasthan">    
+    <link rel="shortcut icon" href="~/Landing/images/favicon.ico" type="image/x-icon">
+    @* <link href="~/css/fonts.css" rel="stylesheet" asp-append-version="true" /> *@
+ @*    <link href="~/css/bootstrap-icons.css" rel="stylesheet" asp-append-version="true" /> *@
+    
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    @* <!-- DataTables CSS -->
+    <link rel="stylesheet" href="~/lib/datatables.net-bs5/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Toast CSS -->
+    <link rel="stylesheet" href="~/lib/jquery-toast/jquery.toast.min.css" /> *@
+    @* <link href="~/css/bootstrap.min.css" rel="stylesheet" /> *@
+   @*  <link href="~/landing/css/all.min.css" rel="stylesheet" /> *@   
+    <link rel="stylesheet" href="~/Landing/css/custom.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/Landing/css/banner.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/Landing/css/swiper.css" asp-append-version="true">
+    <link href="~/landing/css/stylesheet.css" rel="stylesheet" asp-append-version="true">
+
+    <link href="~/lib/jquery-toast-plugin/demos/css/jquery.toast.css" rel="stylesheet" />
+    <link href="~/lib/jquery-toast-plugin/demos/css/jquery.toast.min.css" rel="stylesheet" />
+    <script src="~/js/site-lib.min.js"></script>
+    
+    
+</head>
+<body>
+    @{
+        var nonce = Context.Items["CSPNonce"]?.ToString();
+    }
+    <style nonce="@nonce">
+        .header-top-fix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            z-index: 1000;
+            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-fixed {
+            position: fixed;
+            top: 115px; /* Adjust based on header height */
+            left: 0;
+            width: 100%;
+            background: #343a40; /* Dark menu background */
+            z-index: 999;
+        }
+
+        .menuqw .bg-darkmenu {
+            background: rgb(13,110,253);
+            background: linear-gradient(90deg, rgba(13,110,253,1) 0%, rgba(18,108,161,1) 0%, rgba(128,70,110,1) 49%, rgba(229,35,62,1) 100%);
+            font-weight: 300;
+        }
+
+        /* .menuqw .dropdown-toggle a {
+                                            color:#fff;
+                                        } */
+
+        .menuqw .nav-item .nav-link a {
+            color: #fff !important;
+        }
+
+        .btnmenu {
+            background-color: #1f64b8;
+            color: #fff;
+        }
+
+            .btnmenu:hover {
+                background-color: #fff;
+                color: #1f64b8;
+            }
+
+        .footer__sec ul li {
+            list-style-type: none;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+        .font_size_16 {
+            font-size: 16px;
+        }
+
+        .cm__content{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .logo_name{
+            color: #243a73 !important; 
+            text-transform: uppercase;
+        }
+        .cm_photo{
+            border-radius: 50%;
+        }
+        .footer_top_border{
+            margin-top: -6px !important;
+            border-top: 9px solid #fa8620 !important;
+        }
+        .text_align{
+            font-size: 20px !important;
+            justify-content:center !important;   
+        }       
+
+        .projectName_size {
+            color: #021759;
+            font-size: 30px;
+        }
+
+        .logo_below_text p {
+            font-size: 20px;
+            line-height: 24px;
+        }
+    </style>
+    <div class="loader-layout" id="dvLoader">
+        <div class="dot-opacity-loader">
+            <div></div>
+            @* <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div> *@
+        </div>
+    </div>
+    <div class="Page-content">
+        <div class="my-portlet header-top-fix">          
+            <div class="header d-flex align-items-center header-top screen__reader">
+                <div class="header-left screen__reader">
+                    <a asp-action="Index" asp-controller="Home" title="SDG Logo" class="screen__reader logo__topsec">
+                        <img src="~/Landing/images/indian.png" class="Rajasthan_logo" alt="Govt Logo">
+                        <div class="d-flex flex-column logo_left_sec">
+                            <div class="logo_below_text">
+                                @*  <p class="m-0 font_size_18">  <strong>Department of Statistics</strong> </p>
+                                <p class="m-0 font_size_18">  <strong>Directorate of Economics & Statistics</strong> </p> *@
+                                <p class="m-0 font_size">Government of Rajasthan</p>
+                                <p class="m-0 font_size_18">  <strong class="projectName_size">UN Monitoring Dashboard</strong></p>
+                            </div>
+                        </div>
+                       @*  <div class="d-flex flex-column logo_left_sec">
+                            <div class="logo_below_text">
+                                <p class="m-0 font_size_16">  <strong> Department of Statistics </strong> </p>
+                                <p class="m-0 font_size_16">  <strong> Directorate of Economics & Statistics </strong> </p>
+                                <small class="font_size_16"><strong>Government of Rajasthan</strong></small>
+                            </div>                           
+                        </div> *@
+                    </a>
+                </div>
+               @*  <div class="header-center screen__reader">                    
+                    <div class="cm__content text_align">
+                        <h2 class="logo_name">
+                            UN Project Monitoring DashBoard
+                        </h2>
+                    </div>
+                </div> *@
+                <div class="header-right screen__reader">
+                    <div class="cm__section">                        
+                        <div class="pl-15">
+                            <div>
+                                <img src="~/Landing/images/cm-photo.jpeg" alt="Shri BhajanLal Sharma" width="75" height="74" class="cm_photo">
+                            </div>
+                            <div class="cm__content">
+                                <label class="font_size_16">Shri Bhajan Lal Sharma </label>
+                                <p> Hon'ble Chief Minister </p>
+                            </div>
+                        </div>                      
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <!-- Gradient Navigation Menu -->
+            <div class="primary-menu gradient-menu element-with-gradient-top">
+                <nav class="navbar navbar-expand-lg">
+                    <!-- Mobile Menu Toggler -->
+                    <button class="navbar-toggler"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navMenu"
+                            aria-controls="navMenu"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- Collapsible Menu -->
+                    <div class="collapse navbar-collapse" id="navMenu">
+                        <ul class="navbar-nav">
+                            @* <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="AboutUs" asp-controller="Home">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Event" asp-controller="Home">Gallery</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Landing/GuidLine/Revised _Guidelines_Panch.pdf" target="_blank">Panch Gaurav Guideline</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#">Publications</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="DistrictBooks">District Panch Gaurav BookLet</a>                     
+                                </div>
+                            </li>  
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#">Contact Us</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="ContactUsState">State Office</a>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="ContactUsDistrict">District Office</a>
+                                </div>
+                            </li> *@
+                            
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Login" asp-controller="Account">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>  
+        <section>
+            @RenderBody()
+        </section>
+
+        <!-- Footer section Start-->
+        <footer class="footer animatedParent screen__reader footer_top_border gradient-custom-1" style="margin-top:-6px">
+            <div class="my-container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="footer__sec links-all screen__reader">
+                            <h3> Useful Links</h3>
+                            <ul>
+                                <li class="screen__reader"> <a target="_blank" href="~/Account/Login" title="Home"> <i class="fa fa-angle-double-right pe-1"></i> Login</a></li>
+                                <li class="screen__reader"> <a target="" asp-action="Disclaimer" asp-controller="Home" title="Privacy Policy"> <i class="fa fa-angle-double-right pe-1"></i>  Disclaimer </a></li>
+                                <li class="screen__reader"> <a asp-action="Land" asp-controller="Home" title="Disclaimer"> <i class="fa fa-angle-double-right pe-1"></i>  Site Map  </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="footer__sec screen__reader">
+                            <h3 class="screen__reader">Contact Us</h3>
+                            <div class="d-flex font_size_16">
+                                <div class="pe-3">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <div class="screen__reader">
+                                    <p class="m-0">  <strong> Department of Statistics </strong> </p>
+                                    <p class="m-0">  <strong> Directorate of Economics and Statistics </strong> </p>    
+                                    <p class="m-0"><strong> Government of Rajasthan </strong></p>
+                                     Yojna Bhawan, Tilak Marg C- Scheme, <br>
+                                    Jaipur, Rajsthan Pin-302005
+                                </div>
+                            </div>
+                            <div class="d-flex screen__reader mt-2 font_size_16">
+                                <div class="pe-3"> <i class="bi bi-phone"></i> </div>
+                                <div class="mail-link">
+                                    <a href="mailto:PGP[dit]des[at]rajasthan[dot]gov[dot]in" class="fw-normal" title="E-mail">  0141-2850227  </a>
+                                </div>
+                            </div>
+                            <div class="d-flex screen__reader mt-2 font_size_16">
+                                <div class="pe-3"> <i class="bi bi-envelope-open"></i> </div>
+                                <div class="mail-link">
+                                    <a href="mailto:PGP[dit]des[at]rajasthan[dot]gov[dot]in" class="fw-normal" title="E-mail">jdcoord[dot]des[at]rajasthan[dot]gov[dot]in</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                    @*     <div class="footer__sec screen__reader">
+                            <h3 class="screen__reader">Nodal Officer</h3>
+                            <div class="d-flex font_size_16">
+                                <div class="pe-3">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <div class="screen__reader">
+                                    <p class="m-0">  <strong><i class="fa fa-angle-double-right pe-1"></i> Shri Ranveer Singh</strong> </p>
+                                    <p class="m-0">  <strong><i class="fa fa-angle-double-right pe-1"></i> Joint Director </strong> </p>
+                                </div>
+                            </div>
+                            <div class="d-flex screen__reader mt-2 font_size_16">
+                                <div class="pe-3"> <i class="bi bi-phone"></i> </div>
+                                <div class="moblie-link">
+                                    <a href="mailto:PGP[dit]des[at]rajasthan[dot]gov[dot]in" class="fw-normal" title="Mobile Number"><i class="fa fa-angle-double-right pe-1"> </i>9413209999  </a>
+                                </div>
+                            </div>
+                        </div> *@
+                        <div class="footer__sec screen__reader">
+                        <h3 class="screen__reader">Nodal Officer</h3>
+                        @* @await Component.InvokeAsync("NodalOfficer") *@
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-footer screen__reader text_align">
+                    Copyright © 2021. All rights reserved.
+                    <div id="currentYear"></div>
+                    <div class="footer-right">                       
+                        <div id="visitorCount23" hidden>No. of Visitor <strong>0</strong></div>
+                    </div>
+                </div>
+                <div class="show-scrollTop screen__reader">
+                    <div title="Go to Top " class="screen_top" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Previous"><i class="bi bi-arrow-up"></i></div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer section Start-->
+    </div>
+    <!-- Container Section End-->
+    <div class="clearfix"></div>
+    <link rel="stylesheet" type="text/css" href="~/Landing/css/variable.css" asp-append-version="true">
+    @* <link rel="stylesheet" type="text/css" href="~/Landing/css/fontawesome.min.css" /> *@
+    <link rel="stylesheet" type="text/css" href="~/Landing/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/Landing/css/owl.carousel.css">
+    <link rel="stylesheet" href="~/Landing/css/icomoon.css" />
+    <script nonce="@nonce" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+   
+    <!-- DataTables CSS -->
+  @*   <link rel="stylesheet" href="~/lib/datatables.net-bs5/css/dataTables.bootstrap5.min.css" /> *@
+
+    <!-- Toast CSS -->
+    <link rel="stylesheet" href="~/lib/jquery-toast/jquery.toast.min.css" />
+
+    <!-- DataTables JS -->
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    @* <script src="~/lib/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script> *@
+
+    <!-- Toast JS -->
+    <script nonce="@nonce" src="~/lib/jquery-toast-plugin/demos/js/jquery.toast.js"></script>
+    <script nonce="@nonce" src="~/lib/jquery-toast-plugin/demos/js/jquery.toast.min.js"></script>
+   @*  <script src="~/lib/jquery-toast-plugin/dist/jquery.toast.min.js"></script> *@
+   @*  <script src="~/lib/jquery-toast/jquery.toast.min.js"></script> *@
+    <!-- Your Toast Helper (custom wrapper) -->
+    
+    <script nonce="@nonce" src="~/custom/toast.helper.js"></script>
+    
+    @* <script src="~/js/datatables.bootstrap5.min.js"></script> *@
+    @* Add Latest Version-shipra*@
+    @* <script src="~/Landing/js/jquery-3.7.1.min.js"></script> *@
+    @* <script src="~/vertical/assets/plugins/datatable/js/datatables.min.js"></script>
+    <script src="~/vertical/assets/plugins/datatable/js/datatables.bootstrap5.min.js"></script>
+    <link href="~/vertical/assets/toast/jquery.toast.min.css" rel="stylesheet" /> *@
+    @* <script src="~/Landing/js/bootstrap.min.js"></script> *@
+
+    <!--Datatable js-->
+    <script nonce="@nonce" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script nonce="@nonce" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script nonce="@nonce" src="~/lib/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+
+
+    <script nonce="@nonce" src="~/Landing/js/wow.min.js" defer></script>
+  
+    <script nonce="@nonce" src="~/Landing/js/owl.carousel.min.js" defer></script>
+  
+    <script nonce="@nonce" src="~/Landing/js/swiper-bundle-min.js"></script>
+    <script nonce="@nonce" src="~/Landing/js/custom-home.js"></script>
+    
+    @* <script src="~/vertical/assets/toast/jquery.toast.min.js" asp-append-version="true"></script>
+    <script src="~/vertical/assets/toast/toast.js" asp-append-version="true"></script> *@
+    <script nonce="@nonce" src="~/custom/Common.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/custom/notify.js" asp-append-version="true"></script> <!-- Uses `common` -->
+    @await RenderSectionAsync("Scripts", required: false)
+    <script nonce="@nonce">
+         document.addEventListener('DOMContentLoaded', function () {
+          var el = document.getElementById('dvLoader');
+          if (el) el.style.display = 'none';
+        });
+    </script>
+   @*  <script nonce="@nonce">
+        // $('#dvLoader').hide();
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 150) {
+                //$(".header-top").addClass("header-top-fix");
+                $(".primary-menu").addClass("menu-fixed");
+            } else {
+                //$(".header-top").removeClass("header-top-fix");
+                $(".primary-menu").removeClass("menu-fixed");
+            }
+        });
+        // $(window).scroll(function () { $(this).scrollTop() > 150 ? $(".header-top").addClass("header-top-fix") : $(".header-top").removeClass("header-top-fix") });
+    </script> *@
+    <script nonce="@nonce">
+        function loginlink() {
+            window.location.href = "/Login/NewLogin";
+        }
+    </script>
+</body>
+</html>

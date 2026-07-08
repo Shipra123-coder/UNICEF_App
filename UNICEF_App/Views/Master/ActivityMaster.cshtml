@@ -1,0 +1,236 @@
+﻿@using MO.Common
+@model MO.Master.WorkActivityViewModel
+@{
+    ViewData["Title"] = "Activity Master";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+<form asp-action="SaveActivityWithDepartment" method="post">
+
+    <!-- 🔷 Activity Section -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            📋 Activity Details
+        </div>
+
+        <div class="card-body row">
+
+            <div class="col-md-6">
+                <label>Activity Name</label>
+                <input asp-for="Activity.ActivityName" class="form-control" required />
+            </div>
+
+            <div class="col-md-3">
+                <label>Short Name</label>
+                <input asp-for="Activity.ShortName" class="form-control" value="HAC" />
+            </div>
+
+            <div class="col-md-3">
+                <label>Activity Type</label>
+                <input asp-for="Activity.ActivityType" class="form-control" value="Field Work" />
+            </div>
+
+            <div class="col-md-12 mt-2">
+                <label>Description</label>
+                <textarea asp-for="Activity.Description" class="form-control">Health awareness program in rural areas </textarea>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <!-- 🔷 Department Mapping -->
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    🏢 Department Mapping (Select One Nodal)
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Department</th>
+                                    <th>Nodal</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var dept in Model.DepartmentList)
+                                {
+                                    <tr>
+                                        <!-- Checkbox -->
+                                        <td class="text-center">
+                                            <input type="checkbox"
+                                                   name="SelectedDepartmentIds"
+                                                   value="@dept.Id"
+                                                   class="dept-checkbox" />
+                                        </td>
+
+                                        <!-- Department Name -->
+                                        <td>@dept.DepartmentName</td>
+
+                                        <!-- Nodal Radio -->
+                                        <td class="text-center">
+                                            <input type="radio"
+                                                   name="NodalDepartmentId"
+                                                   value="@dept.Id"
+                                                   class="nodal-radio" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <!-- 🔷 Agency Mapping -->
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    🏢 Agency Mapping (Select One Nodal)
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Agency</th>
+                                    <th>Nodal Agency</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var agn in Model.AgencyList)
+                                {
+                                    <tr>
+                                        <!-- Checkbox -->
+                                        <td class="text-center">
+                                            <input type="checkbox"
+                                                   name="SelectedAgencyIds"
+                                                   value="@agn.Id"
+                                                   class="dept-checkbox" />
+                                        </td>
+
+                                        <!-- Department Name -->
+                                        <td>@agn.AgencyName</td>
+
+                                        <!-- Nodal Radio -->
+                                        <td class="text-center">
+                                            <input type="radio"
+                                                   name="NodalAgencyId"
+                                                   value="@agn.Id"
+                                                   class="nodal-radio" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 🔷 Submit -->
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-success">
+            💾 Save Activity
+        </button>
+    </div>
+
+</form>
+
+@* <div class="container mt-4">
+    <div class="card shadow-lg border-0 rounded-3">
+
+        <!-- Header -->
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">📋 Work Activity Management</h5>
+            <a href="/WorkActivity/Create" class="btn btn-light btn-sm">+ Add Activity</a>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            @if (Model.list?.Any() == true)
+            {
+                int sr = 1;
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>Activity</th>
+                                <th>Short</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th width="120">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.list)
+                            {
+                                <tr>
+                                    <td>@sr++</td>
+
+                                    <!-- Activity Name + Description -->
+                                    <td>
+                                        <strong>@item.ActivityName</strong><br />
+                                        <small class="text-muted">@item.Description</small>
+                                    </td>
+
+                                    <td class="text-center">@item.ShortName</td>
+
+                                    <!-- Activity Type Badge -->
+                                    <td class="text-center">
+                                        <span class="badge bg-info text-dark">
+                                            @item.ActivityType
+                                        </span>
+                                    </td>
+
+                                    <!-- Status -->
+                                    <td class="text-center">
+                                        <span class="badge bg-@(item.Status == 1 ? "success" : "danger")">
+                                            @(item.Status == 1 ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+
+                                    <!-- Action Buttons -->
+                                    <td class="text-center">
+                                        <a href="/WorkActivity/Edit/@item.ActivityId" class="btn btn-warning btn-sm">✏️</a>
+                                        <a href="/WorkActivity/Delete/@item.ActivityId"
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure?')">🗑</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    No Activities Found
+                </div>
+            }
+
+        </div>
+    </div>
+</div> *@

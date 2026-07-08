@@ -1,0 +1,665 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#fff">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name='copyright' content=''>
+    <meta name="cache-control" content="no-cache">
+    <meta name="distribution" content="Global">
+    <meta name="document-distribution" content="Global">
+    <meta name="document-rating" content="General">
+    <meta name="document-rights" content="Public">
+    <meta name="document-state" content="static">
+    <meta name="publisher" content="">
+    <meta name="rating" content="General">
+    <meta name="expires" content="never">
+    <meta name="resource-type" content="General">
+    <meta name="Address" content="">
+
+    <!-- OG Tags Start -->
+    <meta property="og:title" content="Un Monitoring">
+    <meta property="og:url" content="home">
+    <meta property="og:description" content="Rajathan Goverment">
+    <meta property="og:type" content="">
+    <meta property="og:image" content="">
+    <meta property="og:site_name" content="">
+    <meta property="og:street-address" content="">
+    <meta property="og:locality" content="">
+    <meta property="og:region" content="">
+    <meta property="og:country-name" content="India">
+    <meta property="og:email" content="">
+    <meta property="og:phone_number" content="">
+    @* <meta name="msvalidate.01" content="C4268C62A12F72E3A224320AEB3984C3"> *@
+
+    <title>UN Monitoring</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" type="image/png">
+
+
+    <!-- CSS Stylesheets -->
+    <link href="/public/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/bootstrap-utilities.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/public/css/swiper-bundle.min.css">
+    <link href="/public/css/mystyle.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/dark.css" rel="stylesheet" type="text/css">
+
+
+    <!-- FONT -->
+    <link href="/public/css/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="/public/css/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Noto+Sans+Devanagari:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="canonical" href="">
+</head>
+<body class="">
+    @{
+        var nonce = Context.Items["CSPNonce"]?.ToString();
+    }
+    <style nonce="@nonce">
+        .text-align-center {
+            text-align: center;
+        }
+
+        .margin-top {
+            margin-top: 160px;
+        }
+    </style>
+    <!-- Toast CSS -->
+    <link nonce="@nonce" href="~/lib/jquery-toast-plugin/dist/jquery.toast.min.css" rel="stylesheet" />
+    <style nonce="@nonce">
+        /* Center Logout */
+        .logout-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Bottom FY Button */
+        .fy-wrapper {
+            margin-top: auto;
+        }
+
+        .float-right {
+            background-color: #122b6d;
+            border: 1px solid #122b6d;
+            color: #fff;
+            padding: 5px 5px 1px 5px;
+        }
+
+        #dvLoader {
+            display: block; /* ye hona chahiye */
+        }
+
+        .text_align {
+            text-align: center !important;
+        }
+
+        .projectName_size {
+            color: #021759;
+            font-size: 30px;
+        }
+    </style>
+
+    <header class="two-tier-fixed-header header-top-fix">
+        <div class="header d-flex align-items-center header-top screen__reader">
+
+            <div class="header-left screen__reader">
+                <a asp-action="Land" asp-controller="Home" title="SDG Logo" class="screen__reader logo__topsec">
+                    <img src="~/Landing/images/indian.png" class="Rajasthan_logo" alt="Govt Logo" width="65" height="130">
+                    <div class="d-flex flex-column logo_left_sec">
+                        <div class="logo_below_text fontfamily">
+                            <p class="m-1"><strong>SDGs Coordination and Acceleration Centre</strong></p>
+                            <p class="m-1"><strong>Directorate of Economics & Statistics</strong></p>
+                            <p class="m-1"><strong>Department of Statistics</strong></p>
+                            <p class="m-1"><strong>Government of Rajasthan</strong></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="header-center screen__reader">
+                <a asp-action="Land" asp-controller="Home" title="Rajasthan UN Logo" class="screen__reader">
+                    <img src="~/public/img/UNLogo.png" class="Rajasthan_logo" alt="Rajasthan UN Activity Dashboard" width="250">
+                </a>
+            </div>
+
+            <div class="header-right screen__reader">
+                <div class="top_widgets_flex_wrapper">
+                    <div class="">
+                        <div class="cm__section d-flex align-items-center gap-2">
+                            <div>
+                                <img src="~/Landing/images/cm-photo.jpeg" alt="Shri BhajanLal Sharma" width="75" height="74" class="cmphoto">
+                            </div>
+                            <div class="cm__content fontfamily text-center">
+                                <label class="d-block">Shri Bhajan Lal Sharma </label>
+                                <p class="m-0"> Hon'ble Chief Minister </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* <div class="d-flex align-items-center language-sec mob__hide">
+                            <a id="El" class="btn btn-outline-primary active me-1" href="#" onclick="document.getElementById('set-culture-en').submit();">English</a>
+                            <a id="OL" class="btn btn-outline-primary" href="#" onclick="document.getElementById('set-culture-hi').submit();">हिन्दी</a>
+
+                            <form id="set-culture-en" asp-action="SetLanguage" method="post" style="display:none;">
+                                <input type="hidden" name="culture" value="en" />
+                            </form>
+                            <form id="set-culture-hi" asp-action="SetLanguage" method="post" style="display:none;">
+                                <input type="hidden" name="culture" value="hi" />
+                            </form>
+                        </div> *@
+                </div>
+            </div>
+        </div>
+
+        <div class="header-bottom-navigation-bar d-none d-lg-block">
+            <div class="nav-strip-container">
+                <nav class="d-flex justify-content-between align-items-center w-100">
+                    <ul class="navbar-links-list m-0 p-0">
+                        <li><a asp-action="Land" asp-controller="Home" class="nav-link-item"><i class="bx bx-home-alt me-1"></i>Home</a></li>
+                        <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item">About Us</a></li>
+                        <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item">Sector</a></li>
+                        <li><a asp-action="AgencyList" asp-controller="Home" class="nav-link-item">Agency</a></li>
+                        <li><a asp-action="DepartmentList" asp-controller="Home" class="nav-link-item">Department</a></li>
+                        <li><a href="/contact" class="nav-link-item">Contact Us</a></li>
+                    </ul>
+
+                    @* <div class="navbar-right-action-wrapper">
+                            <a asp-action="Login" asp-controller="Account" class="portal-login-btn">
+                                <i class="bx bx-log-in-circle"></i> Portal Login
+                            </a>
+                        </div> *@
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar">
+        <div class="sidehead">
+            <a href="#" class="logo" aria-label="Suchitwa Mission logo"><img src="/public/img/logo/WebsiteLogo-removebg.png" alt=""></a>
+            <button class="closebtn">
+
+                <img src="/public/img/icons/close.svg" alt="Close side menu">
+            </button>
+        </div><!-- sidehead -->
+        <div class="sidemenu custscrollA">
+
+            <div class="search d-none">
+                <img src="/public/img/icons/search.svg" alt="search">
+                <input type="text" class="searchInput" placeholder="search here...">
+            </div>
+
+            <ul class="menulist">
+                <li>
+                    <a href="">  Home</a>
+                </li>
+
+
+                <li>
+                    <div class="accordion" id="accordionParent4601">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading4601">
+                                <a class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                   data-bs-target="#collapse4601" aria-expanded="false" aria-controls="collapse4601">
+                                    About Us
+                                </a>
+                            </h2>
+                            <div id="collapse4601" class="accordion-collapse collapse" aria-labelledby="heading4601"
+                                 data-bs-parent="#accordionParent4601">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li><a href="/about-us">test1</a></li>
+                                        <li><a href="/vision-mission">test1</a></li>
+                                        <li><a href="/governing-body-1">test2</a></li>
+                                        <li>
+                                            <div class="accordion" id="accordionChild4621">
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="heading4621">
+                                                        <a class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                           data-bs-target="#collapse4621" aria-expanded="false" aria-controls="collapse4621">
+                                                            test3
+                                                        </a>
+                                                    </h2>
+                                                    <div id="collapse4621" class="accordion-collapse collapse" aria-labelledby="heading4621"
+                                                         data-bs-parent="#accordionChild4621">
+                                                        <div class="accordion-body">
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="/district-mission-team-trivandrum">
+                                                                        test4
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/district-mission-kollam">
+                                                                        Kollam
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/district-mission-pathanamthitta">
+                                                                        test4
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="/programmes">Programmes</a>
+                </li>
+                <li>
+                    <a href="/contact">Contacts</a>
+                </li>
+            </ul>
+
+            <div class="seperate">Connect Us</div>
+            <ul class="menulist contact">
+                <li>
+                    <a href="">
+                        <img width="24" height="24" src="/public/img/icons/phone.svg" alt="Phone">
+                        0141-123456
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img width="24" height="24" src="/public/img/icons/mail.svg" alt="Mail">
+                        jdsc[at]rajasthan[dot]gov[dot]in
+                    </a>
+                </li>
+            </ul>
+
+            @*  <div class="seperate">Follow Us</div>
+                <ul class="social">
+
+                    <li>
+                        <a href="https://www.facebook.com/share/1Z4L62eJLB/" title="Facebook" target="_blank">
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/k8OF7cEydZYfEC4FcObc.svg" alt="Facebook">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/suchitwamission?igsh=dndmc3Zwcmc0MDc3" title="Instagram" target="_blank">
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/UlE9OIyIKzAWu0JVNALq.svg" alt="Instagram">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://x.com/SuchitwaKeralam" title="Twitter" target="_blank">
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/3AWiuvL3VjJVK62dSLy2.svg" alt="Twitter">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://youtube.com/@@suchitwamissionkerala?si=mFPLxOtYmnAgEJP-" title="Youtube" target="_blank">
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/qECJRaG5cqvF2bMiDnQq.svg" alt="Youtube">
+                        </a>
+                    </li>
+
+
+
+                </ul> *@
+        </div><!-- sidemenu -->
+    </div><!-- sidebar -->
+
+    <div class="mobilenav d-lg-none">
+        <div class="navmenu">
+            <button type="button" class="accessOpen btn btn-outline rounded accessbtn px-0">
+                <img src="/public/img/icons/accessible.svg" width="24" height="24" alt="Accessibility">
+            </button>
+        </div><!-- navmenu -->
+    </div><!-- mobilenav -->
+    @RenderBody()
+    <footer>
+        <div class="container-fluid cmpad foot-pos">
+
+
+            <div class="footmid">
+
+                <div class="row mb-5">
+                    <div class="col d-none d-lg-block">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 mb-0 mb-lg-3">
+                                <p class="menuhead">Nodal Officer <p>
+                                    <ul class="footmenu">
+                                        <li><a href="/specification-and-estimate">Dr. Praveen Kumar</a></li>
+                                        <li><a href="/publication">Assistant Director</a></li>
+                                        <li><a href="/policies-and-guidelines">9351085433</a></li>
+                                    </ul>
+                            </div><!-- col -->
+                            <div class="col-xl-6 col-lg-6 mb-0 mb-lg-3">
+                                <p class="menuhead">Useful Links</p>
+                                <ul class="footmenu">
+                                    <li><a href="/faq">Niti Ayog</a></li>
+                                    <li><a href="">MoSPI, GoI</a></li>
+                                    <li><a href="/orders-notification/govt_orders">Department of Planning, GoR</a></li>
+                                    <li><a href="/rti-right-to-information">DES, GoR</a></li>
+                                    <li><a href="/rti-right-to-information">Website Policy</a></li>
+                                    <li><a href="/rti-right-to-information"> Disclaimer</a></li>
+                                </ul>
+                            </div><!-- col -->
+                            @* <div class="col-xl-3 col-lg-6">
+                                    <p class="menuhead">IEC</p>
+                                    <ul class="footmenu">
+                                        <li><a href="/publication/iec/booklets">Publications</a></li>
+                                        <li><a href="/podcast">Podcast</a></li>
+                                        <li><a href="/press-release">Press Release</a></li>
+                                        <li><a href="/documents">Documents</a></li>
+
+                                    </ul>
+                                </div><!-- col --> *@
+                            @* <div class="col-xl-3 col-lg-6">
+                                    <p class="menuhead">Downloads</p>
+                                    <ul class="footmenu">
+                                        <li><a href="/annual-report">Annual Reports</a></li>
+                                        <li><a href="/documents">Documents</a></li>
+                                        <li><a href="/minutes">Minutes</a></li>
+                                        <li><a href="/publication">Publications</a></li>
+                                    </ul>
+                                </div><!-- col --> *@
+                        </div><!-- row -->
+                    </div><!-- col -->
+
+                    <div class="col contcol">
+                        <p class="menuhead">Contact Info</p>
+                        <p>
+                            SDGs Coordination and Acceleration Centre<br>
+                            Directorate of Economics & Statistics<br>
+                            Department of Statistics<br>                          
+                            Yojna Bhawan, Tilak Marg C- Scheme, <br>
+                            Jaipur, Rajsthan Pin-302005
+                        </p>
+                        <ul class="tracklist">
+                            <!--<li><a href="#" class="locbtn facenter"><img width="24" height="24"
+                                        src="/public/img/icons/map.svg" alt="Map">Find on Map</a></li> -->
+                            <!-- <li>
+                                <p class="menuhead">Visitor Tracking</p>
+                                <div class="data"><img width="28" height="28" src="/public/img/icons/stat.svg"
+                                        alt="Stat"><span class="value">3443575</span></div>
+                            </li> -->
+                        </ul>
+                    </div><!-- col -->
+                </div><!-- row -->
+
+                <div class="row mb-3">
+                    <!--<div class="col-lg-12 col-md-12 mb-3 mb-md-0">
+                        <div>
+                            <p class="menuhead">Download Our App</p>
+                            <ul class="downapp">
+                                <li>
+                                    <a href="#"><img width="135" height="40" src="/public/img/icons/d_play.svg"
+                                            alt="Play Store"></a>
+                                    <span class="appqr"><img width="40" height="40"
+                                            src="/public/img/icons/d_qr.svg" alt="App QR"></span>
+                                </li>
+                                <li>
+                                    <a href="#"><img width="135" height="40" src="/public/img/icons/d_app.svg"
+                                            alt="App Store"></a>
+                                    <span class="appqr"><img width="40" height="40"
+                                            src="/public/img/icons/d_qr.svg" alt="App QR"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+                    <div class="col-lg-12 col-md-12 text-align-center">
+                        <p class="menuhead">We are always here to help you!</p>
+                        <ul class="contlist">
+                            <li>
+                                <div class="icon facenter">
+                                    <img width="20" height="20" src="/public/img/icons/headset.svg" alt="Call">
+                                </div>
+                                <div class="data">
+                                    <a href="tel:1234567">0141-1234567</a>
+                                    @*  <a href="tel:04712312730">0471-2312730</a> *@
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon facenter">
+                                    <img width="20" height="20"
+                                         src="/public/img/icons/envelope.svg" alt="Mail">
+                                </div>
+                                <div class="data">
+                                    <a href="mailto:ddsdg[dot]des[at]rajasthan[dot]gov[dot]in">
+                                        ddsdg[dot]des[at]rajasthan[dot]gov[dot]in
+                                    </a>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div><!-- col -->
+                    <!-- <div class="col-lg-3 col-md-6">
+                                    <p class="menuhead">Stay Connected</p>
+                                    <ul class="social">
+                                        <li>
+                        <a href="https://www.facebook.com/share/1Z4L62eJLB/" title="Facebook" target="_blank" >
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/k8OF7cEydZYfEC4FcObc.svg" alt="Facebook">
+                        </a>
+                    </li>
+                        <li>
+                        <a href="https://www.instagram.com/suchitwamission?igsh=dndmc3Zwcmc0MDc3" title="Instagram" target="_blank" >
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/UlE9OIyIKzAWu0JVNALq.svg" alt="Instagram">
+                        </a>
+                    </li>
+                        <li>
+                        <a href="https://x.com/SuchitwaKeralam" title="Twitter" target="_blank" >
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/3AWiuvL3VjJVK62dSLy2.svg" alt="Twitter">
+                        </a>
+                    </li>
+                        <li>
+                        <a href="#" title="Youtube" target="_blank" >
+                            <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/qECJRaG5cqvF2bMiDnQq.svg" alt="Youtube">
+                        </a>
+                    </li>
+
+
+
+                                    </ul>
+                                </div> -->
+
+                </div>
+
+
+
+                <div class="d-flex justify-content-center gap-3 foot-counter">
+                    @* <div class="">
+                            <ul class="social">
+                                <li>
+                                    <a href="https://www.facebook.com/share/1Z4L62eJLB/" title="Facebook" target="_blank">
+                                        <img width="18" src="/public/storage/footers/icon/k8OF7cEydZYfEC4FcObc.svg" alt="Facebook">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.instagram.com/suchitwamission?igsh=dndmc3Zwcmc0MDc3" title="Instagram" target="_blank">
+                                        <img width="18" src="/public/storage/footers/icon/UlE9OIyIKzAWu0JVNALq.svg" alt="Instagram">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://x.com/SuchitwaKeralam" title="Twitter" target="_blank">
+                                        <img width="18" src="https://cms.suchitwamission.org/public/storage/footers/icon/3AWiuvL3VjJVK62dSLy2.svg" alt="Twitter">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Youtube" target="_blank">
+                                        <img width="18" src="/public/storage/footers/icon/qECJRaG5cqvF2bMiDnQq.svg" alt="Youtube">
+                                    </a>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+                    *@
+                    <div>
+                        <div class="count">
+                            <div class="count-img">
+                                <img width="24" height="24" src="/public/img/icons/stat.svg" alt="Stat">
+                            </div>
+                            <div class="count-con">
+                                <p class="menuhead">Visitors</p>
+                                <span class="value">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div><!-- footmid -->
+
+            <div class="row mt-4 pt-3 cpy-sec">
+                @* <div class="col-md-4">
+                        <p class="menuhead news">Newsletter</p>
+                        <p class="mb-2">Never miss a beat with our newsletter updates!</p>
+                        <form class="inpgroup">
+                            <input type="email" name="email" id="email" placeholder="Enter your email address">
+                            <button class="btn btn-primary subscribe" type="button">Subscribe</button><br>
+                        </form>
+                        <span id="emailsub-error" class="sub-error"></span>
+                    </div> *@<!-- col -->
+                <div class="col-md-12 copycol">
+                    <!--<p class="copy m-0">© 2024 Suchitwa Mission. All Rights Reserved. </p>-->
+                    <p class="copy m-0">© 2026 UN Activity. All Rights Reserved. </p>
+                    <p class="power m-0">
+                        Powered by <a href="#" target="_blank">Rajasthan Goverment</a>
+                    </p>
+                </div><!-- col -->
+            </div><!-- row -->
+
+
+
+
+        </div><!-- container-fluid -->
+    </footer>
+    <!-- 1. JQUERY FIRST -->
+    <script nonce="@nonce" src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
+    <!-- ✅ CHANGED: bootstrap.bundle use kiya (modal/backdrop fix) -->
+    <script nonce="@nonce" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <!-- Toast JS -->
+    <script nonce="@nonce" src="~/lib/jquery-toast-plugin/dist/jquery.toast.min.js" asp-append-version="true"></script>
+    <!-- Date Time Picker -->
+    <script nonce="@nonce" src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" asp-append-version="true"></script>
+
+    <!--Datatable js-->
+    @*<script nonce="@nonce" src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+        <script nonce="@nonce" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+        <script nonce="@nonce" src="~/lib/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js" asp-append-version="true"></script>*@
+
+    <script nonce="@nonce" src="~/landing/sweetalert/sweetalert2.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/js/app.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/metismenu/js/metisMenu.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/vertical/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js" asp-append-version="true"></script>
+
+    <!-- ✅ CHANGED: nonce added -->
+    <script nonce="@nonce" src="~/lib/datatables.net/js/datatables.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/Landing/js/wow.min.js" defer asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/lib/sweetalert2/dist/sweetalert2.min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/Landing/js/swiper-bundle-min.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/custom/toast.helper.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/custom/Common.js" asp-append-version="true"></script>
+    <script nonce="@nonce" src="~/custom/notify.js" asp-append-version="true"></script> <!-- Uses `common` -->
+    <script nonce="@nonce" src="~/custom/table.js" asp-append-version="true"></script>
+    <script nonce="@nonce">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (
+                typeof window.jQuery !== "undefined" &&
+                window.jQuery.fn
+            ) {
+
+                try {
+                    window.jQuery.fn.jquery = "";
+                } catch (e) { }
+
+            }
+
+        });
+
+    </script>
+    <script nonce="@nonce">
+        if (window.Fancybox) {
+
+            try {
+                Fancybox.version = "";
+            } catch (e) { }
+
+            try {
+                Fancybox.VERSION = "";
+            } catch (e) { }
+        }
+    </script>
+    <script nonce="@nonce">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Check DataTable exists
+            if (
+                typeof window.jQuery !== "undefined" &&
+                jQuery.fn &&
+                jQuery.fn.dataTable
+            ) {
+
+                try {
+                    jQuery.fn.dataTable.version = "";
+                } catch (e) { }
+
+                try {
+                    jQuery.fn.DataTable.version = "";
+                } catch (e) { }
+
+            }
+
+        });
+
+    </script>
+    <script nonce="@nonce">
+        try {
+
+            if (window.__core_js_shared__) {
+
+                if (__core_js_shared__.versions) {
+                    __core_js_shared__.versions = [];
+                }
+
+                if (__core_js_shared__.version) {
+                    __core_js_shared__.version = "";
+                }
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    </script>
+    <script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                if (
+                    window.toast &&
+                    typeof window.toast.showToast === "function"
+                ) {
+
+                    window.toast.showToast(
+                        'Error',
+                        '@Html.Raw(TempData["ErrorMessage"])',
+                        'error'
+                    );
+
+                }
+            </text>
+        }
+
+    });
+
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
