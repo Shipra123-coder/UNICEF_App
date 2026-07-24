@@ -870,9 +870,6 @@ namespace BL.ManageActivity
             }
             return sb.ToString();
         }
-
-
-
         public async Task<string> GetActivityDataForReportAsync(string activityGuid,string reportingId)
         {
             var sb = new StringBuilder();
@@ -894,7 +891,6 @@ namespace BL.ManageActivity
             }
             return sb.ToString();
         }
-
         #endregion
 
 
@@ -1051,7 +1047,6 @@ namespace BL.ManageActivity
 
             return list;
         }
-
         #endregion
 
     }

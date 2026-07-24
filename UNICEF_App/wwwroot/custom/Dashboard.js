@@ -21,12 +21,10 @@
                                 <h3 class="practice-title">
                                     ${item.headingTitle || ''}
                                 </h3>
-                                <p class="practice-desc">
-                                    ${item.descriptionNotes || ''}
-                                </p>
+                                <div class="practice-desc">${item.descriptionNotes || ''}</div>
                                 <div class="practice-footer">
                                     <span>${item.locationName || ''}</span>
-                                    <a href="/Home/CoverPageDetails/${item.coverPageId}"
+                                    <a href="/Home/BestPrecticesDetails/${item.coverPageId}"
                                        class="read-more-btn">
                                         Read More
                                     </a>
@@ -48,7 +46,6 @@
         }
 
         window.bestPracSwiper = new Swiper('.bestPracNewSlide', {
-
             slidesPerView: 1,
             spaceBetween: 24,
             loop: false,
@@ -63,22 +60,32 @@
                 prevEl: '.best-prac-prev'
             },
 
+            // 🌟 यहाँ बदलाव किए गए हैं
             breakpoints: {
+                // मोबाइल (640px तक 1 कार्ड)
                 640: {
                     slidesPerView: 1,
                     spaceBetween: 15
                 },
+                // टैबलेट / छोटी स्क्रीन (2 कार्ड)
                 768: {
                     slidesPerView: 2,
                     spaceBetween: 20
                 },
+                // सामान्य लैपटॉप स्क्रीन (3 या 4 कार्ड जो आपको सही लगे - यहाँ 4 रखा है)
                 1024: {
                     slidesPerView: 4,
+                    spaceBetween: 24
+                },
+                // 🆕 बड़ी डेस्कटॉप स्क्रीन (यहाँ 5 कार्ड्स हो जाएंगे)
+                1400: {
+                    slidesPerView: 5,
                     spaceBetween: 24
                 }
             }
         });
     },
+
     loadCoverPagesBySector: function () {
 
         var SectorId = $('#hiddenSectorId').val();
@@ -224,6 +231,7 @@
         });
 
     },
+
     loadAgencyList: function () {
         $.ajax({
             url: '/Home/GetAgencyList',
@@ -389,11 +397,11 @@
                 $.each(response, function (index, item) {
 
                     // Department Name se image name banana
-                    let imageName = item.departmentName
-                        .toLowerCase()
-                        .replace(/&/g, 'and')
-                        .replace(/\s+/g, '')
-                        .replace(/[^a-z0-9]/g, '');
+                    let imageName = item.departmentCode;
+                        //.toLowerCase()
+                        //.replace(/&/g, 'and')
+                        //.replace(/\s+/g, '')
+                        //.replace(/[^a-z0-9]/g, '');
 
                     html += `
                     <div class="col">
@@ -421,48 +429,7 @@
             }
         });
 
-    },
-    //loadDepartmentList: function () {
-
-    //    $.ajax({
-    //        url: '/Home/GetDepartmentList',
-    //        type: 'GET',
-    //        success: function (response) {
-    //            $('#departmentCount').text(response.length);
-    //            let html = '';
-    //            $.each(response, function (index, item) {
-
-    //                html += `
-
-    //                <div class="department-card">
-
-    //                    <h4>
-    //                        ${item.departmentName}
-    //                    </h4>
-
-    //                    <a href="/Home/DepartmentStatus?deptId=${item.departmentId}"
-    //                       class="view-btn"
-    //                       target="_blank">
-
-    //                        View More →
-
-    //                    </a>
-
-    //                </div>
-
-    //                `;
-    //            });
-    //            $('#departmentGrid').html(html);
-    //        },
-    //        error: function () {
-
-    //            console.log('Error loading departments');
-
-    //        }
-
-    //    });
-
-    //},
+    },  
 
     loadSectorDepartmentActivityList: function (sectorId) {
         $.ajax({
@@ -859,6 +826,115 @@
 
             }
         });
+    },
+    loadSectorActivityList: function (sectorId) {
+        $.ajax({
+            url: `/Home/GetSectorAgencyActivityList?sectorId=${sectorId}`,
+            type: 'GET',
+            success: function (response) {
+
+                $('#title').html('Activity List');
+
+                let html = `
+
+            <div class="table-responsive">
+
+                <table class="table activity-table">
+
+                    <thead>
+                        <tr>
+                            <th width="5%">#</th>
+                            <th>Activity Name</th>
+                            <th>Agency</th>
+                            <th>Sector</th>
+                            <th>Nodal Department</th>
+                            <th>Associated Department</th>
+                            <th>Status</th>
+                            <th width="100">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+            `;
+
+                if (response.length > 0) {
+
+                    $.each(response, function (index, activity) {
+
+                        html += `
+                        <tr>
+
+                            <td>${index + 1}</td>
+
+                            <td>
+                                <strong>${activity.activityName}</strong>
+                            </td>
+
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="${activity.logoURL}"
+                                         class="agency-small-logo me-2"
+                                         width="40"
+                                         onerror="this.style.display='none';">
+
+                                    <div>
+                                        <strong>${activity.agencyCode ?? ''}</strong><br>
+                                        <small>${activity.agencyName ?? ''}</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>${activity.unSectorName ?? ''}</td>
+
+                            <td>${activity.nodalDepartment ?? ''}</td>
+
+                            <td>${activity.associatedDepartment ?? ''}</td>
+
+                            <td>
+                                <span class="status-active">
+                                    ${activity.activityStatus ?? ''}
+                                </span>
+                            </td>
+
+                            <td>
+                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+                    `;
+                    });
+
+                } else {
+
+                    html += `
+                    <tr>
+                        <td colspan="8" class="text-center">
+                            No activities found.
+                        </td>
+                    </tr>
+                `;
+                }
+
+                html += `
+                    </tbody>
+
+                </table>
+
+            </div>
+            `;
+
+                $('#departmentAccordion').html(html);
+
+            },
+
+            error: function () {
+                alert('Error loading activity list');
+            }
+        });
+
     },
 
     loadAgencyDepartmentActivityList: function (agencyid) {
@@ -1298,6 +1374,109 @@
         });
 
     },
+    loadAgencyActivityList: function (agencyid) {
+
+        $.ajax({
+            url: `/Home/GetAgencySectorActivityList?agencyId=${agencyid}`,
+            type: 'GET',
+            success: function (response) {
+
+                $('#title').html('Activity List');
+
+                let html = `
+
+                <div class="table-responsive">
+
+                    <table class="table activity-table">
+
+                        <thead>
+                            <tr>
+                                <th width="5%">#</th>
+                                <th>Activity Name</th>
+                                <th>Sector</th>
+                                <th>Nodal Department</th>
+                                <th>Associated Departments</th>
+                                <th>Status</th>
+                                <th width="100">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+            `;
+
+                if (response.length > 0) {
+
+                    $.each(response, function (index, activity) {
+
+                        html += `
+                        <tr>
+
+                            <td>${index + 1}</td>
+
+                            <td>
+                                <strong>${activity.activityName ?? ''}</strong>
+                            </td>
+
+                            <td>
+                                ${activity.unSectorName ?? ''}
+                            </td>
+
+                            <td>
+                                ${activity.nodalDepartment ?? ''}
+                            </td>
+
+                            <td>
+                                ${activity.associatedDepartments ?? ''}
+                            </td>
+
+                            <td>
+                                <span class="status-active">
+                                    ${activity.activityStatus ?? ''}
+                                </span>
+                            </td>
+
+                            <td>
+                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+                    `;
+                    });
+
+                } else {
+
+                    html += `
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No activities found.
+                        </td>
+                    </tr>
+                `;
+                }
+
+                html += `
+                        </tbody>
+
+                    </table>
+
+                </div>
+            `;
+
+                $('#departmentAccordion').html(html);
+
+            },
+
+            error: function () {
+                alert('Error loading sector activity list');
+            }
+
+        });
+
+    },
+
     loadDepartmentAgencyActivityList: function (departmentId) {
 
         $.ajax({
@@ -1669,6 +1848,109 @@
         });
 
     },
+    loadDepartmentActivityList: function (departmentId1) {
+
+        $.ajax({
+            url: `/Home/GetDepartmentSectorActivityList?departmentId=${departmentId}`,
+            type: 'GET',
+            success: function (response) {
+
+                $('#title').html('Activity List');
+
+                let html = `
+                <div class="table-responsive">
+                    <table class="table activity-table">
+
+                        <thead>
+                            <tr>
+                                <th width="5%">#</th>
+                                <th>Activity Name</th>
+                                <th>Sector</th>
+                                <th>Nodal Department</th>
+                                <th>Associated Departments</th>
+                                <th>Status</th>
+                                <th width="100">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+            `;
+
+                if (response.length > 0) {
+
+                    $.each(response, function (index, activity) {
+
+                        html += `
+                        <tr>
+
+                            <td>${index + 1}</td>
+
+                            <td>
+                                <strong>${activity.activityName ?? ''}</strong>
+                            </td>
+
+                            <td>
+                                ${activity.unSectorName ?? ''}
+                            </td>
+
+                            <td>
+                                ${activity.nodalDepartment ?? ''}
+                            </td>
+
+                            <td>
+                                ${activity.associatedDepartments ?? ''}
+                            </td>
+
+                            <td>
+                                <span class="status-active">
+                                    ${activity.activityStatus ?? ''}
+                                </span>
+                            </td>
+
+                            <td>
+                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+                    `;
+                    });
+
+                } else {
+
+                    html += `
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No activities found.
+                        </td>
+                    </tr>
+                `;
+                }
+
+                html += `
+                        </tbody>
+
+                    </table>
+
+                </div>
+            `;
+
+                $('#departmentAccordion').html(html);
+
+            },
+
+            error: function () {
+
+                alert('Error loading sector activity list');
+
+            }
+
+        });
+
+    },
+
     loadChartAgency: function () {
         $.ajax({
             url: '/Home/GetAgencyChartData',
@@ -2507,6 +2789,8 @@
 
                 const labels = response.map(x => x.taskStatus);
                 const counts = response.map(x => x.totalCount);
+                const totalCount = counts.reduce((sum, value) => sum + value, 0);
+                $("#totalTaskCount").text(totalCount);
 
                 if (window.taskChartInstance) {
                     window.taskChartInstance.destroy();
@@ -2611,7 +2895,28 @@
                     },
 
                     plugins: [{
+                        id: 'totalCount',
 
+                        beforeDraw(chart) {
+
+                            const { ctx, chartArea } = chart;
+
+                            ctx.save();
+
+                            ctx.font = "bold 22px Arial";
+                            ctx.fillStyle = "#0d6efd";
+                            ctx.textAlign = "center";
+
+                            ctx.fillText(
+                                "Total : " + totalCount,
+                                (chartArea.left + chartArea.right) / 2,
+                                chartArea.top - 15
+                            );
+
+                            ctx.restore();
+                        }
+                    },
+                    {
                         id: 'valueLabel',
 
                         afterDatasetsDraw(chart) {
@@ -2629,18 +2934,12 @@
 
                                 const value = chart.data.datasets[0].data[index];
 
-                                ctx.fillText(
-                                    value,
-                                    bar.x - 8,
-                                    bar.y
-                                );
+                                ctx.fillText(value, bar.x - 8, bar.y);
 
                             });
 
                             ctx.restore();
-
                         }
-
                     }]
 
                 });

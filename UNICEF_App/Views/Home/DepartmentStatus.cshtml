@@ -9,7 +9,7 @@
 
 <style nonce="@nonce">
     .sector-banner {
-        margin-top: 180px;
+        margin-top: 220px;
         position: relative;
         min-height: 420px;
         background-color: antiquewhite;
@@ -494,11 +494,12 @@
 
     .top-count-section {
         display: grid;
-        grid-template-columns: repeat(4,1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 15px;
         margin-bottom: 45px;
         position: relative;
         z-index: 5;
+        margin-top: 20px;
     }
 
     .count-card {
@@ -585,6 +586,82 @@
         font-weight: 600;
     }
 
+    /* Double Card */
+    .double-count-card {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #dbe7ff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        position: relative;
+        overflow: hidden;
+        transition: .3s;
+        /* 2 cards ki width */
+        grid-column: span 2;
+    }
+
+        .double-count-card::before {
+            content: '';
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: #eff6ff;
+            border-radius: 50%;
+            right: -30px;
+            top: -30px;
+        }
+
+        .double-count-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+    .double-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .double-card-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .double-card-divider {
+        width: 1px;
+        height: 40px;
+        background: #dbe7ff;
+        margin: 0 15px;
+    }
+
+    .double-card-footer {
+        margin-top: 8px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 700;
+        color: #2563eb;
+        /*text-transform: uppercase;*/
+        letter-spacing: .5px;
+    }
+
+    .double-card-item h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #082f75;
+    }
+
+    .double-card-item p {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: #475569;
+        font-weight: 600;
+    }
     /* RESPONSIVE */
 
     @@media(max - width:1200px) {
@@ -633,94 +710,187 @@
     <input type="hidden" id="hiddenDeptId" value="@Model.DepartmentId" />
 
     @*<div class="overlay"></div>*@
-    <div class="container-custom">
+<div class="container-custom">
 
-        <div class="content-area">
-            <nav class="custom-breadcrumb">
-                <a href="/">
-                    <i class="fa fa-home"></i>
-                </a>
+    <div class="content-area">
+        <nav class="custom-breadcrumb">
+            <a asp-controller="Home" asp-action="Department">
+                <i class="fa fa-home"></i>
+            </a>
 
-                <span class="separator">
-                    <i class="fa fa-chevron-right"></i>
-                </span>
+            <span class="separator">
+                <i class="fa fa-chevron-right"></i>
+            </span>
 
-                <span class="breadcrumb-title">
-                    Department
-                </span>
-            </nav>
-            <div class="left-content">
-                <h1><strong></strong>@Model.DepartmentName</h1>
-                <p>
-                    @Model.Description
-                </p>
+            <span class="breadcrumb-title">
+                Department
+            </span>
+        </nav>
+        <div class="left-content">
+            <h1><strong></strong>@Model.DepartmentName</h1>
+            <p>
+                @Model.Description
+            </p>
+        </div>
+    </div>
+
+    <div class="top-count-section">
+        <!-- Department -->
+        <div class="count-card countAgencyCard"
+             data-departmentid="@Model.DepartmentId">
+            <div class="count-icon">🏛</div>
+            <div>
+                <h2 id="departmentCount">
+                    @Model.AgencyCount
+                </h2>
+
+                <p>Agencies</p>
             </div>
         </div>
-        <div class="top-count-section">
-            <div class="count-card countAgencyCard" data-departmentid="@Model.DepartmentId">
-                <div class="count-icon">🏛</div>
-                <div>
-                    <h2>@Model.AgencyCount</h2>
-                    <p>Agencies</p>
-                </div>
+        <!-- Sector -->
+        <div class="count-card countSectorCard" data-departmentid="@Model.DepartmentId">
+            <div class="count-icon">🌐</div>
+            <div>
+                <h2>@Model.SectorCount</h2>
+                <p>Sectors</p>
             </div>
+        </div>
+        <!-- Activity -->
+        <div class="count-card countActivityCard" data-departmentid="@Model.DepartmentId">
+            <div class="count-icon">📋</div>
+            <div>
+                <h2>@Model.ActivityCount</h2>
+                <p>Activities</p>
+            </div>
+        </div>
+        <!-- Task -->
+        <div class="count-card">
+            <div class="count-icon">🗂</div>
+            <div>
+                <h2>@Model.TaskCount</h2>
+                <p>Tasks</p>
+            </div>
+        </div>
+        <!-- Best Practice -->
+        <div class="count-card">
+            <div class="count-icon">🏆</div>
+            <div>
+                <h2>@Model.BestPracticeCount</h2>
+                <p>Best Practices</p>
+            </div>
+        </div>
 
-            <div class="count-card countSectorCard" data-departmentid="@Model.DepartmentId">
-                <div class="count-icon">🌐</div>
-                <div>
-                    <h2>@Model.SectorCount</h2>
-                    <p>Sectors</p>
+        <div class="double-count-card">
+            <div class="double-card-top">
+                <div class="double-card-item">
+                    <div class="count-icon">📊</div>
+                    <div>
+                        <h2>@Model.GoalCount</h2>
+                        <p>Goals</p>
+                    </div>
+                </div>
+                <div class="double-card-divider"></div>
+                <div class="double-card-item">
+                    <div class="count-icon">📑</div>
+                    <div>
+                        <h2>@Model.TargetCount</h2>
+                        <p>Targets</p>
+                    </div>
                 </div>
             </div>
-
-            <div class="count-card countActivityCard">
-                <div class="count-icon">📋</div>
-                <div>
-                    <h2>@Model.ActivityCount</h2>
-                    <p>Activities</p>
+            <div class="double-card-footer">
+                SDGs
+            </div>
+        </div>
+        <div class="double-count-card">
+            <div class="double-card-top">
+                <div class="double-card-item">
+                    <div class="count-icon">📊</div>
+                    <div>
+                        <h2>@Model.PillarCount</h2>
+                        <p>Themes</p>
+                    </div>
+                </div>
+                <div class="double-card-divider"></div>
+                <div class="double-card-item">
+                    <div class="count-icon">📑</div>
+                    <div>
+                        <h2>@Model.SubPillarCount</h2>
+                        <p>SubThemes</p>
+                    </div>
                 </div>
             </div>
-
-            <div class="count-card">
-                <div class="count-icon">🗂</div>
-                <div>
-                    <h2>@Model.TaskCount</h2>
-                    <p>Tasks</p>
-                </div>
-            </div>
-
-            <div class="count-card">
-                <div class="count-icon">🎯</div>
-                <div>
-                    <h2>@Model.GoalCount</h2>
-                    <p>Goals</p>
-                </div>
-            </div>
-
-            <div class="count-card">
-                <div class="count-icon">✅</div>
-                <div>
-                    <h2>@Model.TargetCount</h2>
-                    <p>Targets</p>
-                </div>
-            </div>
-
-            <div class="count-card">
-                <div class="count-icon">📊</div>
-                <div>
-                    <h2>@Model.PillarCount</h2>
-                    <p>Viksit Rajasthan@2047</p>
-                </div>
-            </div>
-            <div class="count-card">
-                <div class="count-icon">🏆</div>
-                <div>
-                    <h2>@Model.BestPracticeCount</h2>
-                    <p>Best Practices</p>
-                </div>
+            <div class="double-card-footer">
+                Viksit Rajasthan@2047
             </div>
         </div>
     </div>
+
+    @*<div class="top-count-section">
+        <div class="count-card countAgencyCard" data-departmentid="@Model.DepartmentId">
+            <div class="count-icon">🏛</div>
+            <div>
+                <h2>@Model.AgencyCount</h2>
+                <p>Agencies</p>
+            </div>
+        </div>
+
+        <div class="count-card countSectorCard" data-departmentid="@Model.DepartmentId">
+            <div class="count-icon">🌐</div>
+            <div>
+                <h2>@Model.SectorCount</h2>
+                <p>Sectors</p>
+            </div>
+        </div>
+
+        <div class="count-card countActivityCard" data-departmentid="@Model.DepartmentId">
+            <div class="count-icon">📋</div>
+            <div>
+                <h2>@Model.ActivityCount</h2>
+                <p>Activities</p>
+            </div>
+        </div>
+
+        <div class="count-card">
+            <div class="count-icon">🗂</div>
+            <div>
+                <h2>@Model.TaskCount</h2>
+                <p>Tasks</p>
+            </div>
+        </div>
+
+        <div class="count-card">
+            <div class="count-icon">🎯</div>
+            <div>
+                <h2>@Model.GoalCount</h2>
+                <p>Goals</p>
+            </div>
+        </div>
+
+        <div class="count-card">
+            <div class="count-icon">✅</div>
+            <div>
+                <h2>@Model.TargetCount</h2>
+                <p>Targets</p>
+            </div>
+        </div>
+
+        <div class="count-card">
+            <div class="count-icon">📊</div>
+            <div>
+                <h2>@Model.PillarCount</h2>
+                <p>Viksit Rajasthan@2047</p>
+            </div>
+        </div>
+        <div class="count-card">
+            <div class="count-icon">🏆</div>
+            <div>
+                <h2>@Model.BestPracticeCount</h2>
+                <p>Best Practices</p>
+            </div>
+        </div>
+    </div>*@
+</div>
 
     <div class="container-custom">
         <div class="row">
@@ -1137,6 +1307,16 @@
             let departmentId =
                 sectorCard.getAttribute("data-departmentid");
             dashboard.loadDepartmentSectorActivityList(departmentId);
+        }
+        // =========================
+        // ACTIVITY CARD
+        // =========================
+        let activityCard =
+            e.target.closest(".countActivityCard");
+        if (activityCard) {
+            let departmentId =
+                activityCard.getAttribute("data-departmentid");
+            dashboard.loadDepartmentActivityList(departmentId);
         }
     });
 </script>

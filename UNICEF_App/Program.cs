@@ -1,4 +1,5 @@
-﻿using BL.PageAccessRequirement;
+﻿using BL.AI;
+using BL.PageAccessRequirement;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 });
+builder.Services.AddHttpClient<IOpenAIService, OpenAIService>();
 // 🌟 ADDED HERE FOR SIZE LIMIT (Max 5MB File Upload Support)
 // ========================================================================
 builder.Services.Configure<FormOptions>(options =>

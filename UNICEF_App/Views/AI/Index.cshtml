@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<input id="txtQuestion" />
+
+<button id="btnAsk">
+    Ask AI
+</button>
+
+<div id="answer"></div>
+<script nonce="@nonce">
+    $("#btnAsk").click(function () {
+        $.ajax({
+            url: "/AI/Ask",
+            type: "POST",
+            data: {
+                question: $("#txtQuestion").val()
+            },
+            success: function (data) {
+                $("#answer").html(data);
+            }
+        });
+    });
+</script>

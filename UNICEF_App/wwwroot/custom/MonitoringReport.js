@@ -279,6 +279,7 @@
                 ActivityGuid: $("#ActivityGuid").val(),
                 TaskId: parseInt(row.find(".task-id").val()),
                 Status: row.find(".tracking-status").val(),
+                Achievement: row.find(".tracking-achievement").val() || "",
                 Remarks: row.find(".tracking-remarks").val() || "",
                 reportingId: $("#reportingId").val(),
             });

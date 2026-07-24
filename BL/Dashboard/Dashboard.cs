@@ -98,9 +98,9 @@ namespace BL.Dashboard
         public async Task<List<SectorVM>> GetSectorWiseCount()
         {
             var parameters = new List<SqlParameter>
-    {
-        new SqlParameter("@Action", "GetSectorWithcount")
-    };
+            {
+                new SqlParameter("@Action", "GetSectorWithcount")
+            };
 
             var ds = await _iSql.ExecuteProcedure("SP_ManageDashboard", parameters.ToArray());
 
@@ -118,6 +118,7 @@ namespace BL.Dashboard
                                 : 0,
 
                     SectorName = row["UNSectorName"]?.ToString(),
+                    SectorCode = row["SectorCode"].ToString(),
 
                     TotalCount = row["TotalCount"] != DBNull.Value
                                 ? Convert.ToInt32(row["TotalCount"])
@@ -151,6 +152,7 @@ namespace BL.Dashboard
                             : 0,
 
                 SectorName = row["UNSectorName"]?.ToString(),
+                SectorCode = row["SectorCode"]?.ToString(),
 
                 Description = row["UNDescription"]?.ToString(),
 
@@ -189,7 +191,7 @@ namespace BL.Dashboard
                             : 0
             };
         }
-        public async Task<SectorDashboardModel> GetCountByAgencySectorDept(int? sectorId,int? agencyId,int? departmentId)
+        public async Task<SectorDashboardModel> GetCountByAgencySectorDept(int? sectorId, int? agencyId, int? departmentId)
         {
             var parameters = new List<SqlParameter>
             {
@@ -211,7 +213,7 @@ namespace BL.Dashboard
 
             return new SectorDashboardModel
             {
-                
+
 
                 ActivityCount = row["ActivityCount"] != DBNull.Value
                             ? Convert.ToInt32(row["ActivityCount"])
@@ -253,7 +255,7 @@ namespace BL.Dashboard
             {
                 new SqlParameter("@Action", "GetAgencyList")
             };
-            var ds = await _iSql.ExecuteProcedure("SP_ManageDashboard",parameters.ToArray());
+            var ds = await _iSql.ExecuteProcedure("SP_ManageDashboard", parameters.ToArray());
             var list = new List<AgencyMasterModel>();
             if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
             {
@@ -264,17 +266,17 @@ namespace BL.Dashboard
             {
                 list.Add(new AgencyMasterModel
                 {
-                    AgencyId = row["AgencyId"] != DBNull.Value ? Convert.ToInt32(row["AgencyId"]): 0,
-                    Guid = row["Guid"] != DBNull.Value ? Guid.Parse(row["Guid"].ToString()): Guid.Empty,
+                    AgencyId = row["AgencyId"] != DBNull.Value ? Convert.ToInt32(row["AgencyId"]) : 0,
+                    Guid = row["Guid"] != DBNull.Value ? Guid.Parse(row["Guid"].ToString()) : Guid.Empty,
                     AgencyName = row["AgencyName"]?.ToString(),
                     AgencyCode = row["AgencyCode"]?.ToString(),
                     Description = row["Description"]?.ToString(),
-                    Websitelink = row["Websitelink"]?.ToString(),                   
+                    Websitelink = row["Websitelink"]?.ToString(),
                     LogoURL = row["LogoURL"]?.ToString()
                 });
             }
 
-            return list;              
+            return list;
         }
         public async Task<AgencyStatusModel> GetDashboardCountByAgency(int agencyId)
         {
@@ -383,7 +385,7 @@ namespace BL.Dashboard
             {
                 new SqlParameter("@Action", "GetDepartmentList")
             };
-            var ds = await _iSql.ExecuteProcedure("SP_ManageDashboard",parameters.ToArray());
+            var ds = await _iSql.ExecuteProcedure("SP_ManageDashboard", parameters.ToArray());
             var list = new List<DepartmentMasterModel>();
             if (ds == null ||
                 ds.Tables.Count == 0 ||
@@ -416,10 +418,9 @@ namespace BL.Dashboard
                     Phone = row["Phone"]?.ToString(),
 
                     Address = row["Address"]?.ToString(),
-                    
+
                 });
             }
-
             return list;
         }
         public async Task<DepartmentStatusModel> GetDashboardCountByDept(int deptId)
@@ -471,6 +472,9 @@ namespace BL.Dashboard
                 PillarCount = row["PillarCount"] != DBNull.Value
                             ? Convert.ToInt32(row["PillarCount"])
                             : 0,
+                SubPillarCount = row["SubPillarCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["SubPillarCount"])
+                            : 0,
 
                 TaskCount = row["TaskCount"] != DBNull.Value
                             ? Convert.ToInt32(row["TaskCount"])
@@ -482,14 +486,75 @@ namespace BL.Dashboard
             };
         }
         #endregion
+        #region Goal
+        public async Task<GoalStatusModel> GetDashboardCountByGoal(int goalId)
+        {
+            var parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@Action", "GetDashboardCountByGoal"),
+                new SqlParameter("@GoalId", goalId)
+            };
 
-        public async Task<List<AgencyDepartmentActivityModel>>GetAgencySectorActivityList(int? agencyId)
+            var ds = await _iSql.ExecuteProcedure(
+                "SP_ManageDashboard",
+                parameters.ToArray());
+
+            if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                return null;
+
+            DataRow row = ds.Tables[0].Rows[0];
+
+            return new GoalStatusModel
+            {
+                GoalId = row["GoalId"] != DBNull.Value
+                            ? Convert.ToInt32(row["GoalId"])
+                            : 0,
+
+                GoalName = row["GoalName"]?.ToString(),
+                GoalDisplayNumber = Convert.ToInt32(row["DisplayNumber"]),
+                Description = row["Tagline"]?.ToString(),
+                GoalColor = row["Code"].ToString(),
+
+                DepartmentCount = row["DepartmentCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["DepartmentCount"])
+                            : 0,
+                ActivityCount = row["ActivityCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["ActivityCount"])
+                            : 0,
+                AgencyCount = row["AgencyCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["AgencyCount"])
+                            : 0,
+                SectorCount = row["SectorCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["SectorCount"])
+                            : 0,
+                //GoalCount = row["GoalCount"] != DBNull.Value
+                //            ? Convert.ToInt32(row["GoalCount"])
+                //            : 0,
+                TargetCount = row["TargetCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["TargetCount"])
+                            : 0,
+                PillarCount = row["PillarCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["PillarCount"])
+                            : 0,
+                SubPillarCount = row["SubPillarCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["SubPillarCount"])
+                            : 0,
+                TaskCount = row["TaskCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["TaskCount"])
+                            : 0,
+                BestPracticeCount = row["BestPracticeCount"] != DBNull.Value
+                            ? Convert.ToInt32(row["BestPracticeCount"])
+                            : 0
+            };
+        }
+        #endregion
+        public async Task<List<AgencyDepartmentActivityModel>> GetAgencySectorActivityList(int? agencyId)
         {
             var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@Action",
                     "GetAgencySectorActivityList"),
-            
+
                 new SqlParameter("@AgencyId",
                     agencyId ?? (object)DBNull.Value)
             };
@@ -559,13 +624,13 @@ namespace BL.Dashboard
 
             return list;
         }
-        public async Task<List<AgencyDepartmentActivityModel>>GetAgencyDepartmentActivityList(int? agencyId)
+        public async Task<List<AgencyDepartmentActivityModel>> GetAgencyDepartmentActivityList(int? agencyId)
         {
             var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@Action",
                     "GetAgencyDepartmentActivityList"),
-            
+
                 new SqlParameter("@AgencyId",
                     agencyId ?? (object)DBNull.Value)
             };
@@ -635,13 +700,13 @@ namespace BL.Dashboard
 
             return list;
         }
-        public async Task<List<SectorDepartmentActivityModel>>GetSectorDepartmentActivityList(int? sectorId)
+        public async Task<List<SectorDepartmentActivityModel>> GetSectorDepartmentActivityList(int? sectorId)
         {
             var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@Action",
                     "GetSectorDepartmentActivityList"),
-            
+
                 new SqlParameter("@SectorId",
                     sectorId ?? (object)DBNull.Value)
             };
@@ -707,13 +772,13 @@ namespace BL.Dashboard
 
             return list;
         }
-        public async Task<List<SectorAgencyActivityModel>>GetSectorAgencyActivityList(int? sectorId)
+        public async Task<List<SectorAgencyActivityModel>> GetSectorAgencyActivityList(int? sectorId)
         {
             var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@Action",
                     "GetSectorAgencyActivityList"),
-            
+
                 new SqlParameter("@SectorId",
                     sectorId ?? (object)DBNull.Value)
             };
@@ -785,7 +850,7 @@ namespace BL.Dashboard
 
             return list;
         }
-        public async Task<List<DepartmentAgencyActivityModel>>GetDepartmentAgencyActivityList(int? departmentId)
+        public async Task<List<DepartmentAgencyActivityModel>> GetDepartmentAgencyActivityList(int? departmentId)
         {
             var parameters = new List<SqlParameter>
     {
@@ -851,7 +916,7 @@ namespace BL.Dashboard
 
             return list;
         }
-        public async Task<List<DepartmentSectorActivityModel>>GetDepartmentSectorActivityList(int? departmentId)
+        public async Task<List<DepartmentSectorActivityModel>> GetDepartmentSectorActivityList(int? departmentId)
         {
             var parameters = new List<SqlParameter>
     {
@@ -911,6 +976,7 @@ namespace BL.Dashboard
 
             return list;
         }
+
 
         #region Chart
         public async Task<List<AgencyChartModel>> GetAgencyChartData()
@@ -1027,7 +1093,7 @@ namespace BL.Dashboard
                 parameters.ToArray());
 
             var _model = new GoalChartModal_main();
-             _model.goalchartmodel = new List<GoalChartModel>();
+            _model.goalchartmodel = new List<GoalChartModel>();
 
             if (ds == null
                 || ds.Tables.Count == 0
@@ -1071,7 +1137,7 @@ namespace BL.Dashboard
                         : 0
                 });
             }
-            if(ds.Tables[1].Rows.Count > 0)
+            if (ds.Tables[1].Rows.Count > 0)
             {
                 _model.activitycount = Convert.ToInt32(ds.Tables[1].Rows[0]["TotalActivity"]);
                 _model.departmentcount = Convert.ToInt32(ds.Tables[1].Rows[0]["TotalDepartment"]);
@@ -1153,5 +1219,65 @@ namespace BL.Dashboard
             return list;
         }
         #endregion
+
+        public async Task<BestPracticesModel> GetCoverPageDetails(long coverPageId)
+        {
+            var parameters = new List<SqlParameter>
+    {
+        new SqlParameter("@Action", "GetCoverPageDetails"),
+        new SqlParameter("@CoverPageId", coverPageId)
+    };
+
+            var ds = await _iSql.ExecuteProcedure("SP_ManageDashboard", parameters.ToArray());
+
+            var model = new BestPracticesModel();
+
+            if (ds == null || ds.Tables.Count == 0)
+                return model;
+
+            //==============================
+            // Cover Page (Table-0)
+            //==============================
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = ds.Tables[0].Rows[0];
+
+                model.CoverPageId = row["CoverPageId"] != DBNull.Value ? Convert.ToInt64(row["CoverPageId"]) : 0;
+                model.ActivityGuid = row["ActivityGuid"]?.ToString();
+                model.HeadingTitle = row["HeadingTitle"]?.ToString();
+                model.DisplayOrder = row["DisplayOrder"] != DBNull.Value ? Convert.ToInt32(row["DisplayOrder"]) : 0;
+                model.CoverImageUrl = row["CoverImageUrl"]?.ToString();
+                model.DescriptionPdfUrl = row["DescriptionPdfUrl"]?.ToString();
+                model.DescriptionNotes = row["DescriptionNotes"]?.ToString();
+                model.SubActivityId = row["SubActivityId"] != DBNull.Value ? Convert.ToInt64(row["SubActivityId"]) : null;
+                model.TaskId = row["TaskId"] != DBNull.Value ? Convert.ToInt64(row["TaskId"]) : null;
+                model.GeoLocationId = row["GeoLocationId"] != DBNull.Value ? Convert.ToInt64(row["GeoLocationId"]) : null;
+                model.SectorId = row["SectorId"] != DBNull.Value ? Convert.ToInt32(row["SectorId"]) : null;
+                model.AgencyId = row["AgencyId"] != DBNull.Value ? Convert.ToInt32(row["AgencyId"]) : null;
+                model.SectorName = row["UNSectorName"]?.ToString();
+            }
+
+            //==============================
+            // Inner Media (Table-1)
+            //==============================
+
+            if (ds.Tables.Count > 1 && ds.Tables[1].Rows.Count > 0)
+            {
+                foreach (DataRow row in ds.Tables[1].Rows)
+                {
+                    model.MediaList.Add(new BestPracticesInnerMediaModel
+                    {
+                        InnerMediaId = row["InnerMediaId"] != DBNull.Value ? Convert.ToInt64(row["InnerMediaId"]) : 0,
+                        CoverPageId = row["CoverPageId"] != DBNull.Value ? Convert.ToInt64(row["CoverPageId"]) : 0,
+                        MediaType = row["MediaType"]?.ToString(),
+                        MediaAssetUrl = row["MediaAssetUrl"]?.ToString(),
+                        DescriptionNotes = row["DescriptionNotes"]?.ToString()
+                    });
+                }
+            }
+
+            return model;
+        }
     }
 }

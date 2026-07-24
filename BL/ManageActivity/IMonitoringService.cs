@@ -12,7 +12,7 @@ namespace BL.ManageActivity
     public interface IMonitoringService
     {
         #region monitoring step1
-        Task<result> SaveMonitoringAsync(MonitoringModel model,string user);
+        Task<result> SaveMonitoringAsync(MonitoringModel model,string user,string path);
         Task<MonitoringModel> GetMonitoringAsync(string activityGuid);
         #endregion
 

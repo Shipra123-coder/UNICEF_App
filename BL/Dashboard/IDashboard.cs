@@ -36,5 +36,11 @@ namespace BL.Dashboard
         Task<List<ActivityStatusChartModel>> GetActivityStatusChartData();
         Task<List<TaskStatusChartModel>> GetTaskStatusChartData();
         #endregion
+
+        Task<BestPracticesModel> GetCoverPageDetails(long coverPageId);
+
+        #region Goal
+        Task<GoalStatusModel> GetDashboardCountByGoal(int goalId);
+        #endregion
     }
 }

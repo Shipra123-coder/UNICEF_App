@@ -33,21 +33,33 @@
                             @{
                                 string imagePath = item.SectorId switch
                                 {
-                                    1 => "/public/img/sector/thumbnails/education1.jpg",
-                                    2 => "/public/img/sector/thumbnails/health.png",
-                                    3 => "/public/img/sector/thumbnails/education.png",
-                                    4 => "/public/img/sector/thumbnails/tourism.png",
-                                    5 => "/public/img/sector/thumbnails/agriculture.png",
-                                    6 => "/public/img/sector/thumbnails/energy.png",
-                                    7 => "/public/img/sector/thumbnails/urbanization.png",
+                                    1 => "/public/img/sector/thumbnails/LE.jpg",
+                                    2 => "/public/img/sector/thumbnails/Health.png",
+                                    3 => "/public/img/sector/thumbnails/Education.png",
+                                    4 => "/public/img/sector/thumbnails/TC.png",
+                                    5 => "/public/img/sector/thumbnails/Agriculture.png",
+                                    6 => "/public/img/sector/thumbnails/Energy.png",
+                                    7 => "/public/img/sector/thumbnails/UD.png",
                                     8 => "/public/img/sector/thumbnails/water.png",
-                                    9 => "/public/img/sector/thumbnails/msme.png",
-                                    10 => "/public/img/sector/thumbnails/manufacturing.png",
+                                    9 => "/public/img/sector/thumbnails/MSME.png",
+                                    10 => "/public/img/sector/thumbnails/Manufacturing.png",
+                                    11 => "/public/img/sector/thumbnails/Food.png",
+                                    12 => "/public/img/sector/thumbnails/SEI.png",
+                                    13 => "/public/img/sector/thumbnails/FMEG.png",
+                                    14 => "/public/img/sector/thumbnails/TI.png",
+                                    15 => "/public/img/sector/thumbnails/EF.png",
+                                    16 => "/public/img/sector/thumbnails/RDPR.png",
+                                    17 => "/public/img/sector/thumbnails/EGPS.png",
+                                    18 => "/public/img/sector/thumbnails/WEGE.png",
+                                    19 => "/public/img/sector/thumbnails/CD.png",
+                                    20 => "/public/img/sector/thumbnails/Planning.png",
+                                    21 => "/public/img/sector/thumbnails/SYD.png",
+                                    22 => "/public/img/sector/thumbnails/ITDG.png",
                                     _ => "/public/img/sector/default-sector.jpg"
                                 };
                             }
 
-                            <img src="@imagePath" class="sector-img" />
+                            <img src="/public/img/sector/thumbnails/@(item.SectorCode).png" class="sector-img" />
 
                             <div class="sector-overlay"></div>
 
@@ -81,7 +93,7 @@
 
 <style nonce="@nonce">
     .margin-top-new {
-        margin-top: 200px;
+        margin-top: 240px;
     }
 
     .color-white {

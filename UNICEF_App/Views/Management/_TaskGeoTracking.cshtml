@@ -126,7 +126,8 @@
                                                 <th width="5%">#</th>
                                                 <th width="45%">Task Name</th>
                                                 <th width="20%">Status</th>
-                                                <th width="30%">Remarks</th>
+                                                <th>Progress Achievement/Impact </th>
+                                                <th width="30%">Recommendations and Remarks if any</th>
 
                                             </tr>
 
@@ -208,6 +209,14 @@
                                                         </select>
 
                                                     </td>
+                                                    <!-- Achievement/Impact -->
+                                                    <td>
+
+                                                        <textarea class="form-control form-control-sm tracking-achievement"
+                                                                  rows="1"
+                                                                  placeholder="Enter Achievement/Impact">@task.Tracking?.Achievement</textarea>
+
+                                                    </td>
 
                                                     <!-- REMARKS -->
                                                     <td>
@@ -278,7 +287,8 @@
                                         <th width="5%">#</th>
                                         <th width="45%">Task Name</th>
                                         <th width="20%">Status</th>
-                                        <th width="30%">Remarks</th>
+                                        <th>Progress Achievement/Impact </th>
+                                        <th width="30%">Recommendations and Remarks if any</th>
 
                                     </tr>
 
@@ -366,7 +376,14 @@
                                                 </select>
 
                                             </td>
+                                            <!-- Achievement/Impact -->
+                                            <td>
 
+                                                <textarea class="form-control form-control-sm tracking-achievement"
+                                                          rows="1"
+                                                          placeholder="Enter Achievement/Impact">@task.Tracking?.Achievement</textarea>
+
+                                            </td>
                                             <!-- REMARKS -->
                                             <td>
 
@@ -545,41 +562,21 @@
         let trackingData = [];
 
         $("#taskTrackingContainer tbody tr").each(function () {
-
             let row = $(this);
-
-            let trackingId =
-                row.find(".tracking-id").val() || 0;
-
-            let taskId =
-                row.find(".task-id").val();
-
-            let status =
-                row.find(".tracking-status").val();
-
-            let remarks =
-                row.find(".tracking-remarks").val();
-
+            let trackingId =row.find(".tracking-id").val() || 0;
+            let taskId =row.find(".task-id").val();
+            let status =row.find(".tracking-status").val();
+            let achievement =row.find(".tracking-achievement").val();
+            let remarks =row.find(".tracking-remarks").val();
             if (taskId) {
-
                 trackingData.push({
-
                     TrackingId: parseInt(trackingId),
-
-                    ActivityId:
-                        $("#ActivityId").val(),
-
-                    TaskId:
-                        parseInt(taskId),
-
-                    Status:
-                        status,
-
-                    Remarks:
-                        remarks || ""
-
+                    ActivityId:$("#ActivityId").val(),
+                    TaskId:parseInt(taskId),
+                    Status:status,
+                    Achievement: achievement || "",
+                    Remarks:remarks || ""
                 });
-
             }
         });
         return trackingData;

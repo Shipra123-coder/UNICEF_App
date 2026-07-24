@@ -1,0 +1,258 @@
+﻿@model List<MO.DashBoard.ViksitVM>
+@{
+    ViewData["Title"] = "Viksit Rajasthan@2047";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<!-- ========================================= -->
+<!-- CSS -->
+<!-- ========================================= -->
+<style nonce="@nonce">
+    .margin-top-new {
+        margin-top: 240px;
+    }
+
+    .color-white {
+        color: #fff;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .hero-section {
+        background: linear-gradient( 135deg, #0d47a1, #26c6da );
+        padding-top: 120px;
+        color: #fff;
+    }
+
+    .page-title {
+        font-size: 52px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+    }
+
+    /* ===================================== */
+
+    .sector-card {
+        position: relative;
+        height: 140px;
+        border-radius: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+        .sector-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .sector-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .sector-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( rgba(0,0,0,0.3), rgba(0,0,0,0.7) );
+    }
+
+    .sector-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+    }
+
+        .sector-content h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sector-content span {
+            font-size: 14px;
+        }
+
+    /* ===================================== */
+
+    .filter-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .filter-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .custom-select {
+        height: 52px;
+        border-radius: 12px;
+    }
+
+    /* ===================================== */
+
+    .section-heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .section-title {
+        font-size: 34px;
+        font-weight: 700;
+    }
+
+    .practice-count {
+        color: #777;
+    }
+
+    /* ===================================== */
+
+    .practice-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.4s;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        height: 100%;
+    }
+
+        .practice-card:hover {
+            transform: translateY(-6px);
+        }
+
+    .practice-image-box {
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .practice-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.4s;
+    }
+
+    .practice-card:hover .practice-image {
+        transform: scale(1.08);
+    }
+
+    .practice-body {
+        padding: 25px;
+    }
+
+    .practice-sector {
+        display: inline-block;
+        background: #e8f1ff;
+        color: #0d47a1;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .practice-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .practice-desc {
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .practice-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .read-more-btn {
+        background: #0d47a1;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .read-more-btn:hover {
+            background: #1565c0;
+            color: #fff;
+        }
+</style>
+<!-- ========================================= -->
+<!-- BEST PRACTICES PAGE -->
+<!-- ========================================= -->
+
+<section class="best-practice-page margin-top-new">
+    <div class="container mt-4">
+        <div class="section-heading-box">
+            <h2 class="section-title">
+                Viksit Rajasthan@2047
+            </h2>
+        </div>
+
+        <div class="row g-3">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-6">
+
+                    <a asp-action="ViksitRajasthanProgress" asp-controller="ViksitRajasthan" asp-route-viksitId="@item.ViksitId">
+                        <div class="sector-card">
+                            <img src="@item.ImageUrl" class="sector-img" />
+                            <div class="sector-overlay"></div>
+                            <div class="sector-content">
+                                <h4 class="color-white">
+                                    @item.ViksitName
+                                </h4>
+                                <span>
+                                    @item.TotalCount Activites
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+

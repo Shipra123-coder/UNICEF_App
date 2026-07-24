@@ -135,8 +135,9 @@ namespace UNICEF_App.Controllers
         }
         #endregion
 
-        public IActionResult ActivityDet()
+        public IActionResult ActivityDet(string guid)
         {
+            ViewBag.Guid = guid;
             return View();
         }
 
@@ -241,5 +242,43 @@ namespace UNICEF_App.Controllers
         }
         #endregion
 
+        public IActionResult BestPrecticesDetails()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BestPrecticesDetails(long id)
+        {
+            if (id <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var model = await _iDashboard.GetCoverPageDetails(id);
+
+            if (model == null || model.CoverPageId == 0)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> SDGs()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> SDGDetails(int goalId)
+        {
+            var model = await _iDashboard.GetDashboardCountByGoal(goalId);
+            //model.SectorId = sectorId;
+            return View(model);
+        }
+
+        #region Viksit Rajasthan
+
+        #endregion
     }
 }

@@ -37,6 +37,7 @@ namespace UNICEF_App.Service
             style-src 'self' 'nonce-{nonce}';            
             style-src-attr 'none';
             img-src 'self' data:;
+            media-src 'self' blob: data:;
             font-src 'self' data:;
             connect-src 'self';
             form-action 'self' https://ssotest.rajasthan.gov.in;

@@ -85,7 +85,10 @@
         }
 
         .margin-top {
-            margin-top: 160px;
+            margin-top: 240px;
+        }
+        .Rajasthan_logo{
+            height:100px !important;
         }
     </style>
 
@@ -107,7 +110,9 @@
             </div>
 
             <div class="header-center screen__reader">
+                <img src="~/public/img/RajUNPD.jpg" class="Rajasthan_logo" alt="Rajasthan UN Monitoring Dashboard" />
                 <a asp-action="Land" asp-controller="Home" title="Rajasthan UN Logo" class="screen__reader">
+
                     <img src="~/public/img/UNLogo.png" class="Rajasthan_logo" alt="Rajasthan UN Monitoring Dashboard" width="250">
                 </a>
             </div>
@@ -150,6 +155,8 @@
                         <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item">Sector</a></li>
                         <li><a asp-action="Agency" asp-controller="Home" class="nav-link-item">Agency</a></li>
                         <li><a asp-action="Department" asp-controller="Home" class="nav-link-item">Department</a></li>
+                        <li><a asp-action="SDGs" asp-controller="Home" class="nav-link-item">SDGs</a></li>
+                        <li><a asp-action="Viksit" asp-controller="Home" class="nav-link-item">Viksit@2047</a></li>
                         <li><a asp-action="ContactUs" asp-controller="Home" class="nav-link-item">Contact Us</a></li>
                     </ul>
 
@@ -182,12 +189,41 @@
                             <div class="col-xl-6 col-lg-6 mb-0 mb-lg-3">
                                 <p class="menuhead">Useful Links</p>
                                 <ul class="footmenu">
-                                    <li><a href="#">Niti Ayog</a></li>
-                                    <li><a href="#">MoSPI, GoI</a></li>
-                                    <li><a href="#">Department of Planning, GoR</a></li>
-                                    <li><a href="#">DES, GoR</a></li>
-                                    <li><a href="#">Website Policy</a></li>
-                                    <li><a href="#">Disclaimer</a></li>
+                                    <li>
+                                        <a href="https://www.niti.gov.in/" target="_blank" rel="noopener noreferrer">
+                                            NITI Aayog
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://mospi.gov.in/" target="_blank" rel="noopener noreferrer">
+                                            MoSPI, GoI
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://statistics.rajasthan.gov.in/" target="_blank" rel="noopener noreferrer">
+                                            Department of Planning, GoR
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://sdg.rajasthan.gov.in/" target="_blank" rel="noopener noreferrer">
+                                            DES, GoR
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/WebsitePolicy">
+                                            Website Policy
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/Disclaimer">
+                                            Disclaimer
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -212,7 +248,7 @@
                                     <img width="20" height="20" src="/public/img/icons/headset.svg" alt="Call">
                                 </div>
                                 <div class="data">
-                                    <a href="tel:01411234567">0141-22740</a>
+                                    <a href="tel:01411234567">0141-2222740</a>
                                 </div>
                             </li>
                             <li>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using MO.Common;
 using MO.Management;
 using Newtonsoft.Json;
@@ -31,7 +32,7 @@ namespace BL.ManageActivity
         #endregion
 
         #region step1
-        public async Task<result> SaveMonitoringAsync(MonitoringModel model, string user)
+        public async Task<result> SaveMonitoringAsync(MonitoringModel model, string user,string path)
         {
             result _result = new result();
 
@@ -44,6 +45,8 @@ namespace BL.ManageActivity
             // 🔹 Main
             new SqlParameter("@ActivityGuid", model.ActivityGuid),
             new SqlParameter("@IsPartnership", model.IsPartnership == "Yes" ? 1 : 0 ),
+            new SqlParameter("@IsGovernment", model.IsGovernment == "Yes" ? 1 : 0 ),
+            new SqlParameter("@IsGovernmentDetails",model.IsGovernmentDetails ?? (object)DBNull.Value),
 
             // 🔹 Financial - Direct
             new SqlParameter("@DirectINR", model.DirectINR ?? (object)DBNull.Value),
@@ -73,37 +76,61 @@ namespace BL.ManageActivity
                     // 🔹 CASE 1: New File Upload
                     if (doc.File != null && doc.File.Length > 0)
                     {
-                        using (var ms = new MemoryStream())
-                        {
-                            await doc.File.CopyToAsync(ms);
-                            byte[] fileBytes = ms.ToArray();
+                        //using (var ms = new MemoryStream())
+                        //{
+                        //    await doc.File.CopyToAsync(ms);
+                        //    byte[] fileBytes = ms.ToArray();
 
-                            var docParams = new List<SqlParameter>
+                        string folderPath = Path.Combine(path,
+                            "uploads",
+                            "MonitoringDocuments");
+
+                        if (!Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+
+                        // Unique File Name
+                        string fileName = Guid.NewGuid().ToString() +
+                                          Path.GetExtension(doc.File.FileName);
+
+                        string filePath = Path.Combine(folderPath, fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await doc.File.CopyToAsync(stream);
+                        }
+
+                        var docParams = new List<SqlParameter>
                             {
                                 new SqlParameter("@ActivityMonitoringId", ActivityMonitoringId),
                                 new SqlParameter("@DocumentType", doc.DocumentType),
+                                new SqlParameter("@OtherDocumentName",(object?)doc.OtherDocumentName ?? DBNull.Value),
                                 new SqlParameter("@FileName", doc.File.FileName),
-                                new SqlParameter("@FileData", fileBytes),
+                                new SqlParameter("@FilePath","/uploads/MonitoringDocuments/" + fileName),
+                                //new SqlParameter("@FileData", fileBytes),
                                 new SqlParameter("@ContentType", doc.File.ContentType),
-                                new SqlParameter("@IsUpdate", 1) // 🔥 flag
+                                new SqlParameter("@IsUpdate", 1), // 🔥 flag
+                                
                             };
 
                             await _iSql.ExecuteProcedure("SP_SaveMonitoringDocument", docParams.ToArray());
-                        }
+                        //}
                     }
 
                     // 🔹 CASE 2: NO NEW FILE → KEEP OLD
                     else if (!string.IsNullOrEmpty(doc.ExistingFileName))
                     {
-                        //var docParams = new List<SqlParameter>
-                        //{
-                        //    new SqlParameter("@ActivityMonitoringId", ActivityMonitoringId),
-                        //    new SqlParameter("@DocumentType", doc.DocumentType),
-                        //    new SqlParameter("@FileName", doc.ExistingFileName),
-                        //    new SqlParameter("@FileData", DBNull.Value), // 🔥 no change
-                        //    new SqlParameter("@ContentType", DBNull.Value),
-                        //    new SqlParameter("@IsUpdate", 0) // 🔥 KEEP OLD
-                        //};
+                        var docParams = new List<SqlParameter>
+                        {
+                            new SqlParameter("@ActivityMonitoringId", ActivityMonitoringId),
+                            new SqlParameter("@DocumentType", doc.DocumentType),
+                            new SqlParameter("@OtherDocumentName", (object?)doc.OtherDocumentName ?? DBNull.Value),
+                            //new SqlParameter("@FileName", doc.ExistingFileName),
+                            //new SqlParameter("@FilePath", doc.ExistingFilePath), // Hidden field se bhejna hoga
+                            //new SqlParameter("@ContentType", DBNull.Value),
+                            new SqlParameter("@IsUpdate", 0)
+                        };
 
                         //await _iSql.ExecuteProcedure("SP_SaveMonitoringDocument", docParams.ToArray());
                     }
@@ -152,6 +179,8 @@ namespace BL.ManageActivity
                     ActivityMonitoringId = Convert.ToInt32(ds.Tables[0].Rows[0]["ActivityMonitoringId"]),
                     ActivityGuid = ds.Tables[0].Rows[0]["ActivityGuid"].ToString(),
                     IsPartnership = ds.Tables[0].Rows[0]["IsPartnership"].ToString() == "1" ? "Yes" : "No",
+                    IsGovernment = ds.Tables[0].Rows[0]["IsGovernment"] != DBNull.Value && ds.Tables[0].Rows[0]["IsGovernment"].ToString() == "1" ? "Yes" : "No",
+                    IsGovernmentDetails = ds.Tables[0].Rows[0]["IsGovernmentDetails"] != DBNull.Value ? ds.Tables[0].Rows[0]["IsGovernmentDetails"].ToString() : "", 
                     DirectINR = ds.Tables[0].Rows[0]["DirectINR"] as decimal?,
                     DirectUSD = ds.Tables[0].Rows[0]["DirectUSD"] as decimal?,
                     DirectSource = ds.Tables[0].Rows[0]["DirectSource"].ToString(),
@@ -170,6 +199,7 @@ namespace BL.ManageActivity
                         DocId = Convert.ToInt32(docRow["DocumentId"]),
                         DocumentType = docRow["DocumentType"].ToString(),
                         FileName = docRow["FileName"].ToString(),
+                        OtherDocumentName = docRow["OtherDocumentName"].ToString(),
                         //fi = docRow["FileName"].ToString(),
                         //// FileData is not returned for performance reasons
                     });
@@ -659,6 +689,7 @@ namespace BL.ManageActivity
                     new SqlParameter("@ActivityGuid",model.ActivityGuid),
                     new SqlParameter("@TaskId",model.TaskId),
                     new SqlParameter("@Status",model.Status ?? (object)DBNull.Value),
+                    new SqlParameter("@Achievement",model.Achievement ?? (object)DBNull.Value),
                     new SqlParameter("@Remarks",model.Remarks ?? (object)DBNull.Value),
                     new SqlParameter("@isFinalSubmit", isFinalSubmit),
                     new SqlParameter("@ReportingId", model.reportingId)
@@ -731,7 +762,8 @@ namespace BL.ManageActivity
                             ActivityGuid = dr["ActivityGuid"].ToString(),
                             TaskId = Convert.ToInt64(dr["TaskId"]),
                             Status = dr["Status"]?.ToString(),
-                            Remarks = dr["Remarks"]?.ToString()
+                            Remarks = dr["Remarks"]?.ToString(),
+                            Achievement = dr["Achievement"]?.ToString(),
                         });
                     }
                 }
@@ -785,6 +817,7 @@ namespace BL.ManageActivity
                     model.TaskId = Convert.ToInt64(dr["TaskId"]);
                     model.Status = dr["Status"]?.ToString();
                     model.Remarks = dr["Remarks"]?.ToString();
+                    model.Achievement = dr["Achievement"]?.ToString();
                 }
             }
             catch (Exception)

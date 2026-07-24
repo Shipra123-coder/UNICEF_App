@@ -716,10 +716,10 @@
             </div><!-- slide -->
             <div class="swiper-slide">
                 <div class="slideimg">
-                    <img src="/public/storage/banners/Banner2.png" alt="slider Image" fetchpriority="high">
+                    <img src="/public/storage/banners/Banner2.jpeg" alt="slider Image" fetchpriority="high">
                     <div class="container-fluid cmpad slider-con">
                         <div class="col-lg-12 px-4 right">
-                        </div><!-- col -->
+                        </div>
                     </div>
                 </div>
             </div><!-- slide -->
@@ -737,13 +737,13 @@
             </div><!-- slide -->
             <div class="swiper-slide">
                 <div class="slideimg">
-                    <img src="/public/storage/banners/Banner4.png" alt="slider Image" fetchpriority="high">
+                    <img src="/public/storage/banners/Banner4.jpg" alt="slider Image" fetchpriority="high">
                     <div class="container-fluid cmpad slider-con">
                         <div class="col-lg-12 px-4 right">
                             @*<h2>
                                     UN Monitoring Dashboard
                                 </h2>*@
-                        </div><!-- col -->
+                        </div>  
                     </div>
                 </div>
             </div><!-- slide -->
@@ -1948,6 +1948,22 @@
         padding: 20px;
         background: #f8fbff;
     }
+    .task-total {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 6px;
+        margin-bottom: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #475569;
+    }
+
+        .task-total strong {
+            color: #475569;
+            font-size: 15px;
+            font-weight: 700;
+        }
 
     .chart-box {
         background: #fff;
@@ -1956,6 +1972,7 @@
         border: 1px solid #dbeafe;
         height: 300px;
     }
+    
 
     @@media(max-width:991px) {
 
@@ -1967,66 +1984,101 @@
             height: 280px;
         }
     }
+
+    .task-total {
+        text-align: center;
+        margin-bottom: -20px;
+        display:flex;
+    }
+
+        .task-total span {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .task-total h4 {
+            font-size: 14px;
+            color: #777;
+            margin: 5px 0;
+            font-weight: 700;
+        }
 </style>
+
 <div class="analysis-chart-section width-bestPrectices">
-    <div class="analysis-chart-grid">
-        <!-- ========================================= -->
-        <!-- UN AGENCY WISE ANALYSIS -->
-        <!-- ========================================= -->
-        <div class="analysis-card">
-            <div class="analysis-card-header">
-                <h4 class="color-white">
-                    UN Agency Wise Status
-                </h4>
-                <p>
-                    Activities, Sectors and Departments supported by agencies
-                </p>
-            </div>
+    @*<div class="analysis-chart-grid">*@
+        <div class="row">
+            <div class="col-md-6">
+                <!-- ========================================= -->
+                <!-- UN AGENCY WISE ANALYSIS -->
+                <!-- ========================================= -->
+                <div class="analysis-card">
+                    <div class="analysis-card-header">
+                        <h4 class="color-white">
+                            UN Agency Wise Status
+                        </h4>
+                        <p>
+                            Activities, Sectors and Departments supported by agencies
+                        </p>
+                    </div>
 
-            <div class="analysis-card-body">
-                <div class="chart-box">
-                    <canvas id="agencyWiseChart"></canvas>
+                    <div class="analysis-card-body">
+                        <div class="chart-box">
+                            <canvas id="agencyWiseChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- ========================================= -->
-        <!-- ACTIVITY WISE ANALYSIS -->
-        <!-- ========================================= -->
-        <div class="analysis-card">
-            <div class="analysis-card-header">
-                <h4 class="color-white">
-                    Activities Wise Status
-                </h4>
-                <p>
-                    Overall progress of monitoring activity
-                </p>
-            </div>
-            <div class="analysis-card-body">
-                <div class="chart-box">
-                    <canvas id="activityStatusChart"></canvas>
+            <div class="col-md-3">
+                <!-- ========================================= -->
+                <!-- ACTIVITY WISE ANALYSIS -->
+                <!-- ========================================= -->
+                <div class="analysis-card">
+                    <div class="analysis-card-header">
+                        <h4 class="color-white">
+                            Activities Wise Status
+                        </h4>
+                        <p>
+                            Overall progress of monitoring activity
+                        </p>
+                    </div>
+                    <div class="analysis-card-body">
+                        <div class="chart-box">
+                            <canvas id="activityStatusChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <!-- ========================================= -->
-        <!-- TASK WISE ANALYSIS -->
-        <!-- ========================================= -->
-        <div class="analysis-card">
-            <div class="analysis-card-header">
 
-                <div class="color-white">
-                    <h4 class="color-white">
-                        📊 Task Status Overview
-                    </h4>
-                    <p>Overall progress of monitoring tasks</p>
+            </div>
+            <div class="col-md-3">
+                <!-- ========================================= -->
+                <!-- TASK WISE ANALYSIS -->
+                <!-- ========================================= -->
+                <div class="analysis-card">
+                    <div class="analysis-card-header">
+
+                        <div class="color-white">
+                            <h4 class="color-white">
+                                📊 Task Status Overview
+                            </h4>
+                            <p>Overall progress of monitoring tasks</p>
+                        </div>
+                    </div>
+                    <div class="analysis-card-body">
+                        <div class="chart-box">
+                            <div class="task-total">
+                                <span>Total Tasks :</span>
+                                <strong id="totalTaskCount"> </strong>
+                            </div>
+                            <canvas id="taskChart"></canvas>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            <div class="analysis-card-body">
-                <div class="chart-box">
-                    <canvas id="taskChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+        </div> 
+        
+       
+    @*</div>*@
 </div>
 <div class="analysis-chart-section width-bestPrectices">
 
@@ -2378,7 +2430,13 @@
         color: #64748b;
         font-size: 15px;
         line-height: 1.7;
-        min-height: 90px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: calc(1.7em * 3); /* Exactly 3 lines */
+        text-align:justify;
     }
 
     /* =========================
@@ -2421,6 +2479,13 @@
         font-size: 14px;
         font-weight: 700;
         color: #334155;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; /* Only 3 lines */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: calc(1.5em * 3); /* Optional: Equal height */
     }
 
     .agency-footer button {
@@ -2469,7 +2534,7 @@
     <div class="agency-header">
         <div>
             <h2 class="agency-main-title">
-                Explore UN Agencies
+                UN Agencies
             </h2>
 
             <p class="agency-subtitle">
@@ -2775,57 +2840,92 @@
     /* ===================================== */
     .practice-card {
         background: #fff;
-        border-radius: 20px;
+        border-radius: 10px;
         overflow: hidden;
-        transition: 0.4s;
-        box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* स्मूथ और बाउंस एनिमेशन के लिए */
+        /* 🌟 एक दम प्रीमियम और सॉफ्ट शैडो (Modern Layered Shadow) */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 10px 20px -5px rgba(0, 0, 0, 0.05);
         height: 100%;
+        position: relative;
+        /* अगर आप अंदर से थोड़ी स्पेसिंग देना चाहें तो इसे अनकमेंट कर सकते हैं */
+        /* padding: 10px; */
+        /* होवर पर दिखने वाले बॉर्डर के लिए बेस सेटिंग */
+        border: 1px solid transparent;
     }
 
         .practice-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px); /* थोड़ा और ऊपर उठेगा जिससे बेहतरीन 3D लुक आए */
+            border-radius: 10px;
+            /* 🌟 होवर पर हल्का सा ब्रांडेड बॉर्डर (आप #0d47a1 की जगह अपना पसंदीदा कलर कोड डाल सकते हैं) */
+            border-color: rgba(13, 71, 161, 0.25);
+            /* 🌟 होवर के समय गहरा और फैला हुआ शैडो (Deep Elevation Shadow) */
+            box-shadow: 0 20px 25px -5px rgba(13, 71, 161, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
     .practice-image-box {
-        height: 230px;
-        overflow: hidden;
+        height:180px;
+        overflow: hidden; /* यह ज़ूम होने पर इमेज को बाहर जाने से रोकेगा */
+        border-radius: 10px 10px 0 0; /* ऊपर के दोनों कोनों को राउंड रखने के लिए */
     }
 
     .practice-image {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: fill;
         transition: 0.4s;
+        border-radius:10px;
     }
 
     .practice-card:hover .practice-image {
         transform: scale(1.08);
+        border-radius: 10px;
     }
 
     .practice-body {
-        padding: 25px;
+        padding: 10px;
     }
 
     .practice-sector {
         display: inline-block;
-        background: #e8f1ff;
-        color: #0d47a1;
+        background: #b05144;
+        color: #fff;
         padding: 6px 14px;
-        border-radius: 30px;
+        border-radius: 9px;
         font-size: 13px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     .practice-title {
-        font-size: 22px;
-        font-weight: 700;
+        font-size: 1.25rem;
+        font-weight: 600;
         margin-bottom: 15px;
+        color: #000;
+        /* 🌟 सिर्फ 3 लाइन दिखाने और बाद में ... लगाने के लिए फिक्स */
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* लाइनों की संख्या निर्धारित करता है */
+        -webkit-box-orient: vertical; /* बॉक्स का ओरिएंटेशन सेट करता है */
+        overflow: hidden; /* एक्स्ट्रा टेक्स्ट को छुपाता है */
+        text-overflow: ellipsis; /* अंत में ... दिखाता है */
+        /* 🛠️ सेफ्टी ग्रिड: अगर फॉन्ट या लाइन-हाइट की वजह से लेआउट डिस्टर्ब हो */
+        line-height: 1.5;
+        max-height: calc(1.5em * 3); /* (line-height * लाइनों की संख्या) */
+        word-break: break-word; /* लंबे शब्दों को टूटने से बचाएगा */
     }
 
     .practice-desc {
-        color: #666;
-        line-height: 1.8;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Show only 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.6;
+        max-height: calc(1.6em * 3);
+        word-break: break-word;
+
+        color: #000;
+       /* line-height: 1.8;*/
         margin-bottom: 20px;
+        text-align:justify;
     }
 
     .practice-footer {
@@ -2872,15 +2972,23 @@
     .width-bestPrectices {
         margin: 40px 40px;
     }
+
+    /* सुनिश्चित करें कि स्लाइडर की चौड़ाई 100% हो */
+    .bestPracNewSlide {
+        width: 100%;
+        overflow: hidden; /* अनचाहे स्क्रॉल को रोकने के लिए */
+    }
+
+        /* इसके अंदर आने वाले .practice-card की चौड़ाई को Swiper के सुपुर्द कर दें */
+        .bestPracNewSlide .swiper-slide {
+            height: auto; /* कार्ड्स की ऊंचाई को एक समान रखने के लिए */
+        }
+
+        .bestPracNewSlide .practice-card {
+            width: 100%; /* CSS से फिक्स्ड विड्थ हटाकर 100% करें ताकि Swiper अपनी विड्थ दे सके */
+            height: 100%; /* वर्टिकल अलाइनमेंट सही रखने के लिए */
+        }
 </style>
-
-<div class="analysis-chart-section width-bestPrectices">
-
-    <div class="analysis-chart-grid">
-
-    </div>
-</div>
-
 <div class="width-bestPrectices">
     <div class="headrow px-2">
         <div>
@@ -2891,7 +2999,7 @@
                 <div class="swiper-button-prev slidebtn best-prac-prev"></div>
                 <div class="swiper-button-next slidebtn best-prac-next"></div>
             </div>
-            <a href="/Management/AllBestPractices" class="morebtn">View All</a>
+            @*<a href="/Management/AllBestPractices" class="morebtn">View All</a>*@
         </div>
     </div>
     <div class="posrel pt-2">
