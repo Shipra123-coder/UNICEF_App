@@ -14,6 +14,8 @@ namespace MO.Management
         public int? ActivityMonitoringId { get; set; }
         public string ActivityGuid { get; set; }
         public string IsPartnership { get; set; }
+        public string IsGovernment { get; set; }
+        public string IsGovernmentDetails { get; set; }
 
         public List<DocumentModel> Documents { get; set; }
         public decimal? DirectINR { get; set; }
@@ -39,6 +41,9 @@ namespace MO.Management
         public IFormFile File { get; set; }   // 🔥 IMPORTANT
         public byte[] FileBytes { get; set; } // 🔥 ADD THIS
         public string ExistingFileName { get; set; } // 🔥 update case
+
+        // New Property
+        public string OtherDocumentName { get; set; }
     }
 
     public class FinancialModel
@@ -92,6 +97,9 @@ namespace MO.Management
         [JsonProperty("Status")]
         public string Status { get; set; }
 
+        [JsonProperty("Achievement")]
+        public string Achievement { get; set; }
+
         [JsonProperty("Remarks")]
         public string Remarks { get; set; }
     }
@@ -109,6 +117,9 @@ namespace MO.Management
         [JsonProperty("ActivityName")]
         public string ActivityName { get; set; }
 
+        [JsonProperty("Description")]
+        public string Description { get; set; }
+
         [JsonProperty("hasSubActivity")]
         public bool HasSubActivity { get; set; }
 
@@ -116,6 +127,8 @@ namespace MO.Management
         public string ActivityStartDate { get; set; }
         [JsonProperty("ActivityEndDate")]
         public string ActivityEndDate { get; set; }
+        [JsonProperty("ActivityStatus")]
+        public string ActivityStatus { get; set; }
 
         [JsonProperty("subActivities")]
         public List<SubActivityDTO> SubActivities { get; set; }
@@ -142,6 +155,15 @@ namespace MO.Management
 
         [JsonProperty("taskName")]
         public string TaskName { get; set; }
+
+        [JsonProperty("taskDetailDescription")]
+        public string TaskDetailDescription { get; set; }
+
+        [JsonProperty("taskStartDate")]
+        public string TaskStartDate { get; set; }
+
+        [JsonProperty("taskEndDate")]
+        public string TaskEndDate { get; set; }        
 
         [JsonProperty("geography")]
         public string Geography { get; set; }
@@ -298,6 +320,7 @@ namespace MO.Management
         public string ActivityGuid { get; set; }
         public long TaskId { get; set; }
         public string Status { get; set; }
+        public string Achievement { get; set; }
         public string Remarks { get; set; }    
         
         public string reportingId { get; set; }

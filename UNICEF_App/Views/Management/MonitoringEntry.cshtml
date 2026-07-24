@@ -177,7 +177,7 @@
 
                     var isChecked = selected != null;
                     var fileName = selected?.FileName ?? "";
-
+                    var otherText = selected?.OtherDocumentName ?? "";
                     var safeId = "doc_" + System.Text.RegularExpressions.Regex.Replace(item, "[^a-zA-Z0-9]", "");
 
                     <div class="doc-item">
@@ -191,6 +191,14 @@
                         </label>
 
                         <div id="@safeId" class="upload-box @(isChecked ? "" : "d-none")">
+
+                            @if (item == "Other")
+                            {
+                                <input type="text"
+                                       class="form-control mb-2 other-doc-name"
+                                       placeholder="Enter document name"
+                                       value="@otherText" />
+                            }
 
                             <input type="file" class="form-control-sm">
                             <input type="hidden" class="existing-file" value="@fileName" />
@@ -353,21 +361,46 @@
             }
         });
 
-    });
-     document.querySelectorAll(".doc-check").forEach(function (checkbox) {
+        });
+        document.querySelectorAll(".doc-check").forEach(function (checkbox) {
 
-        checkbox.addEventListener("change", function () {
+            checkbox.addEventListener("change", function () {
 
-            const targetId = this.getAttribute("data-target");
-            const targetDiv = document.getElementById(targetId);
+                const targetId = this.getAttribute("data-target");
+                const targetDiv = document.getElementById(targetId);
 
-            if (targetDiv) {
-                targetDiv.classList.toggle("d-none", !this.checked);
-            }
+                if (targetDiv) {
+                    targetDiv.classList.toggle("d-none", !this.checked);
+
+                    // Other textbox show/hide
+                    const otherTextbox = targetDiv.querySelector(".other-doc-name");
+
+                    if (otherTextbox) {
+                        otherTextbox.style.display = this.checked ? "block" : "none";
+
+                        if (!this.checked) {
+                            otherTextbox.value = "";
+                        }
+                    }
+                }
+
+            });
 
         });
+    // document.querySelectorAll(".doc-check").forEach(function (checkbox) {
 
-    });
+    //    checkbox.addEventListener("change", function () {
+
+    //        const targetId = this.getAttribute("data-target");
+    //        const targetDiv = document.getElementById(targetId);
+
+    //        if (targetDiv) {
+    //            targetDiv.classList.toggle("d-none", !this.checked);
+    //        }
+
+    //    });
+
+    //});
         // // 🔹 Generic Toggle (data-toggle)
         // document.querySelectorAll("[data-toggle]").forEach(function (el) {
         //     el.addEventListener("change", function () {

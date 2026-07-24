@@ -12,13 +12,20 @@
     }
 </style>
 <div class="container-fluid mt-4">
-   
+
     <!-- 🔷 Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold">📊 Activity Management</h4>
         <a asp-action="Main" asp-controller="Management" class="btn btn-primary">
             <i class="bx bx-plus"></i> Add New Activity
         </a>
+    </div>
+
+    <div class="row" id="activityDetailsContainer">
+        <div class="col-12 text-center py-4 text-muted">
+            <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+            <p class="mb-0">Loading activity data mappings...</p>
+        </div>
     </div>
 
     <!-- 🔷 Search + Filter -->
@@ -60,7 +67,7 @@
                             <td>@count</td>
                             <td>@item.ActivityName</td>
                             <td>@item.ShortName</td>
-                            <td>@item.ActivityStatus</td>      
+                            <td>@item.ActivityStatus</td>
                             <td>@item.CreatedDate.ToString("dd MMM yyyy")</td>
 
                             <td class="text-end widthtdend">
@@ -79,12 +86,12 @@
                                     <i class="bx bx-edit"></i>
                                 </a>
                                 <!-- Monitoring -->
-                                <a asp-action="MonitoringEntry"
+                                <a asp-action="Agreement"
                                    asp-controller="Management"
                                    asp-route-guid="@item.ActivityGuid"
                                    class="btn btn-sm btn-warning" title="Agreement">
                                     <i class="bx bx-edit-alt"></i> Agreement
-                                </a>                                
+                                </a>
                                 <a asp-action="MonitoringEntryTwo"
                                    asp-controller="Management"
                                    asp-route-guid="@item.ActivityGuid"

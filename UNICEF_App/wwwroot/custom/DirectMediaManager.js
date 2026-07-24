@@ -382,8 +382,8 @@ var directMediaManager = {
         }
 
         Swal.fire({
-            title: 'Confirm Save Matrix?',
-            text: "Are you sure you want to commit these localized canvas layout parameters?",
+            title: 'Confirm Save?',
+            text: "Are you sure you want to save?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#0d6efd',

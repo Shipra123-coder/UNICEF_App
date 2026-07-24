@@ -17,6 +17,35 @@
         }
 
         formData.append("IsPartnership", isPartnership);
+
+        // ==========================================
+        // 🔹 2. Government Validation
+        // ==========================================
+        var isGovernment = $("input[name='isGovernment']:checked").val();
+
+        if (!isGovernment) {
+            toast.showToast('Validation Error', 'Please select if Government contribution is applicable (Yes/No).', 'error');
+            return false;
+        }
+        formData.append("IsGovernment", isGovernment);
+
+        // ==========================================
+        // 🔹 Government Details (Mandatory if Yes)
+        // ==========================================
+        if (isGovernment === "Yes") {
+            var governmentDetails = $("#IsGovernmentDetails").val().trim();
+
+            if (governmentDetails === "") {
+                toast.showToast('Validation Error', 'Please enter Government contribution details.', 'error');
+                $("#IsGovernmentDetails").focus();
+                return false;
+            }
+            formData.append("IsGovernmentDetails", governmentDetails);
+        }
+        else {
+            formData.append("IsGovernmentDetails", "");
+        }
+
         formData.append("ActivityGuid", $("#hiddenActivityGuid").val());
 
         // ==========================================
@@ -31,8 +60,15 @@
             var docName = checkbox.parent().text().trim();
             var fileInput = $(this).find("input[type='file']")[0];
             var existingFile = $(this).find(".existing-file").val();
+            var otherDocName = $(this).find(".other-doc-name").val() || "";
 
             if (isChecked) {
+
+                if (docName === "Other" && otherDocName.trim() === "") {
+                    status = false;
+                    $(this).find(".other-doc-name").addClass("errr-highlight");
+                }
+
                 // 🔥 CASE 1: New File Upload
                 if (fileInput && fileInput.files.length > 0) {
                     // फाइल साइज वैलिडेशन (मैनेज्ड सेफ्टी - Max 5MB)
@@ -42,11 +78,13 @@
                         toast.showToast('Size Error', `${docName} file size cannot exceed 5MB.`, 'error');
                     }
                     formData.append(`Documents[${docIndex}].DocumentType`, docName);
+                    formData.append(`Documents[${docIndex}].OtherDocumentName`, otherDocName);
                     formData.append(`Documents[${docIndex}].File`, fileInput.files[0]);
                 }
                 // 🔥 CASE 2: Keep Old File
                 else if (existingFile && existingFile !== "") {
                     formData.append(`Documents[${docIndex}].DocumentType`, docName);
+                    formData.append(`Documents[${docIndex}].OtherDocumentName`, otherDocName);
                     formData.append(`Documents[${docIndex}].ExistingFileName`, existingFile);
                 }
                 // ❌ ERROR: डॉक्यूमेंट टिक किया है पर फाइल नहीं चुनी
@@ -157,8 +195,8 @@
         // 🔹 CONFIRM & SUBMIT VIA AJAX
         // ==========================================
         Swal.fire({
-            title: 'Confirm Operation?',
-            text: "Are you sure you want to commit these localized metrics and save data?",
+            title: 'Confirmation?',
+            text: "Are you sure you want to save data?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#0d6efd',
@@ -422,7 +460,7 @@
                 </div>
             </div>
             
-            <div class="col-12">
+            <div class="col-12 mb-3">
                 <div class="p-3 bg-white border rounded">
                     <!-- Row 1: Nodal Agency -->
                     <div class="row py-2.5 border-bottom align-items-center mx-0">

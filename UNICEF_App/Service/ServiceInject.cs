@@ -1,7 +1,10 @@
 ﻿using BL;
 using BL.Account;
+using BL.AI;
 //using BL.BudgetMaster;
 using BL.Common;
+using BL.Dashboard;
+using BL.ManageActivity;
 //using BL.DashBoard;
 //using BL.Department;
 //using BL.FinancialYear;
@@ -10,16 +13,16 @@ using BL.Common;
 //using BL.Log;
 //using BL.ManageMaster;
 using BL.PageAccessRequirement;
+using BL.ViksitService;
+
 //using BL.ProfileUser;
 //using BL.Progres;
 //using BL.WebsiteMaster;
 //using BL.WorkProgress;
 using DL;
 using Microsoft.AspNetCore.Authorization;
-using UNICEF_App.Service;
 using System.Data;
-using BL.ManageActivity;
-using BL.Dashboard;
+using UNICEF_App.Service;
 namespace UNICEF_App
 {
     public class ServiceInject
@@ -40,6 +43,8 @@ namespace UNICEF_App
             //services.AddScoped(typeof(IMenu), typeof(Menu));
             //services.AddScoped(typeof(IGroupMaster), typeof(GroupMaster));
             services.AddScoped(typeof(IPermission), typeof(Permission));
+            services.AddScoped(typeof(IOpenAIService), typeof(OpenAIService));
+            services.AddScoped(typeof(IViksitService),typeof(ViksitService));
             //services.AddScoped(typeof(IDepartment), typeof(Department));
             //services.AddScoped(typeof(IGauravMaster), typeof(GauravMaster));
             //services.AddScoped(typeof(ILog), typeof(Log));

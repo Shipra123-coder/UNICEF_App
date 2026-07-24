@@ -538,7 +538,7 @@ namespace UNICEF_App.Controllers
             return Json(result);
         }
 
-        [HttpPost]
+        //[HttpPost]
         public async Task<IActionResult> GetFullData(string guid)
         {
             var json_activity = await _iManageActivity.GetActivityDataAsync(guid);
@@ -546,14 +546,13 @@ namespace UNICEF_App.Controllers
             {
                 activity = JsonConvert.DeserializeObject<ActivityDTO>(json_activity),
                 departments = await _iManageActivity.GetDeptMap(guid),
-                //sectors = await _iManageActivity.GetSectorMap(activityId),
+                //agencies = await _iManageActivity.GetAgency(activityId),
                 goals = await _iManageActivity.GetGoalMappingAsync(guid),
                 pillars = await _iManageActivity.GetPillarMappingAsync(guid),
                 natureofsupport = await _iManageActivity.GetNatureOfSupportMappingAsync(guid)
             };
             return Json(data);
         }
-
         public async Task<IActionResult> ActivityLand(string guid)
         {
             ViewBag.Guid = guid;
@@ -613,10 +612,9 @@ namespace UNICEF_App.Controllers
             ViewBag.Guid = guid;
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> SaveMonitoring(MonitoringModel model)
         {
             try
@@ -671,6 +669,21 @@ namespace UNICEF_App.Controllers
 
                         doc.ExistingFileName =
                             SanitizeAndValidate(doc.ExistingFileName);
+                        // NEW
+                        doc.OtherDocumentName =
+                            SanitizeAndValidate(doc.OtherDocumentName);
+
+                        // Validation for Other
+                        if (doc.DocumentType == "Other" &&
+                            string.IsNullOrWhiteSpace(doc.OtherDocumentName))
+                        {
+                            return Json(new
+                            {
+                                status = false,
+                                message = "Please enter the Other document name."
+                            });
+                        }
+
 
                         if (doc.File != null)
                         {
@@ -740,7 +753,7 @@ namespace UNICEF_App.Controllers
                 string userId = User.Identity?.Name ?? "SystemAdmin";
 
                 var response =
-                    await _iMonitoringService.SaveMonitoringAsync(model, userId);
+                    await _iMonitoringService.SaveMonitoringAsync(model, userId,_hostingEnvironment.WebRootPath);
 
                 return Json(new
                 {
@@ -1463,7 +1476,7 @@ namespace UNICEF_App.Controllers
 
                 
                 submissionMode = SanitizeAndValidate(submissionMode);
-                description = SanitizeAndValidate(description);
+                //description = SanitizeAndValidate(description);
                 heading = SanitizeAndValidate(heading);
                 mediaType = SanitizeAndValidate(mediaType);
 
@@ -1700,6 +1713,46 @@ namespace UNICEF_App.Controllers
 
             return allowedExtensions.Contains(ext);
         }
+
+        #region Agreement
+        public async Task<IActionResult> Agreement(string? guid)
+        {
+            if (!string.IsNullOrEmpty(guid))
+            {
+                // Fetch existing monitoring data
+                var monitoringData = await _iMonitoringService.GetMonitoringAsync(guid);
+
+                if (monitoringData != null)
+                {
+
+                    // Pass the data to the view
+                    ViewBag.SelectedSupports = monitoringData?.Supports ?? new List<SupportModel>();
+                    ViewBag.MonitoringData = monitoringData;
+                }
+            }
+            ViewBag.AllDocuments = new List<string>
+            {
+                "Letter Exchange",
+                "Signed Work Plan",
+                "Memorandum of Understanding",
+                "Letter of Understanding",
+                "Other"
+            };
+            ViewBag.AllSupports = new List<string>
+            {
+                "Technical Advice / Expertise",
+                "Technical Assistance (NGO)",
+                "Human Resources",
+                "Financial Resources",
+                "Project-based Support",
+                "Other"
+            };
+
+
+            ViewBag.Guid = guid;
+            return View();
+        }
+        #endregion
 
     }
 }

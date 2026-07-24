@@ -1,0 +1,576 @@
+﻿@model MO.DashBoard.GoalStatusModel
+@{
+    ViewData["Title"] = "SDG Goal Details Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+
+    // Fallback Goal Color in case Model.GoalColor is empty
+    var bgGoalColor = !string.IsNullOrEmpty(Model.GoalColor) ? Model.GoalColor : "#e5233d";
+}
+
+<style nonce="@nonce">
+    /* =========================================================
+       GLOBAL & HERO SECTION WITH DYNAMIC GOAL COLOR
+       ========================================================= */
+    .sector-banner {
+        margin-top: 200px;
+        position: relative;
+        min-height: auto;
+        background: @bgGoalColor !important; /* Dynamic SDG Color Applied Here */
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        padding: 30px 0px 0px 0px;
+        margin-bottom: 50px;
+        transition: background 0.3s ease;
+    }
+
+    .container-custom {
+        position: relative;
+        z-index: 2;
+        width: 92%;
+        max-width: 1300px;
+        margin: auto;
+    }
+
+    /* BREADCRUMB */
+    .custom-breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        color: @bgGoalColor; /* Matches Goal Color */
+        padding: 8px 18px;
+        border-radius: 50px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .custom-breadcrumb a {
+        color: @bgGoalColor;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
+    }
+
+    .custom-breadcrumb a:hover {
+        opacity: 0.8;
+    }
+
+    /* HEADER CONTENT */
+    .left-content {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .left-content h1 {
+        font-size: 36px;
+        line-height: 1.2;
+        color: #ffffff;
+        font-weight: 800;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .left-content p {
+        color: #ffffff;
+        line-height: 1.6;
+        font-size: 16px;
+        max-width: 900px;
+        margin: 0;
+        opacity: 0.95;
+    }
+
+    .goal-image-badge {
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        object-fit: cover;
+    }
+
+    /* =========================================================
+       TOP COUNT / STATS SECTION
+       ========================================================= */
+    .top-count-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    .count-card {
+        position: relative;
+        overflow: hidden;
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+
+    .count-card::before {
+        content: "";
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        background: rgba(0, 0, 0, 0.03);
+        border-radius: 50%;
+        right: -25px;
+        top: -25px;
+        transition: all 0.4s ease;
+    }
+
+    .count-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        border-color: @bgGoalColor;
+    }
+
+    .count-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: @bgGoalColor; /* Accent icon matches Goal Color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: #ffffff;
+        flex-shrink: 0;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .count-card h2 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    .count-card p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    /* DOUBLE COUNT CARD */
+    .double-count-card {
+        grid-column: span 2;
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .double-count-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        border-color: @bgGoalColor;
+    }
+
+    .double-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .double-card-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .double-card-divider {
+        width: 1px;
+        height: 45px;
+        background: #e2e8f0;
+        margin: 0 15px;
+    }
+
+    .double-card-footer {
+        margin-top: 12px;
+        padding-top: 8px;
+        border-top: 1px dashed #e2e8f0;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: @bgGoalColor;
+        letter-spacing: 0.5px;
+    }
+
+    .double-card-item h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .double-card-item p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+       BEST PRACTICES SECTION
+       ========================================================= */
+    .best-practice-page {
+        padding: 40px 0 80px;
+    }
+
+    .section-heading-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .practice-count {
+        color: #64748b;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .practice-card {
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .practice-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .practice-image-box {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .practice-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .practice-card:hover .practice-image {
+        transform: scale(1.06);
+    }
+
+    .practice-body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .practice-sector {
+        display: inline-block;
+        background: rgba(0,0,0,0.05);
+        color: @bgGoalColor;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        align-self: flex-start;
+    }
+
+    .practice-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+
+    .practice-desc {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+
+    .practice-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .read-more-btn {
+        background: @bgGoalColor;
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: opacity 0.2s ease;
+    }
+
+    .read-more-btn:hover {
+        opacity: 0.9;
+        color: #ffffff;
+    }
+
+    /* RESPONSIVE BREAKPOINTS */
+    @@media(max-width: 991px) {
+        .sector-banner {
+            margin-top: 100px;
+        }
+
+        .double-count-card {
+            grid-column: span 1;
+        }
+
+        .left-content h1 {
+            font-size: 28px;
+        }
+    }
+
+    @@media(max-width: 576px) {
+        .top-count-section {
+            grid-template-columns: 1fr;
+        }
+
+        .double-card-top {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .double-card-divider {
+            width: 100%;
+            height: 1px;
+            margin: 10px 0;
+        }
+    }
+</style>
+
+<!-- ========================================= -->
+<!-- HEADER & STATS SECTION -->
+<!-- ========================================= -->
+<section class="container sector-banner" id="sectorBanner">
+    <input type="hidden" id="hiddenGoalId" value="@Model.GoalId" />
+
+    <div class="container-custom">
+        <!-- Breadcrumb & Title -->
+        <div class="content-area">
+            <nav class="custom-breadcrumb">
+                <a asp-controller="Home" asp-action="SDGs"><i class="fa fa-home"></i></a>
+                <span class="separator"><i class="fa fa-chevron-right"></i></span>
+                <span class="breadcrumb-title">Goal @Model.GoalDisplayNumber</span>
+            </nav>
+            <div class="left-content">
+                <div class="d-flex align-items-center w-100 flex-wrap flex-md-nowrap gap-3">
+                    <img src="/images/Goalimg/T-G-@(Model.GoalDisplayNumber).png" class="goal-image-badge" width="110" height="110" alt="Goal @Model.GoalDisplayNumber">
+                    <div>
+                        <h1>@Model.GoalName</h1>
+                        <p>@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Statistics Cards Grid -->
+        <div class="top-count-section">
+            <!-- Departments -->
+            <div class="count-card countDepartmentCard" data-goalid="@Model.GoalId">
+                <div class="count-icon">🏛</div>
+                <div>
+                    <h2>@Model.DepartmentCount</h2>
+                    <p>Department</p>
+                </div>
+            </div>
+
+            <!-- Agencies -->
+            <div class="count-card countAgencyCard" data-goalid="@Model.GoalId">
+                <div class="count-icon">🏢</div>
+                <div>
+                    <h2>@Model.AgencyCount</h2>
+                    <p>Agencies</p>
+                </div>
+            </div>
+
+            <!-- Sectors -->
+            <div class="count-card countSectorCard" data-goalid="@Model.GoalId">
+                <div class="count-icon">🌐</div>
+                <div>
+                    <h2>@Model.SectorCount</h2>
+                    <p>Sectors</p>
+                </div>
+            </div>
+
+            <!-- Activities -->
+            <div class="count-card countActivityCard" data-goalid="@Model.GoalId">
+                <div class="count-icon">📋</div>
+                <div>
+                    <h2>@Model.ActivityCount</h2>
+                    <p>Activities</p>
+                </div>
+            </div>
+
+            <!-- Tasks -->
+            <div class="count-card">
+                <div class="count-icon">🗂</div>
+                <div>
+                    <h2>@Model.TaskCount</h2>
+                    <p>Tasks</p>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="count-card">
+                <div class="count-icon">🏆</div>
+                <div>
+                    <h2>@Model.BestPracticeCount</h2>
+                    <p>Best Practices</p>
+                </div>
+            </div>
+
+            <!-- SDGs Card -->
+            <div class="double-count-card">
+                <div class="double-card-top">
+                    <div class="double-card-item">
+                        <div class="count-icon">📊</div>
+                        <div>
+                            <h2>1</h2>
+                            <p>Goals</p>
+                        </div>
+                    </div>
+                    <div class="double-card-divider"></div>
+                    <div class="double-card-item">
+                        <div class="count-icon">📑</div>
+                        <div>
+                            <h2>@Model.TargetCount</h2>
+                            <p>Targets</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="double-card-footer">SDGs</div>
+            </div>
+
+            <!-- Viksit Rajasthan@2047 Card -->
+            <div class="double-count-card">
+                <div class="double-card-top">
+                    <div class="double-card-item">
+                        <div class="count-icon">📈</div>
+                        <div>
+                            <h2>@Model.PillarCount</h2>
+                            <p>Themes</p>
+                        </div>
+                    </div>
+                    <div class="double-card-divider"></div>
+                    <div class="double-card-item">
+                        <div class="count-icon">📄</div>
+                        <div>
+                            <h2>@Model.SubPillarCount</h2>
+                            <p>SubThemes</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="double-card-footer">Viksit Rajasthan@2047</div>
+            </div>
+        </div>
+
+        <!-- Accordion Render Area -->
+        <div class="row">
+            <div class="department-page-title">
+                <h2 id="title"></h2>
+            </div>
+            <div class="accordion myaccordion" id="departmentAccordion"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- BEST PRACTICES SECTION -->
+<!-- ========================================= -->
+<section class="container best-practice-page">
+    <div class="container-custom">
+        <div class="section-heading-box">
+            <h2 class="section-title">Best Practices</h2>
+            <span class="practice-count" id="practiceCount"></span>
+        </div>
+
+        <div class="row g-4" id="coverPageContainer">
+            <!-- Dynamic Content loaded via JS -->
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- JS SCRIPTS -->
+<!-- ========================================= -->
+<script nonce="@nonce" src="~/custom/Dashboard.js"></script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof dashboard !== 'undefined' && dashboard.loadGoalStatus) {
+            dashboard.loadGoalStatus();
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        let deptCard = e.target.closest(".countDepartmentCard");
+        if (deptCard) {
+            let goalId = deptCard.getAttribute("data-goalid");
+            dashboard.loadGoalDepartmentActivityList(goalId);
+        }
+
+        let agencyCard = e.target.closest(".countAgencyCard");
+        if (agencyCard) {
+            let goalId = agencyCard.getAttribute("data-goalid");
+            dashboard.loadGoalAgencyActivityList(goalId);
+        }
+
+        let sectorCard = e.target.closest(".countSectorCard");
+        if (sectorCard) {
+            let goalId = sectorCard.getAttribute("data-goalid");
+            dashboard.loadGoalSectorActivityList(goalId);
+        }
+
+        let activityCard = e.target.closest(".countActivityCard");
+        if (activityCard) {
+            let goalId = activityCard.getAttribute("data-goalid");
+            dashboard.loadGoalActivityList(goalId);
+        }
+    });
+</script>

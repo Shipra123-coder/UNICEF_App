@@ -1,0 +1,548 @@
+﻿@{
+    ViewData["Title"] = "Agreement";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="container-fluid mt-4">
+    <input type="hidden" value="@ViewBag.guid" id="hiddenActivityGuid" />
+    <input type="hidden" value="@ViewBag.MonitoringData?.ActivityMonitoringId" id="hiddenActivityMonitoringId" />
+    <!-- 🔷 Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">📊 Activity Agreement</h4>
+        <a asp-action="Main" asp-controller="Management" class="btn btn-primary">
+            <i class="bx bx-arrow-back"></i> Back To List
+        </a>
+    </div>
+    <!-- 🔷 Activity Table -->
+   
+    <div class="row" id="activityDetailsContainer">
+        <div class="col-12 text-center py-4 text-muted">
+            <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+            <p class="mb-0">Loading activity data mappings...</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-muted">
+            <div class="section-card">
+                <div class="section-title">Partnership Details</div>
+
+                <label class="fw-bold">Is partnership governed by written commitment?</label>
+
+                <div class="radio-group mt-2">
+                    <input type="radio" name="partnership" value="Yes" id="radioYes"
+                           @(ViewBag.MonitoringData?.IsPartnership == "Yes" ? "checked" : "")> Yes
+                    <input type="radio" name="partnership" value="No" id="radioNo"
+                           @(ViewBag.MonitoringData?.IsPartnership == "No" ? "checked" : "")> No
+                </div>
+                <!-- Specify Section -->
+                <div id="specifySection" class="mt-3 @(ViewBag.MonitoringData?.IsPartnership == "Yes" ? "" : "d-none")">
+
+                    <label class="fw-bold">Upload Documents</label>
+
+                    <div class="support-grid options-container">
+
+                        @{
+                            var docList = ViewBag.MonitoringData?.Documents as List<MO.Management.DocumentModel>
+                            ?? new List<MO.Management.DocumentModel>();
+                        }
+
+                        @foreach (var item in ViewBag.AllDocuments)
+                        {
+                            var selected = docList.FirstOrDefault(x => x.DocumentType == item);
+
+                            var isChecked = selected != null;
+                            var fileName = selected?.FileName ?? "";
+                            var otherText = selected?.OtherDocumentName ?? "";
+                            var safeId = "doc_" + System.Text.RegularExpressions.Regex.Replace(item, "[^a-zA-Z0-9]", "");
+
+                            <div class="doc-item">
+                                <label>
+                                    <input type="checkbox"
+                                           class="doc-check"
+                                           data-target="@safeId"
+                                           @(isChecked ? "checked" : "") />
+
+                                    @item
+                                </label>
+
+                                <div id="@safeId" class="upload-box @(isChecked ? "" : "d-none")">
+
+                                    @if (item == "Other")
+                                    {
+                                        <input type="text"
+                                               class="form-control mb-2 other-doc-name"
+                                               placeholder="Enter document name"
+                                               value="@otherText" />
+                                    }
+
+                                    <input type="file" class="form-control-sm">
+                                    <input type="hidden" class="existing-file" value="@fileName" />
+
+                                    @if (!string.IsNullOrEmpty(fileName))
+                                    {
+                                        <small class="text-success">Uploaded: @fileName</small>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-muted">
+            <div class="section-card">
+                <div class="section-title">
+                    Any Government of Rajasthan / GoI counterpart contribution? (financial or in-kind)
+                </div>
+
+                <div class="radio-group mt-2">
+                    <input type="radio"
+                           name="isGovernment"
+                           id="govYes"
+                           value="Yes"
+                           @(ViewBag.MonitoringData?.IsGovernment == "Yes" ? "checked" : "") />
+                    <label for="govYes">Yes</label>
+
+                    <input type="radio"
+                           name="isGovernment"
+                           id="govNo"
+                           value="No"
+                           @(ViewBag.MonitoringData?.IsGovernment == "No" ? "checked" : "") />
+                    <label for="govNo">No</label>
+                </div>
+
+                <!-- Specify Section -->
+                <div id="specifySectionGover"
+                     class="mt-3 @(ViewBag.MonitoringData?.IsGovernment == "Yes" ? "" : "d-none")">
+
+                    <label for="IsGovernmentDetails" class="fw-bold">
+                        Give Details
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              id="IsGovernmentDetails"
+                              name="IsGovernmentDetails"
+                              placeholder="Enter details...">@ViewBag.MonitoringData?.IsGovernmentDetails</textarea>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-muted">
+            <div class="section-card">
+                <div class="section-title">Financial Commitment</div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="finance-box">
+                            <h6 class="text-primary">Direct</h6>
+
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" step="0.01" class="form-control" id="directINR" placeholder="INR (Lakhs)"
+                                       value="@ViewBag.MonitoringData?.DirectINR">
+                            </div>
+
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" class="form-control" id="directUSD" placeholder="USD"
+                                       value="@ViewBag.MonitoringData?.DirectUSD">
+                            </div>
+
+                            <input type="text" class="form-control form-control-sm" placeholder="Source" id="directSource"
+                                   value="@ViewBag.MonitoringData?.DirectSource">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="finance-box">
+                            <h6 class="text-success">Indirect</h6>
+
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" step="0.01" class="form-control" id="indirectINR" placeholder="INR (Lakhs)"
+                                       value="@ViewBag.MonitoringData?.IndirectINR">
+                            </div>
+
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" class="form-control" id="indirectUSD" placeholder="USD"
+                                       value="@ViewBag.MonitoringData?.IndirectUSD">
+                            </div>
+
+                            <input type="text" class="form-control form-control-sm" placeholder="Source" id="indirectSource"
+                                   value="@ViewBag.MonitoringData?.IndirectSource">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-muted">
+            <div class="section-card">
+                <div class="section-title">Nature of Support</div>
+
+                <div class="support-grid">
+                    @{
+                        var supportList = ViewBag.SelectedSupports as List<MO.Management.SupportModel>
+                        ?? new List<MO.Management.SupportModel>();
+                    }
+
+                    @foreach (var item in ViewBag.AllSupports)
+                    {
+                        var selected = supportList.FirstOrDefault(x => x.SupportType == item);
+
+                        var isChecked = selected != null;
+                        var details = selected?.Details ?? "";
+
+                        var safeId = "txt_" + System.Text.RegularExpressions.Regex.Replace(item, "[^a-zA-Z0-9]", "");
+
+                        <div class="support-item">
+                            <label>
+                                <input type="checkbox"
+                                       class="support-check"
+                                       data-target="@safeId"
+                                       @(isChecked ? "checked" : "") />
+
+                                @item
+                            </label>
+
+                            <div id="@safeId" class="support-text @(isChecked ? "" : "d-none")">
+                                <input type="text"
+                                       class="form-control"
+                                       value="@details" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <button type="button" class="btn-primary" id="saveBtn">Submit Data</button>
+        </div>
+    </div>
+    @Html.AntiForgeryToken()
+</div>
+
+
+
+<style nonce="@nonce">
+    /* .page-wrapper {
+                max-width: 1200px;
+                margin: auto;
+            }
+
+            .page-title {
+                font-weight: 600;
+                border-left: 5px solid #0d6efd;
+                padding-left: 12px;
+                margin-bottom: 15px;
+            } */
+
+    .info-card {
+        background: #f8f9fa;
+        border-left: 4px solid #17a2b8;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+
+    .section-card {
+        background: #fff;
+        border: 1px solid #e4e4e4;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 18px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        margin-bottom: 12px;
+        border-left: 4px solid #28a745;
+        padding-left: 10px;
+    }
+
+    .support-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .support-item {
+        border: 1px dashed #ddd;
+        padding: 10px;
+        border-radius: 6px;
+        background: #fcfcfc;
+    }
+
+    .doc-item {
+        border: 1px dashed #ccc;
+        padding: 10px;
+        border-radius: 6px;
+        background: #fafafa;
+    }
+
+    .upload-box {
+        margin-top: 8px;
+    }
+
+    .finance-box {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 6px;
+        background: #fafafa;
+    }
+
+    .btn-primary {
+        border-radius: 25px;
+        padding: 8px 25px;
+    }
+
+    .d-none {
+        display: none;
+    }
+</style>
+<style nonce="@nonce">
+    /* Soft accent background modifiers for an executive look */
+    .bg-soft-primary {
+        background-color: #e6f0ff !important;
+    }
+
+    .bg-soft-success {
+        background-color: #e6f9f3 !important;
+    }
+
+    .shadow-xs {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+    }
+
+    .me-2.5 {
+        margin-right: 0.65rem !important;
+    }
+
+    .mb-2.5 {
+        margin-bottom: 0.65rem !important;
+    }
+</style>
+<div class="">
+
+    <!--<input type="hidden" value="@ViewBag.guid" id="hiddenActivityGuid" />
+    <input type="hidden" value="@ViewBag.MonitoringData?.ActivityMonitoringId" id="hiddenActivityMonitoringId" />-->
+    <!-- 🔷 Header -->
+    <!--<div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">UN Agency Monitoring Form (Format A)</h4>
+        <a asp-action="ActivityManagement" asp-controller="Management" class="btn btn-light border">
+            <i class="bx bx-arrow-back"></i> Back To List
+        </a>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body bg-light">
+            <div class="info-card p-4 bg-white border rounded shadow-sm">
+                <div class="row" id="activityDetailsContainer">
+                    <div class="col-12 text-center py-4 text-muted">
+                        <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+                        <p class="mb-0">Loading activity data mappings...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    @*<button type="button" class="btn-primary" id="saveBtn">Submit Data</button>*@
+</div>
+
+
+
+<script nonce="@nonce" src="~/custom/activitymonitor.js" asp-append-version="true"></script>
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.addEventListener('click', async function () {
+            await activityMonitor.saveMonitoringData();
+        }); // 🔥 WAIT
+    });</script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+        // jQuery ($) की जगह शुद्ध JavaScript का उपयोग
+        let hiddenInput = document.getElementById('hiddenActivityGuid');
+        let guid = hiddenInput ? hiddenInput.value : null;
+
+        if (guid && guid !== "") {
+            // यह सुनिश्चित करें कि activityMonitor ऑब्जेक्ट पहले से परिभाषित हो
+            if (typeof activityMonitor !== "undefined") {
+                activityMonitor.getMonitoringData(guid);
+                activityMonitor.getFullDataMap(guid);
+            } else {
+                console.error("activityMonitor is not defined");
+            }
+        }
+    });
+</script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // 🔹 Radio Buttons (Yes/No)
+        const radioYes = document.getElementById("radioYes");
+        const radioNo = document.getElementById("radioNo");
+        // 🔥 IMPORTANT FIX
+        toggleQ1(radioYes && radioYes.checked);
+
+        if (radioYes && radioNo) {
+            radioYes.addEventListener("change", function () {
+                toggleQ1(this.checked);
+            });
+
+            radioNo.addEventListener("change", function () {
+                toggleQ1(!this.checked);
+            });
+        }
+
+        document.querySelectorAll(".support-check").forEach(function (checkbox) {
+
+            checkbox.addEventListener("change", function () {
+
+                const targetId = this.getAttribute("data-target");
+                const targetDiv = document.getElementById(targetId);
+
+                if (targetDiv) {
+                    targetDiv.classList.toggle("d-none", !this.checked);
+                }
+            });
+
+        });
+        document.querySelectorAll(".doc-check").forEach(function (checkbox) {
+
+            checkbox.addEventListener("change", function () {
+
+                const targetId = this.getAttribute("data-target");
+                const targetDiv = document.getElementById(targetId);
+
+                if (targetDiv) {
+                    targetDiv.classList.toggle("d-none", !this.checked);
+
+                    // Other textbox show/hide
+                    const otherTextbox = targetDiv.querySelector(".other-doc-name");
+
+                    if (otherTextbox) {
+                        otherTextbox.style.display = this.checked ? "block" : "none";
+
+                        if (!this.checked) {
+                            otherTextbox.value = "";
+                        }
+                    }
+                }
+
+            });
+
+        });
+        // document.querySelectorAll(".doc-check").forEach(function (checkbox) {
+
+        //    checkbox.addEventListener("change", function () {
+
+        //        const targetId = this.getAttribute("data-target");
+        //        const targetDiv = document.getElementById(targetId);
+
+        //        if (targetDiv) {
+        //            targetDiv.classList.toggle("d-none", !this.checked);
+        //        }
+
+        //    });
+
+        //});
+        // // 🔹 Generic Toggle (data-toggle)
+        // document.querySelectorAll("[data-toggle]").forEach(function (el) {
+        //     el.addEventListener("change", function () {
+        //         const target = this.getAttribute("data-toggle");
+        //         const targetEl = document.getElementById(target);
+
+        //         if (targetEl) {
+        //             targetEl.style.display = this.checked ? "block" : "none";
+        //         }
+        //     });
+        // });
+
+        // 🔹 Other (Specify with Upload)
+        const checkOther = document.getElementById("checkOther");
+        if (checkOther) {
+            checkOther.addEventListener("change", function () {
+                toggleOtherWithUpload();
+            });
+        }
+
+        // 🔹 Support Other
+        const checkSupportOther = document.getElementById("checkSupportOther");
+        if (checkSupportOther) {
+            checkSupportOther.addEventListener("change", function () {
+                toggleSupportOther();
+            });
+        }
+
+    });
+
+
+    // 🔸 Functions
+
+    function toggleQ1(show) {
+        const el = document.getElementById("specifySection");
+
+        if (el) {
+            if (show) {
+                el.classList.remove("d-none");   // show
+            } else {
+                el.classList.add("d-none");      // hide
+            }
+        }
+    }
+
+    function toggleOtherWithUpload() {
+        const check = document.getElementById("checkOther");
+        const div = document.getElementById("uploadOtherContainer");
+
+        if (check && div) {
+            div.style.display = check.checked ? "block" : "none";
+        }
+    }
+
+    function toggleSupportOther() {
+        const check = document.getElementById("checkSupportOther");
+        const div = document.getElementById("supportOtherInputDiv");
+
+        if (check && div) {
+            div.style.display = check.checked ? "block" : "none";
+        }
+    }
+</script>
+<script nonce="@nonce">
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initial Load
+        if ($("input[name='isGovernment']:checked").val() === "Yes") {
+            $("#specifySectionGover").removeClass("d-none");
+        } else {
+            $("#specifySectionGover").addClass("d-none");
+        }
+
+        // Radio Change
+        $("input[name='isGovernment']").on("change", function () {
+            if ($(this).val() === "Yes") {
+                $("#specifySectionGover").removeClass("d-none");
+            }
+            else {
+                $("#specifySectionGover").addClass("d-none");
+                // Optional: textarea clear
+                $("#IsGovernmentDetails").val("");
+            }
+        });
+
+    });
+
+</script>

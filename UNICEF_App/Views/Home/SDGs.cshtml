@@ -1,0 +1,292 @@
+﻿@{
+    ViewData["Title"] = "SDGs Page";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    .sector-banner {
+        margin-top: 200px;
+        padding: 20px;
+    }
+
+    /* Modern Responsive Grid System */
+    .goals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 20px;
+        justify-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Flip Box Outer Wrapper */
+    .flip-box {
+        background-color: transparent;
+        width: 130px;
+        height: 130px;
+        perspective: 1000px; /* 3D effect enable karta hai */
+    }
+
+    /* Link & Inner Card Container */
+    .flip-box-inner {
+        display: block; /* MUST HAVE: <a> tag ko block element banane ke liye */
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d; /* Both sides ko 3D space mein rakhta hai */
+        border-radius: 8px;
+        text-decoration: none;
+    }
+
+    /* Hover State Rotation */
+    .flip-box:hover .flip-box-inner {
+        transform: rotateY(180deg);
+    }
+
+    /* Front & Back Card Layers */
+    .flip-box-front,
+    .flip-box-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden; /* Opposite side chhipane ke liye */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .flip-box-front {
+        background-color: #ffffff;
+    }
+
+    .flip-box-back {
+        background-color: #007bff;
+        transform: rotateY(180deg); /* Back side ko Pehle se 180deg flip rakhta hai */
+    }
+
+    /* Image Sizing Fix */
+    .flip-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+</style>
+
+<section class="container sector-banner" id="sectorBanner">    
+    <div class="goals-grid">
+        <!-- Goal 01 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="31" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/1.png" alt="Goal 1">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-1.png" alt="Goal 1 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 02 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="32" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/2.png" alt="Goal 2">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-2.png" alt="Goal 2 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 03 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="33" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/3.png" alt="Goal 3">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-3.png" alt="Goal 3 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 04 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="34" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/4.png" alt="Goal 4">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-4.png" alt="Goal 4 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 05 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="35" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/5.png" alt="Goal 5">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-5.png" alt="Goal 5 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 06 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="36" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/6.png" alt="Goal 6">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-6.png" alt="Goal 6 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 07 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="37" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/7.png" alt="Goal 7">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-7.png" alt="Goal 7 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 08 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="38" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/8.png" alt="Goal 8">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-8.png" alt="Goal 8 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 09 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="39" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/9.png" alt="Goal 9">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-9.png" alt="Goal 9 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 10 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="40" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/10.png" alt="Goal 10">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-10.png" alt="Goal 10 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 11 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="41" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/11.png" alt="Goal 11">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-11.png" alt="Goal 11 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 12 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="42" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/12.png" alt="Goal 12">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-12.png" alt="Goal 12 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 13 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="43" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/13.png" alt="Goal 13">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-13.png" alt="Goal 13 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 14 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="44" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/14.png" alt="Goal 14">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-14.png" alt="Goal 14 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 15 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="45" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/15.png" alt="Goal 15">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-15.png" alt="Goal 15 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 16 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="46" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/16.png" alt="Goal 16">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-16.png" alt="Goal 16 Back">
+                </div>
+            </a>
+        </div>
+
+        <!-- Goal 17 -->
+        <div class="flip-box">
+            <a asp-controller="Home" asp-action="SDGDetails" asp-route-goalId="47" class="flip-box-inner">
+                <div class="flip-box-front">
+                    <img src="/images/Goalimg/17.png" alt="Goal 17">
+                </div>
+                <div class="flip-box-back">
+                    <img src="/images/Goalimg/T-G-17.png" alt="Goal 17 Back">
+                </div>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+

@@ -1,0 +1,510 @@
+﻿@model MO.DashBoard.BestPracticesModel
+@{
+    ViewData["Title"] = "Best Prectices";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+
+    .banner {
+        height: 200px;
+        background: linear-gradient( 135deg, rgba(13,71,161,0.95), rgba(38,198,218,0.90) ), url('/public/img/homepage/sector_wheel/image_1_grad.png');
+        /*background: url(images/banner.jpg) center/cover;*/
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-top: 190px;
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( 135deg, rgba(13,71,161,0.95), rgba(38,198,218,0.90) ), url('/public/img/homepage/sector_wheel/image_1_grad.png');
+        /*background: rgba(0,38,87,.65);*/
+    }
+
+    .banner-content {
+        position: relative;
+        color: #fff;
+        width: 1200px;
+        margin: auto;
+    }
+
+    .banner h1 {
+        font-size: 42px;
+        margin-bottom: 12px;
+        color:#fff;
+        font-weight:700;
+    }
+
+    .breadcrumb {
+        font-size: 18px;
+    }
+
+    .container {
+        max-width: 1300px;
+        margin: -70px auto 40px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 25px;
+        padding: 20px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .slider-card {
+        position: relative;
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+        .slider-card img {
+            width: 100%;
+            height: 430px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-card button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,.2);
+            font-size: 18px;
+        }
+
+    .prev {
+        left: 20px;
+    }
+
+    .next {
+        right: 20px;
+    }
+
+    .card-left-margin {
+        margin-top: 0px !important;
+    }
+
+    .card {
+        background: #fff;
+        margin-top: 25px;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #0a4b9e;
+            position: relative;
+        }
+
+            .card h2:after {
+                content: "";
+                width: 60px;
+                height: 3px;
+                background: #0a4b9e;
+                position: absolute;
+                left: 0;
+                bottom: -8px;
+            }
+
+        .card p {
+            margin-top: 18px;
+            line-height: 1.9;
+            color: #555;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        table th {
+            background: #eef5ff;
+            width: 180px;
+            padding: 15px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+    .file-list {
+        list-style: none;
+    }
+
+        .file-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+            .file-list li:hover {
+                color: #0a4b9e;
+                padding-left: 10px;
+            }
+
+    video {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    audio {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    @@media(max-width:992px) {
+
+        .container {
+            grid-template-columns: 1fr;
+        }
+
+        .banner h1 {
+            font-size: 32px;
+        }
+
+        .slider-card img {
+            height: 300px;
+        }
+    }
+
+    .swiper-wrapper {
+        width: 800px !important;
+    }
+
+    .mediaSlider {
+        height: 500px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+        .mediaSlider img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .mediaSlider video {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            background: #000;
+            display: block;
+        }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        width: 50px;
+        height: 50px;
+        background: #fff;
+        border-radius: 50%;
+        color: #0057b8;
+        box-shadow: 0 5px 15px rgba(0,0,0,.25);
+    }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+    .swiper-pagination-bullet {
+        background: #fff;
+        opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #0d6efd;
+        width: 24px;
+        border-radius: 20px;
+    }
+</style>
+
+
+<!-- Banner -->
+
+<section class="banner">
+
+    <div class="overlay"></div>
+
+    <div class="banner-content">
+
+        <h1>@Model.HeadingTitle</h1>
+
+        <div class="breadcrumb">
+            Rajasthan
+            <i class="fa fa-angle-right"></i>
+            @Model.SectorName
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="container">
+
+    <div class="left">
+
+        <!-- Image Slider -->
+
+        <div class="swiper mediaSlider">
+
+            <div class="swiper-wrapper">
+
+                <!-- Cover Image -->
+
+                @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+                {
+                    <div class="swiper-slide">
+                        <img src="@Url.Content(Model.CoverImageUrl)" />
+                    </div>
+                }
+
+                <!-- Inner Media -->
+
+                @foreach (var item in Model.MediaList)
+                {
+                    <div class="swiper-slide">
+
+                        @if (item.MediaType == "Image")
+                        {
+                            <img src="@Url.Content(item.MediaAssetUrl)" />
+                        }
+                        else if (item.MediaType == "Video")
+                        {
+                            <video controls preload="metadata">
+                                <source src="@Url.Content(item.MediaAssetUrl)" type="video/mp4" />
+                            </video>
+                        }
+                        else if (item.MediaType == "Audio")
+                        {
+                            <audio controls>
+                                <source src="@Url.Content(item.MediaAssetUrl)" type="audio/mpeg" />
+                            </audio>
+                        }
+
+                    </div>
+                }
+
+            </div>
+            <!--<div class="swiper-wrapper">-->
+            <!-- Image -->
+            <!--<div class="swiper-slide">
+
+                <img src="~/images/slider/c78ed682-8898-43a9-b8e6-7155295741c2.png">
+
+            </div>-->
+            <!-- Image -->
+            <!--<div class="swiper-slide">
+
+                <img src="~/public/img/images/default-slide.jpg">
+
+            </div>-->
+            <!-- Video -->
+            <!--<div class="swiper-slide">
+
+                <video controls preload="metadata">
+
+                    <source src="video/demo.mp4" type="video/mp4">
+
+                </video>
+
+            </div>-->
+            <!-- Image -->
+            <!--<div class="swiper-slide">
+                    <img src="images/3.jpg">
+                </div>
+            </div>-->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <!-- Description -->
+        <div class="card">
+            <h2>Description</h2>
+            <p>
+                @Model.DescriptionNotes
+            </p>
+        </div>
+    </div>
+    <div class="right">
+        <!-- Download Card -->
+        <div class="card card-left-margin">
+            <h2>Best Practices</h2>
+            <table>
+
+                <tr>
+                    <th>State</th>
+                    <td>Rajasthan</td>
+                </tr>
+
+                <tr>
+                    <th>Sector</th>
+                    <td>@Model.SectorName</td>
+                </tr>
+                <tr>
+                    <th>Document</th>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model.DescriptionPdfUrl))
+                        {
+                            <a href="@Url.Content(Model.DescriptionPdfUrl)" download target="_blank" title="Download PDF">
+                                <i class="fa fa-download"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Video -->
+        <div class="card">
+            <h2>Video</h2>
+            @{
+                var video = Model.MediaList.FirstOrDefault(x => x.MediaType == "Video");
+            }
+
+            @if (video != null)
+            {
+                <video controls preload="metadata" width="100%">
+                    <source src="@Url.Content(video.MediaAssetUrl)" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            }
+            else
+            {
+                <p>No Video Available.</p>
+            }
+            @*<video controls>
+            <source src="video/demo.mp4">
+        </video>*@
+        </div>
+        <!-- Audio -->
+        <div class="card">
+            <h2>Audio</h2>
+            @{
+                var audio = Model.MediaList.FirstOrDefault(x => x.MediaType == "Audio");
+            }
+
+            @if (audio != null)
+            {
+                <audio controls style="width:100%; margin-bottom:10px;">
+                    <source src="@Url.Content(audio.MediaAssetUrl)" type="audio/mpeg" />
+                </audio>
+            }
+            else
+            {
+        <p>No audio Available.</p>
+            }           
+        </div>
+    </div>
+</section>
+
+
+<script nonce="@nonce" src="~/public/js/swiper-bundle.min.js"></script>
+<script nonce="@nonce">
+    const slider = new Swiper(".mediaSlider", {
+
+        loop: true,
+
+        speed: 700,
+
+        spaceBetween: 20,
+
+        autoplay: {
+
+            delay: 3000,
+
+            disableOnInteraction: false
+
+        },
+
+        pagination: {
+
+            el: ".swiper-pagination",
+
+            clickable: true
+
+        },
+
+        navigation: {
+
+            nextEl: ".swiper-button-next",
+
+            prevEl: ".swiper-button-prev"
+
+        },
+
+        on: {
+
+            slideChangeTransitionStart: function () {
+
+                document.querySelectorAll('.mediaSlider video').forEach(v => {
+
+                    v.pause();
+
+                    v.currentTime = 0;
+
+                });
+
+                this.autoplay.start();
+
+            },
+
+            slideChangeTransitionEnd: function () {
+
+                let slide = this.slides[this.activeIndex];
+
+                let video = slide.querySelector("video");
+
+                if (video) {
+
+                    this.autoplay.stop();
+
+                    video.play();
+
+                }
+
+            }
+
+        }
+
+    });
+
+    document.querySelectorAll(".mediaSlider video").forEach(video => {
+
+        video.addEventListener("ended", function () {
+
+            slider.slideNext();
+
+            slider.autoplay.start();
+
+        });
+
+    });
+</script>

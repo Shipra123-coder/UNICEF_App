@@ -15,7 +15,7 @@
     }*/
 
     .sector-banner {
-        margin-top: 180px;
+        margin-top: 220px;
         position: relative;
         min-height: 420px;
         background-color: antiquewhite;
@@ -634,7 +634,7 @@
     .double-card-footer {
         margin-top: 8px;
         text-align: center;
-        font-size: 11px;
+        font-size: 16px;
         font-weight: 700;
         color: #2563eb;
         /*text-transform: uppercase;*/
@@ -875,7 +875,7 @@
                     </div>
                 </div>
                 <!-- Activity -->
-                <div class="count-card">
+                <div class="count-card countActivityCard" data-agencyid="@Model.AgencyId">
                     <div class="count-icon">📋</div>
                     <div>
                         <h2>@Model.ActivityCount</h2>
@@ -1370,6 +1370,16 @@
             let agencyid =
                 agencyCard.getAttribute("data-agencyid");
             dashboard.loadAgencySectorActivityList(agencyid);
+        }
+        // =========================
+        // ACTIVITY CARD
+        // =========================
+        let activityCard =
+            e.target.closest(".countActivityCard");
+        if (activityCard) {
+            let agencyid =
+                activityCard.getAttribute("data-agencyid");
+            dashboard.loadAgencyActivityList(agencyid);
         }
     });
 </script>

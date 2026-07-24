@@ -636,7 +636,7 @@
     .double-card-footer {
         margin-top: 8px;
         text-align: center;
-        font-size: 11px;
+        font-size: 16px;
         font-weight: 700;
         color: #2563eb;
         /*text-transform: uppercase;*/
@@ -897,7 +897,7 @@
                         </div>
                     </div>
                     <!-- Activity -->
-                    <div class="count-card">
+                    <div class="count-card countActivityCard" data-sectorid="@Model.SectorId">
                         <div class="count-icon">📋</div>
                         <div>
                             <h2>@Model.ActivityCount</h2>
@@ -1141,7 +1141,7 @@
 
 </section>
 
-@{
+@*@{
     var imagePath = Model.SectorId switch
     {
         1 => "/public/img/sector/thumbnails/education1.jpg",
@@ -1156,14 +1156,14 @@
         10 => "/public/img/sector/thumbnails/manufacturing.png",
         _ => "/public/img/sector/default-sector.jpg"
     };
-}
+}*@
 <!-- ========================================= -->
 <!-- CSS -->
 <!-- ========================================= -->
 <script nonce="@nonce">
 document.addEventListener("DOMContentLoaded", function () {
 
-    const imagePath = '@imagePath';
+    const imagePath = '/public/img/sector/thumbnails/@(Model.SectorCode).png';
     const banner = document.getElementById("sectorBanner");
 
     if (banner) {
@@ -1175,7 +1175,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <style nonce="@nonce">
     .sector-banner {
-        margin-top: 180px;
+        margin-top: 220px;
         position: relative;
         min-height: 420px;
         background-image: var(--sector-bg);
@@ -1368,9 +1368,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     .practice-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Show only 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.6;
+        max-height: calc(1.6em * 3);
+        word-break: break-word;
+
         color: #666;
         line-height: 1.8;
         margin-bottom: 20px;
+        text-align: justify;
     }
 
     .practice-footer {
@@ -1434,6 +1444,17 @@ document.addEventListener("DOMContentLoaded", function () {
             let sectorId =
                 agencyCard.getAttribute("data-sectorid");
             dashboard.loadSectorAgencyActivityList(sectorId);
+        }
+
+        // =========================
+        // AGENCY CARD
+        // =========================
+        let activityCard =
+            e.target.closest(".countActivityCard");
+        if (activityCard) {
+            let sectorId =
+                activityCard.getAttribute("data-sectorid");
+            dashboard.loadSectorActivityList(sectorId);
         }
     });
 

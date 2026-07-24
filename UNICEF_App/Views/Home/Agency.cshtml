@@ -9,7 +9,7 @@
 <!--Agences-->
 <!-- ===== UN Agencies Section ===== -->
 <style nonce="@nonce">
-  
+
     .agency-dashboard-section {
         /*padding: 60px 40px;*/
         /* max-width: 1600px;
@@ -18,7 +18,7 @@
         padding: 50px;*/
         background: #eef4ff;
         padding: 15px;
-        margin-top: 192px;               
+        margin-top: 219px;
         /*border-radius: 35px;*/
         position: relative;
         overflow: hidden;
@@ -237,9 +237,13 @@
         color: #64748b;
         font-size: 15px;
         line-height: 1.7;
-        flex: 1;
-        min-height: 70px;
-        margin-bottom: 20px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; /* Show only 3 lines */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: calc(1.7em * 3); /* Optional: same height for all cards */
+        text-align:justify;
     }
 
     /* =========================
@@ -257,6 +261,13 @@
             font-size: 14px;
             font-weight: 700;
             color: #334155;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3; /* Only 3 lines */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: calc(1.5em * 3); /* Optional: Equal height */
         }
 
         .agency-footer button {
@@ -334,7 +345,7 @@
 
         <div>
             <h2 class="agency-main-title">
-                Explore UN Agencies
+                UN Agencies
             </h2>
 
             <p class="agency-subtitle">
