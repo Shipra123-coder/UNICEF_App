@@ -24,13 +24,13 @@ namespace BL.SDGGoalService
             _logger = logger;
         }
         #endregion
-        public async Task<List<SDGGoalVM>> GetAllPillarsWithActivityCountAsync()
+        public async Task<List<SDGGoalVM>> GetAllGoalsWithActivityCountAsync()
         {
             var parameters = new List<SqlParameter>
             {
-                new SqlParameter("@Action", "GetAllPillarsWithActivityCount")
+                new SqlParameter("@Action", "GetAllGoalsWithActivityCount")
             };
-            var ds = await _iSql.ExecuteProcedure("SP_ManageViksitRajasthan", parameters.ToArray());
+            var ds = await _iSql.ExecuteProcedure("SP_ManageSDGGoalProgress", parameters.ToArray());
             var list = new List<SDGGoalVM>();
             if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 return list;
@@ -39,20 +39,22 @@ namespace BL.SDGGoalService
             {
                 list.Add(new SDGGoalVM
                 {
-                    ViksitId = row["ViksitId"] != DBNull.Value ? Convert.ToInt32(row["ViksitId"]) : 0,
-                    ViksitName = row["ViksitName"]?.ToString(),
-                    ImageUrl = row["ImageUrl"] != DBNull.Value ? row["ImageUrl"].ToString() : "",
+                    GoalId = row["GoalId"] != DBNull.Value ? Convert.ToInt32(row["GoalId"]) : 0,
+                    GoalName = row["GoalName"]?.ToString(),
+                    ImageUrlFront = row["ImageUrlFront"] != DBNull.Value ? row["ImageUrlFront"].ToString() : "",
+                    ImageUrlBack = row["ImageUrlBack"] != DBNull.Value ? row["ImageUrlBack"].ToString() : "",
+                    DisplayNumber = row["DisplayNumber"] != DBNull.Value ? Convert.ToInt32(row["DisplayNumber"]):0,
                     TotalCount = row["TotalCount"] != DBNull.Value ? Convert.ToInt32(row["TotalCount"]) : 0
                 });
             }
-            return list.OrderBy(x => x.ViksitName).ToList();
+            return list.OrderBy(x => x.DisplayNumber).ToList();
         }
         public async Task<SDGGoalDashboardModel> GetGoalWiseCounts(int goalId)
         {
             var parameters = new List<SqlParameter>
             {
-                new SqlParameter("@Action", "GetGoalWiseCounts"),
-                new SqlParameter("@ViksitId", goalId)
+                new SqlParameter("@Action", "GetGoalsWiseCounts"),
+                new SqlParameter("@GoalId", goalId)
             };
 
             var ds = await _iSql.ExecuteProcedure(
@@ -67,13 +69,14 @@ namespace BL.SDGGoalService
             return new SDGGoalDashboardModel
             {
                 GoalId = row["GoalId"] != DBNull.Value
-                            ? Convert.ToInt32(row["ViksitId"])
+                            ? Convert.ToInt32(row["GoalId"])
                             : 0,
 
                 GoalName = row["GoalName"]?.ToString(),
                 ImageUrl = row["ImageUrl"]?.ToString(),
+                GoalCode = row["GoalColor"].ToString(),
 
-                Description = row["Discription"]?.ToString(),
+                Description = row["Description"]?.ToString(),
 
                 ActivityCount = row["ActivityCount"] != DBNull.Value
                             ? Convert.ToInt32(row["ActivityCount"])
@@ -134,7 +137,7 @@ namespace BL.SDGGoalService
                 {
                     GoalId = row["GoalId"] != DBNull.Value ? Convert.ToInt32(row["GoalId"]) : 0,
                     GoalName = row["GoalName"]?.ToString(),
-                    AssociatedSubThemes = row["AssociatedSubThemes"] == DBNull.Value ? "" : row["AssociatedSubThemes"]?.ToString(),
+                    
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]) : 0,
                     ActivityName = row["ActivityName"]?.ToString(),
                     ActivityStatus = row["ActivityStatus"]?.ToString(),
@@ -151,6 +154,8 @@ namespace BL.SDGGoalService
 
                     AgencyName = row["AgencyName"]?.ToString(),
                     LogoURL = row["LogoURL"] == DBNull.Value ? "" : row["LogoURL"].ToString(),
+
+                    AssociatedSubThemes = row["AssociatedSubThemes"] == DBNull.Value ? "" : row["AssociatedSubThemes"]?.ToString(),
 
                     AssociatedAgencies = row["AssociatedAgencies"] == DBNull.Value ? "" : row["AssociatedAgencies"].ToString(),
                 });

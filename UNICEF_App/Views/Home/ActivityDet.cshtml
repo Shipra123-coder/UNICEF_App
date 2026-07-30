@@ -302,58 +302,59 @@
         }
 
 
-        .report-header {
+        .print-header {
             width: 100%;
             border: 1px solid #1d3d73;
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        .report-header-top {
-            background: #1f3b73 !important;
+    .print-header-top {
+        background: #1f3b73 !important;
+        color: #fff !important;
+        text-align: center;
+        padding: 18px 20px;
+    }
+
+        .print-header-top h2 {
+            margin: 0;
+            font-size: 18px !important;
             color: #fff !important;
-            text-align: center;
-            padding: 18px 20px;
-        }
-
-            .report-header-top h1 {
-                margin: 0;
-                font-size: 18px !important;
-                font-weight: 700;
-                text-transform: uppercase;
-            }
-
-            .report-header-top p {
-                margin: 8px 0;
-                font-size: 14px !important;
-                color: #fff !important;
-            }
-
-        .report-title {
-            font-size: 16px !important;
             font-weight: 700;
-            line-height: 1.5;
+            text-transform: uppercase;
         }
+
+        .print-header-top p {
+            margin: 8px 0;
+            font-size: 14px !important;
+            color: #fff !important;
+        }
+
+    .print-title {
+        font-size: 16px !important;
+        font-weight: 700;
+        line-height: 1.5;
+    }
 
         /* Renamed from .header-bottom */
-        .report-header-footer {
-            background: #3c78b5 !important;
+    .print-header-footer {
+        background: #3c78b5 !important;
+        color: #fff !important;
+        text-align: center;
+        padding: 12px 20px;
+    }
+
+        .print-header-footer h3 {
+            margin: 0;
+            font-size: 16px !important;
+            font-weight: 700;
             color: #fff !important;
-            text-align: center;
-            padding: 12px 20px;
         }
 
-            .report-header-footer h2 {
-                margin: 0;
-                font-size: 16px !important;
-                font-weight: 700;
-                color: #fff !important;
-            }
-
-            .report-header-footer p {
-                margin: 5px 0 0;
-                font-size: 13px !important;
-                color: #fff !important;
-            }
+        .print-header-footer p {
+            margin: 5px 0 0;
+            font-size: 13px !important;
+            color: #fff !important;
+        }
         /*=========================
     Print
     =========================*/
@@ -385,9 +386,9 @@
     <input type="hidden" id="ActivityGuid" value="@ViewBag.Guid" />
 
     <div id="printDiv">
-        <div class="report-header">
+        <div class="print-header">
 
-            <div class="print-report-top">
+            <div class="print-header-top">
 
                 <h2>PROGRAMME COOPERATION AND PARTNERSHIP PLATFORM</h2>
 
@@ -399,13 +400,13 @@
                     <span class="link">Rajasthan</span>
                 </p>
 
-                <div class="print-report-title">
+                <div class="print-title">
                     REPORTING FORMAT FOR UN AGENCIES &amp; STATE GOVERNMENT DEPARTMENTS
                 </div>
 
             </div>
 
-            <div class="print-header-bottom">
+            <div class="print-header-footer">
 
                 <h3>SDG Coordination &amp; Acceleration Centre</h3>
 

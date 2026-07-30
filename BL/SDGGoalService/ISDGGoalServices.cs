@@ -9,7 +9,7 @@ namespace BL.SDGGoalService
 {
     public interface ISDGGoalServices
     {
-        Task<List<SDGGoalVM>> GetAllPillarsWithActivityCountAsync();
+        Task<List<SDGGoalVM>> GetAllGoalsWithActivityCountAsync();
         Task<SDGGoalDashboardModel> GetGoalWiseCounts(int goalId);
         Task<List<SDGGoalDepartmentActivityModel>> GetDepartmentActivityList(int? goalId);
         Task<List<SDGGoalAgencyActivityModel>> GetAgencyActivityList(int? goalId);

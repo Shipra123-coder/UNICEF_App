@@ -17,7 +17,7 @@ namespace UNICEF_App.Controllers
         #region SDGs Goals Progress
         public async Task<IActionResult> SDGGoal()
         {
-            var model = await _iSDGGoalService.GetAllPillarsWithActivityCountAsync();
+            var model = await _iSDGGoalService.GetAllGoalsWithActivityCountAsync();
             return View(model);
         }
         public async Task<IActionResult> SDGGoalProgress(int goalId)

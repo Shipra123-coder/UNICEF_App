@@ -9,16 +9,19 @@ namespace MO.DashBoard
     #region ViksitRajasthan
     public class SDGGoalVM
     {
-        public int ViksitId { get; set; }
-        public string ViksitName { get; set; }
+        public int GoalId { get; set; }
+        public string GoalName { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
+        public int DisplayNumber { get; set; }
+        public string ImageUrlFront { get; set; }
+        public string ImageUrlBack { get; set; }
         public int TotalCount { get; set; }
     }
     public class SDGGoalDashboardModel
     {
         public int GoalId { get; set; }
         public string GoalName { get; set; }
+        public string GoalCode { get; set; }
         public string ImageUrl { get; set; }
         //public string ViksitCode { get; set; }
         public string Description { get; set; }
