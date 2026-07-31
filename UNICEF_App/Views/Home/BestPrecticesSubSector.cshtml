@@ -836,6 +836,135 @@
         }
     }
 </style>
+<style nonce="@nonce">   
+    .main {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+
+    .activity-wrapper {
+        background: #fff;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    }
+
+    .activity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #ececec;
+        padding-bottom: 18px;
+    }
+
+    .activity-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: #173c77;
+        margin: 0;
+    }
+
+    .activity-subtitle {
+        color: #777;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .activity-count {
+        background: #173c77;
+        color: #fff;
+        padding: 10px 22px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    /* Accordion */
+    
+    .myaccordion .accordion-item {
+        border: none;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0,0,0,.08);
+    }
+
+    .myaccordion .accordion-button {
+        background: #f8f9fc;
+        font-weight: 600;
+        color: #173c77;
+        padding: 18px;
+    }
+
+    .myaccordion .accordion-button .small {
+        color:#fff !important;
+    }
+
+        .myaccordion .accordion-button::after {
+            margin-left: 0 !important;
+            margin-right: 10px;
+        }
+
+        .myaccordion .accordion-button:not(.collapsed) {
+            background: #173c77;
+            color: #fff;
+        }
+
+        .myaccordion .accordion-button:focus {
+            box-shadow: none;
+        }
+
+    /* Table */
+
+    .activity-table {
+        margin-bottom: 0;
+    }
+
+        .activity-table thead {
+            background: #173c77;
+            color: #fff;
+        }
+
+            .activity-table thead th {
+                border: none;
+                font-size: 14px;
+                padding: 14px;
+            }
+
+        .activity-table tbody td {
+            vertical-align: middle;
+            padding: 14px;
+        }
+
+        .activity-table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+    .table-view-btn {
+        background: #173c77;
+        color: #fff;
+        padding: 6px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+    }
+
+        .table-view-btn:hover {
+            color: #fff;
+            background: #0f2b59;
+        }
+
+    .dept-count-badge {
+        background: #ff9800;
+        color: #fff;
+        border-radius: 30px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+</style>
+
 
 <section class="container sector-banner" id="sectorBanner">
 
@@ -973,22 +1102,31 @@
 
     </div>
 </section>
-<div class="container">
-    <div class="row">
-       
-            <div class="department-page-title">
-                <h2 id="title">
-                </h2>
-                @*<p>
-                        Explore department wise activity monitoring,
-                        SDGs, sectors and development initiatives.
-                    </p>*@
+
+<div class="container main py-4">
+
+    <div class="activity-wrapper">
+
+        <div class="activity-header">
+
+            <div>
+                <h2 id="title" class="activity-title"></h2>
+                @*<p class="activity-subtitle">
+                Explore activities, departments, sectors and agencies.
+                </p>*@
             </div>
-            <div class="accordion myaccordion"
-                 id="departmentAccordion">
-            </div>
-        
+
+            @*<div class="activity-count" id="totalActivityCount">
+            Total Activities : 0
+            </div>*@
+
+        </div>
+
+        <div class="accordion myaccordion" id="departmentAccordion">
+        </div>
+
     </div>
+
 </div>
 
 <!-- ========================================= -->
@@ -1175,7 +1313,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <style nonce="@nonce">
     .sector-banner {
-        margin-top: 220px;
+        margin-top: 190px;
         position: relative;
         min-height: 420px;
         background-image: var(--sector-bg);
