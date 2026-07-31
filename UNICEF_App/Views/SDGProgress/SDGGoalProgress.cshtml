@@ -413,7 +413,7 @@
         <!-- Dynamic Statistics Cards Grid -->
         <div class="top-count-section">
             <!-- Departments -->
-            <div class="count-card countDepartmentCard" data-goalid="@Model.GoalId">
+            <div class="count-card card-blue countDepartmentCard" data-goalid="@Model.GoalId">
                 <div class="count-icon">🏛</div>
                 <div>
                     <h2>@Model.DepartmentCount</h2>
@@ -422,7 +422,7 @@
             </div>
 
             <!-- Agencies -->
-            <div class="count-card countAgencyCard" data-goalid="@Model.GoalId">
+            <div class="count-card card-green countAgencyCard" data-goalid="@Model.GoalId">
                 <div class="count-icon">🏢</div>
                 <div>
                     <h2>@Model.AgencyCount</h2>
@@ -431,7 +431,7 @@
             </div>
 
             <!-- Sectors -->
-            <div class="count-card countSectorCard" data-goalid="@Model.GoalId">
+            <div class="count-card card-orange countSectorCard" data-goalid="@Model.GoalId">
                 <div class="count-icon">🌐</div>
                 <div>
                     <h2>@Model.SectorCount</h2>
@@ -440,7 +440,7 @@
             </div>
 
             <!-- Activities -->
-            <div class="count-card countActivityCard" data-goalid="@Model.GoalId">
+            <div class="count-card card-purple countActivityCard" data-goalid="@Model.GoalId">
                 <div class="count-icon">📋</div>
                 <div>
                     <h2>@Model.ActivityCount</h2>
@@ -449,7 +449,7 @@
             </div>
 
             <!-- Tasks -->
-            <div class="count-card">
+            <div class="count-card card-red">
                 <div class="count-icon">🗂</div>
                 <div>
                     <h2>@Model.TaskCount</h2>
@@ -458,7 +458,7 @@
             </div>
 
             <!-- Best Practices -->
-            <div class="count-card">
+            <div class="count-card card-indigo">
                 <div class="count-icon">🏆</div>
                 <div>
                     <h2>@Model.BestPracticeCount</h2>
@@ -1211,6 +1211,47 @@
         font-weight: 600;
     }
     /* RESPONSIVE */
+    /* Default Circle */
+    .count-card::before,
+    .double-count-card::before {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        right: -15px;
+        top: -15px;
+        border-radius: 50%;
+    }
+
+    /* Agencies */
+    .card-blue::before {
+        background: #E3F2FD;
+    }
+
+    /* Departments */
+    .card-green::before {
+        background: #E8F5E9;
+    }
+
+    /* Activities */
+    .card-orange::before {
+        background: #FFF3E0;
+    }
+
+    /* Tasks */
+    .card-purple::before {
+        background: #F3E5F5;
+    }
+
+    /* SDGs */
+    .card-red::before {
+        background: #FDECEC;
+    }
+
+    /* Viksit Rajasthan */
+    .card-indigo::before {
+        background: #EEF2FF;
+    }
 
     @@media(max - width:1200px) {
         .top-count-section {

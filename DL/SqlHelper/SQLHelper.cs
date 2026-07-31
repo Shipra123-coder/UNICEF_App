@@ -16,9 +16,9 @@ namespace DL
         /// </summary>
         //public static string ConnectionString = "Data Source=DESKTOP-UCOMGBU\\MSSQLSERVER01;Initial Catalog=SDGV2_New;Integrated Security=True";
         //Staging
-        public static string ConnectionString = "Server=10.70.232.110;Database=UNMonitor; User Id=UNMonitor;Password=unmonitor@2026;Integrated Security=False;";
+        //public static string ConnectionString = "Server=10.70.232.110;Database=UNMonitor; User Id=UNMonitor;Password=unmonitor@2026;Integrated Security=False;";
         //Local
-        //public static string ConnectionString = "Data Source=DESKTOP-UD0M5EJ\\SQLEXPRESS;Initial Catalog=UNMonitor;Integrated Security=True";
+        public static string ConnectionString = "Data Source=DESKTOP-UCOMGBU;Initial Catalog=UNMonitor;Integrated Security=True";
         //public SqlConnection Connection { get; }
         public SqlConnection Connection = new SqlConnection(ConnectionString);
 
