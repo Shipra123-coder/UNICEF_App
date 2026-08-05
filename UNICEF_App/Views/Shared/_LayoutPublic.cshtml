@@ -45,7 +45,10 @@
     @{
         var nonce = Context.Items["CSPNonce"]?.ToString();
     }
-
+    @{
+        var action = ViewContext.RouteData.Values["action"]?.ToString();
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    }
     <script nonce="@nonce">
         (function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
@@ -87,11 +90,174 @@
         .margin-top {
             margin-top: 240px;
         }
-        .Rajasthan_logo{
-            height:100px !important;
+
+        .Rajasthan_logo {
+            height: 100px !important;
         }
     </style>
+ 
+    <style nonce="@nonce">
+        /* ==========================================================================
+        NAVIGATION BAR WITH DROPDOWN STYLES
+        ========================================================================== */
 
+        /* Main Navigation Bar Base Layout */
+        .main-nav {
+            background-color: #0284c7; /* Core theme blue */
+            position: relative;
+            z-index: 999; /* Page contents ke upar dropdown load hone ke liye */
+        }
+
+        /* Flexbox Layout for Links Container */
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+            /* Base Style for Main Links & Dropdown Triggers */
+            .nav-links a,
+            .dropdown-trigger {
+                color: #ffffff;
+                text-decoration: none;
+                padding: 14px 20px;
+                font-size: 14px;
+                font-weight: 500;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                transition: background-color 0.3s ease;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+            }
+
+                /* Hover & Active States for Main Menu Elements */
+                .nav-links a:hover,
+                .nav-links a.active,
+                .nav-dropdown:hover .dropdown-trigger {
+                    background-color: #ea580c; /* High contrast orange hover */
+                    color: #ffffff !important;
+                }
+
+        /* --- DROPDOWN MODULE MECHANICS --- */
+
+        /* Relative Context for Positioning the Dropdown Menu Box */
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Caret Icon Style Adjustment */
+        .caret-icon {
+            font-size: 10px !important;
+            margin-left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Dropdown Content Box (Hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 210px;
+            box-shadow: 0px 8px 24px rgba(30, 58, 138, 0.15); /* Soft ambient shadow */
+            border-radius: 0 0 6px 6px;
+            top: 100%;
+            left: 0;
+            border: 1px solid #e2e8f0;
+            border-top: none; /* Blends cleanly with top bar */
+            overflow: hidden;
+        }
+
+            /* Inner Menu Sub-Links Layout */
+            .dropdown-content a {
+                color: #334155 !important; /* Dark slate text color inside white background */
+                padding: 12px 18px !important;
+                text-decoration: none;
+                display: block !important;
+                font-size: 13.5px;
+                font-weight: 550;
+                border-bottom: 1px solid #f1f5f9;
+                text-align: left;
+                transition: all 0.25s ease;
+                width: 100%;
+                background: transparent;
+            }
+
+                /* Remove bottom border divider from the last sub-menu item */
+                .dropdown-content a:last-child {
+                    border-bottom: none;
+                }
+
+                /* Submenu Hover State (Micro-animation shifts text slightly right) */
+                .dropdown-content a:hover {
+                    background-color: #fff6ed !important; /* Soft orange tinted backdrop */
+                    color: #ea580c !important;
+                    padding-left: 22px !important;
+                }
+
+        /* --- TRIGGER SHOW ON HOVER --- */
+        .nav-dropdown:hover .dropdown-content {
+            display: block;
+            animation: navMenuFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Rotate the arrow/caret 180 degrees up on menu expansion */
+        .nav-dropdown:hover .caret-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Smooth Dropdown Animation Utility */
+        @@keyframes navMenuFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- RESPONSIVE MOBILE BREAKPOINT --- */
+        @@media (max-width: 992px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-trigger {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dropdown-content {
+                position: relative;
+                width: 100%;
+                box-shadow: none;
+                border: none;
+                background-color: rgba(0, 0, 0, 0.08); /* Dark tint for sub items on small devices */
+                border-radius: 0;
+            }
+
+                .dropdown-content a {
+                    color: #ffffff !important; /* Changes to white for dark overlay visibility */
+                    padding-left: 30px !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                }
+
+                    .dropdown-content a:hover {
+                        background-color: rgba(234, 88, 12, 0.3) !important;
+                        color: #ffffff !important;
+                    }
+        }
+    </style>
     <header class="two-tier-fixed-header header-top-fix">
         <div class="header d-flex align-items-center header-top screen__reader">
 
@@ -150,14 +316,14 @@
             <div class="nav-strip-container">
                 <nav class="d-flex justify-content-between align-items-center w-100">
                     <ul class="navbar-links-list m-0 p-0">
-                        <li><a asp-action="Land" asp-controller="Home" class="nav-link-item"><i class="bx bx-home-alt me-1"></i>Home</a></li>
-                        <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item">About Us</a></li>
-                        <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item">Sector</a></li>
-                        <li><a asp-action="Agency" asp-controller="Home" class="nav-link-item">Agency</a></li>
-                        <li><a asp-action="Department" asp-controller="Home" class="nav-link-item">Department</a></li>
-                        <li><a asp-action="SDGGoal" asp-controller="SDGProgress" class="nav-link-item">SDGs</a></li>
-                        <li><a asp-action="ViksitRajasthan" asp-controller="ViksitRajasthan" class="nav-link-item">Viksit@2047</a></li>
-                        <li><a asp-action="ContactUs" asp-controller="Home" class="nav-link-item">Contact Us</a></li>
+                        <li><a asp-action="Land" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Land" ? "active" : "")"><i class="bx bx-home-alt me-1"></i>Home</a></li>
+                        <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="AboutUs" ? "active" : "")">About Us</a></li>
+                        <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="BestPrectices" ? "active" : "")">Sector</a></li>
+                        <li><a asp-action="Agency" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Agency" ? "active" : "")">Agency</a></li>
+                        <li><a asp-action="Department" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Department" ? "active" : "")">Department</a></li>
+                        <li><a asp-action="SDGGoal" asp-controller="SDGProgress" class="nav-link-item @(controller=="SDGProgress" && action=="SDGGoal" ? "active" : "")">SDGs</a></li>
+                        <li><a asp-action="ViksitRajasthan" asp-controller="ViksitRajasthan" class="nav-link-item @(controller=="ViksitRajasthan" && action=="ViksitRajasthan" ? "active" : "")">Viksit@2047</a></li>
+                        <li><a asp-action="ContactUs" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="ContactUs" ? "active" : "")">Contact Us</a></li>
                     </ul>
 
                     <div class="navbar-right-action-wrapper">
@@ -233,7 +399,7 @@
                         <p>
                             SDGs Coordination and Acceleration Centre<br>
                             Directorate of Economics & Statistics<br>
-                            Department of Statistics<br>                            
+                            Department of Statistics<br>
                             Yojna Bhawan, Tilak Marg C- Scheme, <br>
                             Jaipur, Rajasthan Pin-302005
                         </p>
@@ -779,6 +945,35 @@
                 425: { slidesPerView: 1 },
                 0: { slidesPerView: 1 }
             },
+        });
+    </script>
+
+    <script nonce="@nonce">
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPath = window.location.pathname;
+
+            // ✅ Only count when visiting root domain (e.g., "/")
+            if (currentPath === "/" || currentPath === "/Home/Land") {
+                ajax.doGetAjax(`${domain.getdomain()}/Home/AddVisitor`, function (r) {
+                    getVisitorCount();
+                });
+            }
+            else {
+                getVisitorCount();
+            }
+
+            function getVisitorCount() {
+                ajax.doGetAjax(`${domain.getdomain()}/Home/GetVisitorCount`, function (r) {
+                    if (r.status && r.data && r.data.totalVisitors !== undefined) {
+                        // Use innerHTML because we have <strong> tag
+                        document.getElementById("visitorCounts").innerHTML = `No. of Visitors: <strong>${r.data.totalVisitors}</strong>`;
+                    } else {
+                        // Fallback if no data found
+                        document.getElementById("visitorCounts").innerHTML = "No. of Visitors: <strong>0</strong>";
+                    }
+                });
+            }
+
         });
     </script>
 </body>

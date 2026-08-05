@@ -221,7 +221,7 @@
     //    });
 
     //},
-    loadDepartmentActivityList: function (viksitId1) {
+    loadDepartmentActivityList: function (viksitId) {
 
         $.ajax({
             url: `/ViksitRajasthan/GetDepartmentActivityList?viksitId=${viksitId}`,

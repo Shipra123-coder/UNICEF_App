@@ -9,10 +9,10 @@
 
 <style nonce="@nonce">
     .sector-banner {
-        margin-top: 220px;
+        margin-top: 190px;
         position: relative;
         min-height: 420px;
-        background-color: antiquewhite;
+        /*background-color: antiquewhite;*/
         overflow: hidden;
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
     }
@@ -29,9 +29,9 @@
     .container-custom {
         position: relative;
         z-index: 2;
-        width: 90%;
+        width: 85%;
         margin: auto;
-        padding: 40px 0;
+        padding: 20px 0;
     }
 
     .custom-breadcrumb {
@@ -96,7 +96,7 @@
         margin-top: 0px;
         /* max-width: 650px;*/
         color: #2c4b84;
-        line-height: .5;
+        line-height:1;
         font-size: 18px;
     }
 
@@ -496,7 +496,7 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 15px;
-        margin-bottom: 45px;
+        margin-bottom: 20px;
         position: relative;
         z-index: 5;
         margin-top: 20px;
@@ -825,89 +825,24 @@
             </div>
         </div>
     </div>
+</div>    
+</section>
 
-    @*<div class="top-count-section">
-        <div class="count-card countAgencyCard" data-departmentid="@Model.DepartmentId">
-            <div class="count-icon">🏛</div>
-            <div>
-                <h2>@Model.AgencyCount</h2>
-                <p>Agencies</p>
-            </div>
+<div class="container-custom">
+    <div class="row">
+        <div class="department-page-title">
+            <h2 id="title">
+            </h2>
         </div>
-
-        <div class="count-card countSectorCard" data-departmentid="@Model.DepartmentId">
-            <div class="count-icon">🌐</div>
-            <div>
-                <h2>@Model.SectorCount</h2>
-                <p>Sectors</p>
-            </div>
-        </div>
-
-        <div class="count-card countActivityCard" data-departmentid="@Model.DepartmentId">
-            <div class="count-icon">📋</div>
-            <div>
-                <h2>@Model.ActivityCount</h2>
-                <p>Activities</p>
-            </div>
-        </div>
-
-        <div class="count-card">
-            <div class="count-icon">🗂</div>
-            <div>
-                <h2>@Model.TaskCount</h2>
-                <p>Tasks</p>
-            </div>
-        </div>
-
-        <div class="count-card">
-            <div class="count-icon">🎯</div>
-            <div>
-                <h2>@Model.GoalCount</h2>
-                <p>Goals</p>
-            </div>
-        </div>
-
-        <div class="count-card">
-            <div class="count-icon">✅</div>
-            <div>
-                <h2>@Model.TargetCount</h2>
-                <p>Targets</p>
-            </div>
-        </div>
-
-        <div class="count-card">
-            <div class="count-icon">📊</div>
-            <div>
-                <h2>@Model.PillarCount</h2>
-                <p>Viksit Rajasthan@2047</p>
-            </div>
-        </div>
-        <div class="count-card">
-            <div class="count-icon">🏆</div>
-            <div>
-                <h2>@Model.BestPracticeCount</h2>
-                <p>Best Practices</p>
-            </div>
-        </div>
-    </div>*@
-</div>
-
-    <div class="container-custom">
-        <div class="row">
-            <div class="department-page-title">
-                <h2 id="title">
-                </h2>
-            </div>
-            <div class="accordion myaccordion"
-                 id="departmentAccordion">
-            </div>
+        <div class="accordion myaccordion"
+             id="departmentAccordion">
         </div>
     </div>
-</section>
+</div>
 <!-- ========================================= -->
 <!-- BEST PRACTICES PAGE -->
 <!-- ========================================= -->
-<section class="container best-practice-page">
+<section class="">
     <div class="container-custom">
         <div class="section-heading-box">
             <h2 class="section-title">

@@ -693,6 +693,9 @@ header {
     .nav-link-item:hover {
         color: #fa8620 !important; /* Standout Rajasthan Saffron Orange on hover */
     }
+    .nav-link-item.active {
+        color: #fa8620 !important; /* Standout Rajasthan Saffron Orange on hover */
+    }
 
 /* PORTAL LOGIN OVER STRIP */
 .portal-login-btn {

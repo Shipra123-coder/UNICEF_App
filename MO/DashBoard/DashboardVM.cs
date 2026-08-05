@@ -128,6 +128,7 @@ namespace MO.DashBoard
         public int AgencyId { get; set; }
 
         public string AgencyName { get; set; }
+        
 
         public string AgencyCode { get; set; }
 
@@ -147,6 +148,7 @@ namespace MO.DashBoard
         public long ActivityId { get; set; }
 
         public string ActivityName { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string ActivityCode { get; set; }
 
@@ -169,6 +171,7 @@ namespace MO.DashBoard
         public long ActivityId { get; set; }
 
         public string ActivityName { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string ActivityCode { get; set; }
 
@@ -195,6 +198,7 @@ namespace MO.DashBoard
         public long ActivityId { get; set; }
 
         public string ActivityName { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string ActivityCode { get; set; }
 
@@ -223,6 +227,7 @@ namespace MO.DashBoard
         public long ActivityId { get; set; }
 
         public string ActivityName { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string ActivityStatus { get; set; }
     }
@@ -239,6 +244,7 @@ namespace MO.DashBoard
         public long ActivityId { get; set; }
 
         public string ActivityName { get; set; }
+        public string ActivityGuid { get; set; }
         public string NodalDepartment { get; set; }
         public string AssociatedDepartments { get; set; }
         public string ActivityStatus { get; set; }
