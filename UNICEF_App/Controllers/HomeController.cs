@@ -137,7 +137,8 @@ namespace UNICEF_App.Controllers
 
         public IActionResult ActivityDet(string guid)
         {
-            ViewBag.Guid = guid;
+            ViewBag.Guid = "c65fdc6c-a706-48ba-ae5a-f4b2b71b7b18";
+            //ViewBag.Guid = guid;
             return View();
         }
 

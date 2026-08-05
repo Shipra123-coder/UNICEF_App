@@ -607,8 +607,8 @@ namespace BL.Dashboard
                     ActivityName =
                         row["ActivityName"]?.ToString(),
 
-                    //ActivityCode =
-                    //    row["ActivityCode"]?.ToString(),
+                    ActivityGuid =
+                        row["ActivityGuid"]?.ToString(),
 
                     ActivityDescription =
                         row["ActivityDescription"]?.ToString(),
@@ -686,8 +686,8 @@ namespace BL.Dashboard
                     ActivityName =
                         row["ActivityName"]?.ToString(),
 
-                    //ActivityCode =
-                    //    row["ActivityCode"]?.ToString(),
+                    ActivityGuid =
+                        row["ActivityGuid"]?.ToString(),
 
                     ActivityDescription =
                         row["ActivityDescription"]?.ToString(),
@@ -756,8 +756,8 @@ namespace BL.Dashboard
                     ActivityName =
                         row["ActivityName"]?.ToString(),
 
-                    //ActivityCode =
-                    //    row["ActivityCode"]?.ToString(),
+                    ActivityGuid =
+                        row["ActivityGuid"]?.ToString(),
 
                     ActivityDescription =
                         row["ActivityDescription"]?.ToString(),
@@ -831,8 +831,8 @@ namespace BL.Dashboard
                     ActivityName =
                         row["ActivityName"]?.ToString(),
 
-                    //ActivityCode =
-                    //    row["ActivityCode"]?.ToString(),
+                    ActivityGuid =
+                        row["ActivityGuid"]?.ToString(),
 
                     ActivityDescription =
                         row["ActivityDescription"]?.ToString(),
@@ -909,6 +909,8 @@ namespace BL.Dashboard
 
                     ActivityName =
                         row["ActivityName"]?.ToString(),
+
+                    ActivityGuid = row["ActivityGuid"].ToString(),
                     ActivityStatus =
                         row["ActivityStatus"]?.ToString()
                 });
@@ -968,6 +970,7 @@ namespace BL.Dashboard
 
                     ActivityName =
                         row["ActivityName"]?.ToString(),
+                    ActivityGuid = row["ActivityGuid"].ToString(),
                     NodalDepartment = row["NodalDepartment"]?.ToString(),
                     AssociatedDepartments = row["AssociatedDepartments"]?.ToString(),
                     ActivityStatus = row["ActivityStatus"]?.ToString()
@@ -976,8 +979,6 @@ namespace BL.Dashboard
 
             return list;
         }
-
-
         #region Chart
         public async Task<List<AgencyChartModel>> GetAgencyChartData()
         {
@@ -1219,7 +1220,6 @@ namespace BL.Dashboard
             return list;
         }
         #endregion
-
         public async Task<BestPracticesModel> GetCoverPageDetails(long coverPageId)
         {
             var parameters = new List<SqlParameter>

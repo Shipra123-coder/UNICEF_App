@@ -537,7 +537,7 @@
                                 ${activity.activityStatus ?? ''}
                             </td>
                             <td>
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
                                     View
                                 </a>
@@ -777,11 +777,9 @@
 
                             <td>
 
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
-
                                     View
-
                                 </a>
 
                             </td>
@@ -897,7 +895,7 @@
                             </td>
 
                             <td>
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                 <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
                                     View
                                 </a>
@@ -1103,15 +1101,10 @@
 
                         </td>
 
-                        <td>
-
-                            <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
-                               class="table-view-btn">
-
-                                View
-
-                            </a>
-
+                        <td> <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
                         </td>
 
                     </tr>
@@ -1319,15 +1312,10 @@
 
                         </td>
 
-                        <td>
-
-                            <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
-                               class="table-view-btn">
-
-                                View
-
-                            </a>
-
+                        <td> <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
                         </td>
 
                     </tr>
@@ -1436,7 +1424,7 @@
                             </td>
 
                             <td>
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                 <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
                                     View
                                 </a>
@@ -1601,10 +1589,10 @@
                         </td>
                     
                         <td>
-                            <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
-                               class="table-view-btn">
-                                View
-                            </a>
+                            <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
                         </td>
                     
                     </tr>
@@ -1793,15 +1781,10 @@
 
                         </td>
 
-                        <td>
-
-                            <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
-                               class="table-view-btn">
-
-                                View
-
-                            </a>
-
+                        <td> <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
                         </td>
 
                     </tr>
@@ -1848,7 +1831,7 @@
         });
 
     },
-    loadDepartmentActivityList: function (departmentId1) {
+    loadDepartmentActivityList: function (departmentId) {
 
         $.ajax({
             url: `/Home/GetDepartmentSectorActivityList?departmentId=${departmentId}`,
@@ -1908,7 +1891,7 @@
                             </td>
 
                             <td>
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                 <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
                                     View
                                 </a>
