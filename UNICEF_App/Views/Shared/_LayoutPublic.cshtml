@@ -323,6 +323,20 @@
                         <li><a asp-action="Department" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Department" ? "active" : "")">Department</a></li>
                         <li><a asp-action="SDGGoal" asp-controller="SDGProgress" class="nav-link-item @(controller=="SDGProgress" && action=="SDGGoal" ? "active" : "")">SDGs</a></li>
                         <li><a asp-action="ViksitRajasthan" asp-controller="ViksitRajasthan" class="nav-link-item @(controller=="ViksitRajasthan" && action=="ViksitRajasthan" ? "active" : "")">Viksit@2047</a></li>
+                        <!-- 🌟 REPORT DROPDOWN MAIN MENU 🌟 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link-item dropdown-toggle @(controller=="Report" ? "active" : "")" href="#" id="reportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Report
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+                                <li>
+                                    <a asp-action="DepartmentReport" asp-controller="Report" class="dropdown-item @(controller=="Report" && action=="DepartmentReport" ? "active" : "")">
+                                        Department Report
+                                    </a>
+                                </li>
+                                <!-- Aap future me aur reports yahan add kar sakte hain -->
+                            </ul>
+                        </li>
                         <li><a asp-action="ContactUs" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="ContactUs" ? "active" : "")">Contact Us</a></li>
                     </ul>
 

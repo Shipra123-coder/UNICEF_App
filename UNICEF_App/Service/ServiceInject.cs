@@ -13,6 +13,7 @@ using BL.ManageActivity;
 //using BL.Log;
 //using BL.ManageMaster;
 using BL.PageAccessRequirement;
+using BL.Report;
 using BL.SDGGoalService;
 using BL.ViksitService;
 
@@ -47,6 +48,7 @@ namespace UNICEF_App
             services.AddScoped(typeof(IOpenAIService), typeof(OpenAIService));
             services.AddScoped(typeof(ISDGGoalServices),typeof(SDGGoalService));
             services.AddScoped(typeof(IViksitService),typeof(ViksitService));
+            services.AddScoped(typeof(IDepartmentReportService), typeof(DepartmentReportService));
             //services.AddScoped(typeof(IDepartment), typeof(Department));
             //services.AddScoped(typeof(IGauravMaster), typeof(GauravMaster));
             //services.AddScoped(typeof(ILog), typeof(Log));

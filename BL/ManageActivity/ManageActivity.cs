@@ -121,17 +121,19 @@ namespace BL.ManageActivity
                                 }
 
                                 var taskParams = new List<SqlParameter>
-                        {
-                            new SqlParameter("@Action", "UpsertTask"),
-                            new SqlParameter("@TaskId", task.TaskId),
-                            new SqlParameter("@ActivityId", activityId),
-                            new SqlParameter("@SubActivityId", subActivityId),
-                            new SqlParameter("@TaskDescription", task.TaskDescription),
-                            new SqlParameter("@TaskDetailDescription", task.TaskDetailDescription),
-                            new SqlParameter("@TaskStartDate", taskStartDate.HasValue ? (object)taskStartDate.Value : DBNull.Value),
-                            new SqlParameter("@TaskEndDate", taskEndDate.HasValue ? (object)taskEndDate.Value : DBNull.Value),
-                            new SqlParameter("@CreatedBy", createdBy)
-                        };
+                                {
+                                    new SqlParameter("@Action", "UpsertTask"),
+                                    new SqlParameter("@TaskId", task.TaskId),
+                                    new SqlParameter("@ActivityId", activityId),
+                                    new SqlParameter("@SubActivityId", subActivityId),
+                                    new SqlParameter("@TaskDescription", task.TaskDescription),
+                                    new SqlParameter("@TaskDetailDescription", task.TaskDetailDescription),
+                                    new SqlParameter("@TaskStartDate", taskStartDate.HasValue ? (object)taskStartDate.Value : DBNull.Value),
+                                    new SqlParameter("@TaskEndDate", taskEndDate.HasValue ? (object)taskEndDate.Value : DBNull.Value),
+                                    // 🔴 ADDED HERE: Pass Agency IDs (Comma-Separated String)
+                                    new SqlParameter("@TaskAgencyIds", task.TaskAgencyIds ?? (object)DBNull.Value),
+                                    new SqlParameter("@CreatedBy", createdBy)
+                                };
 
                                 await _iSql.ExecuteProcedureScalarAsync("SP_ManageActivity", taskParams.ToArray());
                             }
@@ -176,6 +178,8 @@ namespace BL.ManageActivity
                                     new SqlParameter("@TaskDetailDescription", task.TaskDetailDescription ?? ""),
                                     new SqlParameter("@TaskStartDate", taskStartDate.HasValue ? (object)taskStartDate.Value : DBNull.Value),
                                     new SqlParameter("@TaskEndDate", taskEndDate.HasValue ? (object)taskEndDate.Value : DBNull.Value),
+                                    // 🔴 ADDED HERE: Pass Agency IDs (Comma-Separated String)
+                            new SqlParameter("@TaskAgencyIds", task.TaskAgencyIds ?? (object)DBNull.Value),
                                     new SqlParameter("@CreatedBy", createdBy)
                                 };
 
@@ -265,7 +269,11 @@ namespace BL.ManageActivity
 
                                 // Convert Task dates inside sub-activities to "dd-MM-yyyy" strings
                                 StartDate = row["TaskStartDate"] != DBNull.Value ? Convert.ToDateTime(row["TaskStartDate"]).ToString("dd-MM-yyyy") : null,
-                                EndDate = row["TaskEndDate"] != DBNull.Value ? Convert.ToDateTime(row["TaskEndDate"]).ToString("dd-MM-yyyy") : null
+                                EndDate = row["TaskEndDate"] != DBNull.Value ? Convert.ToDateTime(row["TaskEndDate"]).ToString("dd-MM-yyyy") : null,
+                                // 🔴 MAP ASSOCIATED AGENCY IDS
+                        TaskAgencyIds = row.Table.Columns.Contains("TaskAgencyIds") && row["TaskAgencyIds"] != DBNull.Value
+                            ? row["TaskAgencyIds"].ToString()
+                            : null
                             });
                         }
                     }
@@ -291,7 +299,11 @@ namespace BL.ManageActivity
 
                         // Convert standalone main view task dates to "dd-MM-yyyy" strings
                         StartDate = row["TaskStartDate"] != DBNull.Value ? Convert.ToDateTime(row["TaskStartDate"]).ToString("dd-MM-yyyy") : null,
-                        EndDate = row["TaskEndDate"] != DBNull.Value ? Convert.ToDateTime(row["TaskEndDate"]).ToString("dd-MM-yyyy") : null
+                        EndDate = row["TaskEndDate"] != DBNull.Value ? Convert.ToDateTime(row["TaskEndDate"]).ToString("dd-MM-yyyy") : null,
+                        // 🔴 MAP ASSOCIATED AGENCY IDS
+                        TaskAgencyIds = row.Table.Columns.Contains("TaskAgencyIds") && row["TaskAgencyIds"] != DBNull.Value
+                    ? row["TaskAgencyIds"].ToString()
+                    : null
                     });
                 }
             }

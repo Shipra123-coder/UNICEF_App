@@ -2542,69 +2542,63 @@
 
             success: function (response) {
 
-                const ctx =
-                    document.getElementById("activityStatusChart");
+                const ctx = document.getElementById("activityStatusChart");
 
-                if (!ctx)
-                    return;
+                if (!ctx) return;
 
-                const labels =
-                    response.map(x => x.activityStatus);
+                // API Response se Labels aur Counts extract karein
+                const labels = response.map(x => x.activityStatus);
+                const counts = response.map(x => x.totalCount);
 
-                const counts =
-                    response.map(x => x.totalCount);
-
-                // Destroy old chart
+                // Old chart instance destroy karein
                 if (window.activityStatusChartInstance) {
                     window.activityStatusChartInstance.destroy();
                 }
+
+                // 🌟 STATUS COLOR DICTIONARY
+                const statusColors = {
+                    'Completed': '#3b82f6',    // Blue
+                    'Ongoing': '#22c55e',      // Green
+                    'On Track': '#22c55e',     // Green
+                    'Not Started': '#ef4444',   // Red
+                    'Delayed': '#f59e0b',      // Yellow/Orange
+                    'Discontinued': '#64748b'  // Grey
+                };
+
+                // 🌟 FIX: Hardcoded array ki jagah API se aaye 'labels' par map karein
+                const dynamicBgColors = labels.map(function (label) {
+                    const key = label ? label.trim() : '';
+                    return statusColors[key] || '#94a3b8'; // Fallback color agar key na mile
+                });
 
                 // =========================
                 // CENTER TOTAL PLUGIN
                 // =========================
                 const centerTextPlugin = {
-
                     id: 'centerTextPlugin',
-
                     afterDraw(chart) {
-
                         const { ctx } = chart;
+                        const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                        const meta = chart.getDatasetMeta(0);
 
-                        const total =
-                            chart.data.datasets[0].data
-                                .reduce((a, b) => a + b, 0);
-
-                        const meta =
-                            chart.getDatasetMeta(0);
-
-                        if (!meta.data.length)
-                            return;
+                        if (!meta.data.length) return;
 
                         const centerX = meta.data[0].x;
                         const centerY = meta.data[0].y;
 
                         ctx.save();
-
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
 
                         // Total Count
                         ctx.fillStyle = '#0f172a';
                         ctx.font = 'bold 28px Arial';
-                        ctx.fillText(
-                            total,
-                            centerX,
-                            centerY - 10
-                        );
+                        ctx.fillText(total, centerX, centerY - 10);
 
                         // Label
                         ctx.fillStyle = '#64748b';
                         ctx.font = '13px Arial';
-                        ctx.fillText(
-                            'Total Activities',
-                            centerX,
-                            centerY + 15
-                        );
+                        ctx.fillText('Total Activities', centerX, centerY + 15);
 
                         ctx.restore();
                     }
@@ -2614,57 +2608,29 @@
                 // OUTSIDE VALUE LABELS
                 // =========================
                 const valueLabelPlugin = {
-
                     id: 'valueLabelPlugin',
-
                     afterDatasetsDraw(chart) {
-
                         const { ctx } = chart;
-
-                        const meta =
-                            chart.getDatasetMeta(0);
+                        const meta = chart.getDatasetMeta(0);
 
                         meta.data.forEach((arc, index) => {
+                            const value = chart.data.datasets[0].data[index];
 
-                            const value =
-                                chart.data.datasets[0].data[index];
+                            if (value === 0) return;
 
-                            if (value === 0)
-                                return;
+                            const angle = (arc.startAngle + arc.endAngle) / 2;
+                            const radius = arc.innerRadius + (arc.outerRadius - arc.innerRadius) / 2;
 
-                            const angle =
-                                (arc.startAngle + arc.endAngle) / 2;
+                            const x = arc.x + Math.cos(angle) * radius;
+                            const y = arc.y + Math.sin(angle) * radius;
 
-                            const radius =
-                                arc.innerRadius +
-                                (arc.outerRadius - arc.innerRadius) / 2;
-
-                            const x =
-                                arc.x + Math.cos(angle) * radius;
-
-                            const y =
-                                arc.y + Math.sin(angle) * radius;
-
+                            ctx.save();
                             ctx.fillStyle = '#fff';
                             ctx.font = 'bold 14px Arial';
-
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
                             ctx.fillText(value, x, y);
-
-                            //ctx.save();
-
-                            //ctx.fillStyle = '#000';
-                            //ctx.font = 'bold 13px Arial';
-                            //ctx.textAlign = 'center';
-                            //ctx.textBaseline = 'middle';
-
-                            //ctx.fillText(
-                            //    value,
-                            //    x,
-                            //    y
-                            //);
-
                             ctx.restore();
-
                         });
                     }
                 };
@@ -2672,88 +2638,52 @@
                 // =========================
                 // CREATE CHART
                 // =========================
-
-                window.activityStatusChartInstance =
-                    new Chart(ctx, {
-
-                        type: 'doughnut',
-
-                        data: {
-
-                            labels: labels,
-
-                            datasets: [{
-                                data: counts,
-
-                                backgroundColor: [
-                                    '#22c55e', // Completed
-                                    '#f59e0b', // Ongoing
-                                    '#64748b', // Not Started
-                                    '#ef4444'  // Discontinued
-                                ],
-
-                                borderColor: '#ffffff',
-                                borderWidth: 2,
-                                hoverOffset: 8
-                            }]
-                        },
-
-                        options: {
-
-                            responsive: true,
-
-                            maintainAspectRatio: false,
-
-                            cutout: '65%',
-
-                            plugins: {
-
-                                legend: {
-
-                                    position: 'bottom',
-
-                                    labels: {
-
-                                        usePointStyle: true,
-
-                                        padding: 20,
-
-                                        font: {
-                                            size: 13,
-                                            weight: '600'
-                                        }
+                window.activityStatusChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: counts,
+                            backgroundColor: dynamicBgColors, // 🌟 Updated Dynamic Colors
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '65%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    font: {
+                                        size: 13,
+                                        weight: '600'
                                     }
-                                },
-
-                                tooltip: {
-
-                                    callbacks: {
-
-                                        label: function (context) {
-
-                                            return context.label +
-                                                ': ' +
-                                                context.raw;
-                                        }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.label + ': ' + context.raw;
                                     }
                                 }
                             }
-                        },
-
-                        plugins: [
-                            centerTextPlugin,
-                            valueLabelPlugin
-                        ]
-
-                    });
+                        }
+                    },
+                    plugins: [
+                        centerTextPlugin,
+                        valueLabelPlugin
+                    ]
+                });
             },
 
             error: function () {
-
-                console.error(
-                    "Error loading activity status chart"
-                );
-
+                console.error("Error loading activity status chart");
             }
         });
     },
@@ -2764,11 +2694,10 @@
             type: 'GET',
 
             success: function (response) {
-                debugger;
+
                 const ctx = document.getElementById("taskChart");
 
-                if (!ctx)
-                    return;
+                if (!ctx) return;
 
                 const labels = response.map(x => x.taskStatus);
                 const counts = response.map(x => x.totalCount);
@@ -2779,30 +2708,34 @@
                     window.taskChartInstance.destroy();
                 }
 
+                // 🌟 1. TASK STATUS COLOR DICTIONARY
+                const statusColorMap = {
+                    'Completed': '#2196F3',           // Blue
+                    'On Track': '#4CAF50',            // Green
+                    'Delayed': '#FFC107',             // Yellow
+                    'Not Started': '#F44336',         // Red
+                    'Partially On Track': '#FF9800',  // Orange
+                    'In Progress': '#00BCD4',         // Cyan
+                    'Delayed/Constrained': '#FF5722', // Deep Orange
+                    'Discontinued': '#9E9E9E'         // Grey
+                };
+
+                // 🌟 2. DYNAMICALLY MAP COLORS ACCORDING TO BACKEND LABELS
+                const dynamicBgColors = labels.map(function (status) {
+                    const key = status ? status.trim() : '';
+                    return statusColorMap[key] || '#9E9E9E'; // Fallback Grey
+                });
+
                 window.taskChartInstance = new Chart(ctx, {
 
                     type: 'bar',
 
                     data: {
-
                         labels: labels,
 
                         datasets: [{
                             data: counts,
-
-                            // Aapke 8 statuses ke liye 8 premium colors
-                            backgroundColor: [
-                                '#4CAF50', // Completed (Green)
-                                '#FF9800', // Partially On Track (Orange)
-                                '#2196F3', // On Track (Blue)
-                                '#FF5722', // Delayed/Constrained (Deep Orange)
-                                '#9E9E9E', // Discontinued (Grey)
-                                '#00BCD4', // In Progress (Cyan)
-                                '#673AB7', // Not Started (Purple)
-                                '#F44336'  // Delayed (Red)
-                            ],
-
-                            /*borderRadius: 8,*/
+                            backgroundColor: dynamicBgColors, // 🌟 Updated Dynamic Colors
                             borderSkipped: false,
                             barThickness: 22
                         }]
@@ -2827,9 +2760,7 @@
                                 callbacks: {
 
                                     label: function (context) {
-
                                         return context.raw + " Tasks";
-
                                     }
 
                                 }
@@ -2916,6 +2847,8 @@
                             chart.getDatasetMeta(0).data.forEach(function (bar, index) {
 
                                 const value = chart.data.datasets[0].data[index];
+
+                                if (value === 0) return; // Zero values skip karein
 
                                 ctx.fillText(value, bar.x - 8, bar.y);
 

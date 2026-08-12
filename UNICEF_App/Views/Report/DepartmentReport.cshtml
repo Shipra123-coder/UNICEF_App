@@ -1,0 +1,855 @@
+﻿@{
+    ViewData["Title"] = "Department Wise Activity Report";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    body {
+        background: #f5f5f5;
+        font-family: Calibri, Arial, sans-serif;
+        font-size: 14px;
+    }
+
+    /* TOP FILTER CARD REDESIGN */
+    .top-filter {
+        /*width: 1100px;*/
+        width: 85%;
+        margin: 200px auto 20px auto; /* 190px margin hata kar standard 30px kiya gaya hai */
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .filter-header {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 8px;
+    }
+
+        .filter-header i {
+            color: #0b5ed7;
+            font-size: 18px;
+        }
+
+    /* FORM ELEMENTS STYLING */
+    .form-label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .form-select-md {
+        border-color: #cbd5e1;
+        border-radius: 8px;
+        font-size: 14px;
+        padding: 8px 12px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .form-select-md:focus {
+            border-color: #0b5ed7;
+            box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.15);
+        }
+
+    /* ACTION BUTTONS */
+    .btn-filter {
+        padding: 8px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn-filter:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    /* .margin-top ko responsive/clean margin me convert kiya gaya hai */
+    .margin-top {
+        margin-top: 0px !important;
+    }
+
+    .report {
+        width: 85%;
+        margin: 50px auto 20px auto;
+        background: #fff;
+        padding: 25px;
+        border: 1px solid #ddd;
+    }
+
+    .report-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #0b5ed7;
+        margin-bottom: 25px;
+    }
+
+    /* SUMMARY CARDS DESIGN */
+    .summary-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .summary-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        flex: 1 1 calc(20% - 12px);
+        min-width: 180px;
+        box-sizing: border-box;
+    }
+
+        .summary-card::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            opacity: 0.25;
+        }
+
+    .card-blue::after {
+        background-color: #0d6efd;
+    }
+
+    .card-green::after {
+        background-color: #198754;
+    }
+
+    .card-yellow::after {
+        background-color: #ffc107;
+    }
+
+    .card-red::after {
+        background-color: #dc3545;
+    }
+
+    .card-purple::after {
+        background-color: #6f42c1;
+    }
+
+    .summary-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-right: 12px;
+        color: #fff;
+    }
+
+    .bg-icon-blue {
+        background: #0d6efd;
+    }
+
+    .bg-icon-green {
+        background: #198754;
+    }
+
+    .bg-icon-yellow {
+        background: #ffc107;
+    }
+
+    .bg-icon-red {
+        background: #dc3545;
+    }
+
+    .bg-icon-purple {
+        background: #6f42c1;
+    }
+
+    /*.summary-data {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-value {
+        font-size: 20px;
+        font-weight: 800;
+        color: #1e293b;
+        line-height: 1.1;
+    }
+
+    .summary-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #64748b;
+        margin-top: 2px;
+    }*/
+
+    /* Grouped Wide Cards */
+    /*.summary-card-wide {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 16px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        flex: 1 1 calc(50% - 10px);
+        min-width: 300px;
+        box-sizing: border-box;
+    }
+
+        .summary-card-wide::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            opacity: 0.25;
+            background-color: #0d6efd;
+        }
+
+    .group-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .group-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .group-divider {
+        width: 1px;
+        height: 35px;
+        background-color: #e2e8f0;
+    }
+
+    .group-footer-title {
+        text-align: center;
+        font-weight: 800;
+        font-size: 13px;
+        color: #2563eb;
+        margin-top: 8px;
+    }*/
+
+    /* SUMMARY CARDS DESIGN MATCHING SCREENSHOT */
+    .summary-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .summary-card {
+        background: #ffffff;
+        border: 1px solid #e8eef5;
+        border-radius: 14px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        flex: 1 1 calc(20% - 12px);
+        min-width: 170px;
+        box-sizing: border-box;
+    }
+
+        /* TOP-RIGHT CORNER PASTEL CIRCLE ACCENTS */
+        .summary-card::after, .summary-card-wide::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+    .card-blue::after {
+        background-color: #e0f2fe;
+    }
+
+    .card-green::after {
+        background-color: #dcfce7;
+    }
+
+    .card-yellow::after {
+        background-color: #fef3c7;
+    }
+
+    .card-red::after {
+        background-color: #fee2e2;
+    }
+
+    .card-purple::after {
+        background-color: #f3e8ff;
+    }
+
+    /* ICON STYLING */
+    .summary-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-right: 12px;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .bg-icon-blue {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    }
+
+    .bg-icon-yellow {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .bg-icon-colorful {
+        background: linear-gradient(135deg, #3b82f6, #0284c7);
+    }
+
+    .summary-data {
+        display: flex;
+        flex-direction: flex-start;
+    }
+
+    .summary-value {
+        font-size: 20px;
+        font-weight: 800;
+        color: #1e293b;
+        line-height: 1;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    .summary-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+        margin-top: 2px;
+    }
+
+    /* GROUPED WIDE CARDS */
+    .summary-card-wide {
+        background: #ffffff;
+        border: 1px solid #e8eef5;
+        border-radius: 14px;
+        padding: 12px 16px 8px 16px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        flex: 1 1 calc(50% - 10px);
+        min-width: 320px;
+        box-sizing: border-box;
+    }
+
+    .group-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .group-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .group-divider {
+        width: 1px;
+        height: 28px;
+        background-color: #e2e8f0;
+    }
+
+    .group-footer-title {
+        text-align: center;
+        font-weight: 800;
+        font-size: 13px;
+        color: #2563eb;
+        margin-top: 6px;
+    }
+
+    /* Section Headers */
+    .department {
+        background: #0b5ed7;
+        color: #fff;
+        padding: 12px;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .sector {
+        background: #dbeafe;
+        padding: 10px 15px;
+        font-size: 17px;
+        font-weight: bold;
+        border-left: 6px solid #0b5ed7;
+        margin-top: 5px;
+    }
+
+    .agency {
+        background: #e8f5e9;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: 600;
+        border-left: 6px solid #2e7d32;
+        margin-top: 5px;
+    }
+
+    /* ACTIVITY BLOCK WITH METADATA TABLE */
+    .activity-container {
+        margin-top: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #fcd34d;
+        border-radius: 6px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .activity-title-header {
+        background: #fff8e1;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #856404;
+        border-left: 6px solid #f9a825;
+        border-bottom: 1px solid #ffeeba;
+    }
+
+    .activity-meta-table {
+        width: 100%;
+        margin-bottom: 0 !important;
+        font-size: 13px;
+        background-color: #fffdf5;
+    }
+
+        .activity-meta-table th {
+            background-color: #fef3c7 !important;
+            color: #78350f !important;
+            font-weight: 700;
+            text-align: left !important;
+            border-color: #fde68a !important;
+        }
+
+        .activity-meta-table td {
+            border-color: #fde68a !important;
+            color: #334155;
+        }
+
+    /* Badges */
+    .badge-agency {
+        background-color: #0284c7;
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .badge-sdg {
+        background-color: #15803d;
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .badge-target {
+        background-color: #0369a1;
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .badge-vr-theme {
+        background-color: #4338ca;
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .badge-vr-subtheme {
+        background-color: #6b21a8;
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* Tasks Table */
+    .task-table {
+        margin-top: 0px !important;
+    }
+
+        .task-table th {
+            background: #334155 !important;
+            color: #fff !important;
+            text-align: center;
+            font-size: 13px;
+        }
+
+    .completed {
+        color: #16a34a;
+        font-weight: bold;
+    }
+
+    .progress {
+        color: #d97706;
+        font-weight: bold;
+        line-height: 0rem !important;
+    }
+
+    .pending {
+        color: #dc2626;
+        font-weight: bold;
+    }
+
+    .summary-title {
+        margin-top: 25px;
+        background: #0b5ed7;
+        color: #fff;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .footer {
+        margin-top: 30px;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+<style nonce="${nonce || ''}">    
+    @@page {
+        size: auto;
+        margin: 0 !important; /* Direct root level margin: 0 browser default header/footer (about:blank & 1/2) ko hide kar deta hai */
+    }
+
+    /* GENERAL RESET FOR COMPACT PRINT */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        box-sizing: border-box !important;
+    }
+
+    html, body {
+        background: #fff !important;
+        font-family: Calibri, Arial, sans-serif !important;
+        font-size: 11px !important;
+        margin: 0 !important;
+        padding: 8mm 10mm 15mm 10mm !important; /* Content aur paper border ke beech space */
+        color: #1e293b !important;
+    }
+
+    .report {
+        width: 100% !important;
+        margin: 0 !important;
+        background: #fff !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* ... Baaki saari existing CSS (summary cards, tables, headers) yahan rahegi ... */
+
+    /* 🌟 2. FOOTER & PRINT MEDIA STYLING */
+    .footer {
+        border-top: 1px solid #cbd5e1 !important;
+        padding-top: 4px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        font-size: 10px !important;
+        background: #fff !important;
+    }
+
+    @@media print {
+        /* Custom Footer ko har page ke bottom me fix rakhne ke liye */
+        .footer {
+            position: fixed !important;
+            bottom: 5mm !important;
+            left: 10mm !important;
+            right: 10mm !important;
+            width: auto !important;
+        }
+
+        .footer-right::after {
+            content: counter(page);
+        }
+    }
+</style>
+
+<!-- 🌟 MODERN TOP FILTER CARD 🌟 -->
+<div class="top-filter">
+    <div class="filter-header">
+        <i class="bx bx-filter-alt"></i> <span>Department Wise Filters</span>
+    </div>
+    <div class="row align-items-end g-3">
+        <div class="col-md-6 col-lg-5">
+            <label for="Department" class="form-label fw-bold text-secondary">
+                Select Department <span class="text-danger">*</span>
+            </label>
+            <select class="form-select form-select-md" name="Department" id="Department">
+                <option value="-1">-- Select Department --</option>
+            </select>
+            <input type="hidden" id="hiddenDeptId" value="@ViewBag.DeptId" />
+        </div>
+
+        <div class="col-md-6 col-lg-7 d-flex gap-2 justify-content-md-start">
+            <button type="button" id="btnLoadReport" class="btn btn-primary btn-filter">
+                <i class="bx bx-search-alt"></i> Load Report
+            </button>
+            <button type="button" id="btnPrintReport" class="btn btn-success btn-filter">
+                <i class="bx bx-printer"></i> Print Report
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- 🌟 PRINT AREA CONTAINER 🌟 -->
+<div id="printDiv">
+    <div class="report">
+        <div class="report-title text-center text-primary mb-3">
+            <h2>Department Wise Activity Report</h2>
+            <h3><span id="lblDepartmentHeaderName_head">Rural Development</span></h3>
+        </div>
+        <!-- TOP DEPARTMENT SUMMARY CARDS -->
+        <div class="summary-card-container">
+
+            <!-- 1. Agencies -->
+            <div class="summary-card card-blue">
+                <div class="summary-icon bg-icon-blue">
+                    🏛
+                    <i class="bx bxs-bank"></i>
+                </div>
+                <div class="summary-data">
+                    <span class="summary-value" id="lblAgenciesCount">0</span>
+                    <span class="summary-label">Agencies</span>
+                </div>
+            </div>
+
+            <!-- 2. Sectors -->
+            <div class="summary-card card-green">
+                <div class="summary-icon bg-icon-blue">
+                    🌐
+                    <i class="bx bx-globe"></i>
+                </div>
+                <div class="summary-data">
+                    <span class="summary-value" id="lblSectorsCount">0</span>
+                    <span class="summary-label">Sectors</span>
+                </div>
+            </div>
+
+            <!-- 3. Activities -->
+            <div class="summary-card card-yellow">
+                <div class="summary-icon bg-icon-blue">
+                    📋
+                    <i class="bx bx-notepad"></i>
+                </div>
+                <div class="summary-data">
+                    <span class="summary-value" id="lblActivitiesCount">0</span>
+                    <span class="summary-label">Activities</span>
+                </div>
+            </div>
+
+            <!-- 4. Tasks -->
+            <div class="summary-card card-red">
+                <div class="summary-icon bg-icon-blue">
+                    📋
+                    <i class="bx bx-list-check"></i>
+                </div>
+                <div class="summary-data">
+                    <span class="summary-value" id="lblTasksCount">0</span>
+                    <span class="summary-label">Tasks</span>
+                </div>
+            </div>
+
+            <!-- 5. Best Practices -->
+            <div class="summary-card card-purple">
+                <div class="summary-icon bg-icon-yellow">
+                    🏆
+                    <i class="bx bxs-trophy"></i>
+                </div>
+                <div class="summary-data">
+                    <span class="summary-value" id="lblBestPracticesCount">0</span>
+                    <span class="summary-label">Best Practices</span>
+                </div>
+            </div>
+
+            <!-- Grouped Wide Summary Card 1: SDGs -->
+            <div class="summary-card-wide card-blue">
+                <div class="group-wrapper">
+                    <div class="group-item">
+                        <div class="summary-icon bg-icon-colorful">
+                            📊
+                            <i class="bx bx-bar-chart-alt-2"></i>
+                        </div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblSDGGoalsCount">0</span>
+                            <span class="summary-label">Goals</span>
+                        </div>
+                    </div>
+                    <div class="group-divider"></div>
+                    <div class="group-item">
+                        <div class="summary-icon bg-icon-colorful">
+                            📑
+                            <i class="bx bx-file"></i>
+                        </div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblSDGTargetsCount">0</span>
+                            <span class="summary-label">Targets</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-footer-title">SDGs</div>
+            </div>
+
+            <!-- Grouped Wide Summary Card 2: Viksit Rajasthan@2047 -->
+            <div class="summary-card-wide card-red">
+                <div class="group-wrapper">
+                    <div class="group-item">
+                        <div class="summary-icon bg-icon-colorful">
+                            📊
+                            <i class="bx bx-bar-chart-alt-2"></i>
+                        </div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblVRThemesCount">0</span>
+                            <span class="summary-label">Themes</span>
+                        </div>
+                    </div>
+                    <div class="group-divider"></div>
+                    <div class="group-item">
+                        <div class="summary-icon bg-icon-colorful">
+                            📑
+                            <i class="bx bx-file"></i>
+                        </div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblVRSubThemesCount">0</span>
+                            <span class="summary-label">SubThemes</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-footer-title">Viksit Rajasthan@2047</div>
+            </div>
+
+        </div>
+
+        <!-- DEPARTMENT HEADER -->
+        <div class="dept-header bg-primary text-white p-2 font-weight-bold">
+            Department : <span id="lblDepartmentHeaderName">Rural Development</span>
+        </div>
+
+        <!-- DYNAMIC SECTOR, AGENCY & ACTIVITY CONTAINER -->
+        <div id="activityReportContainer">
+            <!-- Dynamic Content populated by jQuery -->
+        </div>
+
+        <!-- DEPARTMENT TASK STATUS SUMMARY -->
+        <div class="mt-4">
+            <h4 class="bg-primary text-white p-2">Department Task Status Summary</h4>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>Total Tasks</th>
+                        <th>Completed</th>
+                        <th>In Progress</th>
+                        <th>Delayed</th>
+                        <th>Not Started</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="lblSummaryTotalTasks">0</td>
+                        <td id="lblSummaryCompleted" class="completed">0</td>
+                        <td id="lblSummaryInProgress" class="progress">0</td>
+                        <td id="lblSummaryDelayed" class="delayed">0</td>
+                        <td id="lblSummaryNotStarted" class="not-started">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer d-flex justify-content-between mt-4 pt-2 border-top">
+            <div>UN Monitoring System</div>
+            <div>Page 1</div>
+        </div>
+    </div>
+</div>
+<script nonce="@nonce" src="~/custom/Common.js"></script>
+<script nonce="@nonce" src="~/custom/PrintDepartment.js" asp-append-version="true"></script>
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // 1. Safe Vanilla JS to get hiddenDeptId value
+        var hiddenDeptElem = document.getElementById('hiddenDeptId');
+        var hiddenDeptVal = hiddenDeptElem ? hiddenDeptElem.value : '';
+
+        // Dropdown Bind
+        if (typeof common !== 'undefined' && common.BindDropdown) {
+            common.BindDropdown(`/Master/DDL_Department`, "Department", "Department", hiddenDeptVal);
+        }
+
+        // 2. Filter Button Click Event Listener (Vanilla JS)
+        var btnLoad = document.getElementById('btnLoadReport');
+        if (btnLoad) {
+            btnLoad.addEventListener('click', function () {
+                var deptElem = document.getElementById('Department');
+                var deptId = deptElem ? deptElem.value : '';
+
+                if (typeof printDepartmentReport !== 'undefined') {
+                    printDepartmentReport.loadDepartmentWiseData(deptId);
+                }
+            });
+        }
+
+        if ('@ViewBag.DeptId' !== '') {
+    setTimeout(() => {
+        printDepartmentReport.loadDepartmentWiseData(hiddenDeptVal);
+    }, 500);
+}
+
+        // 3. Print Report Button Event Listener
+        var btnPrint = document.getElementById('btnPrintReport');
+        if (btnPrint) {
+            btnPrint.addEventListener('click', function () {
+                if (typeof printDepartmentReport !== 'undefined') {
+                    printDepartmentReport.printDiv('@nonce');
+                }
+            });
+        }
+    });
+</script>

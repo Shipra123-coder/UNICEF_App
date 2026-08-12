@@ -657,6 +657,47 @@
         font-weight: 600;
     }
     /* RESPONSIVE */
+    /* Default Circle */
+    .count-card::before,
+    .double-count-card::before {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        right: -15px;
+        top: -15px;
+        border-radius: 50%;
+    }
+
+    /* Agencies */
+    .card-blue::before {
+        background: #E3F2FD;
+    }
+
+    /* Departments */
+    .card-green::before {
+        background: #E8F5E9;
+    }
+
+    /* Activities */
+    .card-orange::before {
+        background: #FFF3E0;
+    }
+
+    /* Tasks */
+    .card-purple::before {
+        background: #F3E5F5;
+    }
+
+    /* SDGs */
+    .card-red::before {
+        background: #FDECEC;
+    }
+
+    /* Viksit Rajasthan */
+    .card-indigo::before {
+        background: #EEF2FF;
+    }
 
     @@media(max - width:1200px) {
         .top-count-section {
@@ -1004,7 +1045,7 @@
 
                 <div class="top-count-section">
                     <!-- Department -->
-                    <div class="count-card countDepartmentCard"
+                    <div class="count-card card-blue countDepartmentCard"
                          data-sectorid="@Model.SectorId">
                         <div class="count-icon">🏛</div>
                         <div>
@@ -1015,7 +1056,7 @@
                         </div>
                     </div>
                     <!-- Agency -->
-                    <div class="count-card countAgencyCard"
+                    <div class="count-card card-green countAgencyCard"
                          data-sectorid="@Model.SectorId">
                         <div class="count-icon">🌐</div>
                         <div>
@@ -1026,7 +1067,7 @@
                         </div>
                     </div>
                     <!-- Activity -->
-                    <div class="count-card countActivityCard" data-sectorid="@Model.SectorId">
+                    <div class="count-card card-orange countActivityCard" data-sectorid="@Model.SectorId">
                         <div class="count-icon">📋</div>
                         <div>
                             <h2>@Model.ActivityCount</h2>
@@ -1034,7 +1075,7 @@
                         </div>
                     </div>
                     <!-- Task -->
-                    <div class="count-card">
+                    <div class="count-card card-purple">
                         <div class="count-icon">🗂</div>
                         <div>
                             <h2>@Model.TaskCount</h2>
@@ -1042,14 +1083,14 @@
                         </div>
                     </div>
                     <!-- Best Practice -->
-                    <div class="count-card">
+                    <div class="count-card card-indigo">
                         <div class="count-icon">🏆</div>
                         <div>
                             <h2>@Model.BestPracticeCount</h2>
                             <p>Best Practices</p>
                         </div>
                     </div>
-                    <div class="double-count-card">
+                    <div class="double-count-card card-red">
                         <div class="double-card-top">
                             <div class="double-card-item">
                                 <div class="count-icon">📊</div>
@@ -1071,7 +1112,7 @@
                             SDGs
                         </div>
                     </div>
-                    <div class="double-count-card">
+                    <div class="double-count-card card-green">
                         <div class="double-card-top">
                             <div class="double-card-item">
                                 <div class="count-icon">📊</div>

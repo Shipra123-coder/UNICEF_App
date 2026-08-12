@@ -22,6 +22,31 @@
             transform: scale(1.005);
         }
 </style>
+<style nonce="@nonce">
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: none;
+    }
+
+    .input-group-text {
+        font-size: 12px;
+        font-weight: bold;
+        min-width: 70px;
+    }
+
+    .sub-activity-block {
+        transition: transform 0.2s;
+    }
+
+        .sub-activity-block:hover {
+            transform: scale(1.005);
+        }
+
+    .agency-chip {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+</style>
 <div class="card shadow border-0">
     <div class="card-body bg-light">
         <div class="bg-white p-3 border rounded mb-4 shadow-sm">
@@ -40,7 +65,7 @@
                     <input type="hidden" id="hiddenunsector" value="@Model.UNSector" />
                     <select class="form-select" id="UNSector" name="UNSector" asp-for="@Model.UNSector">
                     </select>
-                </div>    
+                </div>
             </div>
             <div class="row">
                 <!-- DESCRIPTION -->
@@ -77,10 +102,10 @@
                                placeholder="dd-mm-yyyy"
                                value="@Model?.StartDate">
                         @* <input type="date"
-                               class="form-control"
-                               id="StartDate"
-                               name="StartDate"
-                               value="@Model?.StartDate"> *@
+                            class="form-control"
+                            id="StartDate"
+                            name="StartDate"
+                            value="@Model?.StartDate"> *@
 
                         <!-- TO -->
                         <span class="input-group-text bg-light fw-bold">
@@ -101,8 +126,8 @@
                            class="text-danger d-none">
                         End Date must be greater than or equal to Start Date
                     </small>
-                </div>       
-            </div>                
+                </div>
+            </div>
         </div>
         <div class="bg-white p-3 border rounded mb-4 shadow-sm">
             <label class="fw-bold me-3">Do you want to add Sub-Activities?</label>
@@ -195,52 +220,81 @@
                                                     </button>
                                                 </div>
                                             </div>
+
+                                            <!-- ASSOCIATED AGENCY SECTION -->
+                                            <div class="row">
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="small fw-bold">Associated Agency</label>
+                                                    <div class="input-group">
+                                                        <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                                            <option value="-1">--Select Associated Agency--</option>
+                                                        </select>
+                                                        <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                                                    </div>
+                                                    <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                                                    <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" value="@task.TaskAgencyIds" />
+                                                </div>
+                                            </div>
                                         </div>
                                         taskIndex++;
                                     }
                                 }
                                 else
                                 {
-                            <div class="border rounded p-3 mb-3 bg-white task-item">
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label class="small fw-bold">Task Description</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white task-number">Task 1</span>
-                                            <input type="hidden" class="task-id" name="TaskId[]" value="0" />
-                                            <input type="text" class="form-control" name="Tasks[]" placeholder="Enter task detail..." />
+                                    <div class="border rounded p-3 mb-3 bg-white task-item">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label class="small fw-bold">Task Description</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-white task-number">Task 1</span>
+                                                    <input type="hidden" class="task-id" name="TaskId[]" value="0" />
+                                                    <input type="text" class="form-control" name="Tasks[]" placeholder="Enter task detail..." />
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label class="small fw-bold">Task Detailed Description</label>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label class="small fw-bold">Task Detailed Description</label>
 
-                                        <textarea class="form-control"
-                                                  name="TaskDetailDescription[]"
-                                                  rows="3"
-                                                  placeholder="Enter task detailed description..."></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8 mb-2">
-                                        <label class="small fw-bold">Task Period</label>
-                                        <div class="input-group shadow-sm">
-                                            <span class="input-group-text bg-primary text-white"><i class="bx bx-calendar"></i></span>
-                                            <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
-                                            <span class="input-group-text bg-light fw-bold">To</span>
-                                            <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                                <textarea class="form-control"
+                                                          name="TaskDetailDescription[]"
+                                                          rows="3"
+                                                          placeholder="Enter task detailed description..."></textarea>
+                                            </div>
                                         </div>
-                                        <small class="text-danger d-none task-date-validation">
-                                            End Date must be greater than or equal to Start Date
-                                        </small>
+                                        <div class="row">
+                                            <div class="col-md-8 mb-2">
+                                                <label class="small fw-bold">Task Period</label>
+                                                <div class="input-group shadow-sm">
+                                                    <span class="input-group-text bg-primary text-white"><i class="bx bx-calendar"></i></span>
+                                                    <input type="text" class="form-control task-start-date datepicker" name="TaskStartDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                                    <span class="input-group-text bg-light fw-bold">To</span>
+                                                    <input type="text" class="form-control task-end-date datepicker" name="TaskEndDate[]" placeholder="dd-mm-yyyy" autocomplete="off" />
+                                                </div>
+                                                <small class="text-danger d-none task-date-validation">
+                                                    End Date must be greater than or equal to Start Date
+                                                </small>
+                                            </div>
+                                            <div class="col-md-4 d-flex align-items-end justify-content-end gap-2 mb-2">
+                                                <button class="btn btn-outline-secondary btn-add-task" type="button"><i class="bx bx-plus"></i></button>
+                                                <button class="btn btn-outline-danger btn-remove-task" type="button"><i class="bx bx-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        <!-- ASSOCIATED AGENCY SECTION -->
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label class="small fw-bold">Associated Agency</label>
+                                                <div class="input-group">
+                                                    <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                                        <option value="-1">--Select Associated Agency--</option>
+                                                    </select>
+                                                    <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                                                </div>
+                                                <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                                                <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4 d-flex align-items-end justify-content-end gap-2 mb-2">
-                                        <button class="btn btn-outline-secondary btn-add-task" type="button"><i class="bx bx-plus"></i></button>
-                                        <button class="btn btn-outline-danger btn-remove-task" type="button"><i class="bx bx-trash"></i></button>
-                                    </div>
-                                </div>
-                            </div>
                                 }
 
                             </div>
@@ -373,6 +427,20 @@
 
                                 </div>
 
+                                <!-- ASSOCIATED AGENCY SECTION -->
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">Associated Agency</label>
+                                        <div class="input-group">
+                                            <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                                <option value="-1">--Select Associated Agency--</option>
+                                            </select>
+                                            <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                                        </div>
+                                        <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                                        <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" />
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -481,115 +549,141 @@
                                     </div>
 
                                 </div>
-
+                                <!-- ASSOCIATED AGENCY -->
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small fw-bold">Associated Agency</label>
+                                        <div class="input-group">
+                                            <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                                <option value="-1">--Select Associated Agency--</option>
+                                            </select>
+                                            <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                                        </div>
+                                        <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                                        <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" value="@task.TaskAgencyIds" />
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
                     else
                     {
-                <div class="border rounded p-3 mb-3 bg-light task-item">
+                        <div class="border rounded p-3 mb-3 bg-light task-item">
 
-                    <!-- TASK NAME -->
+                            <!-- TASK NAME -->
 
-                    <div class="row">
+                            <div class="row">
 
-                        <div class="col-md-12 mb-3">
+                                <div class="col-md-12 mb-3">
 
-                            <label class="small fw-bold">
-                                Task Description
-                            </label>
+                                    <label class="small fw-bold">
+                                        Task Description
+                                    </label>
 
-                            <div class="input-group">
+                                    <div class="input-group">
 
-                                <span class="input-group-text bg-white">
-                                    Task
-                                </span>
+                                        <span class="input-group-text bg-white">
+                                            Task
+                                        </span>
 
-                                <input type="hidden"
-                                       name="TaskId[]"
-                                       value="0" />
+                                        <input type="hidden"
+                                               name="TaskId[]"
+                                               value="0" />
 
-                                <input type="text"
-                                       class="form-control"
-                                       name="Tasks[]"
-                                       placeholder="Enter task detail">
+                                        <input type="text"
+                                               class="form-control"
+                                               name="Tasks[]"
+                                               placeholder="Enter task detail">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- TASK Description -->
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="small fw-bold">Task Detailed Description</label>
+
+                                    <textarea class="form-control"
+                                              name="TaskDetailDescription[]"
+                                              rows="3"
+                                              placeholder="Enter task detailed description..."></textarea>
+                                </div>
+                            </div>
+                            <!-- TASK PERIOD -->
+                            <div class="row">
+
+                                <div class="col-md-6 mb-2">
+
+                                    <label class="small fw-bold">
+                                        Task Period
+                                    </label>
+
+                                    <div class="input-group shadow-sm">
+
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bx bx-calendar"></i>
+                                        </span>
+
+                                        <!-- START DATE -->
+
+                                        <input type="text"
+                                               class="form-control task-start-date datepicker"
+                                               name="TaskStartDate[]" />
+
+                                        <span class="input-group-text bg-light fw-bold">
+                                            To
+                                        </span>
+
+                                        <!-- END DATE -->
+
+                                        <input type="text"
+                                               class="form-control task-end-date datepicker"
+                                               name="TaskEndDate[]" />
+
+                                    </div>
+
+                                    <!-- VALIDATION -->
+
+                                    <small class="text-danger d-none task-date-validation">
+
+                                        End Date must be greater than or equal to Start Date
+
+                                    </small>
+
+                                </div>
+
+                                <!-- BUTTON -->
+
+                                <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
+
+                                    <button class="btn btn-outline-secondary btn-add-main-task"
+                                            type="button">
+
+                                        <i class="bx bx-plus"></i>
+
+                                    </button>
+
+                                </div>
 
                             </div>
 
-                        </div>
-
-                    </div>
-                    <!-- TASK Description -->
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label class="small fw-bold">Task Detailed Description</label>
-
-                            <textarea class="form-control"
-                                      name="TaskDetailDescription[]"
-                                      rows="3"
-                                      placeholder="Enter task detailed description..."></textarea>
-                        </div>
-                    </div>
-                    <!-- TASK PERIOD -->
-
-                    <div class="row">
-
-                        <div class="col-md-6 mb-2">
-
-                            <label class="small fw-bold">
-                                Task Period
-                            </label>
-
-                            <div class="input-group shadow-sm">
-
-                                <span class="input-group-text bg-primary text-white">
-                                    <i class="bx bx-calendar"></i>
-                                </span>
-
-                                <!-- START DATE -->
-
-                                <input type="text"
-                                       class="form-control task-start-date datepicker"
-                                       name="TaskStartDate[]" />
-
-                                <span class="input-group-text bg-light fw-bold">
-                                    To
-                                </span>
-
-                                <!-- END DATE -->
-
-                                <input type="text"
-                                       class="form-control task-end-date datepicker"
-                                       name="TaskEndDate[]" />
-
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="small fw-bold">Associated Agency</label>
+                                    <div class="input-group">
+                                        <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                            <option value="-1">--Select Associated Agency--</option>
+                                        </select>
+                                        <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                                    </div>
+                                    <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                                    <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" />
+                                </div>
                             </div>
 
-                            <!-- VALIDATION -->
-
-                            <small class="text-danger d-none task-date-validation">
-
-                                End Date must be greater than or equal to Start Date
-
-                            </small>
-
                         </div>
-
-                        <!-- BUTTON -->
-
-                        <div class="col-md-6 d-flex align-items-end justify-content-end gap-2 mb-2">
-
-                            <button class="btn btn-outline-secondary btn-add-main-task"
-                                    type="button">
-
-                                <i class="bx bx-plus"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
                     }
 
                 </div>
@@ -600,99 +694,249 @@
     </div>
 </div>
 <script nonce="@nonce">
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-    // ======================================
-    // GLOBAL VARIABLES & INITIALIZATION
-    // ======================================
-    let deletedTaskIds = [];
-    let deletedSubIds = [];
+        // ======================================
+        // GLOBAL VARIABLES & INITIALIZATION
+        // ======================================
+        let deletedTaskIds = [];
+        let deletedSubIds = [];
 
-    // Dropdown binding
-    if (typeof common !== 'undefined' && common.BindDropdown) {
-        common.BindDropdown("/Master/DDL_UNSector", "UNSector", "Sector", $('#hiddenunsector').val());
-    }
+        // Dropdown binding
+        if (typeof common !== 'undefined' && common.BindDropdown) {
+            common.BindDropdown("/Master/DDL_UNSector", "UNSector", "Sector", $('#hiddenunsector').val());
 
-    // Flatpickr initialization function
-    function initializeDatePicker(element = ".datepicker") {
-        flatpickr(element, {
-            dateFormat: "d-m-Y",
-            allowInput: true
-        });
-    }
-
-    // Initialize datepicker on page load
-    initializeDatePicker();
-
-    // ======================================
-    // TOGGLE SECTION (Sub-Activity vs Main Task)
-    // ======================================
-    function toggleSections() {
-        var val = $("input[name='hasSubActivity']:checked").val();
-        if (val == "1") {
-            $("#subActivityWrapper").show();
-            $("#onlyTaskSection").hide();
-        } else {
-            $("#subActivityWrapper").hide();
-            $("#onlyTaskSection").show();
         }
-    }
 
-    $("input[name='hasSubActivity']").change(toggleSections);
-    toggleSections(); // Run on initial load
+        // 2. Function to bind Agency Dropdowns
+        function bindAgencyDropdowns(container = document) {
+            if (typeof common !== 'undefined' && common.BindDropdown) {
+                $(container).find('.associatedAgency').each(function (index) {
+                    let $elem = $(this);
 
-    // ======================================
-    // RENUMBER TASKS FUNCTION
-    // ======================================
-    function renumberTasks(containerSelector) {
-        $(containerSelector).find('.task-item').each(function (index) {
-            $(this).find('.task-number').text(`Task ${index + 1}`);
-        });
-    }
+                    if (!$elem.hasClass('bound')) {
+                        // 1. Check karein agar ID nahi hai toh unique ID generate karke assign karein
+                        let elementId = $elem.attr('id');
+                        if (!elementId) {
+                            elementId = 'agency_ddl_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+                            $elem.attr('id', elementId);
+                        }
 
-    // ======================================
-    // DATE VALIDATION ENGINE
-    // ======================================
-    function parseDateString(dateStr) {
-        if (!dateStr) return null;
-        const parts = dateStr.split('-');
-        if (parts.length !== 3) return null;
-        // Convert dd-mm-yyyy to Date Object (yyyy, mm-1, dd)
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
+                        // 2. common.BindDropdown me jQuery object $(this) ki jagah String ID (elementId) pass karein
+                        common.BindDropdown("/Master/DDL_Agency", elementId, "Associated Agency", "");
 
-    function validateTaskDates(taskItem) {
-        const startVal = taskItem.find('.task-start-date').val();
-        const endVal = taskItem.find('.task-end-date').val();
-        const validationMsg = taskItem.find('.task-date-validation');
-
-        if (startVal && endVal) {
-            const startDate = parseDateString(startVal);
-            const endDate = parseDateString(endVal);
-
-            if (startDate && endDate && endDate < startDate) {
-                validationMsg.removeClass('d-none');
-                taskItem.find('.task-end-date').val('').focus();
-                return false;
+                        // 3. Mark as bound
+                        $elem.addClass('bound');
+                    }
+                });
             }
         }
-        validationMsg.addClass('d-none');
-        return true;
-    }
 
-    // ======================================
-    // SUB-ACTIVITY MANAGEMENT (Dynamic Elements)
-    // ======================================
-    const wrapper = document.getElementById('subActivityWrapper');
-    const btnAddSubActivity = document.getElementById('btnAddSubActivity');
+        // Bind agencies on initial load
+        bindAgencyDropdowns();
 
-    if (btnAddSubActivity && wrapper) {
-           btnAddSubActivity.addEventListener('click', function () {
-        const newBlock = document.createElement('div');
-        newBlock.className = 'sub-activity-block mb-4 p-3 bg-white border rounded shadow-sm';
-        newBlock.style.borderLeft = '5px solid #0d6efd';
+        // ======================================
+        // 2. 🌟 LOAD & RENDER SAVED AGENCY CHIPS ON PAGE LOAD
+        // ======================================
+        // ======================================
+        // 2. 🌟 LOAD & RENDER SAVED AGENCY CHIPS ON PAGE LOAD (FIXED NAME MAPPING)
+        // ======================================
+        // ======================================
+        // 🌟 LOAD & RENDER SAVED AGENCY CHIPS ON PAGE LOAD (FIXED FOR YOUR RESPONSE MODEL)
+        // ======================================
+        function renderSavedAgencyChips(container = document) {
+            $.ajax({
+                url: "/Master/DDL_Agency",
+                type: "GET",
+                success: function (response) {
+                    let agencyMap = {};
 
-        newBlock.innerHTML = `
+                    // 🔴 FIX: Response se 'data' property extract karna
+                    let list = (response && response.data) ? response.data : (Array.isArray(response) ? response : []);
+
+                    if (Array.isArray(list)) {
+                        list.forEach(item => {
+                            // Extract id and name based on your C# Anonymous Object
+                            let idKey = item.id;
+                            let textValue = item.name;
+
+                            if (idKey !== undefined && idKey !== null) {
+                                agencyMap[idKey.toString().trim()] = textValue;
+                            }
+                        });
+                    }
+
+                    // Loop through all tasks and render agency chips
+                    $(container).find('.task-item').each(function () {
+                        let taskItem = $(this);
+                        let hiddenInput = taskItem.find('.selectedAgencyIds');
+                        let chipsContainer = taskItem.find('.agencyChipsContainer');
+
+                        let savedIdsStr = hiddenInput.val();
+                        if (savedIdsStr && savedIdsStr.trim() !== "") {
+                            let savedIds = savedIdsStr.split(',');
+
+                            chipsContainer.empty(); // Clean existing chips
+
+                            savedIds.forEach(id => {
+                                let cleanId = id.toString().trim();
+                                if (cleanId) {
+                                    // Get actual agency name from map
+                                    let agencyName = agencyMap[cleanId];
+
+                                    if (agencyName) {
+                                        let chipHtml = `
+                                    <span class="badge bg-primary agency-chip d-inline-flex align-items-center me-1 mb-1" data-id="${cleanId}">
+                                        ${agencyName}
+                                        <i class="bx bx-x ms-2 remove-agency-chip" style="cursor:pointer; font-size:1rem;"></i>
+                                    </span>`;
+                                        chipsContainer.append(chipHtml);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.error("Error fetching Agency DDL:", err);
+                }
+            });
+        }
+
+        // Render chips on initial load for existing saved tasks
+        renderSavedAgencyChips();
+
+        // Flatpickr initialization function
+        function initializeDatePicker(element = ".datepicker") {
+            flatpickr(element, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+        }
+
+        // Initialize datepicker on page load
+        initializeDatePicker();
+
+        // 4. Add Agency Chip Handler
+        $(document).on('click', '.btnAddAssoAgency', function () {
+            let taskItem = $(this).closest('.task-item');
+            let selectElem = taskItem.find('.associatedAgency');
+            let agencyId = selectElem.val();
+            let agencyText = selectElem.find('option:selected').text();
+            let chipsContainer = taskItem.find('.agencyChipsContainer');
+            let hiddenInput = taskItem.find('.selectedAgencyIds');
+
+            if (!agencyId || agencyId === "-1") {
+                alert("Please select a valid agency.");
+                return;
+            }
+
+            let currentIds = hiddenInput.val() ? hiddenInput.val().split(',') : [];
+
+            if (currentIds.includes(agencyId)) {
+                alert("Agency already added for this task.");
+                return;
+            }
+
+            // Add Agency ID to comma-separated list
+            currentIds.push(agencyId);
+            hiddenInput.val(currentIds.join(','));
+
+            // Render Chip Badge
+            let chipHtml = `
+            <span class="badge bg-primary agency-chip d-inline-flex align-items-center" data-id="${agencyId}">
+                ${agencyText}
+                <i class="bx bx-x ms-2 remove-agency-chip" style="cursor:pointer; font-size:1rem;"></i>
+            </span>`;
+            chipsContainer.append(chipHtml);
+
+            // Reset Dropdown
+            selectElem.val('-1');
+        });
+
+        // 5. Remove Agency Chip Handler
+        $(document).on('click', '.remove-agency-chip', function () {
+            let chip = $(this).closest('.badge');
+            let agencyId = chip.attr('data-id').toString();
+            let taskItem = $(this).closest('.task-item');
+            let hiddenInput = taskItem.find('.selectedAgencyIds');
+
+            let currentIds = hiddenInput.val() ? hiddenInput.val().split(',') : [];
+            currentIds = currentIds.filter(id => id !== agencyId);
+            hiddenInput.val(currentIds.join(','));
+
+            chip.remove();
+        });
+
+        // ======================================
+        // TOGGLE SECTION (Sub-Activity vs Main Task)
+        // ======================================
+        function toggleSections() {
+            var val = $("input[name='hasSubActivity']:checked").val();
+            if (val == "1") {
+                $("#subActivityWrapper").show();
+                $("#onlyTaskSection").hide();
+            } else {
+                $("#subActivityWrapper").hide();
+                $("#onlyTaskSection").show();
+            }
+        }
+
+        $("input[name='hasSubActivity']").change(toggleSections);
+        toggleSections(); // Run on initial load
+
+        // ======================================
+        // RENUMBER TASKS FUNCTION
+        // ======================================
+        function renumberTasks(containerSelector) {
+            $(containerSelector).find('.task-item').each(function (index) {
+                $(this).find('.task-number').text(`Task ${index + 1}`);
+            });
+        }
+
+        // ======================================
+        // DATE VALIDATION ENGINE
+        // ======================================
+        function parseDateString(dateStr) {
+            if (!dateStr) return null;
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return null;
+            // Convert dd-mm-yyyy to Date Object (yyyy, mm-1, dd)
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function validateTaskDates(taskItem) {
+            const startVal = taskItem.find('.task-start-date').val();
+            const endVal = taskItem.find('.task-end-date').val();
+            const validationMsg = taskItem.find('.task-date-validation');
+
+            if (startVal && endVal) {
+                const startDate = parseDateString(startVal);
+                const endDate = parseDateString(endVal);
+
+                if (startDate && endDate && endDate < startDate) {
+                    validationMsg.removeClass('d-none');
+                    taskItem.find('.task-end-date').val('').focus();
+                    return false;
+                }
+            }
+            validationMsg.addClass('d-none');
+            return true;
+        }
+
+        // ======================================
+        // SUB-ACTIVITY MANAGEMENT (Dynamic Elements)
+        // ======================================
+        const wrapper = document.getElementById('subActivityWrapper');
+        const btnAddSubActivity = document.getElementById('btnAddSubActivity');
+
+        if (btnAddSubActivity && wrapper) {
+            btnAddSubActivity.addEventListener('click', function () {
+                const newBlock = document.createElement('div');
+                newBlock.className = 'sub-activity-block mb-4 p-3 bg-white border rounded shadow-sm';
+                newBlock.style.borderLeft = '5px solid #0d6efd';
+
+                newBlock.innerHTML = `
             <input type="hidden" class="sub-id" name="SubActivityId[]" value="0" />
 
             <div class="row mb-3 align-items-center">
@@ -725,7 +969,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="row">
                           <div class="col-md-12 mb-3">
                               <label class="small fw-bold">Task Description</label>
-                          
+
                               <textarea class="form-control"
                                         name="TaskDetailDescription[]"
                                         rows="3"
@@ -760,39 +1004,56 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </button>
                             </div>
                         </div>
-
+                        <!-- ASSOCIATED AGENCY SECTION -->
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="small fw-bold">Associated Agency</label>
+                                <div class="input-group">
+                                    <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                        <option value="-1">--Select Associated Agency--</option>
+                                    </select>
+                                    <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                                </div>
+                                <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                                <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" />
+                            </div>
+                        </div>
                     </div></div></div>`;
 
-        // Append newly created Sub-Activity architecture node to DOM
-        wrapper.appendChild(newBlock);
+                // Append newly created Sub-Activity architecture node to DOM
+                wrapper.appendChild(newBlock);
 
-        // 🌟 RE-INITIALIZE DATEPICKERS FOR DYNAMIC INPUTS
-        // This hooks date component attachments securely right after node injection
-        if (typeof $.fn.datepicker !== 'undefined') {
-            $(newBlock).find('.datepicker').datepicker({
-                format: 'dd-mm-yyyy',
-                autoclose: true,
-                todayHighlight: true
+                // 🌟 RE-INITIALIZE DATEPICKERS FOR DYNAMIC INPUTS
+                // This hooks date component attachments securely right after node injection
+                if (typeof $.fn.datepicker !== 'undefined') {
+                    $(newBlock).find('.datepicker').datepicker({
+                        format: 'dd-mm-yyyy',
+                        autoclose: true,
+                        todayHighlight: true
+                    });
+                } else if (typeof flatpickr !== 'undefined') {
+                    flatpickr(newBlock.querySelectorAll('.datepicker'), {
+                        dateFormat: "dd-mm-yyyy",
+                        allowInput: true
+                    });
+                }
+                // Bind Associated Agency Dropdown for new Sub-Activity
+                if (typeof bindAgencyDropdowns === 'function') {
+                    bindAgencyDropdowns(newBlock);
+                }
             });
-        } else if (typeof flatpickr !== 'undefined') {
-            flatpickr(newBlock.querySelectorAll('.datepicker'), {
-                dateFormat: "dd-mm-yyyy",
-                allowInput: true
-            });
-        }
-    });
-        // Click events inside Sub-Activity (Dynamic Event Delegation)
-        wrapper.addEventListener('click', function (e) {
-            const target = e.target;
+            // Click events inside Sub-Activity (Dynamic Event Delegation)
+            wrapper.addEventListener('click', function (e) {
+                const target = e.target;
 
-            // 1. Add Task inside Sub-Activity
-            if (target.closest('.btn-add-task')) {
-                const taskList = target.closest('.task-list');
-                const taskCount = taskList.querySelectorAll('.task-item').length + 1;
-                const newTask = document.createElement('div');
-                newTask.className = 'border rounded p-3 mb-3 bg-white task-item';
+                // 1. Add Task inside Sub-Activity
+                if (target.closest('.btn-add-task')) {
+                    const taskList = target.closest('.task-list');
+                    const taskCount = taskList.querySelectorAll('.task-item').length + 1;
+                    const newTask = document.createElement('div');
+                    newTask.className = 'border rounded p-3 mb-3 bg-white task-item';
 
-                newTask.innerHTML = `
+                    newTask.innerHTML = `
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label class="small fw-bold">Task</label>
@@ -829,67 +1090,93 @@ document.addEventListener('DOMContentLoaded', function () {
                             <button class="btn btn-outline-danger btn-remove-task" type="button"><i class="bx bx-trash"></i></button>
                         </div>
                     </div>
+                    <!-- ASSOCIATED AGENCY SECTION -->
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="small fw-bold">Associated Agency</label>
+                        <div class="input-group">
+                            <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                <option value="-1">--Select Associated Agency--</option>
+                            </select>
+                            <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                        </div>
+                        <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                        <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" />
+                    </div>
+                </div>
                 `;
-                taskList.appendChild(newTask);
-                initializeDatePicker(newTask.querySelectorAll('.datepicker'));
-            }
+                    taskList.appendChild(newTask);
+                    //// Re-initialize Datepicker
+                    //if (typeof flatpickr !== 'undefined') {
+                    //    flatpickr(newTask.querySelectorAll('.datepicker'), {
+                    //        dateFormat: "dd-mm-yyyy",
+                    //        allowInput: true
+                    //    });
+                    //}
 
-            // 2. Remove Task inside Sub-Activity
-            if (target.closest('.btn-remove-task')) {
-                const taskItem = target.closest('.task-item');
-                const taskList = target.closest('.task-list');
-                const totalTasks = taskList.querySelectorAll('.task-item').length;
-
-                if (totalTasks > 1) {
-                    const taskId = taskItem.querySelector('.task-id')?.value;
-                    if (taskId && taskId != "0") {
-                        deletedTaskIds.push(taskId);
-                        $("#DeletedTaskIds").val(deletedTaskIds.join(','));
+                    // Bind Agency Dropdown for newly created task
+                    if (typeof bindAgencyDropdowns === 'function') {
+                        bindAgencyDropdowns(newTask);
                     }
-                    taskItem.remove();
-                    renumberTasks(taskList);
-                }
-            }
-
-            // 3. Remove entire Sub-Activity Block
-            if (target.closest('.btn-remove-sub')) {
-                const subBlock = target.closest('.sub-activity-block');
-                const subId = subBlock.querySelector('.sub-id')?.value;
-
-                if (subId && subId != "0") {
-                    deletedSubIds.push(subId);
-                    $("#DeletedSubIds").val(deletedSubIds.join(','));
+                   initializeDatePicker(newTask.querySelectorAll('.datepicker'));
                 }
 
-                // Push all inner task IDs to the deleted list before removal
-                subBlock.querySelectorAll('.task-id').forEach(task => {
-                    let taskId = task.value;
-                    if (taskId && taskId != "0") {
-                        deletedTaskIds.push(taskId);
+                // 2. Remove Task inside Sub-Activity
+                if (target.closest('.btn-remove-task')) {
+                    const taskItem = target.closest('.task-item');
+                    const taskList = target.closest('.task-list');
+                    const totalTasks = taskList.querySelectorAll('.task-item').length;
+
+                    if (totalTasks > 1) {
+                        const taskId = taskItem.querySelector('.task-id')?.value;
+                        if (taskId && taskId != "0") {
+                            deletedTaskIds.push(taskId);
+                            $("#DeletedTaskIds").val(deletedTaskIds.join(','));
+                        }
+                        taskItem.remove();
+                        renumberTasks(taskList);
                     }
-                });
-                $("#DeletedTaskIds").val(deletedTaskIds.join(','));
-                subBlock.remove();
-            }
-        });
+                }
 
-        // Sub-Activity Date Validation Trigger (On Change)
-        wrapper.addEventListener('change', function (e) {
-            if (e.target.classList.contains('task-start-date') || e.target.classList.contains('task-end-date')) {
-                const taskItem = $(e.target).closest('.task-item');
-                validateTaskDates(taskItem);
-            }
-        });
-    }
+                // 3. Remove entire Sub-Activity Block
+                if (target.closest('.btn-remove-sub')) {
+                    const subBlock = target.closest('.sub-activity-block');
+                    const subId = subBlock.querySelector('.sub-id')?.value;
 
-    // ======================================
-    // MAIN TASK MANAGEMENT (jQuery Dynamic Events)
-    // ======================================
-    
-    // Add Main Task
-    $(document).on("click", ".btn-add-main-task", function () {
-        let taskCount = $("#mainTaskList .task-item").length + 1;
-        let html = `
+                    if (subId && subId != "0") {
+                        deletedSubIds.push(subId);
+                        $("#DeletedSubIds").val(deletedSubIds.join(','));
+                    }
+
+                    // Push all inner task IDs to the deleted list before removal
+                    subBlock.querySelectorAll('.task-id').forEach(task => {
+                        let taskId = task.value;
+                        if (taskId && taskId != "0") {
+                            deletedTaskIds.push(taskId);
+                        }
+                    });
+                    $("#DeletedTaskIds").val(deletedTaskIds.join(','));
+                    subBlock.remove();
+                }
+            });
+
+            // Sub-Activity Date Validation Trigger (On Change)
+            wrapper.addEventListener('change', function (e) {
+                if (e.target.classList.contains('task-start-date') || e.target.classList.contains('task-end-date')) {
+                    const taskItem = $(e.target).closest('.task-item');
+                    validateTaskDates(taskItem);
+                }
+            });
+        }
+
+        // ======================================
+        // MAIN TASK MANAGEMENT (jQuery Dynamic Events)
+        // ======================================
+
+        // Add Main Task
+        $(document).on("click", ".btn-add-main-task", function () {
+            let taskCount = $("#mainTaskList .task-item").length + 1;
+            let html = `
             <div class="border rounded p-3 mb-3 bg-light task-item">
                 <div class="row">
                     <div class="col-md-12 mb-3">
@@ -904,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="row">
                   <div class="col-md-12 mb-3">
                       <label class="small fw-bold">Task Description</label>
-                  
+
                       <textarea class="form-control"
                                 name="TaskDetailDescription[]"
                                 rows="3"
@@ -927,57 +1214,157 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button class="btn btn-outline-danger btn-remove-main-task" type="button"><i class="bx bx-trash"></i></button>
                     </div>
                 </div>
+                <!-- ASSOCIATED AGENCY SECTION -->
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="small fw-bold">Associated Agency</label>
+                        <div class="input-group">
+                            <select class="form-select form-select-sm associatedAgency" name="AssociatedAgency[]">
+                                <option value="-1">--Select Associated Agency--</option>
+                            </select>
+                            <button class="btn btn-primary btnAddAssoAgency" type="button">Add</button>
+                        </div>
+                        <div class="agencyChipsContainer mt-2 d-flex flex-wrap gap-1"></div>
+                        <input type="hidden" class="selectedAgencyIds" name="TaskAgencyIds[]" />
+                    </div>
+                </div>
             </div>`;
 
-        $("#mainTaskList").append(html);
-        initializeDatePicker($("#mainTaskList .task-item:last .datepicker"));
-    });
+            let $newTask = $(html);
+            $("#mainTaskList").append($newTask);
 
-    // Remove Main Task
-    $(document).on("click", ".btn-remove-main-task", function () {
-        let totalTasks = $("#mainTaskList .task-item").length;
-        if (totalTasks > 1) {
-            $(this).closest(".task-item").remove();
-            renumberTasks("#mainTaskList");
-        }
-    });
+            // Datepicker re-initialize
+            initializeDatePicker($newTask.find('.datepicker'));
 
-    // Main Task Date Validation Trigger
-    $(document).on("change", ".task-start-date, .task-end-date", function () {
-        const taskItem = $(this).closest(".task-item");
-        validateTaskDates(taskItem);
-    });
+            // Bind Agency Dropdown for newly created task
+            if (typeof bindAgencyDropdowns === 'function') {
+                bindAgencyDropdowns($newTask);
+            }
+            //$("#mainTaskList").append(html);
+            //initializeDatePicker($("#mainTaskList .task-item:last .datepicker"));
+        });
 
-    // ======================================
-    // PROJECT MASTER START/END DATE VALIDATION
-    // ======================================
-    const projectStartDate = document.getElementById("StartDate");
-    const projectEndDate = document.getElementById("EndDate");
-    const projectValidationMsg = document.getElementById("dateValidation");
+        // Remove Main Task
+        $(document).on("click", ".btn-remove-main-task", function () {
+            let totalTasks = $("#mainTaskList .task-item").length;
+            if (totalTasks > 1) {
+                $(this).closest(".task-item").remove();
+                renumberTasks("#mainTaskList");
+            }
+        });
 
-    function validateProjectDates() {
-        if (projectStartDate && projectEndDate && projectValidationMsg) {
-            const startVal = projectStartDate.value;
-            const endVal = projectEndDate.value;
+        // Main Task Date Validation Trigger
+        $(document).on("change", ".task-start-date, .task-end-date", function () {
+            const taskItem = $(this).closest(".task-item");
+            validateTaskDates(taskItem);
+        });
 
-            if (startVal && endVal) {
-                const start = parseDateString(startVal);
-                const end = parseDateString(endVal);
+        // ======================================
+        // PROJECT MASTER START/END DATE VALIDATION
+        // ======================================
+        const projectStartDate = document.getElementById("StartDate");
+        const projectEndDate = document.getElementById("EndDate");
+        const projectValidationMsg = document.getElementById("dateValidation");
 
-                if (start && end && end < start) {
-                    projectValidationMsg.classList.remove("d-none");
-                    projectEndDate.value = "";
-                    projectEndDate.focus();
-                } else {
-                    projectValidationMsg.classList.add("d-none");
+        function validateProjectDates() {
+            if (projectStartDate && projectEndDate && projectValidationMsg) {
+                const startVal = projectStartDate.value;
+                const endVal = projectEndDate.value;
+
+                if (startVal && endVal) {
+                    const start = parseDateString(startVal);
+                    const end = parseDateString(endVal);
+
+                    if (start && end && end < start) {
+                        projectValidationMsg.classList.remove("d-none");
+                        projectEndDate.value = "";
+                        projectEndDate.focus();
+                    } else {
+                        projectValidationMsg.classList.add("d-none");
+                    }
                 }
             }
         }
-    }
 
-    if (projectStartDate && projectEndDate) {
-        projectStartDate.addEventListener("change", validateProjectDates);
-        projectEndDate.addEventListener("change", validateProjectDates);
-    }
-});
+        if (projectStartDate && projectEndDate) {
+            projectStartDate.addEventListener("change", validateProjectDates);
+            projectEndDate.addEventListener("change", validateProjectDates);
+        }
+    });
 </script>
+@*<script nonce="@nonce">
+        $(document).ready(function () {
+
+            // ==========================================
+            // 1. ADD ASSOCIATED AGENCY CHIP
+            // ==========================================
+            $(document).on("click", ".btnAddAssoAgency", function () {
+                var taskItem = $(this).closest(".task-item");
+                var ddl = taskItem.find(".associatedAgency");
+                var container = taskItem.find(".agencyChipsContainer");
+                var hiddenInput = taskItem.find(".selectedAgencyIds");
+
+                var agencyId = ddl.val();
+                var agencyName = ddl.find("option:selected").text();
+
+                // 1. Validation (Null, Empty, or Default Option Check)
+                if (!agencyId || agencyId === "-1" || agencyId === "") {
+                    alert("Please select a valid Associated Agency.");
+                    return;
+                }
+
+                // 2. Duplicate Check inside Container
+                if (container.find("[data-id='" + agencyId + "']").length > 0) {
+                    alert("This Agency is already added.");
+                    return;
+                }
+
+                // 3. Render Chip Badge HTML
+                var chipHtml =
+                    '<span class="badge bg-primary me-2 mb-2 p-2 agency-chip d-inline-flex align-items-center" data-id="' + agencyId + '">' +
+                    agencyName +
+                    '<i class="bx bx-x ms-2 removeAgency" style="cursor:pointer; font-size:1rem;"></i>' +
+                    '</span>';
+
+                container.append(chipHtml);
+
+                // 4. Update Task's Hidden Field (Comma-Separated Array Sync)
+                updateTaskAgencyHiddenInput(taskItem);
+
+                // 5. Reset Dropdown to Default Option
+                ddl.val("-1").trigger("change");
+            });
+
+            // ==========================================
+            // 2. REMOVE ASSOCIATED AGENCY CHIP
+            // ==========================================
+            $(document).on("click", ".removeAgency", function () {
+                var taskItem = $(this).closest(".task-item");
+
+                // Chip remove karein
+                $(this).closest(".agency-chip").remove();
+
+                // Task's Hidden Field ko sync/update karein
+                updateTaskAgencyHiddenInput(taskItem);
+            });
+
+            // ==========================================
+            // HELPER FUNCTION: Sync Agency IDs to Hidden Input
+            // ==========================================
+            function updateTaskAgencyHiddenInput(taskItem) {
+                var selectedIds = [];
+
+                // Target task ke sare chips ki IDs collect karein
+                taskItem.find(".agency-chip").each(function () {
+                    var id = $(this).attr("data-id");
+                    if (id) {
+                        selectedIds.push(id);
+                    }
+                });
+
+                // Comma-separated value hidden input me update karein
+                taskItem.find(".selectedAgencyIds").val(selectedIds.join(","));
+            }
+
+        });
+    </script>*@
