@@ -38,6 +38,8 @@ namespace MO.Management
         public List<TaskMaster> Tasks { get; set; } = new List<TaskMaster>(); // 🔥 ADD THIS
 
         public string ReportingId { get; set; }
+
+        //public List<SelectListItem> AgencyList { get; set; } = new();
     }
 
     public class SubActivityMaster
@@ -66,6 +68,25 @@ namespace MO.Management
         public string TaskDetailDescription { get; set; }   // New
         public string? StartDate { get; set; }
         public string? EndDate { get; set; }
+      
+        // 🔴 CHANGE HERE: JavaScript se "1,2,3" string format me aayega
+        public string? TaskAgencyIds { get; set; }
+
+        // 🟢 HELPER PROPERTY (Optional): Long list me access karne ke liye (DB me map nahi hoga)
+        [NotMapped]
+        public List<long> AgencyIdList
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(TaskAgencyIds))
+                    return new List<long>();
+
+                return TaskAgencyIds.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(id => long.TryParse(id.Trim(), out long result) ? result : 0)
+                                    .Where(id => id > 0)
+                                    .ToList();
+            }
+        }
 
         [ForeignKey("SubActivityId")]
         public virtual SubActivityMaster? SubActivity { get; set; }

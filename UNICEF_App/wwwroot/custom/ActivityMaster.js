@@ -166,13 +166,17 @@ var activityMaster = {
                 $block.find(".task-list .task-item").each(function () {
                     var $taskRow = $(this);
                     var taskDesc = $taskRow.find("input[name='Tasks[]']").val();
+                    var taskDescDetail = $taskRow.find("textarea[name='TaskDetailDescription[]']").val();
                     var taskStartDateStr = $taskRow.find("input[name='TaskStartDate[]']").val();
                     var taskEndDateStr = $taskRow.find("input[name='TaskEndDate[]']").val();
-
+                    // Read Associated Agency IDs
+                    var taskAgencyIds = $taskRow.find(".selectedAgencyIds").val() || "";
                     if (!taskDesc || taskDesc.trim() === "") {
                         return; // Skip empty/unfilled tasks
                     }
-
+                    if (!taskDescDetail || taskDescDetail.trim() === "") {
+                        return; // Skip empty tasks
+                    }
                     // Run date validation rules
                     if (!validateTaskDates(taskStartDateStr, taskEndDateStr)) {
                         status = false;
@@ -183,9 +187,11 @@ var activityMaster = {
                     subActivity.Tasks.push({
                         TaskId: parseInt($taskRow.find(".task-id").val()) || 0,
                         TaskDescription: taskDesc,
+                        TaskDetailDescription: taskDescDetail,
                         StartDate: taskStartDateStr,
                         EndDate: taskEndDateStr,
-                        SubActivityId: subActivityId
+                        SubActivityId: subActivityId,
+                        TaskAgencyIds: taskAgencyIds // Added Associated Agency IDs
                     });
                 });
 
@@ -217,6 +223,9 @@ var activityMaster = {
                 var taskStartDateStr = $taskRow.find("input[name='TaskStartDate[]']").val();
                 var taskEndDateStr = $taskRow.find("input[name='TaskEndDate[]']").val();
 
+                // Read Associated Agency IDs
+                var taskAgencyIds = $taskRow.find(".selectedAgencyIds").val() || "";
+
                 if (!taskDesc || taskDesc.trim() === "") {
                     return; // Skip empty tasks
                 }
@@ -237,7 +246,8 @@ var activityMaster = {
                     TaskDetailDescription: taskDescDetail,
                     StartDate: taskStartDateStr,
                     EndDate: taskEndDateStr,
-                    SubActivityId: 0
+                    SubActivityId: 0,
+                    TaskAgencyIds: taskAgencyIds // Added Associated Agency IDs
                 });
             });
 
