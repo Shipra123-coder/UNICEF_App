@@ -61,6 +61,7 @@ namespace MO.DashBoard
         public string LogoURL { get; set; }
 
         public long ActivityId { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string ActivityName { get; set; }
 
@@ -79,6 +80,7 @@ namespace MO.DashBoard
         public string UNSectorName { get; set; }
 
         public int AgencyId { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string AgencyName { get; set; }
 
@@ -101,6 +103,7 @@ namespace MO.DashBoard
         public string UNSectorName { get; set; }
 
         public long ActivityId { get; set; }
+        public string ActivityGuid { get; set; }
 
         public string ActivityName { get; set; }
         public string NodalDepartment { get; set; }

@@ -139,6 +139,7 @@ namespace BL.SDGGoalService
                     GoalName = row["GoalName"]?.ToString(),
                     
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]) : 0,
+                    ActivityGuid = row["Guid"].ToString(),
                     ActivityName = row["ActivityName"]?.ToString(),
                     ActivityStatus = row["ActivityStatus"]?.ToString(),
 
@@ -186,6 +187,7 @@ namespace BL.SDGGoalService
                     GoalName = row["GoalName"]?.ToString(),
 
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]) : 0,
+                    ActivityGuid = row["Guid"].ToString(),
                     ActivityName = row["ActivityName"]?.ToString(),
                     UNSectorName = row["UNSectorName"]?.ToString(),
 
@@ -233,6 +235,7 @@ namespace BL.SDGGoalService
                     UNSectorId = row["UNSectorId"] != DBNull.Value ? Convert.ToInt32(row["UNSectorId"]) : 0,
                     UNSectorName = row["UNSectorName"]?.ToString(),
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]) : 0,
+                    ActivityGuid = row["Guid"].ToString(),
                     ActivityName = row["ActivityName"]?.ToString(),
                     NodalDepartment = row["NodalDepartment"]?.ToString(),
                     AssociatedDepartments = row["AssociatedDepartments"]?.ToString(),

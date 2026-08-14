@@ -1,24 +1,24 @@
-﻿var printDepartmentReport = {
-    // 1. Department Filter aur Data Load Function
-    loadDepartmentWiseData: function (deptId) {
-        if (!deptId || deptId === "-1") {
-            alert("Please select a department!");
+﻿var printSectorReport = {
+    // 1. Sector Filter aur Data Load Function
+    loadSectorWiseData: function (sectorId) {
+        if (!sectorId || sectorId === "-1") {
+            alert("Please select a sector!");
             return;
         }
 
-        // Selected Department Name ko UI header me set karein
-        var selectedDeptName = $("#Department option:selected").text();
-        $("#lblDepartmentHeaderName").text(selectedDeptName);
-        $("#lblDepartmentHeaderName_head").text(selectedDeptName);
+        // Selected Sector Name ko UI header me set karein
+        var selectedSectorName = $("#Sector option:selected").text();
+        $("#lblSectorHeaderName").text(selectedSectorName);
+        $("#lblSectorHeaderName_head").text(selectedSectorName);
 
         // Loader start karein
         $("#activityReportContainer").html('<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2">Loading Report Data...</p></div>');
 
-        // AJAX Call - Backend Controller Endpoint
+        // AJAX Call - Backend Controller Endpoint (Sector Wise)
         $.ajax({
-            url: '/Report/GetDepartmentWiseReportData',
+            url: '/Report/GetSectorWiseReportData',
             type: 'GET',
-            data: { departmentId: deptId },
+            data: { sectorId: sectorId },
             dataType: 'json',
             success: function (response) {
                 var data = (typeof response === 'string') ? JSON.parse(response) : response;
@@ -39,31 +39,31 @@
                         summary = (typeof data.summary === 'string') ? JSON.parse(data.summary) : data.summary;
                     }
 
-                    if (data.filterDepartmentName) {
-                        $("#lblDepartmentHeaderName").text(data.filterDepartmentName);
-                        $("#lblDepartmentHeaderName_head").text(data.filterDepartmentName);
+                    if (data.filterSectorName) {
+                        $("#lblSectorHeaderName").text(data.filterSectorName);
+                        $("#lblSectorHeaderName_head").text(data.filterSectorName);
                     }
                 }
 
                 // Grouped Report Render karein aur Summary pass karein
-                printDepartmentReport.renderReportData(activities, summary);
+                printSectorReport.renderReportData(activities, summary);
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching report data:", error);
                 $("#activityReportContainer").html('<div class="alert alert-danger text-center">An error occurred while loading data. Please try again.</div>');
-                printDepartmentReport.resetSummaryCards();
+                printSectorReport.resetSummaryCards();
             }
         });
     },
 
-    // 2. Dynamic Grouped HTML Generation (Sector -> Agency -> Activities)
+    // 2. Dynamic Grouped HTML Generation (Sector -> Nodal Dept -> Agency -> Activities)
     renderReportData: function (activities, summaryData) {
         var $container = $("#activityReportContainer");
         $container.empty();
 
         if (!activities || activities.length === 0) {
-            $container.html('<div class="alert alert-warning text-center fw-bold">No activity records found for the selected department.</div>');
-            printDepartmentReport.resetSummaryCards();
+            $container.html('<div class="alert alert-warning text-center fw-bold">No activity records found for the selected sector.</div>');
+            printSectorReport.resetSummaryCards();
             return;
         }
 
@@ -76,273 +76,291 @@
         var notStartedTasksCount = 0;
 
         var sectorsSet = new Set();
+        var departmentsSet = new Set();
         var agenciesSet = new Set();
 
         /* =========================================
-            STEP 1: DATA GROUPING (Sector -> Agency -> Activities)
-            ========================================= */
+           STEP 1: 4-LEVEL DATA GROUPING 
+           (Sector -> Nodal Department -> Agency -> Activities)
+           ========================================= */
         var groupedData = {};
 
         $.each(activities, function (index, act) {
             var sectorName = act.UNSectorName ? act.UNSectorName.trim() : 'Other Sector';
+
+            var nodalDeptName = (act.nodalDepartment && act.nodalDepartment.DepartmentName)
+                ? act.nodalDepartment.DepartmentName.trim()
+                : 'N/A Nodal Department';
 
             var agencyName = (act.agency && act.agency.AgencyName)
                 ? act.agency.AgencyName.trim()
                 : 'N/A Agency';
 
             sectorsSet.add(sectorName);
+            if (nodalDeptName !== 'N/A Nodal Department') {
+                departmentsSet.add(nodalDeptName);
+            }
             if (agencyName !== 'N/A Agency') {
                 agenciesSet.add(agencyName);
             }
 
+            // 4-Level Object Initialization
             if (!groupedData[sectorName]) {
                 groupedData[sectorName] = {};
             }
-            if (!groupedData[sectorName][agencyName]) {
-                groupedData[sectorName][agencyName] = [];
+            if (!groupedData[sectorName][nodalDeptName]) {
+                groupedData[sectorName][nodalDeptName] = {};
+            }
+            if (!groupedData[sectorName][nodalDeptName][agencyName]) {
+                groupedData[sectorName][nodalDeptName][agencyName] = [];
             }
 
-            groupedData[sectorName][agencyName].push(act);
+            groupedData[sectorName][nodalDeptName][agencyName].push(act);
         });
 
         /* =========================================
-            STEP 2: RENDER HTML HIERARCHY
-            ========================================= */
+           STEP 2: RENDER HTML HIERARCHY
+           ========================================= */
         var activityCounter = 0;
 
         // Loop 1: Sectors
-        $.each(groupedData, function (sectorName, agenciesObj) {
+        $.each(groupedData, function (sectorName, deptsObj) {
 
-            var sectorHeaderHtml = `
-                <div class="sector mt-4">
-                    <i class="bx bx-category"></i> Sector : ${sectorName}
-                </div>
-            `;
+            var sectorHeaderHtml = ``;
+                //<div class="sector mt-4">
+                //    <i class="bx bx-category"></i> Sector : ${sectorName}
+                //</div>
+            
             $container.append(sectorHeaderHtml);
 
-            // Loop 2: Agencies under Sector
-            $.each(agenciesObj, function (agencyName, agencyActivities) {
+            // Loop 2: Nodal Departments under Sector
+            $.each(deptsObj, function (nodalDeptName, agenciesObj) {
 
-                var agencyHeaderHtml = `
-                    <div class="agency ms-2 mt-2 mb-2">
-                        <i class="bx bx-building"></i> Agency : ${agencyName}
+                var deptHeaderHtml = `
+                    <div class="sector mt-4">
+                        <i class="bx bx-building-house"></i> Nodal Department : ${nodalDeptName}
                     </div>
                 `;
-                $container.append(agencyHeaderHtml);
+                $container.append(deptHeaderHtml);
 
-                // Loop 3: Activities under Agency
-                $.each(agencyActivities, function (aIdx, act) {
-                    activityCounter++;
+                // Loop 3: Agencies under Nodal Department
+                $.each(agenciesObj, function (agencyName, agencyActivities) {
 
-                    var nodalDeptName = (act.nodalDepartment && act.nodalDepartment.DepartmentName)
-                        ? act.nodalDepartment.DepartmentName.trim()
-                        : 'N/A';
-
-                    // 1. Associated Dept Badges
-                    var assocDeptsBadges = [];
-                    if (act.associatedDepartments && act.associatedDepartments.length > 0) {
-                        $.each(act.associatedDepartments, function (i, assoc) {
-                            if (assoc.DepartmentName) {
-                                assocDeptsBadges.push('<span class="badge bg-secondary me-1">' + assoc.DepartmentName.trim() + '</span>');
-                            }
-                        });
-                    }
-                    var assocDeptsText = assocDeptsBadges.length > 0 ? assocDeptsBadges.join(' ') : 'None';
-
-                    // 🌟 2. SDG Goals Badges
-                    var sdgGoalsBadges = [];
-                    if (act.sdgGoals && act.sdgGoals.length > 0) {
-                        $.each(act.sdgGoals, function (i, g) {
-                            var goalLabel = g.DisplayNumber ? 'Goal ' + g.DisplayNumber + ': ' + g.GoalName.trim() : g.GoalName.trim();
-                            sdgGoalsBadges.push('<span class="badge bg-success me-1 mb-1">' + goalLabel + '</span>');
-                        });
-                    }
-                    var sdgGoalsText = sdgGoalsBadges.length > 0 ? sdgGoalsBadges.join(' ') : '-';
-
-                    // 🌟 3. SDG Targets Badges
-                    var sdgTargetsBadges = [];
-                    if (act.sdgTargets && act.sdgTargets.length > 0) {
-                        $.each(act.sdgTargets, function (i, t) {
-                            var targetLabel = t.DisplayNumber ? 'Target ' + t.DisplayNumber : t.TargetName.trim();
-                            sdgTargetsBadges.push('<span class="badge bg-info text-dark me-1 mb-1" title="' + (t.TargetName || '') + '">' + targetLabel + '</span>');
-                        });
-                    }
-                    var sdgTargetsText = sdgTargetsBadges.length > 0 ? sdgTargetsBadges.join(' ') : '-';
-
-                    // 🌟 4. Pillar Badges
-                    var pillarBadges = [];
-                    if (act.pillars && act.pillars.length > 0) {
-                        $.each(act.pillars, function (i, p) {
-                            if (p.PillarName) {
-                                pillarBadges.push('<span class="badge bg-primary me-1 mb-1">' + p.PillarName.trim() + '</span>');
-                            }
-                        });
-                    }
-                    var pillarText = pillarBadges.length > 0 ? pillarBadges.join(' ') : '-';
-
-                    // 🌟 5. SubPillars Badges
-                    var subPillarBadges = [];
-                    if (act.subPillars && act.subPillars.length > 0) {
-                        $.each(act.subPillars, function (i, sp) {
-                            if (sp.SubPillarName) {
-                                subPillarBadges.push('<span class="badge bg-dark me-1 mb-1">' + sp.SubPillarName.trim() + '</span>');
-                            }
-                        });
-                    }
-                    var subPillarText = subPillarBadges.length > 0 ? subPillarBadges.join(' ') : '-';
-
-                    // Extract All Tasks (Direct + SubActivities)
-                    var allTasks = [];
-                    if (act.hasSubActivity && act.subActivities && act.subActivities.length > 0) {
-                        $.each(act.subActivities, function (sIdx, sub) {
-                            if (sub.tasks && sub.tasks.length > 0) {
-                                $.each(sub.tasks, function (tIdx, t) {
-                                    t.subActivityName = sub.SubActivityName;
-                                    allTasks.push(t);
-                                });
-                            }
-                        });
-                    } else if (act.directTasks && act.directTasks.length > 0) {
-                        allTasks = act.directTasks;
-                    }
-
-                    totalTasksCount += allTasks.length;
-
-                    // Activity Card HTML
-                    var activityHtml = `
-                        <div class="activity-container mb-3 ms-3">
-                            <div class="activity-title-header d-flex justify-content-between align-items-center">
-                                <span><strong>Activity ${activityCounter}:</strong> ${act.ActivityName || 'N/A'} (${act.ShortName || ''})</span>
-                                <span class="badge bg-primary">${act.ActivityStatus || 'Ongoing'}</span>
-                            </div>
-
-                            <!-- Metadata Table -->
-                            <table class="table table-bordered activity-meta-table mb-0">
-                                <tr>
-                                    <th width="20%">Description</th>
-                                    <td colspan="3">${act.Description || '-'}</td>
-                                </tr>
-                                <tr>                                    
-                                    <th width="20%">Nodal Department</th>
-                                    <td width="30%">${nodalDeptName}</td>
-                                    <th width="20%">Associated Depts</th>
-                                    <td width="30%">${assocDeptsText}</td>
-                                </tr>
-                                <!-- 🌟 NEW ROW: SDG GOALS & TARGETS 🌟 -->
-                                <tr>
-                                    <th>SDG Goals</th>
-                                    <td>${sdgGoalsText}</td>
-                                    <th>SDG Targets</th>
-                                    <td>${sdgTargetsText}</td>
-                                </tr>
-                                <!-- 🌟 NEW ROW: PILLAR & SUB-PILLAR 🌟 -->
-                                <tr>
-                                    <th>Viksit Rajasthan Themes</th>
-                                    <td>${pillarText}</td>
-                                    <th>Viksit Rajasthan SubThemes</th>
-                                    <td>${subPillarText}</td>
-                                </tr>
-                                <tr>
-                                    <th>Activity Period</th>
-                                    <td colspan="3">${act.ActivityStartDate || '-'} <strong>to</strong> ${act.ActivityEndDate || '-'}</td>
-                                </tr>
-                            </table>
+                    var agencyHeaderHtml = `
+                        <div class="agency ms-3 mt-2 mb-2">
+                            <i class="bx bx-building"></i> Agency : ${agencyName}
+                        </div>
                     `;
+                    $container.append(agencyHeaderHtml);
 
-                    // Tasks Table
-                    if (allTasks.length > 0) {
-                        activityHtml += `
-                            <table class="table table-bordered table-striped task-table mb-0">
-                                <thead>
+                    // Loop 4: Activities under Agency
+                    $.each(agencyActivities, function (aIdx, act) {
+                        activityCounter++;
+
+                        // 1. Associated Dept Badges
+                        var assocDeptsBadges = [];
+                        if (act.associatedDepartments && act.associatedDepartments.length > 0) {
+                            $.each(act.associatedDepartments, function (i, assoc) {
+                                if (assoc.DepartmentName) {
+                                    assocDeptsBadges.push('<span class="badge bg-secondary me-1">' + assoc.DepartmentName.trim() + '</span>');
+                                }
+                            });
+                        }
+                        var assocDeptsText = assocDeptsBadges.length > 0 ? assocDeptsBadges.join(' ') : 'None';
+
+                        // 2. SDG Goals Badges
+                        var sdgGoalsBadges = [];
+                        if (act.sdgGoals && act.sdgGoals.length > 0) {
+                            $.each(act.sdgGoals, function (i, g) {
+                                var goalLabel = g.DisplayNumber ? 'Goal ' + g.DisplayNumber + ': ' + g.GoalName.trim() : g.GoalName.trim();
+                                sdgGoalsBadges.push('<span class="badge bg-success me-1 mb-1">' + goalLabel + '</span>');
+                            });
+                        }
+                        var sdgGoalsText = sdgGoalsBadges.length > 0 ? sdgGoalsBadges.join(' ') : '-';
+
+                        // 3. SDG Targets Badges
+                        var sdgTargetsBadges = [];
+                        if (act.sdgTargets && act.sdgTargets.length > 0) {
+                            $.each(act.sdgTargets, function (i, t) {
+                                var targetLabel = t.DisplayNumber ? 'Target ' + t.DisplayNumber : t.TargetName.trim();
+                                sdgTargetsBadges.push('<span class="badge bg-info text-dark me-1 mb-1" title="' + (t.TargetName || '') + '">' + targetLabel + '</span>');
+                            });
+                        }
+                        var sdgTargetsText = sdgTargetsBadges.length > 0 ? sdgTargetsBadges.join(' ') : '-';
+
+                        // 4. Pillar Badges
+                        var pillarBadges = [];
+                        if (act.pillars && act.pillars.length > 0) {
+                            $.each(act.pillars, function (i, p) {
+                                if (p.PillarName) {
+                                    pillarBadges.push('<span class="badge bg-primary me-1 mb-1">' + p.PillarName.trim() + '</span>');
+                                }
+                            });
+                        }
+                        var pillarText = pillarBadges.length > 0 ? pillarBadges.join(' ') : '-';
+
+                        // 5. SubPillars Badges
+                        var subPillarBadges = [];
+                        if (act.subPillars && act.subPillars.length > 0) {
+                            $.each(act.subPillars, function (i, sp) {
+                                if (sp.SubPillarName) {
+                                    subPillarBadges.push('<span class="badge bg-dark me-1 mb-1">' + sp.SubPillarName.trim() + '</span>');
+                                }
+                            });
+                        }
+                        var subPillarText = subPillarBadges.length > 0 ? subPillarBadges.join(' ') : '-';
+
+                        // Extract All Tasks (Direct + SubActivities)
+                        var allTasks = [];
+                        if (act.hasSubActivity && act.subActivities && act.subActivities.length > 0) {
+                            $.each(act.subActivities, function (sIdx, sub) {
+                                if (sub.tasks && sub.tasks.length > 0) {
+                                    $.each(sub.tasks, function (tIdx, t) {
+                                        t.subActivityName = sub.SubActivityName;
+                                        allTasks.push(t);
+                                    });
+                                }
+                            });
+                        } else if (act.directTasks && act.directTasks.length > 0) {
+                            allTasks = act.directTasks;
+                        }
+
+                        totalTasksCount += allTasks.length;
+
+                        // Activity Card HTML
+                        var activityHtml = `
+                            <div class="activity-container mb-3 ms-4">
+                                <div class="activity-title-header d-flex justify-content-between align-items-center">
+                                    <span><strong>Activity ${activityCounter}:</strong> ${act.ActivityName || 'N/A'} (${act.ShortName || ''})</span>
+                                    <span class="badge bg-primary">${act.ActivityStatus || 'Ongoing'}</span>
+                                </div>
+
+                                <!-- Metadata Table -->
+                                <table class="table table-bordered activity-meta-table mb-0">
                                     <tr>
-                                        <th width="5%">S.No</th>
-                                        <th width="20%">Task Name</th>
-                                        <th width="15%">Duration</th>
-                                        <th>Associated Agency</th>
-                                        <th width="12%">Status</th>
-                                        <th width="28%">Geo Level Coverage</th>
-                                        <th>Achievement/ Impact</th>
-                                        <th>Remarks</th>
+                                        <th width="20%">Description</th>
+                                        <td colspan="3">${act.Description || '-'}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    <tr>                                        
+                                        <th width="20%">Nodal Department</th>
+                                        <td width="30%">${nodalDeptName}</td>
+                                        <th width="20%">Associated Depts</th>
+                                        <td width="30%">${assocDeptsText}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>SDG Goals</th>
+                                        <td>${sdgGoalsText}</td>
+                                        <th>SDG Targets</th>
+                                        <td>${sdgTargetsText}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Viksit Rajasthan Themes</th>
+                                        <td>${pillarText}</td>
+                                        <th>Viksit Rajasthan SubThemes</th>
+                                        <td>${subPillarText}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Activity Period</th>
+                                        <td colspan="3">${act.ActivityStartDate || '-'} <strong>to</strong> ${act.ActivityEndDate || '-'}</td>
+                                    </tr>
+                                </table>
                         `;
 
-                        $.each(allTasks, function (tIdx, task) {
-                            var tracking = task.tracking || {};
-                            var statusText = tracking.Status || 'Not Started';
-                            var statusClass = 'not-started';
+                        // Tasks Table
+                        if (allTasks.length > 0) {
+                            activityHtml += `
+                                <table class="table table-bordered table-striped task-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">S.No</th>
+                                            <th width="20%">Task Name</th>
+                                            <th width="15%">Duration</th>
+                                            <th>Associated Agency</th>
+                                            <th width="12%">Status</th>
+                                            <th width="28%">Geo Level Coverage</th>
+                                            <th>Achievement/ Impact</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            `;
 
-                            var statusLower = statusText.toLowerCase().trim();
+                            $.each(allTasks, function (tIdx, task) {
+                                var tracking = task.tracking || {};
+                                var statusText = tracking.Status || 'Not Started';
+                                var statusClass = 'not-started';
 
-                            if (statusLower === 'completed') {
-                                statusClass = 'completed';
-                                completedTasksCount++;
-                            } else if (statusLower === 'in progress' || statusLower === 'on track' || statusLower === 'partially on track') {
-                                statusClass = 'progress';
-                                inProgressTasksCount++;
-                            } else if (statusLower === 'delayed') {
-                                statusClass = 'delayed';
-                                delayedTasksCount++;
-                            } else {
-                                statusClass = 'not-started';
-                                notStartedTasksCount++;
-                            }
+                                var statusLower = statusText.toLowerCase().trim();
 
-                            // Geo Level Format
-                            var geoFormat = "-";
-                            if (task.geoLevelList && task.geoLevelList.length > 0) {
-                                var geoItems = [];
-                                $.each(task.geoLevelList, function (gIdx, geo) {
-                                    var text = '<strong>' + (geo.GeoLevel || 'Location') + ':</strong> ';
-                                    if (geo.districtName) text += geo.districtName;
-                                    if (geo.cityName) text += ' (' + geo.cityName + ')';
-                                    if (geo.blockName) text += ' [' + geo.blockName + ']';
-                                    if (geo.GeoLevel === 'State') text += 'Entire State';
-                                    geoItems.push(text);
-                                });
-                                geoFormat = geoItems.join('<br/>');
-                            }
+                                if (statusLower === 'completed') {
+                                    statusClass = 'completed';
+                                    completedTasksCount++;
+                                } else if (statusLower === 'in progress' || statusLower === 'on track' || statusLower === 'partially on track') {
+                                    statusClass = 'progress';
+                                    inProgressTasksCount++;
+                                } else if (statusLower === 'delayed') {
+                                    statusClass = 'delayed';
+                                    delayedTasksCount++;
+                                } else {
+                                    statusClass = 'not-started';
+                                    notStartedTasksCount++;
+                                }
 
-                            var taskNameDisplay = task.taskName || 'N/A';
-                            if (task.subActivityName) {
-                                taskNameDisplay += ' <br/><small class="text-muted">(Sub-Activity: ' + task.subActivityName + ')</small>';
-                            }
+                                // Geo Level Format
+                                var geoFormat = "-";
+                                if (task.geoLevelList && task.geoLevelList.length > 0) {
+                                    var geoItems = [];
+                                    $.each(task.geoLevelList, function (gIdx, geo) {
+                                        var text = '<strong>' + (geo.GeoLevel || 'Location') + ':</strong> ';
+                                        if (geo.districtName) text += geo.districtName;
+                                        if (geo.cityName) text += ' (' + geo.cityName + ')';
+                                        if (geo.blockName) text += ' [' + geo.blockName + ']';
+                                        if (geo.GeoLevel === 'State') text += 'Entire State';
+                                        geoItems.push(text);
+                                    });
+                                    geoFormat = geoItems.join('<br/>');
+                                }
+
+                                var taskNameDisplay = task.taskName || 'N/A';
+                                if (task.subActivityName) {
+                                    taskNameDisplay += ' <br/><small class="text-muted">(Sub-Activity: ' + task.subActivityName + ')</small>';
+                                }
+
+                                activityHtml += `
+                                    <tr>
+                                        <td align="center">${tIdx + 1}</td>
+                                        <td>${taskNameDisplay}</td>
+                                        <td align="center">${task.TaskStartDate || '-'} <br/>to<br/> ${task.TaskEndDate || '-'}</td>
+                                        <td>${task.associatedAgencies || '-'}</td>
+                                        <td align="center" class="${statusClass}">${statusText}</td>
+                                        <td>${geoFormat}</td>
+                                        <td>${tracking.Achievement || '-'}</td>
+                                        <td>${tracking.Remarks || '-'}</td>
+                                    </tr>
+                                `;
+                            });
 
                             activityHtml += `
-                                <tr>
-                                    <td align="center">${tIdx + 1}</td>
-                                    <td>${taskNameDisplay}</td>
-                                    <td align="center">${task.TaskStartDate || '-'} <br/>to<br/> ${task.TaskEndDate || '-'}</td>
-                                    <td>${task.associatedAgencies || '-'}</td>
-                                    <td align="center" class="${statusClass}">${statusText}</td>
-                                    <td>${geoFormat}</td>
-                                    <td>${tracking.Achievement || '-'}</td>
-                                    <td>${tracking.Remarks || '-'}</td>
-                                </tr>
+                                    </tbody>
+                                </table>
                             `;
-                        });
+                        } else {
+                            activityHtml += `<div class="p-3 text-center text-muted border-top">No tasks are mapped for this activity.</div>`;
+                        }
 
-                        activityHtml += `
-                                </tbody>
-                            </table>
-                        `;
-                    } else {
-                        activityHtml += `<div class="p-3 text-center text-muted border-top">No tasks are mapped for this activity.</div>`;
-                    }
-
-                    activityHtml += `</div>`; // Activity block end
-                    $container.append(activityHtml);
+                        activityHtml += `</div>`; // Activity block end
+                        $container.append(activityHtml);
+                    });
                 });
             });
         });
 
         /* =========================================
-            STEP 3: UPDATE SUMMARY CARDS FROM SERVICE API RESPONSE
-            ========================================= */
+           STEP 3: UPDATE SUMMARY CARDS FROM SERVICE API RESPONSE
+           ========================================= */
         if (summaryData) {
             $("#lblAgenciesCount").text(summaryData.agencyCount ?? 0);
-            $("#lblSectorsCount").text(summaryData.sectorCount ?? 0);
+            $("#lblDepartmentCount").text(summaryData.departmentCount ?? 0);
             $("#lblActivitiesCount").text(summaryData.activityCount ?? 0);
             $("#lblTasksCount").text(summaryData.taskCount ?? 0);
             $("#lblBestPracticesCount").text(summaryData.bestPracticeCount ?? 0);
@@ -356,17 +374,17 @@
             // Fallback UI Calculation
             $("#lblActivitiesCount").text(totalActivities);
             $("#lblTasksCount").text(totalTasksCount);
-            $("#lblSectorsCount").text(sectorsSet.size);
+            $("#lblDepartmentCount").text(departmentsSet.size);
             $("#lblAgenciesCount").text(agenciesSet.size);
 
             $("#lblBestPracticesCount").text(0);
-            $("#lblSDGGoalsCount").text(sectorsSet.size);
+            $("#lblSDGGoalsCount").text(departmentsSet.size);
             $("#lblSDGTargetsCount").text(totalActivities * 2);
-            $("#lblVRThemesCount").text(sectorsSet.size > 0 ? 1 : 0);
-            $("#lblVRSubThemesCount").text(sectorsSet.size > 0 ? 2 : 0);
+            $("#lblVRThemesCount").text(departmentsSet.size > 0 ? 1 : 0);
+            $("#lblVRSubThemesCount").text(departmentsSet.size > 0 ? 2 : 0);
         }
 
-        // Department Task Status Summary Table Updates
+        // Sector Task Status Summary Table Updates
         $("#lblSummaryTotalTasks").text(totalTasksCount);
         $("#lblSummaryCompleted").text(completedTasksCount);
         $("#lblSummaryInProgress").text(inProgressTasksCount);
@@ -382,7 +400,6 @@
     },
 
     // 5. Print Functionality (Nonce Supported)
-    // 🌟 COMPACT PRINT FUNCTION (Extra Space & Blank Pages Fixed)
     printDiv: function (nonce) {
         var printContents = document.getElementById("printDiv");
         if (!printContents) {
@@ -397,10 +414,10 @@
         <html>
         <head>
             <title>Department Wise Activity Report</title>
-            
+
             <!-- Bootstrap & BoxIcons CSS Links -->
-            <link rel="stylesheet" href="/css/bootstrap.min.css">           
-            
+            <link rel="stylesheet" href="/css/bootstrap.min.css">
+
             <style nonce="${nonce || ''}">
                 /* GENERAL RESET FOR COMPACT PRINT */
                 * {
