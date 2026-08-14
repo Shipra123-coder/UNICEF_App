@@ -137,6 +137,7 @@ namespace BL.ViksitService
                     ViksitName = row["ViksitName"]?.ToString(),
                     AssociatedSubThemes = row["AssociatedSubThemes"] == DBNull.Value ? "" : row["AssociatedSubThemes"]?.ToString(),
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]) : 0,
+                    ActivityGuid = row["Guid"].ToString(),
                     ActivityName = row["ActivityName"]?.ToString(),
                     ActivityStatus = row["ActivityStatus"]?.ToString(),
 
@@ -182,6 +183,7 @@ namespace BL.ViksitService
                     ViksitName =row["ViksitName"]?.ToString(),
 
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]) : 0,
+                    ActivityGuid = row["Guid"].ToString(),
                     ActivityName = row["ActivityName"]?.ToString(),
                     UNSectorName = row["UNSectorName"]?.ToString(),
 
@@ -229,6 +231,7 @@ namespace BL.ViksitService
                     UNSectorId =row["UNSectorId"] != DBNull.Value ? Convert.ToInt32(row["UNSectorId"]): 0,
                     UNSectorName =row["UNSectorName"]?.ToString(),
                     ActivityId = row["ActivityId"] != DBNull.Value ? Convert.ToInt64(row["ActivityId"]): 0,
+                    ActivityGuid = row["Guid"].ToString(),
                     ActivityName = row["ActivityName"]?.ToString(),
                     NodalDepartment = row["NodalDepartment"]?.ToString(),
                     AssociatedDepartments = row["AssociatedDepartments"]?.ToString(),

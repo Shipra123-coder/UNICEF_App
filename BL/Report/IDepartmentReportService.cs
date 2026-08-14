@@ -10,5 +10,8 @@ namespace BL.Report
     public interface IDepartmentReportService
     {
         Task<string> GetDepartmentWiseReportDataAsync(int? departmentId, string activityGuid = null);
+        Task<string> GetSectorWiseReportDataAsync(int? sectorId, string activityGuid = null);
+        Task<string> GetAgencyWiseReportDataAsync(int? sectorId, string activityGuid = null);
+
     }
 }

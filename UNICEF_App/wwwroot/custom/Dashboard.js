@@ -2712,11 +2712,11 @@
                 const statusColorMap = {
                     'Completed': '#2196F3',           // Blue
                     'On Track': '#4CAF50',            // Green
-                    'Delayed': '#FFC107',             // Yellow
+                    'Delayed': '#FF5722',             // Deep Orange
                     'Not Started': '#F44336',         // Red
                     'Partially On Track': '#FF9800',  // Orange
                     'In Progress': '#00BCD4',         // Cyan
-                    'Delayed/Constrained': '#FF5722', // Deep Orange
+                    'Delayed/Constrained': '#FFC107', // Yellow
                     'Discontinued': '#9E9E9E'         // Grey
                 };
 

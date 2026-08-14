@@ -319,10 +319,10 @@
                         <td>${activity.agencyName ?? ""}</td>
                         <td>${activity.activityStatus ?? ""}</td>
                         <td>
-                            <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
-                               class="btn btn-sm btn-primary">
-                                View
-                            </a>
+                            <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
+                                   class="table-view-btn">
+                                    View
+                                </a>
                         </td>
                     </tr>
                     `;
@@ -471,7 +471,7 @@
                             <td>${activity.activityStatus ?? ''}</td>
 
                             <td>
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
                                     View
                                 </a>
@@ -628,7 +628,7 @@
                             <td>${activity.activityStatus ?? ''}</td>
 
                             <td>
-                                <a href="/Home/ActivityDetails?activityId=${activity.activityId}"
+                                <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
                                    class="table-view-btn">
                                     View
                                 </a>
@@ -720,9 +720,9 @@
 
                         <td>
                             <a href="/Home/ActivityDet?guid=${activity.activityGuid}"
-                               class="table-view-btn">
-                                View
-                            </a>
+                                   class="table-view-btn">
+                                    View
+                                </a>
                         </td>
 
                     </tr>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Department Wise Activity Report";
+    ViewData["Title"] = "Agency Wise Activity Report";
     Layout = "~/Views/Shared/_LayoutPublic.cshtml";
 }
 @{
@@ -90,7 +90,7 @@
 
     .report {
         width: 85%;
-        margin: 50px auto 20px auto;
+        margin: auto;
         background: #fff;
         padding: 25px;
         border: 1px solid #ddd;
@@ -620,17 +620,17 @@
 <!-- 🌟 MODERN TOP FILTER CARD 🌟 -->
 <div class="top-filter">
     <div class="filter-header">
-        <i class="bx bx-filter-alt"></i> <span>Department Wise Filters</span>
+        <i class="bx bx-filter-alt"></i> <span>@ViewData["Title"] Filters</span>
     </div>
     <div class="row align-items-end g-3">
         <div class="col-md-6 col-lg-5">
-            <label for="Department" class="form-label fw-bold text-secondary">
-                Select Department <span class="text-danger">*</span>
+            <label for="Agency" class="form-label fw-bold text-secondary">
+                Select Agency <span class="text-danger">*</span>
             </label>
-            <select class="form-select form-select-md" name="Department" id="Department">
-                <option value="-1">-- Select Department --</option>
+            <select class="form-select form-select-md" name="Agency" id="Agency">
+                <option value="-1">-- Select Agency --</option>
             </select>
-            <input type="hidden" id="hiddenDeptId" value="@ViewBag.DeptId" />
+            @*<input type="hidden" id="hiddenDeptId" value="@ViewBag.DeptId" />*@
         </div>
 
         <div class="col-md-6 col-lg-7 d-flex gap-2 justify-content-md-start">
@@ -644,16 +644,30 @@
     </div>
 </div>
 
+<div class="container-fluid py-3">
+    <!-- 2. PRINTABLE REPORT CONTAINER (#printDiv) -->
+    <div id="printDiv" class="report bg-white p-3 border rounded d-none">
 
-<!-- 🌟 PRINT AREA CONTAINER 🌟 -->
-<div id="printDiv" class="d-none">
-    <div class="report">
+        <!-- Report Header -->
         <div class="report-title text-center text-primary mb-3">
-            <h2>Department Wise Activity Report</h2>
-            <h3><span id="lblDepartmentHeaderName_head" class="headert-tit">Rural Development</span></h3>
+            @*<h2>Agency Wise Activity Report</h2>*@
+            <h3>Agency : <span id="lblAgencyHeaderName" class="headert-tit">Rural Development</span></h3>
         </div>
+
         <!-- TOP DEPARTMENT SUMMARY CARDS -->
         <div class="summary-card-container">
+
+            <!-- 2. Department -->
+            <div class="summary-card card-green">
+                <div class="summary-icon bg-icon-blue">
+                    🌐
+                    <i class="bx bx-globe"></i>
+                </div>
+                <div class="summary-data">
+                    <span class="summary-value" id="lblDepartmentCount">0</span>
+                    <span class="summary-label">Department</span>
+                </div>
+            </div>
 
             <!-- 1. Agencies -->
             <div class="summary-card card-blue">
@@ -662,22 +676,12 @@
                     <i class="bx bxs-bank"></i>
                 </div>
                 <div class="summary-data">
-                    <span class="summary-value" id="lblAgenciesCount">0</span>
-                    <span class="summary-label">Agencies</span>
-                </div>
-            </div>
-
-            <!-- 2. Sectors -->
-            <div class="summary-card card-green">
-                <div class="summary-icon bg-icon-blue">
-                    🌐
-                    <i class="bx bx-globe"></i>
-                </div>
-                <div class="summary-data">
                     <span class="summary-value" id="lblSectorsCount">0</span>
                     <span class="summary-label">Sectors</span>
                 </div>
             </div>
+
+
 
             <!-- 3. Activities -->
             <div class="summary-card card-yellow">
@@ -770,106 +774,84 @@
                 </div>
                 <div class="group-footer-title">Viksit Rajasthan@2047</div>
             </div>
-
+        </div>       
+        <!-- TASK STATUS SUMMARY ROW -->
+        <div class="card mb-3 border-light bg-light">
+            <div class="card-body p-2">
+                <div class="row text-center g-2 fw-bold" style="font-size: 12px;">
+                    <div class="col">Total Tasks: <span id="lblSummaryTotalTasks" class="text-dark">0</span></div>
+                    <div class="col">Completed: <span id="lblSummaryCompleted" class="text-success">0</span></div>
+                    <div class="col">In Progress: <span id="lblSummaryInProgress" class="text-warning">0</span></div>
+                    <div class="col">Delayed: <span id="lblSummaryDelayed" class="text-danger">0</span></div>
+                    <div class="col">Not Started: <span id="lblSummaryNotStarted" class="text-secondary">0</span></div>
+                </div>
+            </div>
         </div>
-
-        <!-- DEPARTMENT HEADER -->
-        <div class="dept-header bg-primary text-white p-2 font-weight-bold">
-            Department : <span id="lblDepartmentHeaderName">Rural Development</span>
-        </div>
-
-        <!-- DYNAMIC SECTOR, AGENCY & ACTIVITY CONTAINER -->
+        <!-- DYNAMIC CONTENT RENDER CONTAINER -->
         <div id="activityReportContainer">
-            <!-- Dynamic Content populated by jQuery -->
-        </div>
-
-        <!-- DEPARTMENT TASK STATUS SUMMARY -->
-        <div class="mt-4">
-            <h4 class="bg-primary text-white p-2">Department Task Status Summary</h4>
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                        <th>Total Tasks</th>
-                        <th>Completed</th>
-                        <th>In Progress</th>
-                        <th>Delayed</th>
-                        <th>Not Started</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="lblSummaryTotalTasks">0</td>
-                        <td id="lblSummaryCompleted" class="completed">0</td>
-                        <td id="lblSummaryInProgress" class="progress">0</td>
-                        <td id="lblSummaryDelayed" class="delayed">0</td>
-                        <td id="lblSummaryNotStarted" class="not-started">0</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="footer d-flex justify-content-between mt-4 pt-2 border-top">
-            <div>UN Monitoring System</div>
-            <div>Page 1</div>
+            <div class="text-center my-4 text-muted">
+                <p class="mb-0">Please select a Sector and click "Load Report" to view details.</p>
+            </div>
         </div>
     </div>
 </div>
+
 <script nonce="@nonce" src="~/custom/Common.js"></script>
-<script nonce="@nonce" src="~/custom/PrintDepartment.js" asp-append-version="true"></script>
+<script nonce="@nonce" src="~/custom/PrintAgency.js" asp-append-version="true"></script>
 <script nonce="@nonce">
     document.addEventListener('DOMContentLoaded', function () {
 
-        // 1. Safe Vanilla JS to get hiddenDeptId value
-        var hiddenDeptElem = document.getElementById('hiddenDeptId');
-        var hiddenDeptVal = hiddenDeptElem ? hiddenDeptElem.value : '';
+        // 1. Safe Vanilla JS to get hiddenAgencyId value
+        var hiddenAgencyElem = document.getElementById('hiddenAgencyId');
+        var hiddenAgencyVal = hiddenAgencyElem ? hiddenAgencyElem.value : '';
 
         // Dropdown Bind
         if (typeof common !== 'undefined' && common.BindDropdown) {
-            common.BindDropdown(`/Master/DDL_Department`, "Department", "Department", hiddenDeptVal);
+            common.BindDropdown(`/Master/DDL_Agency`, "Agency", "Agency", hiddenAgencyVal);
         }
 
         // Filter Button Click Listener
         var btnLoad = document.getElementById('btnLoadReport');
         if (btnLoad) {
             btnLoad.addEventListener('click', function () {
-                var deptElem = document.getElementById('Department');
-                var deptId = deptElem ? deptElem.value : '';
+                var AgencyElem = document.getElementById('Agency');
+                var AgencyId = AgencyElem ? AgencyElem.value : '';
 
-                if (deptId && deptId !== "-1") {
+                if (AgencyId && AgencyId !== "-1") {
                     // 🌟 Bootstrap 'd-none' class ko remove karein taaki container dikhe
                     var printDiv = document.getElementById('printDiv');
                     if (printDiv) {
                         printDiv.classList.remove('d-none');
                     }
 
-                    if (typeof printDepartmentReport !== 'undefined') {
-                        printDepartmentReport.loadDepartmentWiseData(deptId);
+                    if (typeof printAgencyReport !== 'undefined') {
+                        printAgencyReport.loadAgencyWiseData(AgencyId);
                     }
                 } else {
-                    alert("Please select a department!");
+                    alert("Please select a sector!");
                 }
             });
         }
 
-        // Auto Load if ViewBag.DeptId exists
-        if ('@ViewBag.DeptId' !== '' && '@ViewBag.DeptId' !== '-1') {
-            setTimeout(() => {
-                var printDiv = document.getElementById('printDiv');
-                if (printDiv) {
-                    printDiv.classList.remove('d-none'); // 🌟 Unhide
-                }
-                if (typeof printDepartmentReport !== 'undefined') {
-                    printDepartmentReport.loadDepartmentWiseData(hiddenDeptVal);
-                }
-            }, 500);
-        }
+        // Auto Load if ViewBag.AgencyId exists
+        //if ('@ViewBag.AgencyId' !== '' && '@ViewBag.AgencyId' !== '-1') {
+            //setTimeout(() => {
+            //    var printDiv = document.getElementById('printDiv');
+            //    if (printDiv) {
+            //        printDiv.classList.remove('d-none'); // 🌟 Unhide
+            //    }
+            //    if (typeof printAgencyReport !== 'undefined') {
+            //        printAgencyReport.loadAgencyWiseData(hiddenAgencyVal);
+            //    }
+            //}, 500);
+        //}
 
         // 3. Print Report Button Event Listener
         var btnPrint = document.getElementById('btnPrintReport');
         if (btnPrint) {
             btnPrint.addEventListener('click', function () {
-                if (typeof printDepartmentReport !== 'undefined') {
-                    printDepartmentReport.printDiv('@nonce');
+                if (typeof printAgencyReport !== 'undefined') {
+                    printAgencyReport.printDiv('@nonce');
                 }
             });
         }
