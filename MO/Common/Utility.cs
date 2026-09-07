@@ -41,5 +41,12 @@ namespace MO.Common
 
     }
 
-
+    public enum PermissionAction
+    {
+        List,
+        Add,
+        Edit,
+        Delete,
+        ActiveDeactive
+    }
 }

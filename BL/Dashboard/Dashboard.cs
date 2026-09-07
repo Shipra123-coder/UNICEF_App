@@ -1186,9 +1186,9 @@ namespace BL.Dashboard
         public async Task<List<TaskStatusChartModel>> GetTaskStatusChartData()
         {
             var parameters = new List<SqlParameter>
-    {
-        new SqlParameter("@Action", "GetTaskStatusChart")
-    };
+            {
+                new SqlParameter("@Action", "GetTaskStatusChart")
+            };
 
             var ds = await _iSql.ExecuteProcedure(
                 "SP_ManageActivityList",

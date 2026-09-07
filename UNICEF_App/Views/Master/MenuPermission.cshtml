@@ -1,0 +1,427 @@
+﻿@model MO.ViewModels.MenuPermissionViewModel
+@{
+    ViewData["Title"] = "Menu Permission Management";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<style nonce="@nonce">
+    .module-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .module-header {
+        background: #f8fafc;
+        border-bottom: 2px solid #e2e8f0;
+        padding: 12px 18px;
+    }
+
+    .module-card.standalone .module-header {
+        border-bottom: none;
+    }
+
+    .module-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0;
+    }
+
+    .table-sub-menu {
+        margin-bottom: 0;
+    }
+
+        .table-sub-menu thead th {
+            background: #f1f5f9;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #475569;
+            border-top: none;
+        }
+
+        .table-sub-menu tbody td {
+            vertical-align: middle !important;
+            font-size: 13.5px;
+        }
+
+    .tree-branch {
+        display: inline-block;
+        color: #94a3b8;
+        font-family: monospace;
+        font-weight: bold;
+        margin-right: 8px;
+        font-size: 15px;
+    }
+
+    .badge-route {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+        font-size: 11.5px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-family: Consolas, monospace;
+    }
+
+    .standalone-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .perm-check-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 55px;
+    }
+
+        .perm-check-item label {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 3px;
+            cursor: pointer;
+        }
+</style>
+
+<div class="container-fluid mt-3 mb-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fa fa-sitemap mr-2"></i> Group-Based Menu Permission</h5>
+            <span class="badge badge-light text-primary font-weight-bold px-3 py-2">Role Management</span>
+        </div>
+        <div class="card-body">
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check-circle mr-1"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle mr-1"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            }
+
+            <!-- 1. Group Selector Dropdown -->
+            <form method="get" asp-action="MenuPermission" id="frmSelectGroup">
+                <div class="row align-items-end mb-4">
+                    <div class="col-md-4">
+                        <label class="font-weight-bold text-dark">Target User Group <span class="text-danger">*</span></label>
+                        <select name="groupId" id="ddlGroup" class="form-control border-primary shadow-none font-weight-bold">
+                            <option value="0">-- Select User Group --</option>
+                            @if (ViewBag.Groups != null)
+                            {
+                                foreach (var grp in ViewBag.Groups)
+                                {
+                                    <option value="@grp.Id" selected="@(grp.Id == Model.SelectedGroupId)">
+                                        @grp.Name
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    @if (Model.SelectedGroupId > 0)
+                    {
+                        <div class="col-md-8 text-right">
+                            <span class="text-muted small">
+                                <i class="fa fa-lightbulb-o text-warning mr-1"></i>
+                                Standalone menus header se seedhe configure ho sakte hain; Folder modules dropdown se expand hote hain.
+                            </span>
+                        </div>
+                    }
+                </div>
+            </form>
+
+            <!-- 2. Hierarchical & Standalone Modules Form -->
+            @if (Model.SelectedGroupId > 0)
+            {
+                <form method="post" asp-action="SavePermissions" id="frmPermissions">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="SelectedGroupId" />
+
+                    @{
+                        var parents = Model.MenuList.Where(x => !x.IsSubMenu).OrderBy(x => x.OrderNumber).ToList();
+                    }
+
+                    @foreach (var parent in parents)
+                    {
+                        var parentIndex = Model.MenuList.IndexOf(parent);
+                        var subItems = Model.MenuList.Where(x => x.IsSubMenu && x.MainMenuId == parent.MenuId).OrderBy(x => x.OrderNumber).ToList();
+                        var hasSubMenus = subItems.Any();
+                        var route = (!string.IsNullOrEmpty(parent.Controller) && parent.Controller != "#")
+                                    ? $"/{parent.Controller}/{parent.ActionName}"
+                                    : "#";
+
+                        <div class="module-card @(!hasSubMenus ? "standalone" : "")" data-module-id="@parent.MenuId">
+
+                            <!-- Module Header -->
+                            <div class="module-header d-flex justify-content-between align-items-center flex-wrap">
+
+                                <!-- Left Info -->
+                                <div class="d-flex align-items-center my-1">
+                                    <div class="@(hasSubMenus ? "bg-primary" : "bg-info") text-white rounded p-2 mr-3 text-center" style="width: 38px; height: 38px;">
+                                        <i class="@(!string.IsNullOrEmpty(parent.Icon) ? parent.Icon : (hasSubMenus ? "fa fa-folder-open" : "fa fa-desktop"))"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="module-title">
+                                            @parent.Name
+                                            @if (!string.IsNullOrEmpty(parent.MangalName))
+                                            {
+                                                <span class="text-muted font-weight-normal small ml-1">(@parent.MangalName)</span>
+                                            }
+                                        </h6>
+                                        <div class="d-flex align-items-center mt-1">
+                                            @if (hasSubMenus)
+                                            {
+                                                <span class="badge badge-secondary mr-2" style="font-size: 10px;">PARENT FOLDER</span>
+                                                <small class="text-muted">(@subItems.Count Sub-menus)</small>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-info mr-2" style="font-size: 10px;">SINGLE SCREEN</span>
+                                                <span class="badge-route"><i class="fa fa-link mr-1"></i>@route</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    @Html.HiddenFor(m => m.MenuList[parentIndex].MenuId)
+                                    @Html.HiddenFor(m => m.MenuList[parentIndex].Controller)
+                                    @Html.HiddenFor(m => m.MenuList[parentIndex].ActionName)
+                                    @Html.HiddenFor(m => m.MenuList[parentIndex].IsSubMenu)
+                                    @Html.HiddenFor(m => m.MenuList[parentIndex].MainMenuId)
+                                </div>
+
+                                <!-- Right Actions -->
+                                <div class="d-flex align-items-center my-1">
+                                    @if (hasSubMenus)
+                                    {
+                                        <!-- Module Select All -->
+                                        <label class="custom-control custom-checkbox mb-0 mr-2 cursor-pointer">
+                                            <input type="checkbox" class="custom-control-input chk-module-all" id="mod_all_@parent.MenuId" data-target-module="@parent.MenuId">
+                                            <label class="custom-control-label font-weight-bold text-primary" for="mod_all_@parent.MenuId">Select Module All</label>
+                                        </label>
+                                        <input type="checkbox" asp-for="MenuList[parentIndex].CanList" class="d-none chk-parent-canlist" />
+                                    }
+                                    else
+                                    {
+                                        <!-- Standalone Menu Permission Controls directly in Header -->
+                                        <div class="standalone-actions border rounded px-3 py-1 bg-white shadow-sm action-row">
+                                            <div class="perm-check-item">
+                                                <label for="p_list_@parentIndex">List</label>
+                                                <input type="checkbox" asp-for="MenuList[parentIndex].CanList" id="p_list_@parentIndex" class="chk-list" />
+                                            </div>
+                                            <div class="perm-check-item">
+                                                <label for="p_add_@parentIndex">Add</label>
+                                                <input type="checkbox" asp-for="MenuList[parentIndex].CanAdd" id="p_add_@parentIndex" class="chk-add" />
+                                            </div>
+                                            <div class="perm-check-item">
+                                                <label for="p_edit_@parentIndex">Edit</label>
+                                                <input type="checkbox" asp-for="MenuList[parentIndex].CanEdit" id="p_edit_@parentIndex" class="chk-edit" />
+                                            </div>
+                                            <div class="perm-check-item">
+                                                <label for="p_del_@parentIndex">Delete</label>
+                                                <input type="checkbox" asp-for="MenuList[parentIndex].CanDelete" id="p_del_@parentIndex" class="chk-delete" />
+                                            </div>
+                                            <div class="perm-check-item">
+                                                <label for="p_act_@parentIndex">Active</label>
+                                                <input type="checkbox" asp-for="MenuList[parentIndex].CanActiveDeactive" id="p_act_@parentIndex" class="chk-active" />
+                                            </div>
+                                            <div class="perm-check-item ml-2">
+                                                <label>Toggle</label>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-toggle-row" title="Toggle row">
+                                                    <i class="fa fa-check-square-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+
+                            <!-- If has Sub-Menus, render Table -->
+                            @if (hasSubMenus)
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sub-menu text-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left" style="width: 35%;">Sub-Menu / Screen</th>
+                                                <th class="text-left" style="width: 25%;">Action Route</th>
+                                                <th style="width: 8%;">Can List</th>
+                                                <th style="width: 8%;">Can Add</th>
+                                                <th style="width: 8%;">Can Edit</th>
+                                                <th style="width: 8%;">Can Delete</th>
+                                                <th style="width: 10%;">Active/Deactive</th>
+                                                <th style="width: 6%;">Row</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var sub in subItems)
+                                            {
+                                                var subIndex = Model.MenuList.IndexOf(sub);
+                                                var subRoute = (!string.IsNullOrEmpty(sub.Controller) && sub.Controller != "#")
+                                                                ? $"/{sub.Controller}/{sub.ActionName}"
+                                                                : "#";
+
+                                                <tr data-sub-module="@parent.MenuId" class="action-row">
+                                                    <td class="text-left">
+                                                        @Html.HiddenFor(m => m.MenuList[subIndex].MenuId)
+                                                        @Html.HiddenFor(m => m.MenuList[subIndex].Controller)
+                                                        @Html.HiddenFor(m => m.MenuList[subIndex].ActionName)
+                                                        @Html.HiddenFor(m => m.MenuList[subIndex].IsSubMenu)
+                                                        @Html.HiddenFor(m => m.MenuList[subIndex].MainMenuId)
+
+                                                        <span class="tree-branch">└──</span>
+                                                        <i class="@(!string.IsNullOrEmpty(sub.Icon) ? sub.Icon : "fa fa-file-text-o") text-muted mr-1"></i>
+                                                        <span class="font-weight-600 text-dark">@sub.Name</span>
+                                                        @if (!string.IsNullOrEmpty(sub.MangalName))
+                                                        {
+                                                            <span class="text-muted small ml-1">(@sub.MangalName)</span>
+                                                        }
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <span class="badge-route"><i class="fa fa-link mr-1"></i>@subRoute</span>
+                                                    </td>
+                                                    <td><input type="checkbox" asp-for="MenuList[subIndex].CanList" class="chk-list" /></td>
+                                                    <td><input type="checkbox" asp-for="MenuList[subIndex].CanAdd" class="chk-add" /></td>
+                                                    <td><input type="checkbox" asp-for="MenuList[subIndex].CanEdit" class="chk-edit" /></td>
+                                                    <td><input type="checkbox" asp-for="MenuList[subIndex].CanDelete" class="chk-delete" /></td>
+                                                    <td><input type="checkbox" asp-for="MenuList[subIndex].CanActiveDeactive" class="chk-active" /></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-toggle-row" title="Toggle row">
+                                                            <i class="fa fa-check-square-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Bottom Floating Actions -->
+                    <div class="card shadow-sm border-0 mt-3 p-3 bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small">Total Configured Items: <b>@Model.MenuList.Count</b></span>
+                            <button type="submit" class="btn btn-success px-5 font-weight-bold shadow-sm">
+                                <i class="fa fa-save mr-1"></i> Save All Permissions
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <div class="alert alert-light border text-center py-5">
+                    <i class="fa fa-sitemap fa-3x text-secondary mb-3 d-block"></i>
+                    <h6 class="text-muted font-weight-bold">Select a user group from above to load the permission list.</h6>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@nonce">
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Group Selector Auto-submit on change
+            const ddlGroup = document.getElementById('ddlGroup');
+            const frmSelectGroup = document.getElementById('frmSelectGroup');
+            if (ddlGroup && frmSelectGroup) {
+                ddlGroup.addEventListener('change', () => {
+                    frmSelectGroup.submit();
+                });
+            }
+
+            // 2. Module-Level Master Checkbox (Parent Module All Toggle)
+            document.querySelectorAll('.chk-module-all').forEach(masterCb => {
+                masterCb.addEventListener('change', (e) => {
+                    const moduleId = e.target.getAttribute('data-target-module');
+                    const moduleCard = document.querySelector(`.module-card[data-module-id="${moduleId}"]`);
+                    if (moduleCard) {
+                        const targetBoxes = moduleCard.querySelectorAll('tbody input[type="checkbox"]');
+                        targetBoxes.forEach(cb => {
+                            cb.checked = e.target.checked;
+                        });
+
+                        const parentCanList = moduleCard.querySelector('.chk-parent-canlist');
+                        if (parentCanList) parentCanList.checked = e.target.checked;
+                    }
+                });
+            });
+
+            // 3. Row-level toggle (Works for both Table Row & Standalone Card Header Row)
+            document.querySelectorAll('.btn-toggle-row').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const container = e.target.closest('.action-row');
+                    if (!container) return;
+
+                    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+                    const hasUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
+
+                    checkboxes.forEach(cb => {
+                        cb.checked = hasUnchecked;
+                    });
+
+                    syncParentModuleCanList(container);
+                });
+            });
+
+            // 4. Permission Dependency: CanList off toh baki off
+            document.querySelectorAll('.chk-list').forEach(listCb => {
+                listCb.addEventListener('change', (e) => {
+                    const container = e.target.closest('.action-row');
+                    if (!container) return;
+
+                    if (!e.target.checked) {
+                        container.querySelectorAll('.chk-add, .chk-edit, .chk-delete, .chk-active').forEach(cb => {
+                            cb.checked = false;
+                        });
+                    }
+                    syncParentModuleCanList(container);
+                });
+            });
+
+            // Agar Add/Edit/Delete/Active check kiya toh CanList auto-checked ho jaye
+            document.querySelectorAll('.chk-add, .chk-edit, .chk-delete, .chk-active').forEach(actionCb => {
+                actionCb.addEventListener('change', (e) => {
+                    const container = e.target.closest('.action-row');
+                    if (!container) return;
+
+                    if (e.target.checked) {
+                        const listCb = container.querySelector('.chk-list');
+                        if (listCb) listCb.checked = true;
+                    }
+                    syncParentModuleCanList(container);
+                });
+            });
+
+            // Helper: Sync parent folder CanList based on its child sub-menus
+            function syncParentModuleCanList(el) {
+                const moduleCard = el.closest('.module-card');
+                if (moduleCard && !moduleCard.classList.contains('standalone')) {
+                    const anyChildListActive = Array.from(moduleCard.querySelectorAll('tbody .chk-list')).some(x => x.checked);
+                    const parentCanList = moduleCard.querySelector('.chk-parent-canlist');
+                    if (parentCanList) {
+                        parentCanList.checked = anyChildListActive;
+                    }
+                }
+            }
+        });
+    </script>
+}

@@ -1,6 +1,8 @@
 ﻿using BL.Common;
 using BL.ManageActivity;
+using Ganss.Xss; // 🌟 सुनिश्चित करें कि NuGet से Ganss.Xss पैकेज इंस्टॉल है
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 //using Microsoft.EntityFrameworkCore;
@@ -11,14 +13,15 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using UNICEF_App.Helpers;
-using Ganss.Xss; // 🌟 सुनिश्चित करें कि NuGet से Ganss.Xss पैकेज इंस्टॉल है
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using UNICEF_App.Helpers;
+using UNICEF_App.Models;
 
 namespace UNICEF_App.Controllers
 {
+    [Authorize]
     public class ManagementController : Controller
     {
         private readonly ICommon _iCommon;
@@ -35,6 +38,7 @@ namespace UNICEF_App.Controllers
             _iActivityMediaService = iActivityMediaService;
         }
 
+        [HasPermission(PermissionAction.ActiveDeactive)]
         public async Task<IActionResult> Main(string? guid)
         {
             // --- Claims Expired Check ---
@@ -558,6 +562,8 @@ namespace UNICEF_App.Controllers
             ViewBag.Guid = guid;
             return View(); // ye UI page open karega
         }
+
+        [HasPermission(PermissionAction.ActiveDeactive)]
         public async Task<IActionResult> ActivityManagement()
         {
             string AgencyId = User.FindFirst("AgencyId")?.Value ?? "0";
@@ -570,10 +576,10 @@ namespace UNICEF_App.Controllers
             var data = await _iManageActivity.GetActivityList(AgencyId);
             return View(data);
         }
-        public async Task<IActionResult> Activity()
-        {
-            return View();
-        }
+        //public async Task<IActionResult> Activity()
+        //{
+        //    return View();
+        //}
 
         public async Task<IActionResult> Index(string? guid)
         {
@@ -1440,6 +1446,7 @@ namespace UNICEF_App.Controllers
         #endregion
 
         #region Add Direct Best Prectices
+        [HasPermission(PermissionAction.ActiveDeactive)]
         public async Task<IActionResult> AddDirectBestPrectices()
         {
             //var json_activity = await _iManageActivity.GetActivityDataAsync(guid);

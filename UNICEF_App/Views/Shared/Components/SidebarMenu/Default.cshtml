@@ -1,0 +1,86 @@
+﻿@model List<MO.Entities.m_Menu>
+
+<ul class="metismenu" id="menu">
+    @if (Model != null && Model.Any())
+    {
+        @* 1. Top Level (Parent) Menus *@
+        var parentMenus = Model
+            .Where(m => m.MainMenuId == null)
+            .OrderBy(m => m.OrderNumber)
+            .ToList();
+
+        @foreach (var parent in parentMenus)
+        {
+            var childMenus = Model
+                .Where(m => m.MainMenuId == parent.MenuId)
+                .OrderBy(m => m.OrderNumber)
+                .ToList();
+
+            @if (childMenus.Any())
+            {
+                @* Dropdown Menu (Jaise Master) *@
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon">
+                            <i class="@(string.IsNullOrEmpty(parent.Icon) ? "fa fa-folder" : parent.Icon)"></i>
+                        </div>
+                        <div class="menu-title">@parent.Name</div>
+                    </a>
+                    <ul>
+                        @foreach (var child in childMenus)
+                        {
+                            <li>
+                                @* Agar Controller/Action alag hain *@
+                                @if (!string.IsNullOrEmpty(child.Controller) && !string.IsNullOrEmpty(child.ActionName))
+                                {
+                                    <a asp-controller="@child.Controller" asp-action="@child.ActionName">
+                                        <i class="@(string.IsNullOrEmpty(child.Icon) ? "bx bx-right-arrow-alt" : child.Icon)"></i>@child.Name
+                                    </a>
+                                }
+                                else
+                                {
+                                    @* Agar direct Url store hai *@
+                                    <a asp-controller="@child.Controller" asp-action="@child.ActionName">
+                                        <i class="@(string.IsNullOrEmpty(child.Icon) ? "bx bx-right-arrow-alt" : child.Icon)"></i>@child.Name
+                                    </a>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                @* Single Direct Menu (Jaise Activity / Best Practice) *@
+                <li>
+                    @if (!string.IsNullOrEmpty(parent.Controller) && !string.IsNullOrEmpty(parent.ActionName))
+                    {
+                        <a asp-controller="@parent.Controller" asp-action="@parent.ActionName">
+                            <div class="parent-icon">
+                                <i class="@(string.IsNullOrEmpty(parent.Icon) ? "fa fa-circle" : parent.Icon)"></i>
+                            </div>
+                            <div class="menu-title">@parent.Name</div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="@parent.Controller" asp-action="@parent.ActionName">
+                            <div class="parent-icon">
+                                <i class="@(string.IsNullOrEmpty(parent.Icon) ? "fa fa-circle" : parent.Icon)"></i>
+                            </div>
+                            <div class="menu-title">@parent.Name</div>
+                        </a>
+                    }
+                </li>
+            }
+        }
+    }
+    else
+    {
+        <li>
+            <a href="javascript:;">
+                <div class="menu-title text-muted px-3">No Menus Assigned</div>
+            </a>
+        </li>
+    }
+</ul>

@@ -1,111 +1,288 @@
-﻿@using MO.Common
-@model MO.Master.AgencyMasterMO
+﻿@model MO.Entities.AgencyViewModel
 @{
-    ViewData["Title"] = "Agency Master";
+    ViewData["Title"] = "Agency";
     Layout = "~/Views/Shared/_LayoutIn.cshtml";
 }
-<div class="card shadow-sm">
-    <div class="card-header">
-        <h5 class="card-title mb-0">Agency Details Registration</h5>
-    </div>
-
-    <div class="card-body">
-        <form asp-action="SaveAgency" method="post">
-            <div class="row">
-
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Agency Name</label>
-                    <input asp-for="AgencyName" class="form-control" required placeholder="Enter agency name" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Agency Code</label>
-                    <input asp-for="AgencyCode" class="form-control" placeholder="e.g. UNICEF" />
-                </div>
-
-                <div class="col-md-12 mb-3">
-                    <label class="form-label fw-bold">Website</label>
-                    <input asp-for="Websitelink" type="url" class="form-control" placeholder="https://example.com" />
-                </div>
-
-                <div class="col-md-12 mb-3">
-                    <label class="form-label fw-bold">Description</label>
-                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter agency details..."></textarea>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label class="form-label fw-bold">Status</label>
-                    <select asp-for="Status" class="form-select">
-                        <option value="0">Active</option>
-                        <option value="1">Inactive</option>
-                    </select>
-                </div>
-
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="container-fluid py-4">
+    <!-- Modern Page Header -->
+    <div class="page-header-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="page-title-icon">
+                <i class="fa fa-th-large"></i>
             </div>
-
-            <div class="card-footer bg-transparent px-0 pb-0">
-                <button type="submit" class="btn btn-success px-4">
-                    <i class="fas fa-save me-1"></i> Save Agency
-                </button>
-                <a href="#" class="btn btn-danger px-4">Cancel</a>
+            <div>
+                <h4 class="mb-0 fw-bold text-dark">@ViewData["Title"] Master</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-custom">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Master Management</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                    </ol>
+                </nav>
             </div>
-        </form>
-    </div>
-</div>
-
-<div class="mt-4">
-    <div class="card shadow-lg rounded-3">
-        <div class="card-header d-flex justify-content-between">
-            <h5>Agencies</h5>            
         </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold">
+                <i class="fa fa-database me-1"></i> Master Data
+            </span>
+        </div>
+    </div>
 
-        <div class="">
-            @if (Model != null && Model.list != null && Model.list.Any())
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Add/Edit Card -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <span class="fw-bold">@((Model.FormModel.Guid.HasValue && Model.FormModel.Guid != Guid.Empty) ? "Edit Agency" : "Add New Agency")</span>
+        </div>
+        <div class="card-body">
+            <form asp-action="SaveAgency" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="FormModel.AgencyId" />
+                <input type="hidden" asp-for="FormModel.Guid" />
+                <input type="hidden" asp-for="FormModel.LogoURL" />
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="FormModel.AgencyName" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.AgencyName" class="form-control" placeholder="e.g. United Nations Children's Fund" />
+                        <span asp-validation-for="FormModel.AgencyName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.AgencyCode" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.AgencyCode" class="form-control" placeholder="e.g. UNICEF" />
+                        <span asp-validation-for="FormModel.AgencyCode" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Websitelink" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.Websitelink" class="form-control" placeholder="https://www.unicef.org" />
+                        <span asp-validation-for="FormModel.Websitelink" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Status</label>
+                        <select asp-for="FormModel.Status" class="form-select">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    <!-- Logo Upload -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Agency Logo <small class="text-muted">(Optional - Max 2MB)</small></label>
+                        <input type="file" asp-for="FormModel.LogoFile" id="fuLogoFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                        <span asp-validation-for="FormModel.LogoFile" class="text-danger small d-block"></span>
+                        <span id="fileValidationMsg" class="text-danger small d-none"></span>
+
+                        @if (!string.IsNullOrEmpty(Model.FormModel.LogoURL))
+                        {
+                            <div class="mt-2 d-flex align-items-center gap-2">
+                                <img src="@Model.FormModel.LogoURL" alt="Current Logo" class="table-icon-avatar" />
+                                <small class="text-muted">Current logo</small>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-8">
+                        <label asp-for="FormModel.Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="FormModel.Description" rows="2" class="form-control" placeholder="Agency mandate or work description..."></textarea>
+                        <span asp-validation-for="FormModel.Description" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success me-2">
+                        @((Model.FormModel.Guid.HasValue && Model.FormModel.Guid != Guid.Empty) ? "Update Agency" : "Save Agency")
+                    </button>
+                    @if (Model.FormModel.Guid.HasValue && Model.FormModel.Guid != Guid.Empty)
                     {
-                        int sr = 1;
-            <table class="table table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Agency Name</th>
-                        <th>Short Name</th>
-                        <th>Category</th>
-                        <th>Country</th>
-                        <th>Established</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    @foreach (var item in Model.list)
-                    {
+                        <a asp-action="Agency" class="btn btn-secondary">Cancel</a>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Data List Card -->
+    <div class="card dt-card-wrapper mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <h5 class="mb-0 fw-bold text-dark fs-6">Agency List</h5>
+                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold px-2.5 py-1">
+                    @(Model.AgencyList?.Count() ?? 0) Records
+                </span>
+            </div>
+        </div>
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-modern" id="agencyTable">
+                    <thead>
                         <tr>
-                            <td>@sr</td>
-                            <td>@item.AgencyName</td>
-                            <td>@item.AgencyCode</td>
-                            <td>@item.Description</td>                            
-                            <td>
-                                <span class="badge bg-@(item.Status == 1 ? "success" : "danger")">
-                                    @(item.Status == 1 ? "Active" : "Inactive")
-                                </span>
-                            </td>
-                            <td>
-                                <a href="/Agency/Edit/@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="/Agency/Delete/@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                            </td>
+                            <th style="width: 5%;" class="text-center">#</th>
+                            <th style="width: 7%;">Logo</th>
+                            <th style="width: 22%;">Agency Name</th>
+                            <th style="width: 10%;">Code</th>
+                            <th style="width: 14%;">Website</th>
+                            <th>Description</th>
+                            <th style="width: 8%;" class="text-center">Status</th>
+                            <th style="width: 10%;" class="text-center">Actions</th>
                         </tr>
-                        }                    
-                    
-                </tbody>
-            </table>
-            }
-            else
-            {
-                <div class="alert alert-warning text-center">
-                    No Agencys Found
-                </div>
-            }
+                    </thead>
+                    <tbody>
+                        @if (Model.AgencyList != null && Model.AgencyList.Any())
+                        {
+                            int count = 1;
+                            foreach (var agency in Model.AgencyList)
+                            {
+                                <tr>
+                                    <td class="text-center text-muted fw-semibold">@count</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(agency.LogoURL))
+                                        {
+                                            <img src="@agency.LogoURL" alt="Logo" class="table-icon-avatar" />
+                                        }
+                                        else
+                                        {
+                                            <div class="icon-placeholder">N/A</div>
+                                        }
+                                    </td>
+                                    <td><span class="fw-semibold text-dark">@agency.AgencyName</span></td>
+                                    <td><span class="badge-code">@agency.AgencyCode</span></td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(agency.Websitelink))
+                                        {
+                                            <a href="@(agency.Websitelink.StartsWith("http") ? agency.Websitelink : "https://" + agency.Websitelink)" target="_blank" rel="noopener noreferrer" class="text-decoration-none small">
+                                                Visit Link
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="desc-truncate" title="@agency.Description">
+                                            @(string.IsNullOrEmpty(agency.Description) ? "-" : agency.Description)
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <form asp-action="ToggleStatusAgency" method="post" class="status-toggle-form d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="guid" value="@agency.Guid" />
+                                            @if (agency.Status == 1)
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-success status-pill-btn" title="Click to Deactivate">Active</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary status-pill-btn" title="Click to Activate">Inactive</button>
+                                            }
+                                        </form>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-inline-flex gap-1 justify-content-center">
+                                            <a asp-action="Agency" asp-route-guid="@agency.Guid" class="btn btn-sm btn-light border text-primary action-btn btn-edit" title="Edit Agency">
+                                                Edit
+                                            </a>
+                                            @*<form asp-action="DeleteAgency" method="post" class="delete-form d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="guid" value="@agency.Guid" />
+                                                    <button type="submit" class="btn btn-sm btn-light border text-danger action-btn" title="Delete Agency">
+                                                        Delete
+                                                    </button>
+                                                </form>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            // Common JS DataTables Initializer
+            table.dataTable('agencyTable');
+
+            // Event Delegation for DataTables Pages (Preserves JS events across pagination & sorting)
+            $('#agencyTable').on('click', '.btn-edit', function (e) {
+                if (!window.confirm('Are you sure you want to edit this agency?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#agencyTable').on('submit', '.delete-form', function (e) {
+                if (!window.confirm('Are you sure you want to permanently delete this agency?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#agencyTable').on('submit', '.status-toggle-form', function (e) {
+                if (!window.confirm('Do you want to change the status of this agency?')) {
+                    e.preventDefault();
+                }
+            });
+
+            // Instant Client-Side Image Size & Type Validation
+            const logoInput = document.getElementById('fuLogoFile');
+            const validationMsg = document.getElementById('fileValidationMsg');
+
+            if (logoInput) {
+                logoInput.addEventListener('change', function () {
+                    const file = this.files[0];
+                    const maxSizeBytes = 2 * 1024 * 1024; // 2 MB
+                    const allowedExtensions = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+                    if (!file) {
+                        validationMsg.textContent = '';
+                        validationMsg.classList.add('d-none');
+                        return;
+                    }
+
+                    if (file.size > maxSizeBytes) {
+                        validationMsg.textContent = 'File size must be less than 2 MB.';
+                        validationMsg.classList.remove('d-none');
+                        this.value = '';
+                        return;
+                    }
+
+                    if (!allowedExtensions.includes(file.type)) {
+                        validationMsg.textContent = 'Please select a valid image (.jpg, .jpeg, .png, .webp).';
+                        validationMsg.classList.remove('d-none');
+                        this.value = '';
+                        return;
+                    }
+
+                    validationMsg.textContent = '';
+                    validationMsg.classList.add('d-none');
+                });
+            }
+        });
+    </script>
+}

@@ -1,161 +1,257 @@
-﻿@using MO.Common
-@model MO.Master.DepartmentMasterMO
+﻿@model MO.Entities.DepartmentViewModel
 @{
     ViewData["Title"] = "Department";
     Layout = "~/Views/Shared/_LayoutIn.cshtml";
 }
-<form asp-action="SaveDepartment" method="post">
-    <div class="row">
-
-        <div class="col-md-6">
-            <label>Department Name</label>
-            <input asp-for="DepartmentName" class="form-control" required />
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="container-fluid py-4">
+    <!-- Modern Page Header -->
+    <div class="page-header-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="page-title-icon">
+                <i class="fa fa-th-large"></i>
+            </div>
+            <div>
+                <h4 class="mb-0 fw-bold text-dark">@ViewData["Title"] Master</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-custom">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Master Management</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
-
-        <div class="col-md-3">
-            <label>Short Name</label>
-            <input asp-for="ShortName" class="form-control" />
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold">
+                <i class="fa fa-database me-1"></i> Master Data
+            </span>
         </div>
-
-        <div class="col-md-3">
-            <label>Department Type</label>
-            <select asp-for="DepartmentType" class="form-control">
-                <option>Government</option>
-                <option>Private</option>
-            </select>
+    </div>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-
-        <div class="col-md-6 mt-2">
-            <label>Head Of Department</label>
-            <input asp-for="HeadOfDepartment" class="form-control" />
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+    }
 
-        <div class="col-md-3 mt-2">
-            <label>Email</label>
-            <input asp-for="Email" type="email" class="form-control" />
+    <!-- Add/Edit Card -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <span class="fw-bold">@(Model.FormModel.DepartmentId > 0 ? "Edit Department" : "Add New Department")</span>
         </div>
+        <div class="card-body">
+            <form asp-action="SaveDepartment" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="FormModel.DepartmentId" />
+                <input type="hidden" asp-for="FormModel.Guid" />
+                <!-- Purana LogoUrl retain karne ke liye hidden field zaroori hai -->
+                <input type="hidden" asp-for="FormModel.LogoUrl" />
 
-        <div class="col-md-3 mt-2">
-            <label>Phone</label>
-            <input asp-for="Phone" class="form-control" />
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.DepartmentName" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.DepartmentName" class="form-control" placeholder="e.g. Finance & Accounts" />
+                        <span asp-validation-for="FormModel.DepartmentName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.DepartmentCode" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.DepartmentCode" class="form-control" placeholder="e.g. FIN-01" />
+                        <span asp-validation-for="FormModel.DepartmentCode" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.HeadOfDepartment" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.HeadOfDepartment" class="form-control" placeholder="HOD Name" />
+                        <span asp-validation-for="FormModel.HeadOfDepartment" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Email" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.Email" class="form-control" placeholder="dept@domain.com" />
+                        <span asp-validation-for="FormModel.Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Phone" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.Phone" class="form-control" placeholder="Office Phone" />
+                        <span asp-validation-for="FormModel.Phone" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Status</label>
+                        <select asp-for="FormModel.Status" class="form-select">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    <!-- Logo Upload with Existing Image Preview -->
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Logo <small class="text-muted">(Optional - Max 2MB)</small></label>
+                        <input type="file" asp-for="FormModel.LogoFile" id="fuLogoFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                        <span asp-validation-for="FormModel.LogoFile" class="text-danger small d-block"></span>
+                        <span id="fileValidationMsg" class="text-danger small d-none"></span>
+
+                        @if (!string.IsNullOrEmpty(Model.FormModel.LogoUrl))
+                        {
+                            <div class="mt-2 d-flex align-items-center gap-2">
+                                <img src="@Model.FormModel.LogoUrl" alt="Current Logo" class="rounded border logo_css" />
+                                <small class="text-muted">Current logo</small>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Address" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.Address" class="form-control" placeholder="Office Location" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="FormModel.Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="FormModel.Description" rows="2" class="form-control" placeholder="Short description..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success me-2">
+                        @(Model.FormModel.DepartmentId > 0 ? "Update Department" : "Save Department")
+                    </button>
+                    @if (Model.FormModel.DepartmentId > 0)
+                    {
+                        <a asp-action="Department" class="btn btn-secondary">Cancel</a>
+                    }
+                </div>
+            </form>
         </div>
-
-        <div class="col-md-6 mt-2">
-            <label>Address</label>
-            <input asp-for="Address" class="form-control" />
-        </div>
-
-        <div class="col-md-6 mt-2">
-            <label>Description</label>
-            <textarea asp-for="Description" class="form-control"></textarea>
-        </div>
-
-        <div class="col-md-3 mt-2">
-            <label>Status</label>
-            <select asp-for="Status" class="form-control">
-                <option value="1">Active</option>
-                <option value="0">Inactive</option>
-            </select>
-        </div>
-
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Save</button>
-</form>
-
-<div class="mt-4">
-    <div class="card shadow-lg border-0 rounded-3">
-
-        <!-- Header -->
+    <!-- Data List Card -->
+    <div class="card dt-card-wrapper mt-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Department List</h5>
-            <a href="/Department/Create" class="btn btn-light btn-sm">+ Add Department</a>
+            <div class="d-flex align-items-center gap-2">
+                <h5 class="mb-0 fw-bold text-dark fs-6">Department List</h5>
+                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold px-2.5 py-1">
+                    @(Model.DepartmentList?.Count() ?? 0) Records
+                </span>
+            </div>
         </div>
-
-        <!-- Body -->
-        <div class="">
-
-            @if (Model != null && Model.list != null && Model.list.Any())
-            {
-                int sr = 1;
-
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered align-middle">
-
-                        <thead class="table-dark text-center">
-                            <tr>
-                                <th>#</th>
-                                <th>Department</th>
-                                <th>Short</th>
-                                <th>Type</th>
-                                <th>Head</th>
-                                <th>Contact</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th width="120">Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach (var item in Model.list)
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-modern" id="departmentTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;" class="text-center">#</th>
+                            <th style="width: 7%;">Logo</th>
+                            <th style="width: 22%;">Department Name</th>
+                            <th style="width: 10%;">Code</th>
+                            <th style="width: 18%;">HOD</th>
+                            <th>Contact</th>
+                            <th style="width: 8%;" class="text-center">Status</th>
+                            <th style="width: 10%;" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DepartmentList != null && Model.DepartmentList.Any())
+                        {
+                            int index = 1;
+                            foreach (var dept in Model.DepartmentList)
                             {
                                 <tr>
-                                    <td>@sr++</td>
-
-                                    <!-- Name + Description -->
+                                    <td class="text-center text-muted fw-semibold">@index</td>
                                     <td>
-                                        <strong>@item.DepartmentName</strong><br />
-                                        <small class="text-muted">@item.Description</small>
+                                        @if (!string.IsNullOrEmpty(dept.LogoUrl))
+                                        {
+                                            <img src="@dept.LogoUrl" alt="Logo" class="table-icon-avatar logo_css" />
+                                        }
+                                        else
+                                        {
+                                            <div class="icon-placeholder">N/A</div>
+                                        }
                                     </td>
-
-                                    <td class="text-center">@item.ShortName</td>
-
-                                    <!-- Type Badge -->
-                                    <td class="text-center">
-                                        <span class="badge bg-info text-dark">
-                                            @item.DepartmentType
-                                        </span>
-                                    </td>
-
-                                    <!-- Head -->
-                                    <td>@item.HeadOfDepartment</td>
-
-                                    <!-- Contact -->
+                                    <td><span class="fw-semibold text-dark">@dept.DepartmentName</span></td>
+                                    <td><span class="badge-code">@dept.DepartmentCode</span></td>
+                                    <td>@(string.IsNullOrEmpty(dept.HeadOfDepartment) ? "-" : dept.HeadOfDepartment)</td>
                                     <td>
-                                        📧 @item.Email <br />
-                                        📞 @item.Phone
+                                        <small class="d-block text-dark">@dept.Email</small>
+                                        <small class="text-muted">@dept.Phone</small>
                                     </td>
-
-                                    <!-- Address -->
-                                    <td>@item.Address</td>
-
-                                    <!-- Status -->
                                     <td class="text-center">
-                                        <span class="badge bg-@(item.Status == 1 ? "success" : "danger")">
-                                            @(item.Status == 1 ? "Active" : "Inactive")
-                                        </span>
+                                        <form asp-action="ToggleStatusDepartment" method="post" class="status-toggle-form d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="guid" value="@dept.Guid" />
+                                            @if (dept.Status == 1)
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-success status-pill-btn" title="Click to Deactivate">Active</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary status-pill-btn" title="Click to Activate">Inactive</button>
+                                            }
+                                        </form>
                                     </td>
-
-                                    <!-- Action -->
                                     <td class="text-center">
-                                        <a href="/Department/Edit/@item.Id" class="btn btn-warning btn-sm">✏️</a>
-                                        <a href="/Department/Delete/@item.Id" class="btn btn-danger btn-sm"
-                                           onclick="return confirm('Are you sure?')">🗑</a>
+                                        <div class="d-inline-flex gap-1 justify-content-center">
+                                            <a asp-action="Department" asp-route-guid="@dept.Guid" class="btn btn-sm btn-light border text-primary action-btn btn-edit" title="Edit Department">
+                                                Edit
+                                            </a>
+                                            @*<form asp-action="DeleteDepartment" method="post" class="delete-form d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="guid" value="@dept.Guid" />
+                                                    <button type="submit" class="btn btn-sm btn-light border text-danger action-btn" title="Delete Department">
+                                                        Delete
+                                                    </button>
+                                                </form>*@
+                                        </div>
                                     </td>
                                 </tr>
+                                index++;
                             }
-                        </tbody>
-
-                    </table>
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-warning text-center">
-                    No Departments Found
-                </div>
-            }
-
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            // Common JS DataTables Initializer
+            table.dataTable('departmentTable');
+
+            // Event Delegation for DataTables Pages (Preserves JS events across pagination & sorting)
+            $('#departmentTable').on('click', '.btn-edit', function (e) {
+                if (!window.confirm('Are you sure you want to edit this department?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#departmentTable').on('submit', '.delete-form', function (e) {
+                if (!window.confirm('Are you sure you want to permanently delete this department?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#departmentTable').on('submit', '.status-toggle-form', function (e) {
+                if (!window.confirm('Do you want to change the status of this department?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+ 
+}

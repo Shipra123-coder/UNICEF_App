@@ -59,6 +59,10 @@
     @{
         var nonce = Context.Items["CSPNonce"]?.ToString();
     }
+    @{
+        var action = ViewContext.RouteData.Values["action"]?.ToString();
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    }
     <style nonce="@nonce">
         .text-align-center {
             text-align: center;
@@ -160,22 +164,62 @@
             <div class="nav-strip-container">
                 <nav class="d-flex justify-content-between align-items-center w-100">
                     <ul class="navbar-links-list m-0 p-0">
-                        <li><a asp-action="Land" asp-controller="Home" class="nav-link-item"><i class="bx bx-home-alt me-1"></i>Home</a></li>
-                        <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item">About Us</a></li>
-                        <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item">Sector</a></li>
-                        <li><a asp-action="AgencyList" asp-controller="Home" class="nav-link-item">Agency</a></li>
-                        <li><a asp-action="DepartmentList" asp-controller="Home" class="nav-link-item">Department</a></li>
-                        <li><a href="/contact" class="nav-link-item">Contact Us</a></li>
+                        <li><a asp-action="Land" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Land" ? "active" : "")"><i class="bx bx-home-alt me-1"></i>Home</a></li>
+                        <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="AboutUs" ? "active" : "")">About Us</a></li>
+                        <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="BestPrectices" ? "active" : "")">Sector</a></li>
+                        <li><a asp-action="Agency" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Agency" ? "active" : "")">Agency</a></li>
+                        <li><a asp-action="Department" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="Department" ? "active" : "")">Department</a></li>
+                        <li><a asp-action="SDGGoal" asp-controller="SDGProgress" class="nav-link-item @(controller=="SDGProgress" && action=="SDGGoal" ? "active" : "")">SDGs</a></li>
+                        <li><a asp-action="ViksitRajasthan" asp-controller="ViksitRajasthan" class="nav-link-item @(controller=="ViksitRajasthan" && action=="ViksitRajasthan" ? "active" : "")">Viksit@2047</a></li>
+                        <!-- 🌟 REPORT DROPDOWN MAIN MENU 🌟 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link-item dropdown-toggle @(controller=="Report" ? "active" : "")" href="#" id="reportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Report
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+                                <li>
+                                    <a asp-action="DepartmentReport" asp-controller="Report" class="dropdown-item @(controller=="Report" && action=="DepartmentReport" ? "active" : "")">
+                                        Department Report
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="SectorReport" asp-controller="Report" class="dropdown-item @(controller=="Report" && action=="SectorReport" ? "active" : "")">
+                                        Sector Report
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-action="AgencyReport" asp-controller="Report" class="dropdown-item @(controller=="Report" && action=="AgencyReport" ? "active" : "")">
+                                        Agency Report
+                                    </a>
+                                </li>
+                                <!-- Aap future me aur reports yahan add kar sakte hain -->
+                            </ul>
+                        </li>
+                        <li><a asp-action="ContactUs" asp-controller="Home" class="nav-link-item @(controller=="Home" && action=="ContactUs" ? "active" : "")">Contact Us</a></li>
                     </ul>
 
-                    @* <div class="navbar-right-action-wrapper">
-                            <a asp-action="Login" asp-controller="Account" class="portal-login-btn">
-                                <i class="bx bx-log-in-circle"></i> Portal Login
-                            </a>
-                        </div> *@
+                    @*<div class="navbar-right-action-wrapper">
+                        <a asp-action="Login" asp-controller="Account" class="portal-login-btn">
+                            <i class="bx bx-log-in-circle"></i> Login
+                        </a>
+                    </div>*@
                 </nav>
             </div>
         </div>
+        @*<div class="header-bottom-navigation-bar d-none d-lg-block">
+                <div class="nav-strip-container">
+                    <nav class="d-flex justify-content-between align-items-center w-100">
+                        <ul class="navbar-links-list m-0 p-0">
+                            <li><a asp-action="Land" asp-controller="Home" class="nav-link-item"><i class="bx bx-home-alt me-1"></i>Home</a></li>
+                            <li><a asp-action="AboutUs" asp-controller="Home" class="nav-link-item">About Us</a></li>
+                            <li><a asp-action="BestPrectices" asp-controller="Home" class="nav-link-item">Sector</a></li>
+                            <li><a asp-action="AgencyList" asp-controller="Home" class="nav-link-item">Agency</a></li>
+                            <li><a asp-action="DepartmentList" asp-controller="Home" class="nav-link-item">Department</a></li>
+                            <li><a href="/contact" class="nav-link-item">Contact Us</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>*@
     </header>
     <div class="sidebar">
         <div class="sidehead">
@@ -371,7 +415,7 @@
                         <p>
                             SDGs Coordination and Acceleration Centre<br>
                             Directorate of Economics & Statistics<br>
-                            Department of Statistics<br>                          
+                            Department of Statistics<br>
                             Yojna Bhawan, Tilak Marg C- Scheme, <br>
                             Jaipur, Rajsthan Pin-302005
                         </p>

@@ -1,0 +1,243 @@
+﻿/* =========================================================
+   Common Master Modules & DataTables Modern Theme
+   ========================================================= */
+
+/* --- 1. Modern Page Header Box --- */
+.page-header-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #edf2f7;
+    margin-bottom: 1.5rem;
+}
+
+.page-title-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+}
+
+.breadcrumb-custom {
+    margin-bottom: 0;
+    font-size: 0.8rem;
+}
+
+    .breadcrumb-custom .breadcrumb-item a {
+        color: #64748b;
+        text-decoration: none;
+    }
+
+    .breadcrumb-custom .breadcrumb-item.active {
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+/* --- 2. Master Card Layout --- */
+.dt-card-wrapper {
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+    .dt-card-wrapper .card-header {
+        background: #ffffff;
+        border-bottom: 1px solid #edf2f7;
+        padding: 1.25rem 1.5rem;
+    }
+
+/* --- 3. Table Typography & Modern Rows --- */
+.table-modern {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+    .table-modern thead th {
+        background-color: #f8fafc;
+        color: #475569;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.85rem 1rem;
+        white-space: nowrap;
+    }
+
+    .table-modern tbody td {
+        padding: 0.85rem 1rem;
+        color: #334155;
+        font-size: 0.86rem;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+/* --- 4. Thumbnails & Avatars --- */
+.table-icon-avatar, .logo_css {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.icon-placeholder {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #94a3b8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px dashed #cbd5e1;
+}
+
+/* --- 5. Badges, Chips & Truncation --- */
+.color-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.badge-code {
+    background-color: #e0e7ff;
+    color: #4338ca;
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.desc-truncate, .dsc_td {
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+.status-pill-btn {
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.74rem;
+    font-weight: 600;
+}
+
+.action-btn {
+    padding: 3px 9px;
+    font-size: 0.76rem;
+}
+
+/* --- 6. DataTables Styling Overrides --- */
+.dataTables_wrapper .dt-buttons {
+    margin-bottom: 0.75rem;
+    float: left;
+}
+
+.dataTables_wrapper .dt-button {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    color: #475569 !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    padding: 5px 12px !important;
+    margin-right: 5px !important;
+    transition: all 0.2s ease;
+}
+
+    .dataTables_wrapper .dt-button:hover {
+        background: #edf2f7 !important;
+        border-color: #cbd5e1 !important;
+        color: #1e293b !important;
+    }
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    margin-bottom: 0.75rem;
+}
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 5px 14px;
+        font-size: 0.85rem;
+        outline: none;
+        background-color: #f8fafc;
+        transition: border-color 0.2s;
+    }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #0d6efd;
+            background-color: #ffffff;
+        }
+
+.dataTables_wrapper .dataTables_info {
+    font-size: 0.8rem;
+    color: #64748b;
+    padding-top: 1rem;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: 0.75rem;
+}
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 6px !important;
+        border: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
+        color: #475569 !important;
+        font-size: 0.8rem !important;
+        padding: 4px 10px !important;
+        margin-left: 3px !important;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: #0d6efd !important;
+            border-color: #0d6efd !important;
+            color: #ffffff !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #1e293b !important;
+        }
+.imgcss {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+}

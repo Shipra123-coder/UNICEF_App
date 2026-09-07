@@ -19,11 +19,11 @@ namespace DL
         //public static string ConnectionString = "Server=10.70.232.110;Database=UNMonitor; User Id=UNMonitor;Password=unmonitor@2026;Integrated Security=False;";
         //Local
         public static string ConnectionString = "Data Source=DESKTOP-UD0M5EJ\\SQLEXPRESS;Initial Catalog=UNMonitor;Integrated Security=True";
-        //public SqlConnection Connection { get; }
+        //public SqlConnection Connection { get; set;}
         public SqlConnection Connection = new SqlConnection(ConnectionString);
         
         /// <summary>
-        ///  Initializes a new instance of the zeentech.DLL.SQLHelper class
+        ///  Initializes a new instance of the SQLHelper class
         /// </summary>
         public SQLHelper()
         {
