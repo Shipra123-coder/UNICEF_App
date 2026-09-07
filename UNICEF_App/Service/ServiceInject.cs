@@ -15,6 +15,22 @@ using BL.ManageActivity;
 using BL.PageAccessRequirement;
 using BL.Report;
 using BL.SDGGoalService;
+using BL.Services.Agency;
+using BL.Services.CMDetailsBL;
+using BL.Services.ContactBL;
+using BL.Services.Department;
+using BL.Services.Group;
+using BL.Services.MenuBL;
+using BL.Services.MenuPermission;
+using BL.Services.NatureOfSupportBL;
+using BL.Services.NodalDetail;
+using BL.Services.Permission;
+using BL.Services.SubNatureOfSupportBL;
+using BL.Services.SubThemes;
+using BL.Services.Theme;
+using BL.Services.UNSector;
+using BL.Services.User;
+using BL.Services.UserLevel;
 using BL.ViksitService;
 
 //using BL.ProfileUser;
@@ -22,7 +38,23 @@ using BL.ViksitService;
 //using BL.WebsiteMaster;
 //using BL.WorkProgress;
 using DL;
+using DL.Repositories.Agency;
+using DL.Repositories.CMDetailsRepository;
+using DL.Repositories.ContactRepository;
+using DL.Repositories.Department;
+using DL.Repositories.Group;
+using DL.Repositories.MenuPermission;
+using DL.Repositories.MenuRepository;
+using DL.Repositories.NodalDetail;
+using DL.Repositories.Permission;
+using DL.Repositories.SubNatureOfSupportRepository;
+using DL.Repositories.SubThemes;
+using DL.Repositories.ThemeRepository;
+using DL.Repositories.UNSector;
+using DL.Repositories.User;
+using DL.Repositories.UserLevel;
 using Microsoft.AspNetCore.Authorization;
+using MO.Repositories;
 using System.Data;
 using UNICEF_App.Service;
 namespace UNICEF_App
@@ -49,16 +81,49 @@ namespace UNICEF_App
             services.AddScoped(typeof(ISDGGoalServices),typeof(SDGGoalService));
             services.AddScoped(typeof(IViksitService),typeof(ViksitService));
             services.AddScoped(typeof(IDepartmentReportService), typeof(DepartmentReportService));
-            //services.AddScoped(typeof(IDepartment), typeof(Department));
-            //services.AddScoped(typeof(IGauravMaster), typeof(GauravMaster));
-            //services.AddScoped(typeof(ILog), typeof(Log));
-            //services.AddScoped(typeof(IGauravDistrict), typeof(GauravDistrict));
-            //services.AddScoped(typeof(IFinancialYear), typeof(FinancialYear));
-            //services.AddScoped(typeof(ISliderVM), typeof(SliderVM));
-            //services.AddScoped(typeof(IWorkProgress), typeof(WorkProgress));
-            services.AddScoped<IAuthorizationHandler, PageAccessHandler>();
-            //services.AddScoped<IBudgetMaster, BudgetMaster>();
-            //services.AddScoped<IDashBoard, DashBoard>();
+          
+
+            // 2. Data Layer (DL) DI Registration
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserLevelRepository, UserLevelRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IAgencyRepository, AgencyRepository>();
+            services.AddScoped<IThemeRepository, ThemeRepository>();
+            services.AddScoped<ISubThemesRepository, SubThemesRepository>();
+            services.AddScoped<IUNSectorRepository, UNSectorRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<INatureOfSupportRepository, NatureOfSupportRepository>();
+            services.AddScoped<ISubNatureOfSupportRepository, SubNatureOfSupportRepository>();
+            services.AddScoped<IMenuRepository, MenuRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<ICMDetailsRepository, CMDetailsRepository>();
+            services.AddScoped<INodalDetailRepository, NodalDetailRepository>();
+            services.AddScoped<IMenuPermissionRepository, MenuPermissionRepository>();
+
+            // Repository & BL Bindings
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
+           
+
+
+            // 3. Business Logic Layer (BL) DI Registration
+            services.AddScoped<IUserBL, UserBL>();
+            services.AddScoped<IUserLevelBL, UserLevelBL>();
+            services.AddScoped<IDepartmentBL, DepartmentBL>();            
+            services.AddScoped<IAgencyBL, AgencyBL>();
+            services.AddScoped<ISubThemesBL, SubThemesBL>();
+            services.AddScoped<IThemeBL, ThemeBL>();
+            services.AddScoped<IUNSectorBL, UNSectorBL>();
+            services.AddScoped<IGroupBL, GroupBL>();
+            services.AddScoped<INatureOfSupportBL, NatureOfSupportBL>();
+            services.AddScoped<ISubNatureOfSupportBL, SubNatureOfSupportBL>();
+            services.AddScoped<IMenuBL, MenuBL>();
+            services.AddScoped<IContactBL, ContactBL>();            
+            services.AddScoped<ICMDetailsBL, CMDetailsBL>();            
+            services.AddScoped<INodalDetailBL, NodalDetailBL>();
+            services.AddScoped<IMenuPermissionBL, MenuPermissionBL>();
+            services.AddScoped<IPermissionBL, PermissionBL>();
+
+            services.AddScoped<IAuthorizationHandler, PageAccessHandler>();            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
           
 

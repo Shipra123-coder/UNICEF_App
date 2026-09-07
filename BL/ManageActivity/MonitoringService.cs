@@ -32,76 +32,81 @@ namespace BL.ManageActivity
         #endregion
 
         #region step1
-        public async Task<result> SaveMonitoringAsync(MonitoringModel model, string user,string path)
+
+
+
+        public async Task<result> SaveMonitoringAsync(MonitoringModel model, string user, string path)
         {
             result _result = new result();
 
             try
             {
                 var parameters = new List<SqlParameter>
-        {
-            new SqlParameter("@Action", "Save"),
-
-            // 🔹 Main
-            new SqlParameter("@ActivityGuid", model.ActivityGuid),
-            new SqlParameter("@IsPartnership", model.IsPartnership == "Yes" ? 1 : 0 ),
-            new SqlParameter("@IsGovernment", model.IsGovernment == "Yes" ? 1 : 0 ),
-            new SqlParameter("@IsGovernmentDetails",model.IsGovernmentDetails ?? (object)DBNull.Value),
-
-            // 🔹 Financial - Direct
-            new SqlParameter("@DirectINR", model.DirectINR ?? (object)DBNull.Value),
-            new SqlParameter("@DirectUSD", model.DirectUSD ?? (object)DBNull.Value),
-            new SqlParameter("@DirectSource", model.DirectSource ?? (object)DBNull.Value),
-
-            // 🔹 Financial - Indirect
-            new SqlParameter("@IndirectINR", model.IndirectINR ?? (object)DBNull.Value),
-            new SqlParameter("@IndirectUSD", model.IndirectUSD ?? (object)DBNull.Value),
-            new SqlParameter("@IndirectSource", model.IndirectSource ?? (object)DBNull.Value),
-
-            //// 🔹 JSON Data
-            //new SqlParameter("@DocumentsJson",
-            //    JsonConvert.SerializeObject(model.Documents ?? new List<DocumentModel>())),
-
-            new SqlParameter("@SupportsJson",
-                JsonConvert.SerializeObject(model.Supports ?? new List<SupportModel>()))
-        };
+                {
+                    new SqlParameter("@Action", "Save"),
+                
+                    // 🔹 Main
+                    new SqlParameter("@ActivityGuid", model.ActivityGuid),
+                    new SqlParameter("@IsPartnership", model.IsPartnership == "Yes" ? 1 : 0 ),
+                    new SqlParameter("@IsGovernment", model.IsGovernment == "Yes" ? 1 : 0 ),
+                    new SqlParameter("@IsGovernmentDetails",model.IsGovernmentDetails ?? (object)DBNull.Value),
+                
+                    // 🔹 Financial - Direct
+                    new SqlParameter("@DirectINR", model.DirectINR ?? (object)DBNull.Value),
+                    new SqlParameter("@DirectUSD", model.DirectUSD ?? (object)DBNull.Value),
+                    new SqlParameter("@DirectSource", model.DirectSource ?? (object)DBNull.Value),
+                
+                    // 🔹 Financial - Indirect
+                    new SqlParameter("@IndirectINR", model.IndirectINR ?? (object)DBNull.Value),
+                    new SqlParameter("@IndirectUSD", model.IndirectUSD ?? (object)DBNull.Value),
+                    new SqlParameter("@IndirectSource", model.IndirectSource ?? (object)DBNull.Value),
+                
+                    //// 🔹 JSON Data
+                    //new SqlParameter("@DocumentsJson",
+                    //    JsonConvert.SerializeObject(model.Documents ?? new List<DocumentModel>())),
+                
+                    new SqlParameter("@SupportsJson",
+                        JsonConvert.SerializeObject(model.Supports ?? new List<SupportModel>()))
+                };
 
                 var ds = await _iSql.ExecuteProcedure("SP_ManageMonitoring", parameters.ToArray());
 
                 var ActivityMonitoringId = ds.Tables[0].Rows[0]["ActivityMonitoringId"].ToString();
 
                 // 🔥 Documents alag save karenge
-                foreach (var doc in model.Documents)
+                if (model.Documents != null && model.Documents.Any())
                 {
-                    // 🔹 CASE 1: New File Upload
-                    if (doc.File != null && doc.File.Length > 0)
+                    foreach (var doc in model.Documents)
                     {
-                        //using (var ms = new MemoryStream())
-                        //{
-                        //    await doc.File.CopyToAsync(ms);
-                        //    byte[] fileBytes = ms.ToArray();
-
-                        string folderPath = Path.Combine(path,
-                            "uploads",
-                            "MonitoringDocuments");
-
-                        if (!Directory.Exists(folderPath))
+                        // 🔹 CASE 1: New File Upload
+                        if (doc.File != null && doc.File.Length > 0)
                         {
-                            Directory.CreateDirectory(folderPath);
-                        }
+                            //using (var ms = new MemoryStream())
+                            //{
+                            //    await doc.File.CopyToAsync(ms);
+                            //    byte[] fileBytes = ms.ToArray();
 
-                        // Unique File Name
-                        string fileName = Guid.NewGuid().ToString() +
-                                          Path.GetExtension(doc.File.FileName);
+                            string folderPath = Path.Combine(path,
+                                "uploads",
+                                "MonitoringDocuments");
 
-                        string filePath = Path.Combine(folderPath, fileName);
+                            if (!Directory.Exists(folderPath))
+                            {
+                                Directory.CreateDirectory(folderPath);
+                            }
 
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await doc.File.CopyToAsync(stream);
-                        }
+                            // Unique File Name
+                            string fileName = Guid.NewGuid().ToString() +
+                                              Path.GetExtension(doc.File.FileName);
 
-                        var docParams = new List<SqlParameter>
+                            string filePath = Path.Combine(folderPath, fileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await doc.File.CopyToAsync(stream);
+                            }
+
+                            var docParams = new List<SqlParameter>
                             {
                                 new SqlParameter("@ActivityMonitoringId", ActivityMonitoringId),
                                 new SqlParameter("@DocumentType", doc.DocumentType),
@@ -115,25 +120,30 @@ namespace BL.ManageActivity
                             };
 
                             await _iSql.ExecuteProcedure("SP_SaveMonitoringDocument", docParams.ToArray());
-                        //}
-                    }
+                            //}
+                        }
 
-                    // 🔹 CASE 2: NO NEW FILE → KEEP OLD
-                    else if (!string.IsNullOrEmpty(doc.ExistingFileName))
-                    {
-                        var docParams = new List<SqlParameter>
+                        // 🔹 CASE 2: NO NEW FILE → KEEP OLD
+                        else if (!string.IsNullOrEmpty(doc.ExistingFileName))
                         {
-                            new SqlParameter("@ActivityMonitoringId", ActivityMonitoringId),
-                            new SqlParameter("@DocumentType", doc.DocumentType),
-                            new SqlParameter("@OtherDocumentName", (object?)doc.OtherDocumentName ?? DBNull.Value),
-                            //new SqlParameter("@FileName", doc.ExistingFileName),
-                            //new SqlParameter("@FilePath", doc.ExistingFilePath), // Hidden field se bhejna hoga
-                            //new SqlParameter("@ContentType", DBNull.Value),
-                            new SqlParameter("@IsUpdate", 0)
-                        };
+                            var docParams = new List<SqlParameter>
+                           {
+                               new SqlParameter("@ActivityMonitoringId", ActivityMonitoringId),
+                               new SqlParameter("@DocumentType", doc.DocumentType),
+                               new SqlParameter("@OtherDocumentName", (object?)doc.OtherDocumentName ?? DBNull.Value),
+                               //new SqlParameter("@FileName", doc.ExistingFileName),
+                               //new SqlParameter("@FilePath", doc.ExistingFilePath), // Hidden field se bhejna hoga
+                               //new SqlParameter("@ContentType", DBNull.Value),
+                               new SqlParameter("@IsUpdate", 0)
+                           };
 
-                        //await _iSql.ExecuteProcedure("SP_SaveMonitoringDocument", docParams.ToArray());
+                            //await _iSql.ExecuteProcedure("SP_SaveMonitoringDocument", docParams.ToArray());
+                        }
                     }
+                }
+                else
+                {
+
                 }
 
                 // ✅ Read response from SP

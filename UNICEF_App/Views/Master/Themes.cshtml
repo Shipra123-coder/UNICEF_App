@@ -1,0 +1,262 @@
+﻿@model MO.Entities.ThemeViewModel
+@{
+    ViewData["Title"] = "Themes";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+
+<div class="container-fluid py-4">
+    <!-- Modern Page Header -->
+    <div class="page-header-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="page-title-icon">
+                <i class="fa fa-th-large"></i>
+            </div>
+            <div>
+                <h4 class="mb-0 fw-bold text-dark">@ViewData["Title"] Master</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-custom">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Master Management</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold">
+                <i class="fa fa-database me-1"></i> Master Data
+            </span>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Add/Edit Card -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <span class="fw-bold">@(Model.FormModel.PillarId > 0 ? "Edit Theme" : "Add New Theme")</span>
+        </div>
+        <div class="card-body">
+            <form asp-action="SaveTheme" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="FormModel.PillarId" />
+                <input type="hidden" asp-for="FormModel.ImageUrl" />
+
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <label asp-for="FormModel.PillarName" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.PillarName" class="form-control" placeholder="e.g. Nurturing People, Strengthening Society" />
+                        <span asp-validation-for="FormModel.PillarName" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Theme Image Upload -->
+                    <div class="col-md-4">
+                        <label asp-for="FormModel.ImageFile" class="form-label fw-semibold"></label> <small class="text-muted">(Optional - Max 2MB)</small>
+                        <input type="file" asp-for="FormModel.ImageFile" id="fuImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                        <span asp-validation-for="FormModel.ImageFile" class="text-danger small d-block"></span>
+                        <span id="fileValidationMsg" class="text-danger small d-none"></span>
+
+                        @if (!string.IsNullOrEmpty(Model.FormModel.ImageUrl))
+                        {
+                            <div class="mt-2 d-flex align-items-center gap-2">
+                                <img src="@Model.FormModel.ImageUrl" alt="Current Theme Image imgcss" class="table-icon-avatar" />
+                                <small class="text-muted">Current image</small>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Status" class="form-label fw-semibold"></label>
+                        <select asp-for="FormModel.Status" class="form-select">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="FormModel.Discription" class="form-label fw-semibold"></label>
+                        <textarea asp-for="FormModel.Discription" rows="2" class="form-control" placeholder="Short description about the theme (optional)..."></textarea>
+                        <span asp-validation-for="FormModel.Discription" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success me-2">
+                        @(Model.FormModel.PillarId > 0 ? "Update Theme" : "Save Theme")
+                    </button>
+                    @if (Model.FormModel.PillarId > 0)
+                    {
+                        <a asp-action="Themes" class="btn btn-secondary">Cancel</a>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Data List Card -->
+    <div class="card dt-card-wrapper mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <h5 class="mb-0 fw-bold text-dark fs-6">Theme List</h5>
+                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold px-2.5 py-1">
+                    @(Model.ThemeList?.Count() ?? 0) Records
+                </span>
+            </div>
+        </div>
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-modern" id="themesTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;" class="text-center">#</th>
+                            <th style="width: 7%;">Image</th>
+                            <th style="width: 32%;">Theme Name</th>
+                            <th>Theme Description</th>
+                            <th style="width: 8%;" class="text-center">Status</th>
+                            <th style="width: 10%;" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ThemeList != null && Model.ThemeList.Any())
+                        {
+                            int count = 1;
+                            foreach (var item in Model.ThemeList)
+                            {
+                                <tr>
+                                    <td class="text-center text-muted fw-semibold">@count</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl" alt="Theme Image" class="table-icon-avatar imgcss" />
+                                        }
+                                        else
+                                        {
+                                            <div class="icon-placeholder">N/A</div>
+                                        }
+                                    </td>
+                                    <td><span class="fw-semibold text-dark">@item.PillarName</span></td>
+                                    <td>
+                                        <div class="desc-truncate" title="@item.Discription">
+                                            @(string.IsNullOrEmpty(item.Discription) ? "-" : item.Discription)
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <form asp-action="ToggleStatusTheme" method="post" class="status-toggle-form d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.PillarId" />
+                                            @if (item.Status == 1)
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-success status-pill-btn" title="Click to Deactivate">Active</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary status-pill-btn" title="Click to Activate">Inactive</button>
+                                            }
+                                        </form>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-inline-flex gap-1 justify-content-center">
+                                            <a asp-action="Themes" asp-route-id="@item.PillarId" class="btn btn-sm btn-light border text-primary action-btn btn-edit" title="Edit Theme">
+                                                Edit
+                                            </a>
+                                            @*<form asp-action="DeleteTheme" method="post" class="delete-form d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.PillarId" />
+                                                    <button type="submit" class="btn btn-sm btn-light border text-danger action-btn" title="Delete Theme">
+                                                        Delete
+                                                    </button>
+                                                </form>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            // Common JS DataTables Initializer
+            table.dataTable('themesTable');
+
+            // Event Delegation for DataTables Pages
+            $('#themesTable').on('click', '.btn-edit', function (e) {
+                if (!window.confirm('Are you sure you want to edit this theme?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#themesTable').on('submit', '.delete-form', function (e) {
+                if (!window.confirm('Are you sure you want to permanently delete this theme?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#themesTable').on('submit', '.status-toggle-form', function (e) {
+                if (!window.confirm('Do you want to change the status of this theme?')) {
+                    e.preventDefault();
+                }
+            });
+
+            // Instant Client-Side Image Size & Type Validation
+            const imageInput = document.getElementById('fuImageFile');
+            const validationMsg = document.getElementById('fileValidationMsg');
+
+            if (imageInput) {
+                imageInput.addEventListener('change', function () {
+                    const file = this.files[0];
+                    const maxSizeBytes = 2 * 1024 * 1024; // 2 MB
+                    const allowedExtensions = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+                    if (!file) {
+                        validationMsg.textContent = '';
+                        validationMsg.classList.add('d-none');
+                        return;
+                    }
+
+                    if (file.size > maxSizeBytes) {
+                        validationMsg.textContent = 'Theme image size must be less than 2 MB.';
+                        validationMsg.classList.remove('d-none');
+                        this.value = '';
+                        return;
+                    }
+
+                    if (!allowedExtensions.includes(file.type)) {
+                        validationMsg.textContent = 'Please select a valid image (.jpg, .jpeg, .png, .webp).';
+                        validationMsg.classList.remove('d-none');
+                        this.value = '';
+                        return;
+                    }
+
+                    validationMsg.textContent = '';
+                    validationMsg.classList.add('d-none');
+                });
+            }
+        });
+    </script>
+}

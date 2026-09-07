@@ -256,13 +256,13 @@
                                 <thead>
                                     <tr>
                                         <th width="5%">S.No</th>
-                                        <th width="20%">Task Name</th>
-                                        <th width="15%">Duration</th>
-                                        <th>Associated Agency</th>
-                                        <th width="12%">Status</th>
-                                        <th width="28%">Geo Level Coverage</th>
-                                        <th>Achievement/ Impact</th>
-                                        <th>Remarks</th>
+                                            <th width="20%">Task Name</th>
+                                            <th width="7%">Duration</th>
+                                            <th width="8%">Associated Agency</th>
+                                            <th width="5%">Status</th>
+                                            <th width="15%">Geo Level Coverage</th>
+                                            <th width="20%">Achievement/ Impact</th>
+                                            <th width="20%">Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody>

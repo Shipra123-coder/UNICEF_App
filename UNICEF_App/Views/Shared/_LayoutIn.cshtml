@@ -40,6 +40,7 @@
     <link href="~/vertical/assets/css/app.css" rel="stylesheet" asp-append-version="true">
     <link href="/public/css/mystyle.css" rel="stylesheet" type="text/css">
     <link href="/public/css/dark.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/css/master-theme.css" asp-append-version="true" />
     <title>@ViewData["Title"] - UN Activity</title>
 </head>
 
@@ -267,30 +268,31 @@
             Financial Year : @Fytext
         </a> *@
     <!--sidebar wrapper -->
-    <div class="sidebar-wrapper" data-simplebar="true">
-        <div class="sidebar-header">
-            <div>
-                <img src="~/vertical/assets/images/avatars/avatar-admin.png" class="user-img" alt="user avatar">
-            </div>
-            <div b-cuxf7clalm="" class="user-info">
-                <p b-cuxf7clalm="" class="user-name mb-0">@name</p>
-                <p b-cuxf7clalm="" class="designattion mb-0">@role  @(!string.IsNullOrEmpty(agencyCode) ? (" - " + agencyCode) : "")</p>
-            </div>
-            <div class="toggle-icon ms-auto">
-                <i class='bx bx-arrow-to-left'></i>
-            </div>
+<div class="sidebar-wrapper" data-simplebar="true">
+    <div class="sidebar-header">
+        <div>
+            <img src="~/vertical/assets/images/avatars/avatar-admin.png" class="user-img" alt="user avatar">
         </div>
-        <ul class="metismenu" id="menu">
+        <div b-cuxf7clalm="" class="user-info">
+            <p b-cuxf7clalm="" class="user-name mb-0">@name</p>
+            <p b-cuxf7clalm="" class="designattion mb-0">@role  @(!string.IsNullOrEmpty(agencyCode) ? (" - " + agencyCode) : "")</p>
+        </div>
+        <div class="toggle-icon ms-auto">
+            <i class='bx bx-arrow-to-left'></i>
+        </div>
+    </div>
+    @await Component.InvokeAsync("SidebarMenu")
+    @*<ul class="metismenu" id="menu">
             @if (role == "Agency")
             {
-            <li>
-                <a asp-controller="Management" asp-action="ActivityManagement">
-                    <div class="parent-icon">
-                        <i class='fa fa-dashboard'></i>
-                    </div>
-                    <div class="menu-title">Activity</div>
-                </a>
-            </li>
+                <li>
+                    <a asp-controller="Management" asp-action="ActivityManagement">
+                        <div class="parent-icon">
+                            <i class='fa fa-dashboard'></i>
+                        </div>
+                        <div class="menu-title">Activity</div>
+                    </a>
+                </li>
             }
             @if (role == "DES")
             {
@@ -303,97 +305,116 @@
                     </a>
                 </li>
             }
-        </ul>
-        <!--navigation-->
-        @* @await  Component.InvokeAsync("PermissionMenu",groupId) *@
-        @*  <ul class="metismenu" id="menu">
-                <li>
-                    <a asp-controller="Indicator" asp-action="Dashboard">
-                        <div class="parent-icon">
-                            <i class='fa fa-dashboard'></i>
-                        </div>
-                        <div class="menu-title">Dashboard</div>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Profile" asp-action="MainProfile">
-                        <div class="parent-icon">
-                            <i class='fa fa-briefcase'></i>
-                        </div>
-                        <div class="menu-title">District Profile</div>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Profile" asp-action="Dashboard">
-                        <div class="parent-icon">
-                            <i class='fa fa-pencil-square-o'></i>
-                        </div>
-                        <div class="menu-title">District Work Plan</div>
-                    </a>
-                </li>
-                <li>
-                    <a asp-controller="Profile" asp-action="PendingProfileVerification">
-                        <div class="parent-icon">
-                            <i class='fa fa-file-powerpoint-o'></i>
-                        </div>
-                        <div class="menu-title">Pending Verification</div>
-                    </a>
-                </li>
+            @if (role == "Admin")
+            {
                 <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon">
                             <i class='fa fa-user'></i>
                         </div>
-                        <div class="menu-title">User Master</div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a asp-controller="UserProfile" asp-action="AddUser"><i class="bx bx-right-arrow-alt"></i>Add User</a>
-                        </li>
-                        <li>
-                            <a asp-controller="UserProfile" asp-action="ListUser"><i class="bx bx-right-arrow-alt"></i>List User</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon">
-                            <i class='fa fa-cogs'></i>
-                        </div>
                         <div class="menu-title">Master</div>
                     </a>
                     <ul>
                         <li>
-                            <a asp-controller="Menu" asp-action="Menu"><i class="bx bx-right-arrow-alt"></i>Menu</a>
-
-                        </li>
-                        <li>
-                            <a asp-controller="Menu" asp-action="SubMenu"><i class="bx bx-right-arrow-alt"></i>SubMenu</a>
-                        </li>
-                        <li>
-                            <a asp-controller="GroupMaster" asp-action="Group"><i class="bx bx-right-arrow-alt"></i>Group</a>
-
-                        </li>
-                        <li>
-                            <a asp-controller="GroupMaster" asp-action="GroupPermission"><i class="bx bx-right-arrow-alt"></i>Group Permission</a>
-                        </li>
-                        <li>
                             <a asp-controller="Master" asp-action="Department"><i class="bx bx-right-arrow-alt"></i>Department</a>
                         </li>
                         <li>
-                            <a asp-controller="Master" asp-action="Gaurav"><i class="bx bx-right-arrow-alt"></i>Gaurav</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Master" asp-action="GauravDepartment"><i class="bx bx-right-arrow-alt"></i>Gaurav Department Mapping</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Master" asp-action="GauravDistrictItem"><i class="bx bx-right-arrow-alt"></i>Gaurav District Item</a>
+                            <a asp-controller="Master" asp-action="Sector"><i class="bx bx-right-arrow-alt"></i>Sector</a>
                         </li>
                     </ul>
                 </li>
-            </ul> *@
-        <!--end navigation-->
-    </div>
+            }
+        </ul>*@
+    <!--navigation-->
+    @* @await  Component.InvokeAsync("PermissionMenu",groupId) *@
+    @*  <ul class="metismenu" id="menu">
+            <li>
+                <a asp-controller="Indicator" asp-action="Dashboard">
+                    <div class="parent-icon">
+                        <i class='fa fa-dashboard'></i>
+                    </div>
+                    <div class="menu-title">Dashboard</div>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Profile" asp-action="MainProfile">
+                    <div class="parent-icon">
+                        <i class='fa fa-briefcase'></i>
+                    </div>
+                    <div class="menu-title">District Profile</div>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Profile" asp-action="Dashboard">
+                    <div class="parent-icon">
+                        <i class='fa fa-pencil-square-o'></i>
+                    </div>
+                    <div class="menu-title">District Work Plan</div>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Profile" asp-action="PendingProfileVerification">
+                    <div class="parent-icon">
+                        <i class='fa fa-file-powerpoint-o'></i>
+                    </div>
+                    <div class="menu-title">Pending Verification</div>
+                </a>
+            </li>
+            <li>
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon">
+                        <i class='fa fa-user'></i>
+                    </div>
+                    <div class="menu-title">User Master</div>
+                </a>
+                <ul>
+                    <li>
+                        <a asp-controller="UserProfile" asp-action="AddUser"><i class="bx bx-right-arrow-alt"></i>Add User</a>
+                    </li>
+                    <li>
+                        <a asp-controller="UserProfile" asp-action="ListUser"><i class="bx bx-right-arrow-alt"></i>List User</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon">
+                        <i class='fa fa-cogs'></i>
+                    </div>
+                    <div class="menu-title">Master</div>
+                </a>
+                <ul>
+                    <li>
+                        <a asp-controller="Menu" asp-action="Menu"><i class="bx bx-right-arrow-alt"></i>Menu</a>
+
+                    </li>
+                    <li>
+                        <a asp-controller="Menu" asp-action="SubMenu"><i class="bx bx-right-arrow-alt"></i>SubMenu</a>
+                    </li>
+                    <li>
+                        <a asp-controller="GroupMaster" asp-action="Group"><i class="bx bx-right-arrow-alt"></i>Group</a>
+
+                    </li>
+                    <li>
+                        <a asp-controller="GroupMaster" asp-action="GroupPermission"><i class="bx bx-right-arrow-alt"></i>Group Permission</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Master" asp-action="Department"><i class="bx bx-right-arrow-alt"></i>Department</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Master" asp-action="Gaurav"><i class="bx bx-right-arrow-alt"></i>Gaurav</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Master" asp-action="GauravDepartment"><i class="bx bx-right-arrow-alt"></i>Gaurav Department Mapping</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Master" asp-action="GauravDistrictItem"><i class="bx bx-right-arrow-alt"></i>Gaurav District Item</a>
+                    </li>
+                </ul>
+            </li>
+        </ul> *@
+    <!--end navigation-->
+</div>
     <!--end sidebar wrapper -->
     <!--start header -->
     <!--end header -->

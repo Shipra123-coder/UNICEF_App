@@ -1,0 +1,391 @@
+﻿@model MO.Entities.MenuViewModel
+@{
+    ViewData["Title"] = "Menu & SubMenu";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="container-fluid py-4">
+    <!-- Modern Page Header Box -->
+    <div class="page-header-box d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="page-title-icon">
+                <i class="fa fa-bars"></i>
+            </div>
+            <div>
+                <h4 class="mb-0 fw-bold text-dark">@ViewData["Title"] Master</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-custom">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">System Navigation</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Menu Setup</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold">
+                <i class="fa fa-database me-1"></i> Navigation Config
+            </span>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa fa-check-circle me-1"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa fa-exclamation-triangle me-1"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Add/Edit Form Card -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <span class="fw-bold">@((Model.FormModel.Guid.HasValue && Model.FormModel.Guid != Guid.Empty) ? "Edit Menu / SubMenu" : "Add New Menu / SubMenu")</span>
+        </div>
+        <div class="card-body">
+            <form asp-action="SaveMenu" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="FormModel.MenuId" />
+                <input type="hidden" asp-for="FormModel.Guid" />
+
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.IsSubMenu" class="form-label fw-semibold">Menu Type</label>
+                        <select asp-for="FormModel.IsSubMenu" id="ddlIsSubMenu" class="form-select">
+                            <option value="false">Main Menu</option>
+                            <option value="true">Sub Menu</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4" id="divMainMenu" style="display: @(Model.FormModel.IsSubMenu == true ? "block" : "none");">
+                        <label asp-for="FormModel.MainMenuId" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <select asp-for="FormModel.MainMenuId" id="ddlMainMenuId" asp-items="Model.MainMenuDropdownList" class="form-select">
+                            <option value="">-- Select Parent Menu --</option>
+                        </select>
+                        <span asp-validation-for="FormModel.MainMenuId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label asp-for="FormModel.Name" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.Name" class="form-control" placeholder="e.g. Master, District Profile, User Setup" />
+                        <span asp-validation-for="FormModel.Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="FormModel.MangalName" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.MangalName" class="form-control" placeholder="e.g. यूज़र मास्टर, जिला प्रोफ़ाइल" />
+                        <span asp-validation-for="FormModel.MangalName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Controller" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.Controller" class="form-control" placeholder="e.g. Master or #" />
+                        <span asp-validation-for="FormModel.Controller" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.ActionName" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.ActionName" class="form-control" placeholder="e.g. Department or #" />
+                        <span asp-validation-for="FormModel.ActionName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="FormModel.OrderNumber" class="form-label fw-semibold"></label>
+                        <input type="number" asp-for="FormModel.OrderNumber" class="form-control" placeholder="1, 2, 3..." min="1" />
+                        <span asp-validation-for="FormModel.OrderNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="FormModel.Icon" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i id="iconPreview" class="@(string.IsNullOrEmpty(Model.FormModel.Icon) ? "fa fa-list" : Model.FormModel.Icon)"></i></span>
+                            <input asp-for="FormModel.Icon" id="txtIconClass" class="form-control" placeholder="fa fa-cogs, fa fa-user, fa fa-list" />
+                        </div>
+                        <span asp-validation-for="FormModel.Icon" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="FormModel.IsActive" class="form-label fw-semibold"></label>
+                        <select asp-for="FormModel.IsActive" class="form-select">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success me-2">
+                        @((Model.FormModel.Guid.HasValue && Model.FormModel.Guid != Guid.Empty) ? "Update Menu" : "Save Menu")
+                    </button>
+                    @if (Model.FormModel.Guid.HasValue && Model.FormModel.Guid != Guid.Empty)
+                    {
+                        <a asp-action="Menu" class="btn btn-secondary">Cancel</a>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Data List Card -->
+    <div class="card dt-card-wrapper mt-4">
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <h5 class="mb-0 fw-bold text-dark fs-6">Navigation Menu Hierarchy</h5>
+                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold px-2.5 py-1" id="totalItemsBadge">
+                    @(Model.MenuList?.Count() ?? 0) Total Items
+                </span>
+            </div>
+
+            <!-- Table Quick Filter Dropdown -->
+            <div class="d-flex align-items-center gap-2">
+                <label class="small text-muted fw-semibold text-nowrap mb-0">Filter by Main Menu:</label>
+                <select id="gridFilterMainMenu" class="form-select form-select-sm" style="min-width: 220px;">
+                    <option value="">-- Show All Menus --</option>
+                    @if (Model.MainMenuDropdownList != null)
+                    {
+                        foreach (var parentItem in Model.MainMenuDropdownList)
+                        {
+                            <option value="@parentItem.Value">@parentItem.Text</option>
+                        }
+                    }
+                </select>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnResetFilter" title="Reset Filter">
+                    <i class="fa fa-refresh"></i> Reset
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-modern" id="menuMasterTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;" class="text-center"># ID</th>
+                            <th style="width: 6%;">Icon</th>
+                            <th style="width: 14%;">Menu Type</th>
+                            <th style="width: 20%;">Name (English / Hindi)</th>
+                            <th style="width: 18%;">Route (Controller/Action)</th>
+                            <th style="width: 8%;" class="text-center">Order</th>
+                            <th style="width: 8%;" class="text-center">Status</th>
+                            <th style="width: 10%;" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.MenuList != null && Model.MenuList.Any())
+                        {
+                            foreach (var item in Model.MenuList)
+                            {
+                                var isSub = item.IsSubMenu == true;
+                                var parentId = item.MainMenuId ?? 0;
+
+                                <tr data-menu-id="@item.MenuId"
+                                    data-is-submenu="@(isSub ? "true" : "false")"
+                                    data-parent-id="@parentId">
+                                    <td class="text-center text-muted fw-semibold">@item.MenuId</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border p-2">
+                                            <i class="@(string.IsNullOrEmpty(item.Icon) || item.Icon == "-" ? "fa fa-link" : item.Icon)"></i>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (isSub && item.ParentMenu != null)
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
+                                                SubMenu &rarr; @item.ParentMenu.Name
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                                                Main Menu
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="fw-semibold text-dark">@item.Name</span>
+                                        @if (!string.IsNullOrEmpty(item.MangalName))
+                                        {
+                                            <small class="text-muted d-block">(@item.MangalName)</small>
+                                        }
+                                    </td>
+                                    <td>
+                                        <code>@item.Controller / @item.ActionName</code>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-light text-dark border">@item.OrderNumber</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <form asp-action="ToggleStatusMenu" method="post" class="status-toggle-form d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="guid" value="@item.Guid" />
+                                            @if (item.IsActive == 1)
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-success status-pill-btn" title="Click to Deactivate">Active</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary status-pill-btn" title="Click to Activate">Inactive</button>
+                                            }
+                                        </form>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-inline-flex gap-1 justify-content-center">
+                                            <a asp-action="Menu" asp-route-guid="@item.Guid" class="btn btn-sm btn-light border text-primary action-btn btn-edit" title="Edit Menu">
+                                                Edit
+                                            </a>
+                                            <form asp-action="DeleteMenu" method="post" class="delete-form d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="guid" value="@item.Guid" />
+                                                <button type="submit" class="btn btn-sm btn-light border text-danger action-btn" title="Delete Menu">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script nonce="@nonce">
+        $(document).ready(function () {
+            // 1. Safe DataTable Initialization
+            var dtInstance;
+            if ($.fn.DataTable.isDataTable('#menuMasterTable')) {
+                dtInstance = $('#menuMasterTable').DataTable();
+            } else if (typeof table !== 'undefined' && table.dataTable) {
+                table.dataTable('menuMasterTable');
+                dtInstance = $('#menuMasterTable').DataTable();
+            } else {
+                dtInstance = $('#menuMasterTable').DataTable({
+                    pageLength: 25,
+                    ordering: true
+                });
+            }
+
+            var currentFilterParentId = "";
+
+            // 2. Custom DataTable Filter for Hierarchical Relations
+            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                if (settings.nTable.id !== 'menuMasterTable') {
+                    return true;
+                }
+
+                // Agar filter empty hai toh sab dikhao
+                if (!currentFilterParentId || currentFilterParentId === "" || currentFilterParentId === "0") {
+                    return true;
+                }
+
+                var rowNode = settings.aoData[dataIndex].nTr;
+                var rowMenuId = $(rowNode).attr('data-menu-id');
+                var rowParentId = $(rowNode).attr('data-parent-id');
+
+                // Filter condition:
+                // Main module khud match kare YA uska child sub-menu match kare
+                if (rowMenuId === currentFilterParentId || rowParentId === currentFilterParentId) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            // 3. Central filter trigger function
+            function filterTableByParentId(selectedId) {
+                currentFilterParentId = selectedId ? selectedId.toString() : "";
+                dtInstance.draw();
+
+                var info = dtInstance.page.info();
+                if (currentFilterParentId !== "") {
+                    $('#totalItemsBadge').text(info.recordsDisplay + ' Filtered Items');
+                } else {
+                    $('#totalItemsBadge').text(info.recordsTotal + ' Total Items');
+                }
+            }
+
+            // 4. Trigger on Form Dropdown Change (ddlMainMenuId)
+            $('#ddlMainMenuId').on('change', function () {
+                var selectedVal = $(this).val();
+                $('#gridFilterMainMenu').val(selectedVal);
+                filterTableByParentId(selectedVal);
+            });
+
+            // 5. Trigger on SubMenu Type Change
+            $('#ddlIsSubMenu').on('change', function () {
+                if ($(this).val() === 'true') {
+                    $('#divMainMenu').slideDown();
+                    var selectedVal = $('#ddlMainMenuId').val();
+                    if (selectedVal) {
+                        $('#gridFilterMainMenu').val(selectedVal);
+                        filterTableByParentId(selectedVal);
+                    }
+                } else {
+                    $('#divMainMenu').slideUp();
+                    $('#ddlMainMenuId').val('');
+                    $('#gridFilterMainMenu').val('');
+                    filterTableByParentId("");
+                }
+            });
+
+            // 6. Trigger on Table Header Filter Dropdown Change
+            $('#gridFilterMainMenu').on('change', function () {
+                var selectedVal = $(this).val();
+                if ($('#ddlIsSubMenu').val() === 'true') {
+                    $('#ddlMainMenuId').val(selectedVal);
+                }
+                filterTableByParentId(selectedVal);
+            });
+
+            // 7. Reset Filter Button Click
+            $('#btnResetFilter').on('click', function () {
+                $('#gridFilterMainMenu').val('');
+                if ($('#ddlIsSubMenu').val() === 'true') {
+                    $('#ddlMainMenuId').val('');
+                }
+                filterTableByParentId("");
+            });
+
+            // 8. Live Icon Preview
+            $('#txtIconClass').on('input', function () {
+                var iconClass = $(this).val().trim();
+                $('#iconPreview').attr('class', iconClass ? iconClass : 'fa fa-list');
+            });
+
+            // 9. Confirmations
+            $('#menuMasterTable').on('click', '.btn-edit', function (e) {
+                if (!window.confirm('Are you sure you want to edit this navigation item?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#menuMasterTable').on('submit', '.delete-form', function (e) {
+                if (!window.confirm('Are you sure you want to permanently delete this navigation item?')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('#menuMasterTable').on('submit', '.status-toggle-form', function (e) {
+                if (!window.confirm('Do you want to toggle the active status of this menu?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}
