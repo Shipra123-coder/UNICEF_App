@@ -119,6 +119,7 @@ namespace BL.Dashboard
 
                     SectorName = row["UNSectorName"]?.ToString(),
                     SectorCode = row["SectorCode"].ToString(),
+                    IconUrl = row["UNIconUrl"].ToString(),
 
                     TotalCount = row["TotalCount"] != DBNull.Value
                                 ? Convert.ToInt32(row["TotalCount"])
@@ -418,6 +419,7 @@ namespace BL.Dashboard
                     Phone = row["Phone"]?.ToString(),
 
                     Address = row["Address"]?.ToString(),
+                    LogoUrl = row["LogoUrl"]?.ToString(),
 
                 });
             }

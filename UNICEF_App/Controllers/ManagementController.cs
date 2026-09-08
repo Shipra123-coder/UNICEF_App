@@ -37,8 +37,7 @@ namespace UNICEF_App.Controllers
             _hostingEnvironment = hostingEnvironment;
             _iActivityMediaService = iActivityMediaService;
         }
-
-        [HasPermission(PermissionAction.ActiveDeactive)]
+        
         public async Task<IActionResult> Main(string? guid)
         {
             // --- Claims Expired Check ---
