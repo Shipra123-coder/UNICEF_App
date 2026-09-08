@@ -30,6 +30,7 @@ namespace MO.DashBoard
         public int SectorId { get; set; }
         public string SectorName { get; set; }
         public string SectorCode { get; set; }
+        public string? IconUrl { get; set; } 
         public int TotalCount { get; set; }
     }
     public class SectorDashboardModel
@@ -104,7 +105,8 @@ namespace MO.DashBoard
 
         public string Phone { get; set; }
 
-        public string Address { get; set; }        
+        public string Address { get; set; } 
+        public string LogoUrl { get; set; }
        
     }
     public class DepartmentStatusModel
