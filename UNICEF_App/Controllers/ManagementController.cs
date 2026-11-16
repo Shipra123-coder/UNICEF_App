@@ -906,6 +906,9 @@ namespace UNICEF_App.Controllers
             try
             {
                 string userId = User.Identity.Name;
+                model.WorkflowStatus = 0;
+                model.UserRole = "Agnecy";
+                model.UserName = User.Identity.Name;
                 var result =
                     await _iMonitoringService.SaveReportingStepAsync(model, userId);
                 return Json(result);

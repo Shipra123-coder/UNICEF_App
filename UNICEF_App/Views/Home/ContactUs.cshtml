@@ -1,16 +1,16 @@
-﻿@{
+﻿@model MO.Entities.PublicContactViewModel
+@{
     ViewData["Title"] = "Contact Us";
     Layout = "~/Views/Shared/_LayoutPublic.cshtml";
-}
-@{
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }
+
 <style nonce="@nonce">
-    .margin-top-new{
-        margin-top:240px;
+    .margin-top-new {
+        margin-top: 240px;
     }
-    .contact-card,
-    .agency-card {
+
+    .contact-card, .agency-card {
         background: #fff;
         border-radius: 15px;
         box-shadow: 0 4px 20px rgba(0,0,0,.08);
@@ -19,8 +19,7 @@
         height: 100%;
     }
 
-        .contact-card:hover,
-        .agency-card:hover {
+        .contact-card:hover, .agency-card:hover {
             transform: translateY(-5px);
         }
 
@@ -61,41 +60,26 @@
         background: #f1f5f9;
     }
 </style>
+
 <div class="container py-4 margin-top-new">
     <div class="text-center mb-4">
         <h2 class="fw-bold">Contact Directory</h2>
-        <p class="text-muted">
-            State Level, Department and UN Agency Contact Details
-        </p>
+        <p class="text-muted">State Level, Department and UN Agency Contact Details</p>
     </div>
-    <ul class="nav nav-pills justify-content-center mb-4"
-        id="contactTab">
 
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="contactTab">
         <li class="nav-item">
-            <button class="nav-link active"
-                    data-bs-toggle="pill"
-                    data-bs-target="#stateTab">
-                State Level
-            </button>
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#stateTab">State Level</button>
         </li>
-
         <li class="nav-item">
-            <button class="nav-link"
-                    data-bs-toggle="pill"
-                    data-bs-target="#departmentTab">
-                Departments
-            </button>
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#departmentTab">Departments</button>
         </li>
-
         <li class="nav-item">
-            <button class="nav-link"
-                    data-bs-toggle="pill"
-                    data-bs-target="#agencyTab">
-                UN Agencies
-            </button>
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#agencyTab">UN Agencies</button>
         </li>
-
     </ul>
+
     <div class="tab-content">
 
         <!-- STATE LEVEL -->
@@ -523,5 +507,4 @@
         </div>
 
     </div>
-
 </div>

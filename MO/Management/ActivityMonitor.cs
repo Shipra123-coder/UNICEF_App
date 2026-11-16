@@ -231,8 +231,13 @@ namespace MO.Management
         public int HasChallenges { get; set; }
         public string? ChallengeDetails { get; set; }
         public string? Suggestions { get; set; }
+
+        public int WorkflowStatus { get; set; }
         public string? ActivityGuid { get; set; }
         public string? CreatedBy { get; set; }
+
+        public string? UserRole { get; set; }
+        public string? UserName { get; set; }
 
         // Department Details
         public string DepartmentNodal { get; set; }

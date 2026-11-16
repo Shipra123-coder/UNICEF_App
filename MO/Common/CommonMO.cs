@@ -105,4 +105,10 @@ namespace MO.Common
         public int Id { get; set; }
         public string Name { get; set; }
     }
+
+    public class DDL
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+    }
 }

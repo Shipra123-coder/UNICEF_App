@@ -23,6 +23,8 @@ namespace DL.Repositories.ContactRepository
         {
             return await _context.Set<mst_ContactMaster>()
                 .AsNoTracking()
+                .Include(c => c.Agency)
+                .Include(c => c.Department)
                 .OrderBy(c => c.ContactLevel)
                 .ThenBy(c => c.DisplayOrder)
                 .ThenByDescending(c => c.ContactId)
@@ -36,6 +38,8 @@ namespace DL.Repositories.ContactRepository
 
             return await _context.Set<mst_ContactMaster>()
                 .AsNoTracking()
+                .Include(c => c.Agency)
+                .Include(c => c.Department)
                 .Where(x => x.ContactLevel == levelEnum && x.IsActive == 1)
                 .OrderBy(x => x.DisplayOrder)
                 .ThenByDescending(x => x.ContactId)
@@ -80,6 +84,10 @@ namespace DL.Repositories.ContactRepository
             existing.IsActive = model.IsActive;
             existing.UpdatedBy = model.UpdatedBy;
             existing.UpdatedDate = DateTime.Now;
+            existing.Mobile = model.Mobile;
+            existing.DepartmentId = model.DepartmentId;
+            existing.AgencyId = model.AgencyId;
+            existing.Address = model.Address;
 
             _context.Set<mst_ContactMaster>().Update(existing);
             return await _context.SaveChangesAsync() > 0;

@@ -15,19 +15,19 @@
 
     /* Modern Responsive Grid System */
     .goals-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 20px;
-        justify-items: center;
+        justify-content: center; /* Yeh aakhri row ke bache hue items ko beech mein le aayega */
         max-width: 1200px;
-        margin: 0 auto;
+        margin: 0 auto;       
     }
 
     /* Flip Box Outer Wrapper */
     .flip-box {
         background-color: transparent;
-        width: 130px;
-        height: 130px;
+        width: 180px;
+        height: 180px;
         perspective: 1000px; /* 3D effect enable karta hai */
     }
 

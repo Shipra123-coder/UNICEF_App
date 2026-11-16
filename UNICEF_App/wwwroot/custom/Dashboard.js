@@ -406,7 +406,7 @@
                     html += `
                     <div class="col">
                         <div class="category-card h-100">
-                            <img src="${item.logoUrl}"
+                            <img src="/public/img/DepartmentIcon/${imageName}.png"
                                  class="img-fluid mb-3"
                                  style="height:100px;"
                                  onerror="this.src='/public/img/DepartmentIcon/default.png';">

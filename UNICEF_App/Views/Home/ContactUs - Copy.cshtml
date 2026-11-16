@@ -1,0 +1,207 @@
+﻿@model MO.Entities.PublicContactViewModel
+@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<style nonce="@nonce">
+    .margin-top-new {
+        margin-top: 240px;
+    }
+
+    .contact-card, .agency-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,.08);
+        overflow: hidden;
+        transition: .3s;
+        height: 100%;
+    }
+
+        .contact-card:hover, .agency-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .contact-header {
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
+        color: #fff;
+        padding: 14px 20px;
+        font-weight: 600;
+    }
+
+    .contact-body {
+        padding: 20px;
+    }
+
+    .agency-card {
+        text-align: center;
+        padding: 25px;
+    }
+
+    .agency-logo {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        margin-bottom: 15px;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-weight: 600;
+    }
+
+        .nav-pills .nav-link.active {
+            background: #2563eb;
+        }
+
+    .table thead {
+        background: #f1f5f9;
+    }
+</style>
+
+<div class="container py-4 margin-top-new">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Contact Directory</h2>
+        <p class="text-muted">State Level, Department and UN Agency Contact Details</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="contactTab">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#stateTab">State Level</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#departmentTab">Departments</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#agencyTab">UN Agencies</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- 1. STATE LEVEL TAB -->
+        <div class="tab-pane fade show active" id="stateTab">
+            <div class="row g-4">
+                @if (Model.StateLevelContacts != null && Model.StateLevelContacts.Any())
+                {
+                    foreach (var contact in Model.StateLevelContacts)
+                    {
+                        <div class="col-12">
+                            <div class="contact-card">
+                                <div class="contact-body d-flex align-items-center">
+                                    <div class="me-4">
+                                        <img src="@(!string.IsNullOrEmpty(contact.PhotoUrl) ? contact.PhotoUrl : "/vertical/assets/images/avatars/avatar-admin.png")"
+                                             class="rounded-circle border" width="80" height="80" alt="Officer"
+                                             onerror="this.src='/vertical/assets/images/avatars/avatar-admin.png';">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="text-primary mb-2">@contact.OfficerName</h5>
+                                        <p class="fw-bold mb-2">@contact.Designation</p>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <strong>Office Landline No. :</strong> @(contact.OfficeLandline ?? "N/A")
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Office I.P. Number :</strong> @(contact.OfficeIpNumber ?? "N/A")
+                                            </div>
+                                        </div>
+                                        <p class="mt-2 mb-0">
+                                            <strong>E-Mail ID :</strong> @contact.EmailId
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center text-muted"><p>No State Level Contacts found.</p></div>
+                }
+            </div>
+        </div>
+
+        <!-- 2. DEPARTMENT TAB -->
+        <div class="tab-pane fade" id="departmentTab">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Department</th>
+                            <th>Officer</th>
+                            <th>Email</th>
+                            <th>Phone (Landline/IP/Mobile)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DepartmentContacts != null && Model.DepartmentContacts.Any())
+                        {
+                            foreach (var dept in Model.DepartmentContacts)
+                            {
+                                <tr>
+                                    <!-- अगर Department Name है तो दिखाएं, नहीं तो N/A -->
+                                    <td><span class="fw-bold text-primary">@(dept.Department?.DepartmentName ?? "N/A")</span></td>
+                                    <td>
+                                        <span class="fw-bold">@dept.OfficerName</span><br />
+                                        <small class="text-muted">@dept.Designation</small>
+                                    </td>
+                                    <td><a href="mailto:@dept.EmailId">@dept.EmailId</a></td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(dept.OfficeLandline))
+                                        {<span><i class="fa fa-phone me-1"></i> @dept.OfficeLandline <br /></span>}
+                                        @if (!string.IsNullOrEmpty(dept.OfficeIpNumber))
+                                        {<span><i class="fa fa-phone me-1"></i> IP: @dept.OfficeIpNumber <br /></span>}
+                                        @if (!string.IsNullOrEmpty(dept.Mobile))
+                                        {<span><i class="fa fa-mobile me-1"></i> @dept.Mobile</span>}
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="4" class="text-center text-muted">No Department Contacts found.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3. AGENCY TAB -->
+        <div class="tab-pane fade" id="agencyTab">
+            <div class="row g-4">
+                @if (Model.AgencyContacts != null && Model.AgencyContacts.Any())
+                {
+                    foreach (var agency in Model.AgencyContacts)
+                    {
+                        <div class="col-md-4">
+                            <div class="agency-card h-100">
+                                <img src="@(!string.IsNullOrEmpty(agency.Agency?.LogoURL) ? agency.Agency?.LogoURL : "/public/img/Agency_logo/default-agency.png")"
+                                     class="agency-logo" alt="@(agency.Agency?.AgencyName ?? "Agency")"
+                                     onerror="this.src='/public/img/Agency_logo/default-agency.png';">
+
+                                <h5>@(agency.Agency?.AgencyName ?? "N/A")</h5>
+                                <p><strong>@agency.OfficerName</strong></p>
+                                <p class="text-muted small">@agency.Designation</p>
+                                <p class="text-muted small">📍@agency.Address</p>
+                                <hr />
+                                <p class="mb-1 text-start"><i class="fa fa-envelope text-primary me-2"></i> @agency.EmailId</p>
+
+                                @if (!string.IsNullOrEmpty(agency.OfficeLandline) || !string.IsNullOrEmpty(agency.Mobile))
+                                {
+                                    <p class="mb-0 text-start"><i class="fa fa-phone text-success me-2"></i> @(agency.OfficeLandline ?? agency.Mobile)</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center text-muted"><p>No Agency Contacts found.</p></div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

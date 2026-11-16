@@ -145,7 +145,7 @@ namespace UNICEF_App.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     principal);
 
-                if (result.user.groupId == 4)
+                if (result.user.groupId == 4 || result.user.groupId == 2)
                 {
                     return RedirectToAction(
                         "Dashboard",

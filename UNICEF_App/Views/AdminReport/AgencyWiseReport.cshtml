@@ -1,0 +1,923 @@
+﻿@{
+    ViewData["Title"] = "Activity Report";
+    Layout = "~/Views/Shared/_LayoutIn.cshtml";
+}
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<style nonce="@nonce">
+    body {
+        background: #f5f5f5;
+        font-family: Calibri, Arial, sans-serif;
+        font-size: 14px;
+    }
+
+    /* TOP FILTER CARD REDESIGN */
+    .top-filter {
+        width: 100%;
+        margin: 10px auto 10px auto;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .headert-tit {
+        color: #000 !important;
+        font-weight: 600 !important;
+    }
+
+    .filter-header {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 8px;
+    }
+
+        .filter-header i {
+            color: #0b5ed7;
+            font-size: 18px;
+        }
+
+    /* FORM ELEMENTS STYLING */
+    .form-label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .form-select-md {
+        border-color: #cbd5e1;
+        border-radius: 8px;
+        font-size: 14px;
+        padding: 8px 12px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .form-select-md:focus {
+            border-color: #0b5ed7;
+            box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.15);
+        }
+
+    /* ACTION BUTTONS */
+    .btn-filter {
+        padding: 8px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn-filter:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    .margin-top {
+        margin-top: 0px !important;
+    }
+
+    .report {
+        width: 100%;
+        margin: 10px auto 10px auto;
+        background: #fff;
+        padding: 25px;
+        border: 1px solid #ddd;
+    }
+
+    .report-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #0b5ed7;
+        margin-bottom: 25px;
+    }
+
+    /* SUMMARY CARDS DESIGN */
+    .summary-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .summary-card {
+        background: #ffffff;
+        border: 1px solid #e8eef5;
+        border-radius: 14px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        flex: 1 1 calc(20% - 12px);
+        min-width: 170px;
+        box-sizing: border-box;
+    }
+
+        .summary-card::after, .summary-card-wide::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+    .card-blue::after {
+        background-color: #e0f2fe;
+    }
+
+    .card-green::after {
+        background-color: #dcfce7;
+    }
+
+    .card-yellow::after {
+        background-color: #fef3c7;
+    }
+
+    .card-red::after {
+        background-color: #fee2e2;
+    }
+
+    .card-purple::after {
+        background-color: #f3e8ff;
+    }
+
+    /* ICON STYLING */
+    .summary-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-right: 12px;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .bg-icon-blue {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    }
+
+    .bg-icon-yellow {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .bg-icon-colorful {
+        background: linear-gradient(135deg, #3b82f6, #0284c7);
+    }
+
+    .summary-data {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-value {
+        font-size: 20px;
+        font-weight: 800;
+        color: #1e293b;
+        line-height: 1;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    .summary-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+        margin-top: 2px;
+    }
+
+    /* GROUPED WIDE CARDS */
+    .summary-card-wide {
+        background: #ffffff;
+        border: 1px solid #e8eef5;
+        border-radius: 14px;
+        padding: 12px 16px 8px 16px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        flex: 1 1 calc(50% - 10px);
+        min-width: 320px;
+        box-sizing: border-box;
+    }
+
+    .group-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .group-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .group-divider {
+        width: 1px;
+        height: 28px;
+        background-color: #e2e8f0;
+    }
+
+    .group-footer-title {
+        text-align: center;
+        font-weight: 800;
+        font-size: 13px;
+        color: #2563eb;
+        margin-top: 6px;
+    }
+
+    /* Section Headers */
+    .dept-header {
+        background: #0b5ed7;
+        color: #fff;
+        padding: 12px;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .sector {
+        background: #dbeafe;
+        padding: 10px 15px;
+        font-size: 20px;
+        font-weight: bold;
+        border-left: 6px solid #0b5ed7;
+    }
+
+    .agency {
+        background: #e8f5e9;
+        padding: 10px 15px;
+        font-size: 17px;
+        font-weight: 600;
+        border-left: 6px solid #2e7d32;
+    }
+
+    /* ACTIVITY BLOCK WITH METADATA TABLE */
+    .activity-container {
+        border: 1px solid #fcd34d;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .activity-title-header {
+        background: #fff8e1;
+        padding: 10px 15px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #856404;
+        border-left: 6px solid #f9a825;
+        border-bottom: 1px solid #ffeeba;
+    }
+
+    .activity-meta-table {
+        width: 100%;
+        margin-bottom: 0 !important;
+        font-size: 13px;
+        background-color: #fffdf5;
+    }
+
+        .activity-meta-table th {
+            background-color: #fef3c7 !important;
+            color: #78350f !important;
+            font-weight: 700;
+            text-align: left !important;
+            border-color: #fde68a !important;
+        }
+
+        .activity-meta-table td {
+            border-color: #fde68a !important;
+            color: #334155;
+        }
+
+    /* Tasks Table */
+    .task-table {
+        margin-top: 0px !important;
+    }
+
+        .task-table th {
+            background: #334155 !important;
+            color: #fff !important;
+            text-align: center;
+            font-size: 13px;
+        }
+
+    .completed {
+        color: #16a34a;
+        font-weight: bold;
+    }
+
+    .progress {
+        color: #d97706;
+        font-weight: bold;
+        line-height: 0rem !important;
+    }
+
+    .pending {
+        color: #dc2626;
+        font-weight: bold;
+    }
+
+    .footer {
+        margin-top: 30px;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .icon-g1 {
+        background-color: #e5233b
+    }
+
+    .icon-g2 {
+        background-color: #dea73a
+    }
+
+    .icon-g3 {
+        background-color: #4ca046
+    }
+
+    .icon-g4 {
+        background-color: #c5202e
+    }
+
+    .icon-g5 {
+        background-color: #ef402c
+    }
+
+    .icon-g6 {
+        background-color: #29bee2
+    }
+
+    .icon-g7 {
+        background-color: #fac315
+    }
+
+    .icon-g8 {
+        background-color: #a21c44
+    }
+
+    .icon-g9 {
+        background-color: #f26a2c
+    }
+
+    .icon-g10 {
+        background-color: #dd1768
+    }
+
+    .icon-g11 {
+        background-color: #f99d29
+    }
+
+    .icon-g12 {
+        background-color: #bf8b2c
+    }
+
+    .icon-g13 {
+        background-color: #407f44
+    }
+
+    .icon-g14 {
+        background-color: #1c97d4
+    }
+
+    .icon-g15 {
+        background-color: #5cba47
+    }
+
+    .icon-g16 {
+        background-color: #01699e
+    }
+
+    .icon-g17 {
+        background-color: #18496b
+    }
+</style>
+
+<style nonce="${nonce || ''}">
+    @@page {
+        size: auto;
+        margin: 0 !important; /* Direct root level margin: 0 browser default header/footer (about:blank & 1/2) ko hide kar deta hai */
+    }
+
+    /* GENERAL RESET FOR COMPACT PRINT */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        box-sizing: border-box !important;
+    }
+
+    html, body {
+        background: #fff !important;
+        font-family: Calibri, Arial, sans-serif !important;
+        font-size: 11px !important;
+        margin: 0 !important;
+        padding: 8mm 10mm 15mm 10mm !important; /* Content aur paper border ke beech space */
+        color: #1e293b !important;
+    }
+
+    .report {
+        width: 100% !important;
+        margin: 0 !important;
+        background: #fff !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* ... Baaki saari existing CSS (summary cards, tables, headers) yahan rahegi ... */
+
+    /* 🌟 2. FOOTER & PRINT MEDIA STYLING */
+    .footer {
+        border-top: 1px solid #cbd5e1 !important;
+        padding-top: 4px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        font-size: 10px !important;
+        background: #fff !important;
+    }
+
+    @@media print {
+        /* Custom Footer ko har page ke bottom me fix rakhne ke liye */
+        .footer {
+            position: fixed !important;
+            bottom: 5mm !important;
+            left: 10mm !important;
+            right: 10mm !important;
+            width: auto !important;
+        }
+
+        .footer-right::after {
+            content: counter(page);
+        }
+    }
+</style>
+<style nonce="@nonce">
+    /* Card Container Styling */
+    .overview-card {
+        border-radius: 18px !important;
+        background: linear-gradient(180deg, #e5871f 0%, #d97706 100%) !important;
+        box-shadow: 0 4px 15px rgba(217, 119, 6, 0.15) !important;
+        overflow: hidden !important;
+        border: none !important;
+    }
+
+    .overview-card-header {
+        padding: 16px 20px 12px 20px !important;
+        color: #ffffff !important;
+    }
+
+        .overview-card-header h5 {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            margin-bottom: 2px !important;
+            color: #ffffff !important;
+        }
+
+        .overview-card-header p {
+            font-size: 12px !important;
+            margin-bottom: 0 !important;
+            opacity: 0.92 !important;
+            color: #ffffff !important;
+        }
+
+    .overview-card-body {
+        background: #f8fafc !important;
+        padding: 14px !important;
+    }
+
+    .chart-inner-box {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 16px !important;
+        min-height: 295px !important;
+    }
+
+    /* Donut Center Count & Label */
+    /*  .donut-chart-container {
+        position: relative !important;
+        height: 180px !important;
+        width: 100% !important;
+    }*/
+
+    .donut-center-text {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        text-align: center !important;
+        pointer-events: none !important;
+    }
+
+        .donut-center-text .total-number {
+            display: block !important;
+            font-size: 24px !important;
+            font-weight: 800 !important;
+            color: #0f172a !important;
+            line-height: 1 !important;
+        }
+
+        .donut-center-text .total-label {
+            font-size: 10px !important;
+            color: #64748b !important;
+            font-weight: 600 !important;
+        }
+
+    /* Custom Dots Legend */
+    .custom-legend-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px 18px !important;
+    }
+
+    .legend-item {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: #475569 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .dot {
+        width: 12px !important;
+        height: 12px !important;
+        border-radius: 50% !important;
+        display: inline-block !important;
+        margin-right: 6px !important;
+    }
+
+    .dot-completed {
+        background-color: #2563eb !important;
+    }
+
+    .dot-discontinued {
+        background-color: #5c6b73 !important;
+    }
+
+    .dot-notstarted {
+        background-color: #ef4444 !important;
+    }
+
+    .dot-ongoing {
+        background-color: #22c55e !important;
+    }
+
+    .icon-g1 {
+        background-color: #e5233b
+    }
+
+    .icon-g2 {
+        background-color: #dea73a
+    }
+
+    .icon-g3 {
+        background-color: #4ca046
+    }
+
+    .icon-g4 {
+        background-color: #c5202e
+    }
+
+    .icon-g5 {
+        background-color: #ef402c
+    }
+
+    .icon-g6 {
+        background-color: #29bee2
+    }
+
+    .icon-g7 {
+        background-color: #fac315
+    }
+
+    .icon-g8 {
+        background-color: #a21c44
+    }
+
+    .icon-g9 {
+        background-color: #f26a2c
+    }
+
+    .icon-g10 {
+        background-color: #dd1768
+    }
+
+    .icon-g11 {
+        background-color: #f99d29
+    }
+
+    .icon-g12 {
+        background-color: #bf8b2c
+    }
+
+    .icon-g13 {
+        background-color: #407f44
+    }
+
+    .icon-g14 {
+        background-color: #1c97d4
+    }
+
+    .icon-g15 {
+        background-color: #5cba47
+    }
+
+    .icon-g16 {
+        background-color: #01699e
+    }
+
+    .icon-g17 {
+        background-color: #18496b
+    }
+
+    .horibarchart {
+        position: relative;
+        height: 260px;
+        width: 100%;
+    }
+</style>
+
+<section class="best-practice-page margin-top-new">
+    <div class="container mt-4">
+        <!-- 🌟 MODERN TOP FILTER CARD 🌟 -->
+        <div class="top-filter">
+            <div class="filter-header">
+                <i class="bx bx-filter-alt"></i> <span>Filters</span>
+            </div>
+            <div class="row align-items-end g-3">
+                <div class="col-md-3">
+                    <label for="Department" class="form-label fw-bold text-secondary">
+                        Select Department <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select form-select-md" name="Department" id="Department">
+                        <option value="-1">Select Department</option>
+                    </select>
+                    <input type="hidden" id="hiddenDepartmentId" value="@ViewBag.DepartmentId" />
+                </div>
+                <div class="col-md-3">
+                    <label for="Sector" class="form-label fw-bold text-secondary">
+                        Select Sector <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select form-select-md" name="Sector" id="Sector">
+                        <option value="-1">Select Sector</option>
+                    </select>
+                    <input type="hidden" id="hiddenSectorId" value="@ViewBag.Sector" />
+                </div>
+                <div class="col-md-3 d-flex gap-2 justify-content-md-start">
+                    <button type="button" id="btnLoadReport" class="btn btn-primary btn-filter">
+                        <i class="bx bx-search-alt"></i> Load Report
+                    </button>
+                    <button type="button" id="btnPrintReport" class="btn btn-success btn-filter">
+                        <i class="bx bx-printer"></i> Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🌟 PRINT AREA CONTAINER 🌟 -->
+        <div id="printDiv" class="d-none">
+            <div class="report">
+                <div class="report-title text-center text-primary mb-3">
+                    <h2>Activities Progress Report</h2>
+                    <h3><span id="lblAgencyHeaderName_head" class="headert-tit"></span></h3>
+                </div>
+
+                <!-- TOP SUMMARY CARDS -->
+                <div class="summary-card-container">
+                    <!-- 1. Department -->
+                    <div class="summary-card card-green">
+                        <div class="summary-icon bg-icon-blue"><i class="bx bx-globe"></i></div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblDepartmentCount">0</span>
+                            <span class="summary-label">Department</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Sectors -->
+                    <div class="summary-card card-blue">
+                        <div class="summary-icon bg-icon-blue"><i class="bx bxs-bank"></i></div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblSectorsCount">0</span>
+                            <span class="summary-label">Sectors</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Activities -->
+                    <div class="summary-card card-yellow">
+                        <div class="summary-icon bg-icon-blue"><i class="bx bx-notepad"></i></div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblActivitiesCount">0</span>
+                            <span class="summary-label">Activities</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Tasks -->
+                    <div class="summary-card card-red">
+                        <div class="summary-icon bg-icon-blue"><i class="bx bx-list-check"></i></div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblTasksCount">0</span>
+                            <span class="summary-label">Tasks</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Best Practices -->
+                    <div class="summary-card card-purple">
+                        <div class="summary-icon bg-icon-yellow"><i class="bx bxs-trophy"></i></div>
+                        <div class="summary-data">
+                            <span class="summary-value" id="lblBestPracticesCount">0</span>
+                            <span class="summary-label">Best Practices</span>
+                        </div>
+                    </div>
+
+                    <!-- Grouped Wide Summary Card 1: SDGs -->
+                    <div class="summary-card-wide card-blue">
+                        <div class="group-wrapper">
+                            <div class="group-item">
+                                <div class="summary-icon bg-icon-colorful"><i class="bx bx-bar-chart-alt-2"></i></div>
+                                <div class="summary-data">
+                                    <span class="summary-value" id="lblSDGGoalsCount">0</span>
+                                    <span class="summary-label">Goals</span>
+                                </div>
+                            </div>
+                            <div class="group-divider"></div>
+                            <div class="group-item">
+                                <div class="summary-icon bg-icon-colorful"><i class="bx bx-file"></i></div>
+                                <div class="summary-data">
+                                    <span class="summary-value" id="lblSDGTargetsCount">0</span>
+                                    <span class="summary-label">Targets</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-footer-title">SDGs</div>
+                    </div>
+
+                    <!-- Grouped Wide Summary Card 2: Viksit Rajasthan@2047 -->
+                    <div class="summary-card-wide card-red">
+                        <div class="group-wrapper">
+                            <div class="group-item">
+                                <div class="summary-icon bg-icon-colorful"><i class="bx bx-bar-chart-alt-2"></i></div>
+                                <div class="summary-data">
+                                    <span class="summary-value" id="lblVRThemesCount">0</span>
+                                    <span class="summary-label">Themes</span>
+                                </div>
+                            </div>
+                            <div class="group-divider"></div>
+                            <div class="group-item">
+                                <div class="summary-icon bg-icon-colorful"><i class="bx bx-file"></i></div>
+                                <div class="summary-data">
+                                    <span class="summary-value" id="lblVRSubThemesCount">0</span>
+                                    <span class="summary-label">SubThemes</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-footer-title">Viksit Rajasthan@2047</div>
+                    </div>
+                </div>
+
+                <!-- 🌟 GRAPHS SECTION 🌟 -->
+                <div class="row g-3 mt-2 mb-2" id="statusOverviewCharts">
+                    <div class="col-6">
+                        <div class="overview-card">
+                            <div class="overview-card-header">
+                                <h5>Activities Wise Status</h5>
+                                <p>Overall progress of monitoring activity</p>
+                            </div>
+                            <div class="overview-card-body">
+                                <div class="chart-inner-box">
+                                    <div class="donut-chart-container" style="position: relative; height: 180px; width: 100%;">
+                                        <canvas id="activitiesDonutChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="overview-card">
+                            <div class="overview-card-header">
+                                <h5>📊 Task Status Overview</h5>
+                                <p>Overall progress of monitoring tasks</p>
+                            </div>
+                            <div class="overview-card-body">
+                                <div class="chart-inner-box">
+                                    <div class="font-weight-bold text-dark mb-1">
+                                        Total Tasks : <span id="lblBarTotalTasks" class="text-primary font-weight-bold">0</span>
+                                    </div>
+                                    <div class="horibarchart">
+                                        <canvas id="taskHorizontalBarChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TASK STATUS SUMMARY ROW -->
+                @*<div class="card mb-3 border-light bg-light">
+                        <div class="card-body p-2">
+                            <div class="row text-center g-2 fw-bold" style="font-size: 12px;">
+                                <div class="col">Total Tasks: <span id="lblSummaryTotalTasks" class="text-dark">0</span></div>
+                                <div class="col">Completed: <span id="lblSummaryCompleted" class="text-success">0</span></div>
+                                <div class="col">In Progress: <span id="lblSummaryInProgress" class="text-warning">0</span></div>
+                                <div class="col">Delayed: <span id="lblSummaryDelayed" class="text-danger">0</span></div>
+                                <div class="col">Not Started: <span id="lblSummaryNotStarted" class="text-secondary">0</span></div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                <!-- DYNAMIC CONTENT RENDER CONTAINER -->
+                <div id="activityReportContainer">
+                    <div class="text-center my-4 text-muted">
+                        <p class="mb-0">Please select an Agency and click "Load Report" to view details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script nonce="@nonce" src="~/custom/Common.js"></script>
+<script nonce="@nonce" src="~/lib/chartjs/chart.min.js"></script>
+<script nonce="@nonce" src="~/lib/chart.js/chart.umd.js"></script>
+<script nonce="@nonce" src="~/lib/chart.js/chart.umd.min.js"></script>
+<script nonce="@nonce" src="~/custom/AgencyReportlogin.js" asp-append-version="true"></script>
+<script nonce="@nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+        var hiddenDepartmentElem = document.getElementById('hiddenDepartmentId');
+        var hiddenDepartmentVal = hiddenDepartmentElem ? hiddenDepartmentElem.value : '';
+        var hiddenSectorElem = document.getElementById('hiddenSectorId');
+        var hiddenSectorVal = hiddenSectorElem ? hiddenSectorElem.value : '';
+
+        // Get logged-in AgencyId from ViewBag
+        var agencyId = '@ViewBag.AgencyId' || '-1';
+
+        // Dropdown Bind
+        if (typeof common !== 'undefined' && common.BindDropdown) {
+            common.BindDropdown(`/Master/DDL_Department`, "Department", "Department", hiddenDepartmentVal);
+            common.BindDropdown(`/Master/DDL_UNSector`, "Sector", "Sector", hiddenSectorVal);
+        }
+
+        // Filter Button Click Listener
+        var btnLoad = document.getElementById('btnLoadReport');
+        if (btnLoad) {
+            btnLoad.addEventListener('click', function () {
+                var departmentElem = document.getElementById('Department');
+                var departmentId = departmentElem ? departmentElem.value : '-1';
+
+                var sectorElem = document.getElementById('Sector');
+                var sectorId = sectorElem ? sectorElem.value : '-1';
+
+                // Proceed directly without validation alerts
+                var printDiv = document.getElementById('printDiv');
+                if (printDiv) {
+                    printDiv.classList.remove('d-none');
+                }
+
+                if (typeof printAgencyReport !== 'undefined') {
+                    printAgencyReport.loadAgencyWiseData(agencyId, departmentId, sectorId);
+                }
+            });
+        }
+
+        // Auto Load on Page Load
+        if (agencyId !== '' && agencyId !== '-1') {
+            setTimeout(() => {
+                var printDiv = document.getElementById('printDiv');
+                if (printDiv) {
+                    printDiv.classList.remove('d-none');
+                }
+                if (typeof printAgencyReport !== 'undefined') {
+                    var loadDept = hiddenDepartmentVal ? hiddenDepartmentVal : '-1';
+                    var loadSector = hiddenSectorVal ? hiddenSectorVal : '-1';
+                    printAgencyReport.loadAgencyWiseData(agencyId, loadDept, loadSector);
+                }
+            }, 500);
+        }
+
+        // Print Report Button Event Listener
+        var btnPrint = document.getElementById('btnPrintReport');
+        if (btnPrint) {
+            btnPrint.addEventListener('click', function () {
+                if (typeof printAgencyReport !== 'undefined') {
+                    printAgencyReport.printDiv('@nonce');
+                }
+            });
+        }
+    });
+</script>

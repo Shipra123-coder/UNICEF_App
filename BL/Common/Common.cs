@@ -306,12 +306,13 @@ namespace BL.Common
                 };
             }
         }       
-        public async Task<result> DDL_DepartmentAsync()
+        public async Task<result> DDL_DepartmentAsync(string userId)
         {
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@Action", "DDL_Department"));
+                param.Add(new SqlParameter("@Id", userId));
                 DataSet ds = await _iSql.ExecuteProcedure("SP_GetData", param.ToArray());
                 if (ds.Tables.Count > 0)
                 {
