@@ -5,6 +5,37 @@
     Layout = "~/Views/Shared/_LayoutIn.cshtml";
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }
+    <!-- Table columns widths handled via class to avoid inline style -->
+    <style nonce="@nonce">
+        .col-w-5 {
+            width: 5%;
+        }
+
+        .col-w-7 {
+            width: 7%;
+        }
+
+        .col-w-6 {
+            width: 6%;
+        }
+
+        .col-w-8 {
+            width: 8%;
+        }
+
+        .col-w-10 {
+            width: 10%;
+        }
+
+        .col-w-14 {
+            width: 14%;
+        }
+
+        .col-w-20 {
+            width: 20%;
+        }
+    </style>
+
 
 <div class="container-fluid py-4">
     <!-- Modern Page Header -->
@@ -63,11 +94,29 @@
                         <label asp-for="FormModel.ContactLevel" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
                         <select asp-for="FormModel.ContactLevel" class="form-select">
                             <option value="">-- Select Level --</option>
-                            <option value="@((int)ContactLevelEnum.StateLevel)">State Level</option>                            
+                            <option value="@((int)ContactLevelEnum.StateLevel)">State Level</option>
                             <option value="@((int)ContactLevelEnum.DepartmentLevel)">Department Level</option>
                             <option value="@((int)ContactLevelEnum.UNAgencies)">UN Agencies</option>
                         </select>
                         <span asp-validation-for="FormModel.ContactLevel" class="text-danger small"></span>
+                    </div>
+
+                    <!-- NEW: Department Dropdown (Using d-none instead of inline style) -->
+                    <div class="col-md-3 d-none" id="divDepartment">
+                        <label asp-for="FormModel.DepartmentId" class="form-label fw-semibold">Department</label> <span class="text-danger">*</span>
+                        <select asp-for="FormModel.DepartmentId" asp-items="Model.FormModel.DepartmentList" class="form-select">
+                            <option value="">-- Select Department --</option>
+                        </select>
+                        <span asp-validation-for="FormModel.DepartmentId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- NEW: Agency Dropdown (Using d-none instead of inline style) -->
+                    <div class="col-md-3 d-none" id="divAgency">
+                        <label asp-for="FormModel.AgencyId" class="form-label fw-semibold">UN Agency</label> <span class="text-danger">*</span>
+                        <select asp-for="FormModel.AgencyId" asp-items="Model.FormModel.AgencyList" class="form-select">
+                            <option value="">-- Select Agency --</option>
+                        </select>
+                        <span asp-validation-for="FormModel.AgencyId" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-3">
@@ -80,6 +129,11 @@
                         <label asp-for="FormModel.Designation" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
                         <input asp-for="FormModel.Designation" class="form-control" placeholder="e.g. Secretary (Planning and Statistics)" />
                         <span asp-validation-for="FormModel.Designation" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Mobile" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                        <input asp-for="FormModel.Mobile" class="form-control" placeholder="Mobile Number" />
+                        <span asp-validation-for="FormModel.Mobile" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-3">
@@ -98,6 +152,11 @@
                         <label asp-for="FormModel.OfficeIpNumber" class="form-label fw-semibold"></label>
                         <input asp-for="FormModel.OfficeIpNumber" class="form-control" placeholder="e.g. 21445" />
                         <span asp-validation-for="FormModel.OfficeIpNumber" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="FormModel.Address" class="form-label fw-semibold"></label>
+                        <input asp-for="FormModel.Address" class="form-control" placeholder="Address" />
+                        <span asp-validation-for="FormModel.Address" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-3">
@@ -157,16 +216,17 @@
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0 table-modern" id="contactTable">
                     <thead>
+                        <!-- Removed inline styles, using classes from style block -->
                         <tr>
-                            <th style="width: 5%;" class="text-center">#</th>
-                            <th style="width: 7%;">Photo</th>
-                            <th style="width: 14%;">Level</th>
-                            <th style="width: 20%;">Officer Name</th>
-                            <th style="width: 20%;">Designation</th>
+                            <th class="col-w-5 text-center">#</th>
+                            <th class="col-w-7">Photo</th>
+                            <th class="col-w-14">Level</th>
+                            <th class="col-w-20">Officer Name</th>
+                            <th class="col-w-20">Designation</th>
                             <th>Contact Details</th>
-                            <th style="width: 6%;" class="text-center">Order</th>
-                            <th style="width: 8%;" class="text-center">Status</th>
-                            <th style="width: 10%;" class="text-center">Actions</th>
+                            <th class="col-w-6 text-center">Order</th>
+                            <th class="col-w-8 text-center">Status</th>
+                            <th class="col-w-10 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -180,17 +240,30 @@
                                     <td>
                                         <img src="@(string.IsNullOrEmpty(contact.PhotoUrl) ? "/images/default-officer.png" : contact.PhotoUrl)"
                                              alt="Avatar"
-                                             class="rounded-circle border imgcss"                                             
+                                             class="rounded-circle border imgcss"
                                              onerror="this.src='/images/default-officer.png';" />
                                     </td>
                                     <td>
-                                        <span class="badge bg-light text-dark border">@contact.ContactLevel</span>
+                                        @if (contact.ContactLevel == ContactLevelEnum.UNAgencies)
+                                        {
+                                            <small class="d-block text-muted"><strong>@contact.ContactLevel :</strong> @(contact.Agency?.AgencyName ?? "N/A")</small>
+                                        }
+                                        else if (contact.ContactLevel == ContactLevelEnum.DepartmentLevel)
+                                        {
+                                            <small class="d-block text-muted"><strong>@contact.ContactLevel :</strong> @(contact.Department?.DepartmentName ?? "N/A")</small>
+                                        }
+                                        else
+                                        {
+                                            <small class="d-block text-muted"><strong>@contact.ContactLevel </strong></small>
+                                        }
+
                                     </td>
                                     <td><span class="fw-semibold text-dark">@contact.OfficerName</span></td>
                                     <td><span class="text-dark">@contact.Designation</span></td>
                                     <td>
                                         <small class="d-block text-dark"><strong>Landline:</strong> @(contact.OfficeLandline ?? "N/A")</small>
                                         <small class="d-block text-muted"><strong>IP:</strong> @(contact.OfficeIpNumber ?? "N/A")</small>
+                                        <small class="d-block text-muted"><strong>Mobile:</strong> @(contact.Mobile ?? "N/A")</small>
                                         <small class="d-block text-muted"><strong>Email:</strong> @contact.EmailId</small>
                                     </td>
                                     <td class="text-center fw-semibold">@contact.DisplayOrder</td>
@@ -229,22 +302,49 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script nonce="@nonce">
-        $(document).ready(function () {
-            // Common JS DataTables Initializer
-            table.dataTable('contactTable');
+    $(document).ready(function () {
 
-            // Event Delegation for DataTables Pages
-            $('#contactTable').on('click', '.btn-edit', function (e) {
-                if (!window.confirm('Are you sure you want to edit this contact?')) {
-                    e.preventDefault();
-                }
-            });
+        function toggleDropdowns(isPageLoad) {
+            // ASP.NET Core टैग हेल्पर आईडी को FormModel_ContactLevel बनाता है
+            var selectedLevel = $('#FormModel_ContactLevel').val();
 
-            $('#contactTable').on('submit', '.status-toggle-form', function (e) {
-                if (!window.confirm('Do you want to change the status of this contact?')) {
-                    e.preventDefault();
-                }
-            });
+            // .hide() की जगह .addClass('d-none') का इस्तेमाल (ताकि inline style inject न हो)
+            $('#divDepartment, #divAgency').addClass('d-none');
+
+            if (!isPageLoad) {
+                $('#FormModel_DepartmentId, #FormModel_AgencyId').val('');
+            }
+
+            // .show() की जगह .removeClass('d-none') का इस्तेमाल
+            if (selectedLevel == '@((int)ContactLevelEnum.DepartmentLevel)') {
+                $('#divDepartment').removeClass('d-none');
+            }
+            else if (selectedLevel == '@((int)ContactLevelEnum.UNAgencies)') {
+                $('#divAgency').removeClass('d-none');
+            }
+        }
+
+        toggleDropdowns(true);
+
+        $('#FormModel_ContactLevel').on('change', function () {
+            toggleDropdowns(false);
         });
+
+        if ($.fn.DataTable) {
+            $('#contactTable').DataTable();
+        }
+
+        $('#contactTable').on('click', '.btn-edit', function (e) {
+            if (!window.confirm('Are you sure you want to edit this contact?')) {
+                e.preventDefault();
+            }
+        });
+
+        $('#contactTable').on('submit', '.status-toggle-form', function (e) {
+            if (!window.confirm('Do you want to change the status of this contact?')) {
+                e.preventDefault();
+            }
+        });
+    });
     </script>
 }

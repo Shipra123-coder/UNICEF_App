@@ -15,9 +15,12 @@ using BL.Services.UNSector;
 using BL.Services.UserLevel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MO.Common;
 using MO.Entities;
 using MO.Master;
 using MO.ProfileUser;
+using MO.Report;
 using MO.ViewModels;
 
 
@@ -89,12 +92,13 @@ namespace UNICEF_App.Controllers
         [Route("Master/DDL_Department")]
         public async Task<IActionResult> DDL_Department()
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    // Handle the case where the user is not authenticated
-            //    return Unauthorized(); // Returns a 401 Unauthorized response
-            //}
-            return Json(await _iCommon.DDL_DepartmentAsync());
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Handle the case where the user is not authenticated
+                return Unauthorized(); // Returns a 401 Unauthorized response
+            }
+            var userid = User.FindFirst("UserId")?.Value;
+            return Json(await _iCommon.DDL_DepartmentAsync(userid));
         }
         [Route("Master/DDL_SupDepartment")]
         public async Task<IActionResult> DDL_SupDepartment(int? Id)
@@ -1027,6 +1031,7 @@ namespace UNICEF_App.Controllers
         #endregion
         #region Menu
         [HttpGet]
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Menu(Guid? guid)
         {
             var viewModel = new MenuViewModel
@@ -1049,6 +1054,7 @@ namespace UNICEF_App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> SaveMenu(MenuViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -1059,7 +1065,12 @@ namespace UNICEF_App.Controllers
             }
 
             var result = await _iMenuBL.SaveMenuAsync(viewModel.FormModel);
-            TempData[result.Success ? "SuccessMessage" : "ErrorMessage"] = result.Message;
+            // Set message in TempData
+            string messageKey = result.Success ? "SuccessMessage" : "ErrorMessage";
+            TempData[messageKey] = result.Message;
+
+            // Ensure TempData survives the redirect
+            TempData.Keep(messageKey);
 
             return RedirectToAction(nameof(Menu));
         }
@@ -1089,14 +1100,63 @@ namespace UNICEF_App.Controllers
         {
             var viewModel = new ContactViewModel
             {
-                ContactList = await _iContactBL.GetAllContactsAsync()
+                ContactList = await _iContactBL.GetAllContactsAsync(),
+                FormModel = new mst_ContactMaster() // Initialize to prevent null reference errors
             };
 
+            // 1. Fetch Department Data (Assuming you have a way to get userId, e.g., from User.Identity or session. Using "0" or empty as placeholder if not needed)
+            string userId = "0"; // Replace with actual logic to get logged-in user ID if required
+            var deptResult = await _iCommon.DDL_DepartmentAsync(userId);
+
+            var departmentList = new List<SelectListItem>();
+
+            if (deptResult.status && deptResult.data != null)
+            {
+                // Convert the object to a typed list
+                var json = System.Text.Json.JsonSerializer.Serialize(deptResult.data);                
+                var deptData = System.Text.Json.JsonSerializer.Deserialize<List<DDL>>(json);
+                foreach (var item in deptData)
+                {
+                    departmentList.Add(new SelectListItem
+                    {
+                        Value = item.id.ToString(),
+                        Text = item.name
+                    });
+                }
+            }
+
+            // 2. Fetch Agency Data
+            var agencyResult = await _iCommon.DDL_AgencyAsync();
+
+            var agencyList = new List<SelectListItem>();
+            if (agencyResult.status && agencyResult.data != null)
+            {
+                var json = System.Text.Json.JsonSerializer.Serialize(agencyResult.data);
+                var agencyData = System.Text.Json.JsonSerializer.Deserialize<List<DDL>>(json);
+                
+                foreach (var item in agencyData)
+                {
+                    agencyList.Add(new SelectListItem
+                    {
+                        Value = item.id.ToString(),
+                        Text = item.name
+                    });
+                }
+            }
+
+            // Assign the lists to the FormModel
+            viewModel.FormModel.DepartmentList = departmentList;
+            viewModel.FormModel.AgencyList = agencyList;
+
+            // 3. Handle Edit Mode
             if (guid.HasValue && guid.Value != Guid.Empty)
             {
                 var editData = await _iContactBL.GetContactByGuidAsync(guid.Value);
                 if (editData != null)
                 {
+                    // We need to map the edit data while keeping our newly populated dropdown lists
+                    editData.DepartmentList = departmentList;
+                    editData.AgencyList = agencyList;
                     viewModel.FormModel = editData;
                 }
             }

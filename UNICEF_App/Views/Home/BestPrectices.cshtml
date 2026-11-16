@@ -6,91 +6,38 @@
 @{
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }
-
-<!-- ========================================= -->
-<!-- BEST PRACTICES PAGE -->
-<!-- ========================================= -->
-
 <section class="best-practice-page margin-top-new">
     <div class="container mt-4">
-
         <div class="section-heading-box">
             <h2 class="section-title">
                 Sectors
             </h2>
         </div>
-
         <div class="row g-3">
-
             @foreach (var item in Model)
             {
                 <div class="col-lg-3 col-md-4 col-6">
-
                     <a asp-action="BestPrecticesSubSector" asp-controller="Home" asp-route-sectorId="@item.SectorId">
-
                         <div class="sector-card">
-
-                            @{
-                                string imagePath = item.SectorId switch
-                                {
-                                    1 => "/public/img/sector/thumbnails/LE.jpg",
-                                    2 => "/public/img/sector/thumbnails/Health.png",
-                                    3 => "/public/img/sector/thumbnails/Education.png",
-                                    4 => "/public/img/sector/thumbnails/TC.png",
-                                    5 => "/public/img/sector/thumbnails/Agriculture.png",
-                                    6 => "/public/img/sector/thumbnails/Energy.png",
-                                    7 => "/public/img/sector/thumbnails/UD.png",
-                                    8 => "/public/img/sector/thumbnails/water.png",
-                                    9 => "/public/img/sector/thumbnails/MSME.png",
-                                    10 => "/public/img/sector/thumbnails/Manufacturing.png",
-                                    11 => "/public/img/sector/thumbnails/Food.png",
-                                    12 => "/public/img/sector/thumbnails/SEI.png",
-                                    13 => "/public/img/sector/thumbnails/FMEG.png",
-                                    14 => "/public/img/sector/thumbnails/TI.png",
-                                    15 => "/public/img/sector/thumbnails/EF.png",
-                                    16 => "/public/img/sector/thumbnails/RDPR.png",
-                                    17 => "/public/img/sector/thumbnails/EGPS.png",
-                                    18 => "/public/img/sector/thumbnails/WEGE.png",
-                                    19 => "/public/img/sector/thumbnails/CD.png",
-                                    20 => "/public/img/sector/thumbnails/Planning.png",
-                                    21 => "/public/img/sector/thumbnails/SYD.png",
-                                    22 => "/public/img/sector/thumbnails/ITDG.png",
-                                    _ => "/public/img/sector/default-sector.jpg"
-                                };
-                            }
-
-                            <img src="/public/img/sector/thumbnails/@(item.SectorCode).png" class="sector-img" />
-
+                            @{                            
+                            string imagePath = string.IsNullOrEmpty(item.IconUrl)
+                                ? $"/public/img/sector/thumbnails/{item.SectorCode}.png"
+                                : item.IconUrl;
+                            }                            
+                            <img src="@imagePath" class="sector-img" alt="@item.SectorName"
+                                 onerror="this.src='/public/img/sector/default-sector.jpg';" />
                             <div class="sector-overlay"></div>
-
                             <div class="sector-content">
-
-                                <h4 class="color-white">
-                                    @item.SectorName
-                                </h4>
-
-                                <span>
-                                    @item.TotalCount Activities
-                                </span>
-
+                                <h4 class="color-white">@item.SectorName</h4>
+                                <span>@item.TotalCount Activities</span>
                             </div>
-
                         </div>
-
                     </a>
-
                 </div>
             }
-
         </div>
-
     </div>
 </section>
-
-<!-- ========================================= -->
-<!-- CSS -->
-<!-- ========================================= -->
-
 <style nonce="@nonce">
     .margin-top-new {
         margin-top: 240px;

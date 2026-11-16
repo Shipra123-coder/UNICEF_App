@@ -1,6 +1,9 @@
-using BL.Dashboard;
+﻿using BL.Dashboard;
+using BL.Services.ContactBL;
 using Microsoft.AspNetCore.Mvc;
 using MO.DashBoard;
+using MO.Entities;
+using MO.Enums;
 using NuGet.Protocol.Core.Types;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -12,10 +15,12 @@ namespace UNICEF_App.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IDashboard _iDashboard;
-        public HomeController(ILogger<HomeController> logger,IDashboard iDashboard)
+        private readonly IContactBL _iContactBL;
+        public HomeController(ILogger<HomeController> logger,IDashboard iDashboard,IContactBL iContactBL)
         {
             _logger = logger;
             _iDashboard =iDashboard;
+            _iContactBL = iContactBL;
         }
         public IActionResult Index()
         {
@@ -237,9 +242,24 @@ namespace UNICEF_App.Controllers
         #endregion
 
         #region ContactUs
-        public IActionResult ContactUs()
+        //public IActionResult ContactUs()
+        //{
+        //    return View();
+        //}
+        public async Task<IActionResult> ContactUs()
         {
-            return View();
+            // 1. Repository से सारा डेटा लाएं
+            var allContacts = await _iContactBL.GetAllContactsAsync();
+
+            // 2. ViewModel तैयार करें और डेटा को अलग-अलग लिस्ट में बाँट दें
+            var viewModel = new PublicContactViewModel
+            {
+                StateLevelContacts = allContacts.Where(c => c.ContactLevel == ContactLevelEnum.StateLevel).ToList(),
+                DepartmentContacts = allContacts.Where(c => c.ContactLevel == ContactLevelEnum.DepartmentLevel).ToList(),
+                AgencyContacts = allContacts.Where(c => c.ContactLevel == ContactLevelEnum.UNAgencies).ToList()
+            };
+
+            return View(viewModel);
         }
         #endregion
 

@@ -298,6 +298,11 @@ namespace BL.ManageActivity
                         ? (object)DBNull.Value
                         : model.Suggestions),
 
+                    // Workflow status: 0 = Save as Draft, 1 = Final Submit / Re-submit
+                    new SqlParameter("@WorkflowStatus", model.WorkflowStatus),
+                    new SqlParameter("@UserRole", model.UserRole),
+                    new SqlParameter("@UserName", model.UserName),
+
                     new SqlParameter("@CreatedBy", user),
                     new SqlParameter("@UpdatedBy", user)
                 };

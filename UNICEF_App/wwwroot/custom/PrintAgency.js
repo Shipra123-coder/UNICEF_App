@@ -134,7 +134,7 @@
 
                 var deptHeaderHtml = `
                     <div class="dept-header ms-2 mt-3 mb-2">
-                        <i class="bx bx-building-house"></i> Nodal Department : ${nodalDeptName}
+                        <i class="bx bx-building-house"></i> Department : ${nodalDeptName}
                     </div>
                 `;
                 $container.append(deptHeaderHtml);
@@ -411,7 +411,7 @@
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Department Wise Activity Report</title>
+            <title>Activites Progress Report</title>
 
             <!-- Bootstrap & BoxIcons CSS Links -->
             <link rel="stylesheet" href="/css/bootstrap.min.css">

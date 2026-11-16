@@ -66,5 +66,7 @@ namespace BL.Services.ContactBL
             if (guid == Guid.Empty) return false;
             return await _contactRepo.ToggleStatusAsync(guid);
         }
+
+        
     }
 }

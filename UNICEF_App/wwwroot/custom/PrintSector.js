@@ -138,7 +138,7 @@
 
                 var deptHeaderHtml = `
                     <div class="sector mt-4">
-                        <i class="bx bx-building-house"></i> Nodal Department : ${nodalDeptName}
+                        <i class="bx bx-building-house"></i>Department : ${nodalDeptName}
                     </div>
                 `;
                 $container.append(deptHeaderHtml);
@@ -147,7 +147,7 @@
                 $.each(agenciesObj, function (agencyName, agencyActivities) {
 
                     var agencyHeaderHtml = `
-                        <div class="agency ms-3 mt-2 mb-2">
+                        <div class="agency">
                             <i class="bx bx-building"></i> Agency : ${agencyName}
                         </div>
                     `;

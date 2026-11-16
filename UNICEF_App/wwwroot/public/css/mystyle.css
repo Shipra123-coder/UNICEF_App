@@ -609,13 +609,13 @@ header {
 }
 
 .header-center {
-    width: 24% !important;
+    width: 44% !important;
     display: flex;
-    justify-content: center;
+    justify-content: left;
 }
 
 .header-right {
-    width: 30% !important;
+    width: 14% !important;
     display: flex;
     justify-content: flex-end;
 }

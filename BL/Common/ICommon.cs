@@ -22,7 +22,7 @@ namespace BL.Common
         Task<List<FinancialYearListMO>> FinancialYearList(FinancialYearListMO modal);
 
         Task<result> DDL_AgencyAsync();
-        Task<result> DDL_DepartmentAsync();
+        Task<result> DDL_DepartmentAsync(string userId);
         Task<result> DDL_SupDepartmentAsync(int? Id);
         Task<result> DDL_PillerAsync();
         Task<result> DDL_SectorAsync(int? Id);

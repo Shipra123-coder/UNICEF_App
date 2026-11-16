@@ -15,7 +15,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(); // Or AddRazorPages(), AddMvc()
+/*builder.Services.AddControllersWithViews();*/ // Or AddRazorPages(), AddMvc()
+// Program.cs mein controllers registration ke sath yeh lagayein:
+builder.Services.AddControllersWithViews()
+    .AddSessionStateTempDataProvider();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;

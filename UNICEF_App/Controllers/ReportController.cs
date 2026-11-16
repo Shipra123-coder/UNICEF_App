@@ -110,7 +110,7 @@ namespace UNICEF_App.Controllers
             try
             {
                 // 1. Activities ka raw JSON string get karein
-                string jsonResult = await _iDepartmentReportService.GetAgencyWiseReportDataAsync(agencyId, activityGuid);
+                string jsonResult = await _iDepartmentReportService.GetAgencyWiseReportDataAsync((int)agencyId, activityGuid);
 
                 // 2. Dashboard Service se Summary Counts fetch karein
                 object summaryCounts = null;
